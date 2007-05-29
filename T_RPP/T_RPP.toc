@@ -1,0 +1,32 @@
+## Interface: 20003
+## Title: Tristan's |cffffffffRPP/DKP Values|r |cff7fff7f -Ace2-|r
+## Notes: Just a place to store RPP/DKP prices and will then show in the items tooltip
+## Author:  Tristan
+## Version: 1
+## SavedVariables: T_RPPDB
+## X-Email: don@x86.se
+## X-Category: Raid
+## X-Embeds: Ace2, CrayonLib
+## OptionalDeps: Ace2, CrayonLib, DeuceCommander
+## X-AuthorRealm: Frostmane[EU]
+
+
+libs\AceLibrary\AceLibrary.lua
+libs\AceOO-2.0\AceOO-2.0.lua
+libs\AceAddon-2.0\AceAddon-2.0.lua
+libs\AceDB-2.0\AceDB-2.0.lua
+libs\AceConsole-2.0\AceConsole-2.0.lua
+libs\AceEvent-2.0\AceEvent-2.0.lua
+
+libs\AceLocale-2.2\AceLocale-2.2.lua
+libs\AceHook-2.1\AceHook-2.1.lua
+libs\Crayon-2.0\Crayon-2.0.lua
+
+Localization.lua
+Core.lua
+
+Ghost.lua
+Omen.lua
+Ashes.lua
+Grief.lua
+RPPValues.lua
