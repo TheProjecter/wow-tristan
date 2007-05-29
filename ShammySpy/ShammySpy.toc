@@ -1,0 +1,29 @@
+## Interface: 20003
+## Title: ShammySpy |cff7fff7f -Ace2-|r
+## Notes: Keeps track of Shaman related stuff
+## Author:  Tristan
+## Version: 1.0.$Revision$
+## X-LastUpdate: $Date$
+## X-Website: http://www.wowace.com/files
+## X-Email: dennis@lunarworks.com
+## X-Category: Interface Enhancements
+## X-AuthorRealm: Frostmane[EU]
+## OptionalDeps: Ace2, DeuceCommander, Niagara
+## X-Embeds: Ace2
+## SavedVariables: ShammySpyDB
+
+libs\AceLibrary\AceLibrary.lua
+
+libs\AceOO-2.0\AceOO-2.0.lua
+libs\AceAddon-2.0\AceAddon-2.0.lua
+libs\AceConsole-2.0\AceConsole-2.0.lua
+libs\AceDB-2.0\AceDB-2.0.lua
+libs\AceEvent-2.0\AceEvent-2.0.lua
+libs\AceLocale-2.2\AceLocale-2.2.lua
+libs\Deformat-2.0\Deformat-2.0.lua
+
+Localization.lua
+Init.lua
+ShammySpy.lua
+Frames.lua
+Data.lua
