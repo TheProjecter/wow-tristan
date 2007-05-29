@@ -1,0 +1,5 @@
+<Bindings>
+	<Binding name="TOGGLETGUILD" header="TGUILDFRAME">
+		TGuildFrame:Toggle();
+	</Binding>
+</Bindings>
