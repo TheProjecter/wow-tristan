@@ -1,0 +1,27 @@
+## Interface: 20003
+## Title: FuBar - |cffffffffUIReload|r|cff00ff00Fu|r |cff7fff7f -Ace2-|r
+## Title-koKR: |CFF99FF99F|CFFFFFFFFu|CFF99FF99B|CFFFFFFFFar - |cffffffffUIReload|r|cff00ff00Fu|r |cff7fff7f -Ace2-|r
+## Notes: Adds ReloadUI to FuBar (again)
+## Author:  Tristan
+## X-eMail: dennis@lunarworks.com
+## X-Website: http://www.wowace.com/
+## X-Category: Development Tools
+## OptionalDeps: Ace2, FuBar, DewdropLib, TabletLib 
+## SavedVariables: UIReloadFuDB
+## Version: 1.0
+## X-AuthorRealm: Frostmane[EU]
+
+libs\AceLibrary\AceLibrary.lua
+libs\AceOO-2.0\AceOO-2.0.lua
+libs\AceAddon-2.0\AceAddon-2.0.lua
+libs\AceConsole-2.0\AceConsole-2.0.lua
+libs\AceEvent-2.0\AceEvent-2.0.lua
+Libs\AceDB-2.0\AceDB-2.0.lua
+libs\AceLocale-2.2\AceLocale-2.2.lua
+
+libs\Dewdrop-2.0\Dewdrop-2.0.lua
+libs\Tablet-2.0\Tablet-2.0.lua
+libs\FuBarPlugin-2.0\FuBarPlugin-2.0.lua
+
+Localization.lua
+Core.lua
