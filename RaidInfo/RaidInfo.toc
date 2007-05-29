@@ -1,0 +1,40 @@
+## Interface: 20003
+
+## Title: RaidInfo |cff7fff7f -Ace2-|r
+## Notes: Keeps tracks of cooldowns in the raid (sync)
+## Author:  Tristan
+## Version: 1.0.$Revision$
+## X-LastUpdate: $Date$
+## X-Website: http://www.wowace.com/files
+## X-Email: dennis@lunarworks.com
+## X-Category: Raid
+## X-AuthorRealm: Frostmane[EU]
+
+## OptionalDeps: Ace2, FuBarPlugin-2.0, DewdropLib, TabletLib, PaintChipsLib, CandyBar, DeuceCommander
+## X-Embeds: Ace2, FuBarPlugin-2.0, DewdropLib, TabletLib, PaintChipsLib, CandyBar
+
+## SavedVariables: RaidInfoDB
+
+libs\AceLibrary\AceLibrary.lua
+
+libs\AceOO-2.0\AceOO-2.0.lua
+libs\AceAddon-2.0\AceAddon-2.0.lua
+libs\AceConsole-2.0\AceConsole-2.0.lua
+libs\AceDB-2.0\AceDB-2.0.lua
+libs\AceEvent-2.0\AceEvent-2.0.lua
+libs\AceLocale-2.2\AceLocale-2.2.lua
+
+libs\Dewdrop-2.0\Dewdrop-2.0.lua
+libs\Tablet-2.0\Tablet-2.0.lua
+libs\FuBarPlugin-2.0\FuBarPlugin-2.0.lua
+libs\Candybar-2.0\CandyBar-2.0.lua
+libs\PaintChips-2.0\PaintChips-2.0.lua
+
+common\Localization.lua
+common\Localization_special.lua
+RaidInfo.lua
+common\Comm.lua
+common\Toolbox.lua
+common\Console.lua
+common\FuBarHandling.lua
+common\Frames.lua
