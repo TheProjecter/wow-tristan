@@ -1,0 +1,29 @@
+## Interface: 20003
+## Title: RaidSpy |cff7fff7f -Ace2-|r
+## Notes: Can you trust the RaidOfficers?
+## Author: Tristan
+## Version: 1.1.$Revision$
+## X-Website: http://www.wowace.com/
+## X-Email: dennis@lunarworks.com
+## X-Category: Raid
+## X-Credits: CTRA Spy
+## OptionalDeps: Ace2, DeuceCommander, Niagara
+## X-Embeds: Ace2
+## SavedVariables: RaidSpyDB
+## X-AuthorRealm: Frostmane[EU]
+
+libs\AceLibrary\AceLibrary.lua
+
+libs\AceOO-2.0\AceOO-2.0.lua
+libs\AceAddon-2.0\AceAddon-2.0.lua
+libs\AceConsole-2.0\AceConsole-2.0.lua
+libs\AceDB-2.0\AceDB-2.0.lua
+libs\AceEvent-2.0\AceEvent-2.0.lua
+libs\AceLocale-2.2\AceLocale-2.2.lua
+
+libs\Dewdrop-2.0\Dewdrop-2.0.lua
+libs\Tablet-2.0\Tablet-2.0.lua
+libs\FuBarPlugin-2.0\FuBarPlugin-2.0.lua
+
+Localization.lua
+Core.lua
