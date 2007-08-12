@@ -242,6 +242,9 @@ function ShamanIO:UpdateFrame(frame)
 		return;
 	end
 	
+	-- Make this smarter somehow so it doesn't have to update every second?
+	self:UpdateAlphaBegin(frame);
+	
 	if (self[frame].warn and GetTime() >= self[frame].warn) then
 		self[frame].warn = nil;
 		local message = string.format(L["TotemExpiring"], self[frame].name, self[frame].element);
@@ -258,9 +261,6 @@ function ShamanIO:UpdateFrame(frame)
 		
 		self[frame].textcenter:SetText( ceil(self[frame].pulse - GetTime()) );
 	end
-	
-	--self[frame].warn = GetTime() + TimeToLive - 7;
-	
 	
 	if ( not (self:IsEventScheduled(frame)) ) then
 		self:ScheduleRepeatingEvent(frame, self.UpdateFrame, 1, self, frame)
