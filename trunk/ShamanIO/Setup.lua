@@ -1,0 +1,1 @@
+ShamanIO.BabbleSpell = AceLibrary("Babble-Spell-2.2");

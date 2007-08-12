@@ -1,0 +1,41 @@
+## Interface: 20100
+## Title: Information Overload (Shaman) |cff7fff7f -Ace2-|r
+## Notes: Totem timers and some other goodies :)
+## Author:  Leion (Tristan)
+## X-AuthorRealm: Frostmane[EU]
+
+## SavedVariables: ShamanIODB
+## OptionalDeps: Ace2, DeuceCommander, Niagara, ItemBonusLib, Babble-Spell-2.2
+
+## Version: 1.0.$Revision$
+## X-LastUpdate: $Date$
+
+## X-Website: http://www.wowace.com/files
+## X-Email: dennis@lunarworks.com
+## X-Category: Shaman
+## X-Embeds: Ace2
+
+## LoadManagers: AddonLoader
+## X-LoadOn-Class: Shaman
+
+libs\AceLibrary\AceLibrary.lua
+
+libs\AceOO-2.0\AceOO-2.0.lua
+libs\AceAddon-2.0\AceAddon-2.0.lua
+libs\AceConsole-2.0\AceConsole-2.0.lua
+libs\AceDB-2.0\AceDB-2.0.lua
+libs\AceEvent-2.0\AceEvent-2.0.lua
+libs\AceLocale-2.2\AceLocale-2.2.lua
+libs\Deformat-2.0\Deformat-2.0.lua
+
+Localization.lua
+AddOn.lua
+Setup.lua
+Console.lua
+Functions.lua
+Events.lua
+Frames.lua
+Data.lua
+Windfury.lua
+Reincarnation.lua
+AEP.lua
