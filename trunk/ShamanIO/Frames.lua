@@ -229,6 +229,9 @@ function Enhancer:FrameDeathBegin(frame)
 		
 		self:AddPulseDeath(frame);
 		self:AddPulse(frame);
+		if (self.db.profile.playSound) then
+			PlaySoundFile("Interface\\Addons\\ShamanIO\\sounds\\" .. frame .. ".mp3");
+		end
 	else
 		self:FrameDeathEnd(frame);
 	end
@@ -239,8 +242,6 @@ function Enhancer:FrameDeathEnd(frame)
 	self[frame].mainframe:SetBackdropBorderColor(self[frame].borderColor["r"] or 1, self[frame].borderColor["g"] or 1, self[frame].borderColor["b"] or 1, 0);
 	
 	self:UpdateAlphaBegin(frame);
-	
-	PlaySound("Deathbind Sound");
 end
 
 function Enhancer:UpdateFrame(frame)
@@ -315,6 +316,7 @@ function Enhancer:Pulse()
 			self[frame].mainframe:SetWidth( Enhancer.db.profile.framesize );
 			self[frame].mainframe:SetBackdropBorderColor(1, 1, 1, 0);
 			self[frame].cooldown:SetWidth(Enhancer.db.profile.framesize - (Enhancer.db.profile.framesize / 3));
+			self[frame].cooldown:SetHeight(Enhancer.db.profile.framesize - (Enhancer.db.profile.framesize / 3));
 			
 			if (self.pulsingDeath and self.pulsingDeath[frame]) then
 				self.pulsingDeath[frame] = nil;
@@ -323,22 +325,26 @@ function Enhancer:Pulse()
 			self:RemPulse(frame);
 		else
 			
-			self[frame].mainframe:SetBackdropBorderColor(self[frame].borderColor["r"] or 1, self[frame].borderColor["g"] or 1, self[frame].borderColor["b"] or 1, self[frame].borderColor["a"] or 1);
+			if (Enhancer.db.profile.borderPulse) then
+				self[frame].mainframe:SetBackdropBorderColor(self[frame].borderColor["r"] or 1, self[frame].borderColor["g"] or 1, self[frame].borderColor["b"] or 1, self[frame].borderColor["a"] or 1);
+			end
 			
-			local mainSize = self[frame].mainframe:GetHeight();
-			local cdSize = self[frame].cooldown:GetHeight();
-			if (count <= Enhancer.onewayPulses) then
-				-- Going Up
-				self[frame].mainframe:SetHeight( mainSize + (mainSize * Enhancer.alterationPulse) );
-				self[frame].mainframe:SetWidth( mainSize + (mainSize * Enhancer.alterationPulse) );
-				self[frame].cooldown:SetHeight( cdSize + (cdSize * Enhancer.alterationPulse) );
-				self[frame].cooldown:SetWidth( cdSize + (cdSize * Enhancer.alterationPulse) );
-			else
-				-- Going Down
-				self[frame].mainframe:SetHeight( mainSize - (mainSize * Enhancer.alterationPulse) );
-				self[frame].mainframe:SetWidth( mainSize - (mainSize * Enhancer.alterationPulse) );
-				self[frame].cooldown:SetHeight( cdSize - (cdSize * Enhancer.alterationPulse) );
-				self[frame].cooldown:SetWidth( cdSize - (cdSize * Enhancer.alterationPulse) );
+			if (Enhancer.db.profile.growingPulse) then
+				local mainSize = self[frame].mainframe:GetHeight();
+				local cdSize = self[frame].cooldown:GetHeight();
+				if (count <= Enhancer.onewayPulses) then
+					-- Going Up
+					self[frame].mainframe:SetHeight( mainSize + (mainSize * Enhancer.alterationPulse) );
+					self[frame].mainframe:SetWidth( mainSize + (mainSize * Enhancer.alterationPulse) );
+					self[frame].cooldown:SetHeight( cdSize + (cdSize * Enhancer.alterationPulse) );
+					self[frame].cooldown:SetWidth( cdSize + (cdSize * Enhancer.alterationPulse) );
+				else
+					-- Going Down
+					self[frame].mainframe:SetHeight( mainSize - (mainSize * Enhancer.alterationPulse) );
+					self[frame].mainframe:SetWidth( mainSize - (mainSize * Enhancer.alterationPulse) );
+					self[frame].cooldown:SetHeight( cdSize - (cdSize * Enhancer.alterationPulse) );
+					self[frame].cooldown:SetWidth( cdSize - (cdSize * Enhancer.alterationPulse) );
+				end
 			end
 			
 			self.pulsing[frame] = count;

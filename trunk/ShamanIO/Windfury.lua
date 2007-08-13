@@ -44,6 +44,7 @@ function EnhancerWindfury:CHAT_MSG_SPELL_SELF_DAMAGE()
 end
 
 function Enhancer:WindfuryHit()
+	if (self.windfury.active) then return; end -- Second WF shouldn't reset the timer ;)
 	self.windfury.active = true;
 	self.windfury.cooldownstart = GetTime();
 	self.windfury.cooldownend = GetTime() + 3;
