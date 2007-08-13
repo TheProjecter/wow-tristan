@@ -230,7 +230,7 @@ function Enhancer:FrameDeathPreBegin(frame)
 end
 
 function Enhancer:FrameDeathBegin(frame)
-	if (self[frame].active) then
+	if (self[frame] and self[frame].active) then
 		self[frame].active = nil;
 		self[frame].textbelow:SetText("");
 		

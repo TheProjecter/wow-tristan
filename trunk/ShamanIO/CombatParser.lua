@@ -20,9 +20,9 @@ function Enhancer:ParserDamage(info)
 end
 
 function Enhancer:ParserMiss(info)
-	self:parseDebug(info)
+	--self:parseDebug(info)
 end
 
 function Enhancer:parseDebug(info)
-	self:Print("Hej", info.recipientName, info.abilityName, info.amount, info.abilityName, info.isCrit, info.sourceID);	
+	--self:Print("Hej", info.recipientName, info.abilityName, info.amount, info.abilityName, info.isCrit, info.sourceID);	
 end
