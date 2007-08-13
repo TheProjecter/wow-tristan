@@ -1,5 +1,5 @@
 ## Interface: 20100
-## Title: Shaman Enhancer |cff7fff7f -Ace2-|r
+## Title: Shamanistic Control |cff7fff7f -Ace2-|r
 ## Notes: Totem timers and some other usefull things like WF Hidden cooldown tracking etc
 ## Author:  Leion (Tristan)
 ## X-AuthorRealm: Frostmane[EU]
