@@ -81,6 +81,6 @@ L_AEP:RegisterTranslations("enUS", function() return {
 	
 	--[[ Tooltip strings ]]--
 	["aep_tooltip"] = "Enhancement AEP (inc BoK): %d (%d)",
-	["aep_info"] = "AEP model from Tornhoof/Pater",
+	["aep_info"] = "AEP model from Tornhoof/Pater (x10)",
 	
 } end )

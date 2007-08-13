@@ -32,11 +32,16 @@ function Enhancer:CreateTotem(totem, rank)
 	self[frame].death = GetTime() + TimeToLive;
 	if (TimeToLive > 7) then
 		self[frame].warn = GetTime() + TimeToLive - 7;
+	else
+		self[frame].warn = nil;
 	end
+	self[frame].pulseAdd = Pulse;
 	if (Pulse) then
-		self[frame].pulseAdd = Pulse;
 		self[frame].pulse = GetTime() + self[frame].pulseAdd;
+	else
+		self[frame].pulse = nil
 	end
+	
 	self[frame].lived = 0;
 	self:ChangeIcon(frame, Icon);
 	self[frame].mainframe:SetBackdropBorderColor(self[frame].borderColor["r"] or 1, self[frame].borderColor["g"] or 1, self[frame].borderColor["b"] or 1, 0);

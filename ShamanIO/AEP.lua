@@ -101,8 +101,8 @@ function EnhancerAEP.ProcessTooltip(tooltip, name, link)
 		for i = 2, Gratuity:NumLines() do
 			local line = Gratuity:GetLine(i)
 			if (line == "Red Socket" or line == "Blue Socket" or line == "Yellow Socket") then
-				AEP = AEP + 16;
-				AEPK = AEPK + (176 / 10);
+				AEP = AEP + 160;
+				AEPK = AEPK + 176;
 			elseif (line == "Meta Socket") then
 				-- Relentless Earthstorm Diamond: +12 Agility & 3% Increased Critical Damage -- Apply Aura: Mod Crit Damage Bonus (Melee) (895)
 				-- The Agi Bonus can be calculated
