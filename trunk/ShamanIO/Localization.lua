@@ -1,7 +1,22 @@
-local L_Main = AceLibrary("AceLocale-2.2"):new("ShamanIO")
+local L_Main = AceLibrary("AceLocale-2.2"):new("Enhancer")
 L_Main:RegisterTranslations("enUS", function() return {
-	["lock_cmd"] = "(Un)Lock",
+	["lock_cmd"] = "Lock",
 	["lock_desc"] = "Locks or Unlocks the frames for positioning",
+	
+	["reset_cmd"] = "Reset",
+	["reset_desc"] = "Reset all positions to default",
+	
+	["resize_cmd"] = "Size",
+	["resize_desc"] = "Set the size of frames",
+	
+	["windfury_cmd"] = "Windfury",
+	["windfury_desc"] = "Toggle frame for showing the \"hidden\" windfury cooldown",
+	
+	["reincarnation_cmd"] = "Reincarnation",
+	["reincarnation_desc"] = "Toggle frame for showing Reincarnation cooldown",
+	
+	["aep_cmd"] = "AEP",
+	["aep_desc"] = "Toggle showing Attackpower Equivalence Points in Tooltips",
 	
 	--[[ Strings used for frames ]]--
 	["DragToMoveFrame"] = "Click and drag to move frame",
@@ -13,7 +28,7 @@ L_Main:RegisterTranslations("enUS", function() return {
 } end )
 
 
-local L_AEP = AceLibrary("AceLocale-2.2"):new("ShamanIOAEP")
+local L_AEP = AceLibrary("AceLocale-2.2"):new("EnhancerAEP")
 L_AEP:RegisterTranslations("enUS", function() return {
 	
 	--[[ ItemTypes ]]--
@@ -38,7 +53,6 @@ L_AEP:RegisterTranslations("enUS", function() return {
 	["Wands"] = true,
 	
 	--[[ Tooltip string ]]--
-	["Enhancement AEP (exc BoK): %d"] = true,
-	["Enhancement AEP (inc BoK): %d"] = true,
+	["Enhancement AEP (inc BoK): %d (%d)"] = true,
 	
 } end )

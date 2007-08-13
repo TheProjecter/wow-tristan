@@ -1,11 +1,11 @@
 ## Interface: 20100
-## Title: Information Overload (Shaman) |cff7fff7f -Ace2-|r
-## Notes: Totem timers and some other goodies :)
+## Title: Enhancer |cff7fff7f -Ace2-|r
+## Notes: Totem timers and some other usefull things like WF Hidden cooldown tracking etc
 ## Author:  Leion (Tristan)
 ## X-AuthorRealm: Frostmane[EU]
 
-## SavedVariables: ShamanIODB
-## OptionalDeps: Ace2, DeuceCommander, Niagara, ItemBonusLib, Babble-Spell-2.2
+## SavedVariables: EnhancerDB
+## OptionalDeps: Ace2, DeuceCommander, Niagara, ItemBonusLib, Babble-Spell-2.2, GratuityLib
 
 ## Version: 1.0.$Revision$
 ## X-LastUpdate: $Date$
@@ -38,4 +38,5 @@ Frames.lua
 Data.lua
 Windfury.lua
 Reincarnation.lua
+Invigorated.lua
 AEP.lua

@@ -1,53 +1,54 @@
-ShamanIOWF = AceLibrary("AceAddon-2.0"):new("AceEvent-2.0");
+EnhancerWindfury = AceLibrary("AceAddon-2.0"):new("AceEvent-2.0");
 
-local _, englishClass = UnitClass("player");
-
-function ShamanIOWF:OnInitialize()
-	if (englishClass ~= "SHAMAN") then return; end
+function EnhancerWindfury:OnInitialize()
+	if (Enhancer.englishClass ~= "SHAMAN") then return; end
 end
 
-function ShamanIOWF:OnEnable()
-	if (englishClass ~= "SHAMAN") then return; end
+function EnhancerWindfury:OnEnable()
+	if (Enhancer.englishClass ~= "SHAMAN") then return; end
+	if (not Enhancer.db.profile.Windfury) then return; end
 	self.enabled = true;
 	
-	ShamanIO.windfury.mainframe:Show();
+	Enhancer:ShowFrame("windfury");
 	self:RegisterEvent("CHAT_MSG_SPELL_SELF_DAMAGE");
 end
 
-function ShamanIOWF:OnDisable()
-	if (englishClass ~= "SHAMAN") then return; end
+function EnhancerWindfury:OnDisable()
+	if (Enhancer.englishClass ~= "SHAMAN") then return; end
 	self.enabled = false;
 	
-	ShamanIO.windfury.mainframe:Hide();
+	Enhancer:HideFrame("windfury");
 	self:UnregisterAllEvents();
 end
 
-function ShamanIOWF:Toggle()
+function EnhancerWindfury:Toggle()
 	if (self.enabled) then
+		Enhancer.db.profile.Windfury = false;
 		self:OnDisable();
 	else
+		Enhancer.db.profile.Windfury = true;
 		self:OnEnable();
 	end
 end
 
-function ShamanIOWF:Active()
+function EnhancerWindfury:Active()
 	return self.enabled;
 end
 
-function ShamanIOWF:CHAT_MSG_SPELL_SELF_DAMAGE()
+function EnhancerWindfury:CHAT_MSG_SPELL_SELF_DAMAGE()
 	local found, _, windfuryhit = string.find(arg1, "Your Windfury Attack (.+)\.");
 	
 	if (found) then
-		ShamanIO:WindfuryHit();
+		Enhancer:WindfuryHit();
 	end
 end
 
-function ShamanIO:WindfuryHit()
+function Enhancer:WindfuryHit()
 	self.windfury.active = true;
 	self.windfury.cooldownstart = GetTime();
 	self.windfury.cooldownend = GetTime() + 3;
 	
-	self.windfury.cooldown:SetCooldown(ShamanIO.windfury.cooldownstart, 3);
+	self.windfury.cooldown:SetCooldown(Enhancer.windfury.cooldownstart, 3);
 	self:UpdateAlphaBegin("windfury");
 	self:WindfuryCooldownNumber();
 	
@@ -56,7 +57,7 @@ function ShamanIO:WindfuryHit()
 	end
 end
 
-function ShamanIO:WindfuryCooldownNumber()
+function Enhancer:WindfuryCooldownNumber()
 	local cdstart = self.windfury.cooldownstart;
 	local cdend = self.windfury.cooldownend;
 	local cd = ceil(cdend - GetTime())
@@ -72,13 +73,4 @@ function ShamanIO:WindfuryCooldownNumber()
 		-- Cooldown running
 		self.windfury.textcenter:SetText(cd);
 	end
-end
-
-do return; end
-
-function ShammySpy:FormatTime(seconds)
-	seconds = floor(seconds);
-	secs = mod(seconds, 60);
-	mins = (seconds - secs) / 60;
-	return mins..":"..string.sub("00"..secs, -2);
 end
