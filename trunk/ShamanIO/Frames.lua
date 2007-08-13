@@ -237,7 +237,7 @@ function Enhancer:FrameDeathBegin(frame)
 		self:AddPulseDeath(frame);
 		self:AddPulse(frame);
 		if (self.db.profile.playSound) then
-			PlaySoundFile("Interface\\Addons\\ShamanIO\\sounds\\" .. frame .. ".mp3");
+			PlaySoundFile("Interface\\Addons\\Enhancer\\sounds\\" .. frame .. ".mp3");
 		end
 	else
 		self:FrameDeathEnd(frame);
