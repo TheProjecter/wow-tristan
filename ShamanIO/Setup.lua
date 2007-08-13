@@ -45,5 +45,10 @@ Left to do:
 	Windfury calculation and display! (FontString midscreen that grows on crit?)
 	
 	Add Paths to dependencies in toc
+	
+	Coming up with a better name and changing:
+		FolderName
+		Modules and MainAddOn name
+		PlaySoundFile parts to reflect FolderName change
 
 ]]--
