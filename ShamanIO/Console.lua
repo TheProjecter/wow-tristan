@@ -3,10 +3,15 @@ local L = AceLibrary("AceLocale-2.2"):new("Enhancer");
 local defaults = {
 	locked = true,
 	framesize = 46,
+	
 	combatinactiveAlpha = (3 / 10),
 	oocinactiveAlpha = 0,
 	combatAlpha = 1,
 	oocombatAlpha = (7 / 10),
+	
+	playSound = false,
+	growingPulse = true,
+	borderPulse = false,
 	
 	Windfury = true,
 	Reincarnation = true,
@@ -82,7 +87,7 @@ local consoleoptions = {
 			set = function()
 				EnhancerReincarnation:Toggle();
 			end,
-			order = 5,
+			order = 6,
 		},
 		[L["aep_cmd"]] = {
 			name = L["aep_cmd"], type = "toggle",
@@ -91,11 +96,105 @@ local consoleoptions = {
 			set = function()
 				EnhancerAEP:Toggle();
 			end,
-			order = 5,
+			order = 7,
 		},
+		secondSpacer = {
+			type = "header",
+			order = 8,
+		},
+		[L["sound_cmd"]] = {
+			name = L["sound_cmd"], type = "toggle",
+			desc = L["sound_desc"],
+			get = function() return Enhancer.db.profile.playSound; end,
+			set = function()
+				Enhancer.db.profile.playSound = not Enhancer.db.profile.playSound;
+			end,
+			order = 9,
+		},
+		[L["growpulse_cmd"]] = {
+			name = L["growpulse_cmd"], type = "toggle",
+			desc = L["growpulse_desc"],
+			get = function() return Enhancer.db.profile.growingPulse; end,
+			set = function()
+				Enhancer.db.profile.growingPulse = not Enhancer.db.profile.growingPulse;
+			end,
+			order = 10,
+		},
+		[L["borderpulse_cmd"]] = {
+			name = L["borderpulse_cmd"], type = "toggle",
+			desc = L["borderpulse_desc"],
+			get = function() return Enhancer.db.profile.borderPulse; end,
+			set = function()
+				Enhancer.db.profile.borderPulse = not Enhancer.db.profile.borderPulse;
+			end,
+			order = 11,
+		},
+		thirdSpacer = {
+			type = "header",
+			order = 12,
+		},
+		[L["alpha_cmd"]] = {
+  		type = "group",
+  		order = 13,
+  		name = L["alpha_cmd"],
+  		desc = L["alpha_desc"],
+  		args = {
+  			[L["alpha_ic_active_cmd"]] = {
+					name = L["alpha_ic_active_cmd"], type = "range",
+					desc = L["alpha_ic_active_desc"],
+					min = 0,
+					max = 1,
+					step = (1 / 10),
+					get = function() return Enhancer.db.profile.combatAlpha; end,
+					set = function(v)
+						Enhancer.db.profile.combatAlpha = v;
+						Enhancer:UpdateAlphaBegin( Enhancer.allframes );
+					end,
+					order = 1,
+				},
+				[L["alpha_ooc_active_cmd"]] = {
+					name = L["alpha_ooc_active_cmd"], type = "range",
+					desc = L["alpha_ooc_active_desc"],
+					min = 0,
+					max = 1,
+					step = (1 / 10),
+					get = function() return Enhancer.db.profile.oocombatAlpha; end,
+					set = function(v)
+						Enhancer.db.profile.oocombatAlpha = v;
+						Enhancer:UpdateAlphaBegin( Enhancer.allframes );
+					end,
+					order = 2,
+				},
+				[L["alpha_ic_inactive_cmd"]] = {
+					name = L["alpha_ic_inactive_cmd"], type = "range",
+					desc = L["alpha_ic_inactive_desc"],
+					min = 0,
+					max = 1,
+					step = (1 / 10),
+					get = function() return Enhancer.db.profile.combatinactiveAlpha; end,
+					set = function(v)
+						Enhancer.db.profile.combatinactiveAlpha = v;
+						Enhancer:UpdateAlphaBegin( Enhancer.allframes );
+					end,
+					order = 3,
+				},
+				[L["alpha_ooc_inactive_cmd"]] = {
+					name = L["alpha_ooc_inactive_cmd"], type = "range",
+					desc = L["alpha_ooc_inactive_desc"],
+					min = 0,
+					max = 1,
+					step = (1 / 10),
+					get = function() return Enhancer.db.profile.oocinactiveAlpha; end,
+					set = function(v)
+						Enhancer.db.profile.oocinactiveAlpha = v;
+						Enhancer:UpdateAlphaBegin( Enhancer.allframes );
+					end,
+					order = 4,
+				},
+	  	},
+	  },
 	},
 }
-
 
 Enhancer:RegisterDefaults('profile', defaults)
 Enhancer:RegisterChatCommand( { "/Enhancer", "/enh", "/ShammySpy" }, consoleoptions )

@@ -36,6 +36,8 @@ Functions.lua
 Events.lua
 Frames.lua
 Data.lua
+CombatParser.lua
+
 Windfury.lua
 Reincarnation.lua
 Invigorated.lua

@@ -13,7 +13,7 @@ function EnhancerInvigorated:OnEnable()
 	self.enabled = true;
 	
 	Enhancer:ShowFrame("invigorated");
-	--self:RegisterEvent("UNIT_AURA");
+	self:RegisterEvent("UNIT_AURA");
 end
 
 function EnhancerInvigorated:OnDisable()
@@ -36,4 +36,11 @@ end
 
 function EnhancerInvigorated:Active()
 	return self.enabled;
+end
+
+function EnhancerInvigorated:UNIT_AURA()
+	-- UNIT_AURA | arg 1: party1 | arg 2: Sprint | arg 3: 1 | arg 4: 0 | arg 5: Interface\Icons\Ability_Rogue_Sprint | arg 6: Rank 3
+	if (arg1 ~= "player") then
+		Enhancer:Print(arg1, arg2, arg3, arg4, arg5, arg6);
+	end
 end

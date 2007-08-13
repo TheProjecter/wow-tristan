@@ -114,7 +114,8 @@ function EnhancerAEP.ProcessTooltip(tooltip, name, link)
 		
 		if (AEP > 0 or AEPK > 0 or true) then
 			tooltip:AddLine(" ");
-			tooltip:AddLine( string.format(L["Enhancement AEP (inc BoK): %d (%d)"], AEP, AEPK) );
+			tooltip:AddLine( string.format(L["aep_tooltip"], AEP, AEPK) );
+			tooltip:AddLine( L["aep_info"] );
 			tooltip:Show();
 		end
 	end
