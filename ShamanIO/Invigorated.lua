@@ -1,6 +1,3 @@
-do return; end
-
--- Need more testing as I don't have Tier 5 ;)
 EnhancerInvigorated = AceLibrary("AceAddon-2.0"):new("AceEvent-2.0");
 
 function EnhancerInvigorated:OnInitialize()
@@ -13,7 +10,8 @@ function EnhancerInvigorated:OnEnable()
 	self.enabled = true;
 	
 	Enhancer:ShowFrame("invigorated");
-	self:RegisterEvent("UNIT_AURA");
+	self:RegisterEvent("SpecialEvents_PlayerBuffGained", "PlayerBuffGained")
+	self:RegisterEvent("SpecialEvents_PlayerBuffLost", "PlayerBuffLost")
 end
 
 function EnhancerInvigorated:OnDisable()
@@ -38,9 +36,16 @@ function EnhancerInvigorated:Active()
 	return self.enabled;
 end
 
-function EnhancerInvigorated:UNIT_AURA()
-	-- UNIT_AURA | arg 1: party1 | arg 2: Sprint | arg 3: 1 | arg 4: 0 | arg 5: Interface\Icons\Ability_Rogue_Sprint | arg 6: Rank 3
-	if (arg1 ~= "player") then
-		Enhancer:Print(arg1, arg2, arg3, arg4, arg5, arg6);
+function EnhancerInvigorated:PlayerBuffGained(buffName, buffIndex, applications, texture, rank, index)
+	if (buffName == "Invigorated") then
+		Enhancer.invigorated.active = true;
+		Enhancer:UpdateAlphaBegin("invigorated");
+	end
+end
+
+function EnhancerInvigorated:PlayerBuffLost(buffName, applications, texture, rank)
+	if (buffName == "Invigorated") then
+		Enhancer.invigorated.active = false;
+		Enhancer:UpdateAlphaBegin("invigorated");
 	end
 end

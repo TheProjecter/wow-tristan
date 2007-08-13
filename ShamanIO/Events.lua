@@ -19,7 +19,7 @@ end
 function Enhancer:CastingTotem(player, totem, rank)
 	-- Gets called for all spellcasting so just check if it was a totem :)
 	
-	if (totem == Enhancer.BabbleSpell["Totemic Call"]) then
+	if (totem == Enhancer.BS["Totemic Call"]) then
 		for _, frame in ipairs(self.totemframes) do
 			self:FrameDeathBegin(frame);
 		end
@@ -33,8 +33,8 @@ function Enhancer:CastingTotem(player, totem, rank)
 			ranknumber = tonumber(string.sub(rank, string.find(rank, "%d")));
 		end
 		
-		if (totem == Enhancer.BabbleSpell["Mana Spring Totem"] and not ranknumber) then
-			totem = Enhancer.BabbleSpell["Enamored Water Spirit"];
+		if (totem == Enhancer.BS["Mana Spring Totem"] and not ranknumber) then
+			totem = Enhancer.BS["Enamored Water Spirit"];
 		end
 		
 		self:CreateTotem(totem, rank);

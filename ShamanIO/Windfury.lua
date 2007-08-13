@@ -10,7 +10,6 @@ function EnhancerWindfury:OnEnable()
 	self.enabled = true;
 	
 	Enhancer:ShowFrame("windfury");
-	self:RegisterEvent("CHAT_MSG_SPELL_SELF_DAMAGE");
 end
 
 function EnhancerWindfury:OnDisable()
@@ -35,16 +34,10 @@ function EnhancerWindfury:Active()
 	return self.enabled;
 end
 
-function EnhancerWindfury:CHAT_MSG_SPELL_SELF_DAMAGE()
-	local found, _, windfuryhit = string.find(arg1, "Your Windfury Attack (.+)\.");
-	
-	if (found) then
-		Enhancer:WindfuryHit();
-	end
-end
-
 function Enhancer:WindfuryHit()
+	if (not EnhancerWindfury:Active()) then return; end -- Don't do shit unless "module" is enabled;
 	if (self.windfury.active) then return; end -- Second WF shouldn't reset the timer ;)
+	
 	self.windfury.active = true;
 	self.windfury.cooldownstart = GetTime();
 	self.windfury.cooldownend = GetTime() + 3;

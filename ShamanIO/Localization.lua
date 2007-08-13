@@ -15,6 +15,9 @@ L_Main:RegisterTranslations("enUS", function() return {
 	["reincarnation_cmd"] = "Reincarnation",
 	["reincarnation_desc"] = "Toggle frame for showing Reincarnation cooldown",
 	
+	["invigorated_cmd"] = "Invigorated",
+	["invigorated_desc"] = "Toggle frame for showing when Invigorated is up (Untested)",
+	
 	["aep_cmd"] = "AEP",
 	["aep_desc"] = "Toggle showing Attackpower Equivalence Points in Tooltips",
 	
