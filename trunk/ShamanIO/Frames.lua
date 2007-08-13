@@ -198,7 +198,7 @@ function Enhancer:UpdateAlphaEnd(frame)
 	
 	if (shortcut.active) then
 		
-		if (self.inCombat or frame == "reincarnation" or frame == "windfury") then
+		if (self.inCombat or frame == "reincarnation" or frame == "windfury" or frame == "invigorated") then
 			shortcut.textcenter:SetAlpha(Enhancer.db.profile.combatAlpha);
 			shortcut.textbelow:SetAlpha(Enhancer.db.profile.combatAlpha);
 			shortcut.mainframe:SetBackdropColor( r, g, b, Enhancer.db.profile.combatAlpha);
@@ -210,7 +210,7 @@ function Enhancer:UpdateAlphaEnd(frame)
 		
 	else
 		
-		if (self.inCombat or frame == "reincarnation" or frame == "windfury") then
+		if ( (self.inCombat or frame == "reincarnation" or frame == "windfury") and (frame ~= "invigorated") ) then
 			shortcut.textcenter:SetAlpha(Enhancer.db.profile.combatinactiveAlpha);
 			shortcut.textbelow:SetAlpha(Enhancer.db.profile.combatinactiveAlpha);
 			shortcut.mainframe:SetBackdropColor( r, g, b, Enhancer.db.profile.combatinactiveAlpha);
@@ -223,9 +223,16 @@ function Enhancer:UpdateAlphaEnd(frame)
 	end
 end
 
+function Enhancer:FrameDeathPreBegin(frame)
+	-- Stupid hack since all frames don't want the middle number erased (Reincarnation)
+	self[frame].textcenter:SetText("");
+	self:FrameDeathBegin(frame);
+end
+
 function Enhancer:FrameDeathBegin(frame)
 	if (self[frame].active) then
 		self[frame].active = nil;
+		self[frame].textbelow:SetText("");
 		
 		self:AddPulseDeath(frame);
 		self:AddPulse(frame);
@@ -241,6 +248,12 @@ function Enhancer:FrameDeathEnd(frame)
 	self:ChangeIcon(frame, self[frame].mainframe.bgFileDefault);
 	self[frame].mainframe:SetBackdropBorderColor(self[frame].borderColor["r"] or 1, self[frame].borderColor["g"] or 1, self[frame].borderColor["b"] or 1, 0);
 	
+	for logName, logFrame in pairs(self.combatLog) do
+		if (logFrame == frame) then
+			self.combatLog[logName] = nil;
+		end
+	end
+	
 	self:UpdateAlphaBegin(frame);
 end
 
@@ -251,8 +264,7 @@ function Enhancer:UpdateFrame(frame)
 		local message = string.format(L["TotemDeath"], self[frame].name, self[frame].element);
 		self:ScreenMessage(message, 1, (1/2), 0);
 		
-		self[frame].textbelow:SetText("");
-		self:FrameDeathBegin(frame);
+		self:FrameDeathPreBegin(frame);
 		return;
 	end
 	

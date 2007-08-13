@@ -1,4 +1,5 @@
-Enhancer.BabbleSpell = AceLibrary("Babble-Spell-2.2");
+Enhancer.BS = AceLibrary("Babble-Spell-2.2");
+local Parser = AceLibrary:HasInstance("Parser-3.0")
 
 function Enhancer:Setup()
 	-- Create all frames!
@@ -11,7 +12,8 @@ function Enhancer:Setup()
 	self.invigorated = self:CreateButton("EnhancerFrameInvigorated", "Spell_Nature_NatureResistanceTotem");
 	
 	self.allframes = { "earth", "fire", "water", "air", "windfury", "reincarnation", "invigorated" };
-	self.totemframes = { "earth", "fire", "water", "air" }
+	self.totemframes = { "earth", "fire", "water", "air" };
+	self.combatLog = {};
 	
 	-- Make all frames movable
 	for _, frame in ipairs(self.allframes) do
@@ -27,6 +29,14 @@ function Enhancer:Setup()
 	self.reincarnation.borderColor = { ["r"] = (139/255), ["g"] = (69/255), ["b"] = (19/255), ["a"] = 1, }
 	self.invigorated.borderColor = { ["r"] = (0/255), ["g"] = (245/255), ["b"] = (255/255), ["a"] = 1, }
 	
+	self:RegisterParserEvent({
+		eventType = 'Damage',
+	}, "ParserDamage");
+	self:RegisterParserEvent({
+		eventType = 'Miss',
+		sourceID = "player",
+	}, "ParserMiss");
+	
 	self:ShowRunningModules();
 	
 	self:DefaultPos();
@@ -38,9 +48,7 @@ end
 
 Left to do:
 
-	Combat/Damage parser for totems
-	
-	Invigorated
+	?? Invigorated
 	
 	Windfury calculation and display! (FontString midscreen that grows on crit?)
 	

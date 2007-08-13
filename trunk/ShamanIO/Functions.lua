@@ -18,6 +18,13 @@ function Enhancer:CreateTotem(totem, rank)
 	
 	local frame = string.lower(Element);
 	
+	self.combatLog[totem] = frame;
+	if (Enhancer.Totems[totem].CombatLog) then
+		for _, logName in ipairs(Enhancer.Totems[totem].CombatLog) do
+			self.combatLog[logName] = frame;
+		end
+	end
+	
 	self[frame].name = totem;
 	self[frame].element = Element;
 	self[frame].active = true;

@@ -1,7 +1,5 @@
 EnhancerReincarnation = AceLibrary("AceAddon-2.0"):new("AceEvent-2.0");
 
-EnhancerReincarnation.DefaultBelowText = "";
-
 function EnhancerReincarnation:OnInitialize()
 	if (Enhancer.englishClass ~= "SHAMAN") then return; end
 end
@@ -12,7 +10,6 @@ function EnhancerReincarnation:OnEnable()
 	self.enabled = true;
 	
 	Enhancer:ShowFrame("reincarnation");
-	Enhancer.reincarnation.textbelow:SetText(EnhancerReincarnation.DefaultBelowText);
 	self:BAG_UPDATE();
 	
 	self:RegisterEvent("PLAYER_ALIVE", "PLAYER_ALIVE");
@@ -61,7 +58,7 @@ function EnhancerReincarnation:GetReincarnationIDCached()
 		self.reincarnationID = self:GetReincarnationID()
 	else
 		local spellName, spellRank = GetSpellName(self.reincarnationID, BOOKTYPE_SPELL)
-		if (spellName ~= Enhancer.BabbleSpell["Reincarnation"]) then
+		if (spellName ~= Enhancer.BS["Reincarnation"]) then
 			self.reincarnationID = self:GetReincarnationID();
 		end
 	end
@@ -75,7 +72,7 @@ function EnhancerReincarnation:GetReincarnationID()
 	while true do
 		local spellName, spellRank = GetSpellName(spellCheckID, BOOKTYPE_SPELL)
 		
-		if (spellName == Enhancer.BabbleSpell["Reincarnation"]) then spellID = spellCheckID; break; end
+		if (spellName == Enhancer.BS["Reincarnation"]) then spellID = spellCheckID; break; end
    	if (not spellName) then do break; end end
 		
 		spellCheckID = spellCheckID + 1;
@@ -115,7 +112,6 @@ function EnhancerReincarnation:ReincarnationUpdate()
 			Enhancer.reincarnation.textbelow:SetText( Enhancer:FormatTime(ReincarnationCD) );
 		else
 			self:FrameDeathBegin("reincarnation");
-			Enhancer.reincarnation.textbelow:SetText(EnhancerReincarnation.DefaultBelowText);
 			if (self:IsEventScheduled("ReincarnationUpdate")) then
 				self:CancelScheduledEvent("ReincarnationUpdate");
 			end

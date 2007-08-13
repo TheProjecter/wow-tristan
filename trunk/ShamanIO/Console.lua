@@ -15,7 +15,7 @@ local defaults = {
 	
 	Windfury = true,
 	Reincarnation = true,
-	Invigorated = true,
+	Invigorated = false,
 	AEP = true,
 	
 	centerFontName = "Fonts\\FRIZQT__.TTF",
@@ -89,6 +89,15 @@ local consoleoptions = {
 			end,
 			order = 6,
 		},
+		[L["invigorated_cmd"]] = {
+			name = L["invigorated_cmd"], type = "toggle",
+			desc = L["invigorated_desc"],
+			get = function() return EnhancerInvigorated:Active(); end,
+			set = function()
+				EnhancerInvigorated:Toggle();
+			end,
+			order = 7,
+		},
 		[L["aep_cmd"]] = {
 			name = L["aep_cmd"], type = "toggle",
 			desc = L["aep_desc"],
@@ -96,11 +105,11 @@ local consoleoptions = {
 			set = function()
 				EnhancerAEP:Toggle();
 			end,
-			order = 7,
+			order = 8,
 		},
 		secondSpacer = {
 			type = "header",
-			order = 8,
+			order = 9,
 		},
 		[L["sound_cmd"]] = {
 			name = L["sound_cmd"], type = "toggle",
@@ -109,7 +118,7 @@ local consoleoptions = {
 			set = function()
 				Enhancer.db.profile.playSound = not Enhancer.db.profile.playSound;
 			end,
-			order = 9,
+			order = 10,
 		},
 		[L["growpulse_cmd"]] = {
 			name = L["growpulse_cmd"], type = "toggle",
@@ -118,7 +127,7 @@ local consoleoptions = {
 			set = function()
 				Enhancer.db.profile.growingPulse = not Enhancer.db.profile.growingPulse;
 			end,
-			order = 10,
+			order = 11,
 		},
 		[L["borderpulse_cmd"]] = {
 			name = L["borderpulse_cmd"], type = "toggle",
@@ -127,15 +136,15 @@ local consoleoptions = {
 			set = function()
 				Enhancer.db.profile.borderPulse = not Enhancer.db.profile.borderPulse;
 			end,
-			order = 11,
+			order = 12,
 		},
 		thirdSpacer = {
 			type = "header",
-			order = 12,
+			order = 13,
 		},
 		[L["alpha_cmd"]] = {
   		type = "group",
-  		order = 13,
+  		order = 14,
   		name = L["alpha_cmd"],
   		desc = L["alpha_desc"],
   		args = {
