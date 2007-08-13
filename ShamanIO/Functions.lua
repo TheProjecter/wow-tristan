@@ -1,20 +1,20 @@
-function ShamanIO:ShowRunningModules()
-	self.earth.mainframe:Show();
-	self.fire.mainframe:Show();
-	self.water.mainframe:Show();
-	self.air.mainframe:Show();
+function Enhancer:ShowRunningModules()
 	
-	-- windfury and reincarnation is enabled/disabled in their separate files
+	for _, frame in ipairs(self.totemframes) do
+		Enhancer:ShowFrame(frame);
+	end
+	
+	-- windfury, reincarnation and invigorated is enabled/disabled in their separate files
 end
 
-function ShamanIO:CreateTotem(totem, rank)
+function Enhancer:CreateTotem(totem, rank)
 	-- Pickup the data we need:
 	
-	local Icon = ShamanIO.Totems[totem].Icon;
-	local TimeToLive = ShamanIO.Totems[totem].Time;
-	local Element = ShamanIO.Totems[totem].Element;
-	local HitPoints = ShamanIO.Totems[totem].Life;
-	local Pulse = ShamanIO.Totems[totem].Pulse;
+	local Icon = Enhancer.Totems[totem].Icon;
+	local TimeToLive = Enhancer.Totems[totem].Time;
+	local Element = Enhancer.Totems[totem].Element;
+	local HitPoints = Enhancer.Totems[totem].Life;
+	local Pulse = Enhancer.Totems[totem].Pulse;
 	
 	local frame = string.lower(Element);
 	
@@ -36,17 +36,60 @@ function ShamanIO:CreateTotem(totem, rank)
 	self:UpdateAlphaBegin(frame)
 	
 	self[frame].textcenter:SetText(Pulse);
-	self[frame].textbelow:SetText( ShamanIO:FormatTime(self[frame].death - GetTime()) );
+	self[frame].textbelow:SetText( Enhancer:FormatTime(self[frame].death - GetTime()) );
 	if ( not (self:IsEventScheduled(frame)) ) then
 		self:ScheduleRepeatingEvent(frame, self.UpdateFrame, (1 / 2), self, frame)
 	end
 end
 
-function ShamanIO:ScreenMessage(message, r, g, b, a, h)
+function Enhancer:ScreenMessage(message, r, g, b, a, h)
 	UIErrorsFrame:AddMessage(message, r or 1, g or 1, b or 1, a or 1, h or 3);
 end
 
-function ShamanIO:FormatTime(seconds)
+function Enhancer:ToggleLock()
+	for _, frame in ipairs(self.allframes) do
+		if (self.db.profile.locked) then
+			self[frame].anchor:Hide();
+		else
+			if (self[frame].mainframe:IsVisible()) then
+				self[frame].anchor:Show();
+			end
+		end
+	end
+end
+
+function Enhancer:Resize()
+	for _, frame in ipairs(self.allframes) do
+		self[frame].mainframe:SetWidth(Enhancer.db.profile.framesize);
+		self[frame].mainframe:SetHeight(Enhancer.db.profile.framesize);
+		
+		self[frame].cooldown:SetWidth(Enhancer.db.profile.framesize - (Enhancer.db.profile.framesize / 3));
+		self[frame].cooldown:SetHeight(Enhancer.db.profile.framesize - (Enhancer.db.profile.framesize / 3));
+		
+		self[frame].textbelow:SetWidth(Enhancer.db.profile.framesize);
+		
+		self[frame].textcenter:SetHeight(Enhancer.db.profile.framesize);
+		self[frame].textcenter:SetWidth(Enhancer.db.profile.framesize);
+	end
+	
+	self:UpdateFont();
+end
+
+function Enhancer:UpdateFont()
+	Enhancer.db.profile.centerFontSize = (Enhancer.db.profile.framesize / 3);
+	Enhancer.db.profile.centerFont = CreateFont("EnhancerCenterFont");
+	Enhancer.db.profile.centerFont:SetFont(Enhancer.db.profile.centerFontName, Enhancer.db.profile.centerFontSize, Enhancer.db.profile.centerFontFlags);
+	
+	Enhancer.db.profile.belowFontSize = (Enhancer.db.profile.framesize / 4);
+	Enhancer.db.profile.belowFont = CreateFont("EnhancerBelowFont");
+	Enhancer.db.profile.belowFont:SetFont(Enhancer.db.profile.belowFontName, Enhancer.db.profile.belowFontSize, Enhancer.db.profile.belowFontFlags);
+	
+	for _, frame in ipairs(self.allframes) do
+		self[frame].textbelow:SetHeight(Enhancer.db.profile.belowFontSize + 10);
+	end
+end
+
+function Enhancer:FormatTime(seconds)
 	seconds = floor(seconds);
 	secs = mod(seconds, 60);
 	mins = (seconds - secs) / 60;

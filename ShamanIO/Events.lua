@@ -1,27 +1,29 @@
-function ShamanIO:EnterCombat()
+function Enhancer:EnterCombat()
 	self.inCombat = true;
-end
-
-function ShamanIO:OutOfCombat()
-	self.inCombat = nil;
-end
-
-function ShamanIO:PlayerDead()
-	for _, element in pairs( self.totems ) do
-		self[element].active = false;
-	end
 	
-	ShamanIO:UpdateAlphaBegin( self.totems )
+	self:UpdateAlphaBegin(self.allframes);
 end
 
-function ShamanIO:CastingTotem(player, totem, rank)
+function Enhancer:OutOfCombat()
+	self.inCombat = nil;
+	
+	self:UpdateAlphaBegin(self.allframes);
+end
+
+function Enhancer:PlayerDead()
+	for _, element in ipairs(self.totemframes) do
+		self:FrameDeathBegin(frame)
+	end
+end
+
+function Enhancer:CastingTotem(player, totem, rank)
 	-- Gets called for all spellcasting so just check if it was a totem :)
 	
-	if (totem == ShamanIO.BabbleSpell["Totemic Call"]) then
-		for _, frame in pairs(self.totemframes) do
+	if (totem == Enhancer.BabbleSpell["Totemic Call"]) then
+		for _, frame in ipairs(self.totemframes) do
 			self:FrameDeathBegin(frame);
 		end
-	elseif ShamanIO.Totems[totem] then
+	elseif Enhancer.Totems[totem] then
 		
 		--[[ Figure out what rank he cast ]]--
 		local ranknumber;
@@ -31,8 +33,8 @@ function ShamanIO:CastingTotem(player, totem, rank)
 			ranknumber = tonumber(string.sub(rank, string.find(rank, "%d")));
 		end
 		
-		if (totem == ShamanIO.BabbleSpell["Mana Spring Totem"] and not ranknumber) then
-			totem = ShamanIO.BabbleSpell["Enamored Water Spirit"];
+		if (totem == Enhancer.BabbleSpell["Mana Spring Totem"] and not ranknumber) then
+			totem = Enhancer.BabbleSpell["Enamored Water Spirit"];
 		end
 		
 		self:CreateTotem(totem, rank);

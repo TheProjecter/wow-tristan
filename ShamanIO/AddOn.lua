@@ -1,48 +1,51 @@
-ShamanIO = AceLibrary("AceAddon-2.0"):new("AceEvent-2.0", "AceDB-2.0", "AceConsole-2.0");
-ShamanIO:RegisterDB("ShamanIODB");
+Enhancer = AceLibrary("AceAddon-2.0"):new("AceEvent-2.0", "AceDB-2.0", "AceConsole-2.0");
+Enhancer:RegisterDB("EnhancerDB");
 
-local L = AceLibrary("AceLocale-2.2"):new("ShamanIO");
+local L = AceLibrary("AceLocale-2.2"):new("Enhancer");
 local deformat = AceLibrary("Deformat-2.0");
-local db = ShamanIO.db.profile;
-local _, englishClass = UnitClass("player");
+local db = Enhancer.db.profile;
 
-function ShamanIO:OnInitialize()
-	if (englishClass ~= "SHAMAN") then return; end
+local _, englishClass = UnitClass("player");
+Enhancer.englishClass = englishClass;
+
+function Enhancer:OnInitialize()
+	if (self.englishClass ~= "SHAMAN") then return; end
 	
-	-- Create 6 frames!
-	self.earth = self:CreateButton("ShamanIOEarth", "Spell_Totem_WardOfDraining");
-	self.fire = self:CreateButton("ShamanIOFire", "Spell_Totem_WardOfDraining");
-	self.water = self:CreateButton("ShamanIOWater", "Spell_Totem_WardOfDraining");
-	self.air = self:CreateButton("ShamanIOAir", "Spell_Totem_WardOfDraining");
-	self.windfury = self:CreateButton("ShamanIOWindfury", "Spell_Nature_Cyclone");
-	self.reincarnation = self:CreateButton("ShamanIOReincarnation", "Spell_Nature_Reincarnation");
+	-- Create all frames!
+	self.earth = self:CreateButton("EnhancerFrameEarth", "Spell_Totem_WardOfDraining");
+	self.fire = self:CreateButton("EnhancerFrameFire", "Spell_Totem_WardOfDraining");
+	self.water = self:CreateButton("EnhancerFrameWater", "Spell_Totem_WardOfDraining");
+	self.air = self:CreateButton("EnhancerFrameAir", "Spell_Totem_WardOfDraining");
+	self.windfury = self:CreateButton("EnhancerFrameWindfury", "Spell_Nature_Cyclone");
+	self.reincarnation = self:CreateButton("EnhancerFrameReincarnation", "Spell_Nature_Reincarnation");
+	self.invigorated = self:CreateButton("EnhancerFrameInvigorated", "Spell_Nature_NatureResistanceTotem");
 	
-	self:MakeMoveable(self.earth.anchor);
-	self:MakeMoveable(self.fire.anchor);
-	self:MakeMoveable(self.water.anchor);
-	self:MakeMoveable(self.air.anchor);
-	self:MakeMoveable(self.windfury.anchor);
-	self:MakeMoveable(self.reincarnation.anchor);
+	self.allframes = { "earth", "fire", "water", "air", "windfury", "reincarnation", "invigorated" };
+	self.totemframes = { "earth", "fire", "water", "air" }
+	
+	-- Make all frames movable
+	for _, frame in ipairs(self.allframes) do
+		self:MakeMoveable(frame);
+	end
 		
-	-- Set Border Colors
+	-- Set fancy border colors
 	self.earth.borderColor = { ["r"] = (139/255), ["g"] = (69/255), ["b"] = (19/255), ["a"] = 1, }
 	self.fire.borderColor = { ["r"] = (178/255), ["g"] = (34/255), ["b"] = (34/255), ["a"] = 1, }
 	self.water.borderColor = { ["r"] = (0/255), ["g"] = (245/255), ["b"] = (255/255), ["a"] = 1, }
 	self.air.borderColor = { ["r"] = (127/255), ["g"] = (255/255), ["b"] = (212/255), ["a"] = 1, }
 	self.windfury.borderColor = { ["r"] = (127/255), ["g"] = (255/255), ["b"] = (212/255), ["a"] = 1, }
 	self.reincarnation.borderColor = { ["r"] = (139/255), ["g"] = (69/255), ["b"] = (19/255), ["a"] = 1, }
-	
-	self.allframes = { "earth", "fire", "water", "air", "windfury", "reincarnation" };
-	self.totemframes = { "earth", "fire", "water", "air" }
+	self.invigorated.borderColor = { ["r"] = (0/255), ["g"] = (245/255), ["b"] = (255/255), ["a"] = 1, }
 	
 	self:ShowRunningModules();
 	
-	self:LoadPos()
-	--self:DefaultPos()
+	self:DefaultPos();
+	self:LoadPos();
+	self:ToggleLock();
 end
 
-function ShamanIO:OnEnable()
-	if (englishClass ~= "SHAMAN") then return; end
+function Enhancer:OnEnable()
+	if (self.englishClass ~= "SHAMAN") then return; end
 	
 	-- Register our events :>
 	self:RegisterEvent("PLAYER_REGEN_ENABLED", "OutOfCombat");
@@ -53,8 +56,8 @@ function ShamanIO:OnEnable()
 	self:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED", "CastingTotem")
 end
 
-function ShamanIO:OnDisable()
-	if (englishClass ~= "SHAMAN") then return; end
+function Enhancer:OnDisable()
+	if (self.englishClass ~= "SHAMAN") then return; end
 	
 	self:UnregisterAllEvents();
 end
