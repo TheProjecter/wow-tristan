@@ -41,4 +41,4 @@ CombatParser.lua
 Windfury.lua
 Reincarnation.lua
 Invigorated.lua
-AEP.lua
+EP.lua

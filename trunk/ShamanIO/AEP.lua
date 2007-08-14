@@ -97,12 +97,18 @@ function EnhancerAEP.ProcessTooltip(tooltip, name, link)
 ]]--
 		
 		--[[ Parse Sockets ]]--
+		local gemAEPBlue, gemAEPKBlue = 0, 0;
+		local gemAEPGreen, gemAEPKGreen = 0, 0;
 		Gratuity:SetHyperlink(link)
 		for i = 2, Gratuity:NumLines() do
 			local line = Gratuity:GetLine(i)
 			if (line == "Red Socket" or line == "Blue Socket" or line == "Yellow Socket") then
-				AEP = AEP + 160;
-				AEPK = AEPK + 176;
+				gemAEPBlue = gemAEPBlue + 160; -- Using 8 Str (best non Unique-Equipped blue quality gem)
+				gemAEPKBlue = gemAEPKBlue + 176; -- Using 8 Str (best non Unique-Equipped blue quality gem)
+				gemAEPGreen = gemAEPGreen + 120; -- Using 6 Str (best non Unique-Equipped green quality gem)
+				gemAEPKGreen = gemAEPKGreen + 132; -- Using 6 Str (best non Unique-Equipped green quality gem)
+				--AEP = AEP + 160;
+				--AEPK = AEPK + 176;
 			elseif (line == "Meta Socket") then
 				-- Relentless Earthstorm Diamond: +12 Agility & 3% Increased Critical Damage -- Apply Aura: Mod Crit Damage Bonus (Melee) (895)
 				-- The Agi Bonus can be calculated
@@ -114,7 +120,14 @@ function EnhancerAEP.ProcessTooltip(tooltip, name, link)
 		
 		if (AEP > 0 or AEPK > 0 or true) then
 			tooltip:AddLine(" ");
-			tooltip:AddLine( string.format(L["aep_tooltip"], AEP, AEPK) );
+			
+			if ( (gemAEPBlue == gemAEPGreen) and (gemAEPKBlue == gemAEPKGreen) ) then
+				tooltip:AddLine( string.format( L["aep_tooltip0"], (AEP + gemAEPBlue), (AEPK + gemAEPKBlue) ) );
+			else
+				tooltip:AddLine( string.format( L["aep_tooltip1"], (AEP + gemAEPBlue), (AEPK + gemAEPKBlue) ) );
+				tooltip:AddLine( string.format( L["aep_tooltip2"], (AEP + gemAEPGreen), (AEPK + gemAEPKGreen) ) );
+			end
+			
 			tooltip:AddLine( L["aep_info"] );
 			tooltip:Show();
 		end
