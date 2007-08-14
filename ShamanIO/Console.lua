@@ -16,7 +16,9 @@ local defaults = {
 	Windfury = true,
 	Reincarnation = true,
 	Invigorated = false,
+	EP = true,
 	AEP = true,
+	HEP = true,
 	
 	centerFontName = "Fonts\\FRIZQT__.TTF",
 	centerFontSize = (46 / 3),
@@ -98,12 +100,12 @@ local consoleoptions = {
 			end,
 			order = 7,
 		},
-		[L["aep_cmd"]] = {
-			name = L["aep_cmd"], type = "toggle",
-			desc = L["aep_desc"],
-			get = function() return EnhancerAEP:Active(); end,
+		[L["ep_cmd"]] = {
+			name = L["ep_cmd"], type = "toggle",
+			desc = L["ep_desc"],
+			get = function() return EnhancerEP:Active(); end,
 			set = function()
-				EnhancerAEP:Toggle();
+				EnhancerEP:Toggle();
 			end,
 			order = 8,
 		},
@@ -207,5 +209,3 @@ local consoleoptions = {
 
 Enhancer:RegisterDefaults('profile', defaults)
 Enhancer:RegisterChatCommand( { "/Enhancer", "/enh", "/ShammySpy" }, consoleoptions )
-
--- Enhancer.db.profile.Invigorated

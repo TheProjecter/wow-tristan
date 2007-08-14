@@ -62,12 +62,16 @@ function Enhancer:ToggleLock()
 	for _, frame in ipairs(self.allframes) do
 		if (self.db.profile.locked) then
 			self[frame].anchor:Hide();
+			self[frame].unlocked = nil;
 		else
 			if (self[frame].mainframe:IsVisible()) then
 				self[frame].anchor:Show();
+				self[frame].unlocked = true;
 			end
 		end
 	end
+	
+	self:UpdateAlphaBegin(self.allframes);
 end
 
 function Enhancer:Resize()

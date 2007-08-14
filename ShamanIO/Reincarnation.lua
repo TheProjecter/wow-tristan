@@ -111,7 +111,7 @@ function EnhancerReincarnation:ReincarnationUpdate()
 			
 			Enhancer.reincarnation.textbelow:SetText( Enhancer:FormatTime(ReincarnationCD) );
 		else
-			self:FrameDeathBegin("reincarnation");
+			Enhancer:FrameDeathBegin("reincarnation");
 			if (self:IsEventScheduled("ReincarnationUpdate")) then
 				self:CancelScheduledEvent("ReincarnationUpdate");
 			end

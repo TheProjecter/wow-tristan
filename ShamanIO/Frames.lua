@@ -118,7 +118,7 @@ function Enhancer:SavePos(framename, frame)
 	if (not Enhancer.db.profile.framePositions[framename]) then Enhancer.db.profile.framePositions[framename] = {}; end
 	frame:GetCenter()
 	local point, relativeTo, relativePoint, xOfs, yOfs = frame:GetPoint();
-	self:Print( frame:GetPoint() );
+	-- self:Print( frame:GetPoint() );
 	
 	Enhancer.db.profile.framePositions[framename]["point"] = point;
 	Enhancer.db.profile.framePositions[framename]["relativeTo"] = relativeTo;
@@ -173,10 +173,10 @@ function Enhancer:DefaultPos()
 	self.reincarnation.anchor:SetPoint("CENTER", UIParent, "CENTER",  0,  (negativeOut + Enhancer.db.profile.framesize)) -- 0 = Center, negativeOut = South
 	
 	self.windfury.anchor:ClearAllPoints();
-	self.windfury.anchor:SetPoint("CENTER", UIParent, "CENTER",  0,  (positiveOut + Enhancer.db.profile.framesize)) -- 0 = Center, positiveOut = North
+	self.windfury.anchor:SetPoint("CENTER", UIParent, "CENTER",  0,  (0 + Enhancer.db.profile.framesize)) -- 0 = Center, 0 = Center
 	
 	self.invigorated.anchor:ClearAllPoints();
-	self.invigorated.anchor:SetPoint("CENTER", UIParent, "CENTER",  0,  (Enhancer.db.profile.framesize)) -- 0 = Center, positiveOut = North
+	self.invigorated.anchor:SetPoint("CENTER", UIParent, "CENTER",  0,  (positiveOut + Enhancer.db.profile.framesize)) -- 0 = Center, positiveOut = North
 end
 
 function Enhancer:UpdateAlphaBegin(frames)
@@ -190,34 +190,37 @@ function Enhancer:UpdateAlphaBegin(frames)
 end
 
 function Enhancer:UpdateAlphaEnd(frame)
-	local shortcut = self[frame];
+	if (not self[frame]) then return; end
 	
-	if (not shortcut) then return; end
+	local r, g, b, a = self[frame].mainframe:GetBackdropColor();
 	
-	local r, g, b, a = shortcut.mainframe:GetBackdropColor();
-	
-	if (shortcut.active) then
+	if (self[frame].unlocked) then
+		-- This frame has been unlocked for moving about so make everything visible for it :)
+		self[frame].textcenter:SetAlpha(1);
+		self[frame].textbelow:SetAlpha(1);
+		self[frame].mainframe:SetBackdropColor(r, g, b, 1);
+	elseif (self[frame].active) then
 		
 		if (self.inCombat or frame == "reincarnation" or frame == "windfury" or frame == "invigorated") then
-			shortcut.textcenter:SetAlpha(Enhancer.db.profile.combatAlpha);
-			shortcut.textbelow:SetAlpha(Enhancer.db.profile.combatAlpha);
-			shortcut.mainframe:SetBackdropColor( r, g, b, Enhancer.db.profile.combatAlpha);
+			self[frame].textcenter:SetAlpha(Enhancer.db.profile.combatAlpha);
+			self[frame].textbelow:SetAlpha(Enhancer.db.profile.combatAlpha);
+			self[frame].mainframe:SetBackdropColor(r, g, b, Enhancer.db.profile.combatAlpha);
 		else
-			shortcut.textcenter:SetAlpha(Enhancer.db.profile.oocombatAlpha);
-			shortcut.textbelow:SetAlpha(Enhancer.db.profile.oocombatAlpha);
-			shortcut.mainframe:SetBackdropColor( r, g, b, Enhancer.db.profile.oocombatAlpha);
+			self[frame].textcenter:SetAlpha(Enhancer.db.profile.oocombatAlpha);
+			self[frame].textbelow:SetAlpha(Enhancer.db.profile.oocombatAlpha);
+			self[frame].mainframe:SetBackdropColor(r, g, b, Enhancer.db.profile.oocombatAlpha);
 		end
 		
 	else
 		
 		if ( (self.inCombat or frame == "reincarnation" or frame == "windfury") and (frame ~= "invigorated") ) then
-			shortcut.textcenter:SetAlpha(Enhancer.db.profile.combatinactiveAlpha);
-			shortcut.textbelow:SetAlpha(Enhancer.db.profile.combatinactiveAlpha);
-			shortcut.mainframe:SetBackdropColor( r, g, b, Enhancer.db.profile.combatinactiveAlpha);
+			self[frame].textcenter:SetAlpha(Enhancer.db.profile.combatinactiveAlpha);
+			self[frame].textbelow:SetAlpha(Enhancer.db.profile.combatinactiveAlpha);
+			self[frame].mainframe:SetBackdropColor(r, g, b, Enhancer.db.profile.combatinactiveAlpha);
 		else
-			shortcut.textcenter:SetAlpha(Enhancer.db.profile.oocinactiveAlpha);
-			shortcut.textbelow:SetAlpha(Enhancer.db.profile.oocinactiveAlpha);
-			shortcut.mainframe:SetBackdropColor( r, g, b, Enhancer.db.profile.oocinactiveAlpha);
+			self[frame].textcenter:SetAlpha(Enhancer.db.profile.oocinactiveAlpha);
+			self[frame].textbelow:SetAlpha(Enhancer.db.profile.oocinactiveAlpha);
+			self[frame].mainframe:SetBackdropColor(r, g, b, Enhancer.db.profile.oocinactiveAlpha);
 		end
 		
 	end
@@ -245,6 +248,8 @@ function Enhancer:FrameDeathBegin(frame)
 end
 
 function Enhancer:FrameDeathEnd(frame)
+	if (not self[frame]) then return; end
+	
 	self:ChangeIcon(frame, self[frame].mainframe.bgFileDefault);
 	self[frame].mainframe:SetBackdropBorderColor(self[frame].borderColor["r"] or 1, self[frame].borderColor["g"] or 1, self[frame].borderColor["b"] or 1, 0);
 	
