@@ -21,6 +21,10 @@ local defaults = {
 	AEP = true,
 	AEPH = true,
 	HEP = true,
+	EPGems = {
+		maxQuality = 3,
+		metaGems = true,
+	},
 	
 	centerFontName = "Fonts\\FRIZQT__.TTF",
 	centerFontSize = (46 / 3),
@@ -164,6 +168,31 @@ local consoleoptions = {
 						Enhancer.db.profile.HEP = not Enhancer.db.profile.HEP;
 					end,
 					order = 3,
+				},
+				firstSpacer = {
+					type = "header",
+					order = 4,
+				},
+				[L["ep_gemq_cmd"]] = {
+					name = L["ep_gemq_cmd"], type = "range",
+					desc = L["ep_gemq_desc"],
+					min = 1,
+					max = 3,
+					step = 1,
+					get = function() return Enhancer.db.profile.EPGems.maxQuality; end,
+					set = function(v)
+						Enhancer.db.profile.EPGems.maxQuality = v;
+					end,
+					order = 5,
+				},
+				[L["ep_gemm_cmd"]] = {
+					name = L["ep_gemm_cmd"], type = "toggle",
+					desc = L["ep_gemm_desc"],
+					get = function() return Enhancer.db.profile.EPGems.metaGems; end,
+					set = function()
+						Enhancer.db.profile.EPGems.metaGems = not Enhancer.db.profile.EPGems.metaGems;
+					end,
+					order = 6,
 				},
 			},
 		},
