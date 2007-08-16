@@ -20,8 +20,16 @@ L_Main:RegisterTranslations("enUS", function() return {
 	
 	["ep_cmd"] = "EP",
 	["ep_desc"] = "Toggle showing Equivalence Points in Tooltips",
+	["ep_group_cmd"] = "EPTypes",
+	["ep_group_desc"] = "Set wich Equivalence Points to show",
+	["epz_cmd"] = "EPZero",
+	["epz_desc"] = "Show Equivalence Points even if summary is zero",
+	["aep_group_cmd"] = "AEP",
+	["aep_group_desc"] = "Select wich Attackpower Equivalence Points to show in Tooltips",
 	["aep_cmd"] = "AEP",
 	["aep_desc"] = "Toggle showing Attackpower Equivalence Points in Tooltips",
+	["aeph_cmd"] = "AEPH",
+	["aeph_desc"] = "Toggle showing Attackpower Equivalence Points (w/o hit) in Tooltips",
 	["hep_cmd"] = "HEP",
 	["hep_desc"] = "Toggle showing Healing Equivalence Points in Tooltips",
 	
@@ -49,6 +57,11 @@ L_Main:RegisterTranslations("enUS", function() return {
 	["alpha_ic_inactive_cmd"] = "InactiveInCombat",
 	["alpha_ic_inactive_desc"] = "Alpha for frames when inactive and in combat",
 	
+	["debug_cmd"] = "Debug",
+	["debug_desc"] = "Toggle debugging",
+	["debug_lock_cmd"] = "DebugLock",
+	["debug_lock_desc"] = "Toggle locking of the debug frame",
+	
 	--[[ Strings used for frames ]]--
 	["DragToMoveFrame"] = "Click and drag to move frame",
 	
@@ -68,8 +81,9 @@ L_AEP:RegisterTranslations("enUS", function() return {
 	["Weapon"] = true,
 	["Projectile"] = true,
 	["Quiver"] = true,
+	["Recipe"] = true,
 	
-	--[[ ItemSubTypes ]]--
+	--[[ ItemSubTypes (skip) ]]--
 	["Plate"] = true,
 	["Idols"] = true,
 	["Librams"] = true,
@@ -90,14 +104,20 @@ L_AEP:RegisterTranslations("enUS", function() return {
 	["Meta Socket"] = true,
 	
 	--[[ Tooltip strings ]]--
-	["aep_tooltip0"] = "Enhancer AEP (inc BoK): %d (%d)",
-	["aep_tooltip1"] = "(Blue) Enhancer AEP (inc BoK): %d (%d)",
-	["aep_tooltip2"] = "(Green) Enhancer AEP (inc BoK): %d (%d)",
+	["aep_tooltip0"] = string.rep(" ", 3) .. "AEP Summary (inc BoK):",
+	["aep_tooltip1"] = string.rep(" ", 3) .. "AEP Summary rare gems (inc BoK):",
+	["aep_tooltip2"] = string.rep(" ", 3) .. "AEP Summary uncommon gems (inc BoK):",
 	["aep_info"] = "AEP model from Tornhoof/Pater",
 	
-	["hep_tooltip0"] = "Enhancer HEP (inc BoK): %d (%d)",
-	["hep_tooltip1"] = "(Blue) Enhancer HEP (inc BoK): %d (%d)",
-	["hep_tooltip2"] = "(Green) Enhancer HEP (inc BoK): %d (%d)",
-	["hep_info"] = "HEP model from Leion\r(experimental and no gems/sockets yet)",
+	["aeph_tooltip0"] = string.rep(" ", 3) .. "AEP Summary w/o hit (inc BoK):",
+	["aeph_tooltip1"] = string.rep(" ", 3) .. "AEP Summary rare gems w/o hit (inc BoK):",
+	["aeph_tooltip2"] = string.rep(" ", 3) .. "AEP Summary uncommon gems w/o hit (inc BoK):",
+	
+	["hep_tooltip0"] = string.rep(" ", 3) .. "HEP Summary (inc BoK):",
+	["hep_tooltip1"] = string.rep(" ", 3) .. "HEP Summary rare gems (inc BoK):",
+	["hep_tooltip2"] = string.rep(" ", 3) .. "HEP Summary uncommon gems (inc BoK):",
+	["hep_info"] = "Numbers from Leion (possibly very inaccurate and shouldn't be trusted at all)",
+	
+	["ep_numbers"] = "%d (%d)",
 	
 } end )
