@@ -5,7 +5,7 @@
 ## X-AuthorRealm: Frostmane[EU]
 
 ## SavedVariables: EnhancerDB
-## OptionalDeps: Ace2, DeuceCommander, Niagara, ItemBonusLib, Babble-Spell-2.2, GratuityLib, SpecialEventsEmbed, Parser-3.0
+## OptionalDeps: Ace2, DeuceCommander, Niagara, ItemBonusLib, Babble-2.2, Babble-Spell-2.2, GratuityLib, SpecialEventsEmbed, Parser-3.0
 
 ## Version: 1.0.$Revision$
 ## X-LastUpdate: $Date$
@@ -26,7 +26,14 @@ libs\AceConsole-2.0\AceConsole-2.0.lua
 libs\AceDB-2.0\AceDB-2.0.lua
 libs\AceEvent-2.0\AceEvent-2.0.lua
 libs\AceLocale-2.2\AceLocale-2.2.lua
+
 libs\Deformat-2.0\Deformat-2.0.lua
+libs\Babble-Spell-2.2.lua
+libs\Gratuity-2.0.lua
+libs\ItemBonusLib-1.0.lua
+libs\Metrognome-2.0.lua
+libs\Parser-3.0.lua
+libs\SpecialEvents-Aura-2.0.lua
 
 Localization.lua
 AddOn.lua
@@ -42,3 +49,5 @@ Windfury.lua
 Reincarnation.lua
 Invigorated.lua
 EP.lua
+
+Debug.lua

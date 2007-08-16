@@ -44,14 +44,17 @@ function Enhancer:Setup()
 	self:ToggleLock();
 end
 
+--[[ Below functions are created just so we don't get an error from parts using them if their "module" is not available ]]--
+function Enhancer:Debug(message)
+end
+function Enhancer:DebugLock()
+end
+
 --[[
 
 Left to do:
 
-	?? Invigorated
-	
 	Windfury calculation and display! (FontString midscreen that grows on crit?)
 	
 	?? Add Paths to dependencies in toc
-
 ]]--

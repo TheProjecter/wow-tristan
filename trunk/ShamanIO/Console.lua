@@ -17,7 +17,9 @@ local defaults = {
 	Reincarnation = true,
 	Invigorated = false,
 	EP = true,
+	EPZero = true,
 	AEP = true,
+	AEPH = true,
 	HEP = true,
 	
 	centerFontName = "Fonts\\FRIZQT__.TTF",
@@ -29,6 +31,10 @@ local defaults = {
 	belowFontSize = (46 / 4),
 	belowFontFlags = "OUTLINE",
 	belowFont = CreateFont("EnhancerBelowFont"),
+	
+	debugframe = {
+		lock = true,
+	},
 }
 
 defaults.centerFont:SetFont(defaults.centerFontName, defaults.centerFontSize, defaults.centerFontFlags);
@@ -109,9 +115,61 @@ local consoleoptions = {
 			end,
 			order = 8,
 		},
+		[L["ep_group_cmd"]] = {
+  		type = "group",
+  		name = L["ep_group_cmd"],
+  		desc = L["ep_group_desc"],
+  		order = 9,
+  		args = {
+  			[L["epz_cmd"]] = {
+					name = L["epz_cmd"], type = "toggle",
+					desc = L["epz_desc"],
+					get = function() return Enhancer.db.profile.EPZero; end,
+					set = function()
+						Enhancer.db.profile.EPZero = not Enhancer.db.profile.EPZero;
+					end,
+					order = 1,
+				},
+				[L["aep_group_cmd"]] = {
+		  		type = "group",
+		  		name = L["aep_group_cmd"],
+		  		desc = L["aep_group_desc"],
+		  		order = 2,
+		  		args = {
+		  			[L["aep_cmd"]] = {
+							name = L["aep_cmd"], type = "toggle",
+							desc = L["aep_desc"],
+							get = function() return Enhancer.db.profile.AEP; end,
+							set = function()
+								Enhancer.db.profile.AEP = not Enhancer.db.profile.AEP;
+							end,
+							order = 1,
+						},
+						[L["aeph_cmd"]] = {
+							name = L["aeph_cmd"], type = "toggle",
+							desc = L["aeph_desc"],
+							get = function() return Enhancer.db.profile.AEPH; end,
+							set = function()
+								Enhancer.db.profile.AEPH = not Enhancer.db.profile.AEPH;
+							end,
+							order = 2,
+						},
+					},
+				},
+				[L["hep_cmd"]] = {
+					name = L["hep_cmd"], type = "toggle",
+					desc = L["hep_desc"],
+					get = function() return Enhancer.db.profile.HEP; end,
+					set = function()
+						Enhancer.db.profile.HEP = not Enhancer.db.profile.HEP;
+					end,
+					order = 3,
+				},
+			},
+		},
 		secondSpacer = {
 			type = "header",
-			order = 9,
+			order = 10,
 		},
 		[L["sound_cmd"]] = {
 			name = L["sound_cmd"], type = "toggle",
@@ -120,7 +178,7 @@ local consoleoptions = {
 			set = function()
 				Enhancer.db.profile.playSound = not Enhancer.db.profile.playSound;
 			end,
-			order = 10,
+			order = 11,
 		},
 		[L["growpulse_cmd"]] = {
 			name = L["growpulse_cmd"], type = "toggle",
@@ -129,7 +187,7 @@ local consoleoptions = {
 			set = function()
 				Enhancer.db.profile.growingPulse = not Enhancer.db.profile.growingPulse;
 			end,
-			order = 11,
+			order = 12,
 		},
 		[L["borderpulse_cmd"]] = {
 			name = L["borderpulse_cmd"], type = "toggle",
@@ -138,17 +196,17 @@ local consoleoptions = {
 			set = function()
 				Enhancer.db.profile.borderPulse = not Enhancer.db.profile.borderPulse;
 			end,
-			order = 12,
+			order = 13,
 		},
 		thirdSpacer = {
 			type = "header",
-			order = 13,
+			order = 14,
 		},
 		[L["alpha_cmd"]] = {
   		type = "group",
-  		order = 14,
   		name = L["alpha_cmd"],
   		desc = L["alpha_desc"],
+  		order = 15,
   		args = {
   			[L["alpha_ic_active_cmd"]] = {
 					name = L["alpha_ic_active_cmd"], type = "range",
@@ -204,8 +262,32 @@ local consoleoptions = {
 				},
 	  	},
 	  },
+	  [L["debug_cmd"]] = {
+			name = L["debug_cmd"], type = "toggle",
+			desc = L["debug_desc"],
+			get = function() return Enhancer.isDebugging; end,
+			set = function()
+				if (Enhancer.DebugFrames) then
+					Enhancer.isDebugging = not Enhancer.isDebugging;
+					Enhancer:DebugFrames()
+				end
+			end,
+			order = 16,
+		},
+		[L["debug_lock_cmd"]] = {
+			name = L["debug_lock_cmd"], type = "toggle",
+			desc = L["debug_lock_desc"],
+			get = function() return Enhancer.db.profile.debugframe.lock; end,
+			set = function()
+				Enhancer.db.profile.debugframe.lock = not Enhancer.db.profile.debugframe.lock;
+				Enhancer:DebugLock();
+			end,
+			order = 16,
+		},
 	},
 }
 
 Enhancer:RegisterDefaults('profile', defaults)
 Enhancer:RegisterChatCommand( { "/Enhancer", "/enh", "/ShammySpy" }, consoleoptions )
+
+-- Enhancer.db.profile.

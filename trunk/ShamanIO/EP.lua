@@ -5,6 +5,13 @@ local ibl = AceLibrary("ItemBonusLib-1.0");
 local TipHooker = AceLibrary("TipHooker-1.0");
 local Gratuity = AceLibrary("Gratuity-2.0")
 
+local c = {
+	["r"] = (47 / 100);
+	["g"] = (100 / 100);
+	["b"] = (073 / 100);
+};
+-- c["r"], c["g"], c["b"]
+
 function EnhancerEP:OnInitialize()
 	if (Enhancer.englishClass ~= "SHAMAN") then return; end
 end
@@ -15,7 +22,8 @@ function EnhancerEP:OnEnable()
 	self.enabled = true;
 	TipHooker:Hook(self.ProcessTooltip, "item");
 	
-	--[[ For some reason I can't get TipHooker to work without enabling RatingBuster wich sux so I hacked a bit here ]]--
+	--[[ For some reason I can't get TipHooker to work without enabling
+			 RatingBuster wich sux so I hacked a bit here ]]--
 	self:ScheduleEvent("Tooltip", self.Tooltip, 1, self);
 end
 
@@ -47,7 +55,7 @@ function EnhancerEP:Active()
 	return self.enabled;
 end
 
-EnhancerEP.ProcessTypes = { [L["Armor"]] = true, [L["Gem"]] = true, [L["Weapon"]] = true, } -- [L["Projectile"]] = true, [L["Quiver"]] = true, 
+EnhancerEP.ProcessTypes = { [L["Armor"]] = true, [L["Gem"]] = true, [L["Weapon"]] = true, [L["Recipe"]] = true, } -- [L["Projectile"]] = true, [L["Quiver"]] = true, 
 EnhancerEP.NotProcessSubTypes = { [L["Plate"]] = true, [L["Idols"]] = true, [L["Librams"]] = true, [L["Fishing Pole"]] = true, [L["One-Handed Swords"]] = true, [L["Polearms"]] = true, [L["Two-Handed Swords"]] = true, [L["Bows"]] = true, [L["Crossbows"]] = true, [L["Guns"]] = true, [L["Thrown"]] = true, [L["Wands"]] = true, }
 function EnhancerEP.ProcessTooltip(tooltip, name, link)
 	
@@ -60,10 +68,11 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 		
 		--[[ ItemBonusLib doesn't count empty sockets wich we prefer since
 				 inspected gear can have shit gems in them ;) ]]--
-		link = EnhancerEP:StripGems(link);
+		link = EnhancerEP:StripGemsAndEnchants(link);
 		bonuses = ibl:ScanItem(link, true, false);
 		local lineAdded = nil;
 		local infos = {};
+		local kingsMultiplier = (110 / 100);
 		
 		--[[ Count sockets ]]--
 		local redSockets, blueSockets, yellowSockets, metaSockets, nonMetaSockets = 0, 0, 0, 0, 0;
@@ -90,87 +99,169 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 			local gemAEPBlue, gemAEPKBlue = 0, 0;
 			local gemAEPGreen, gemAEPKGreen = 0, 0;
 			
-			-- Relentless Earthstorm Diamond: +12 Agility & 3% Increased Critical Damage -- Apply Aura: Mod Crit Damage Bonus (Melee) (895)
-			-- The Agi Bonus can be calculated
-			-- 3% Increased Critical Damage can't be calculated so using a fixed value for it, 750
-			-- 
-			-- Make Hit Optional (as second Paranthesised value)
+			--[[ Set point values here so it's easy to change ]]--
+			local hasteVal = 22;
+			local strVal = 20;
+			local critVal = 20;
+			local agiVal = 18;
+			local hitVal = 14;
+			local apVal = 10;
 			
-			AEP = AEP + (bonuses.CR_HASTE or 0) * 22;
-			AEP = AEP + (bonuses.STR or 0) * 20;
-			AEP = AEP + (bonuses.CR_CRIT or 0) * 20;
-			AEP = AEP + (bonuses.AGI or 0) * 18;
-			AEP = AEP + (bonuses.CR_HIT or 0) * 14;
-			AEP = AEP + (bonuses.ATTACKPOWER or 0) * 10;
-			gemAEPBlue = nonMetaSockets * 160;
-			AEP = AEP + (((12 * 18) + 750) * metaSockets);
+			AEP = AEP + ( (bonuses.CR_HASTE or 0) * hasteVal );
+			AEP = AEP + ( (bonuses.STR or 0) * strVal );
+			AEP = AEP + ( (bonuses.CR_CRIT or 0) * critVal );
+			AEP = AEP + ( (bonuses.AGI or 0) * agiVal );
+			AEP = AEP + ( (bonuses.CR_HIT or 0) * hitVal );
+			AEP = AEP + ( (bonuses.ATTACKPOWER or 0) * apVal );
+			gemAEPBlue = (8 * strVal) * nonMetaSockets; -- Bold Living Ruby 8 str
+			gemAEPGreen = (6 * strVal) * nonMetaSockets; -- Bold Blood Garnet 8 str
+			AEP = AEP + ( ((12 * agiVal) + 750) * metaSockets ); -- Relentless Earthstorm Diamond: +12 Agility & 3% Increased Critical Damage -- 3% Increased Critical Damage can't be calculated so using a fixed value for it -- Apply Aura: Mod Crit Damage Bonus (Melee) (895)
 			
-			AEPK = AEPK + (bonuses.CR_HASTE or 0) * 22 / 10;
-			AEPK = AEPK + (bonuses.STR or 0) * 22;
-			AEPK = AEPK + (bonuses.CR_CRIT or 0) * 20;
-			AEPK = AEPK + (bonuses.AGI or 0) * 20;
-			AEPK = AEPK + (bonuses.CR_HIT or 0) * 14;
-			AEPK = AEPK + (bonuses.ATTACKPOWER or 0) * 10;
-			gemAEPKBlue = nonMetaSockets * 176;
-			AEPK = AEPK + (((12 * 20) + 750) * metaSockets);
-	
+			AEPK = AEPK + ( (bonuses.CR_HASTE or 0) * hasteVal );
+			AEPK = AEPK + ( (bonuses.STR or 0) * (strVal * kingsMultiplier) );
+			AEPK = AEPK + ( (bonuses.CR_CRIT or 0) * critVal );
+			AEPK = AEPK + ( (bonuses.AGI or 0) * (agiVal * kingsMultiplier) );
+			AEPK = AEPK + ( (bonuses.CR_HIT or 0) * hitVal );
+			AEPK = AEPK + ( (bonuses.ATTACKPOWER or 0) * apVal );
+			gemAEPKBlue = ((8 * strVal) * kingsMultiplier) * nonMetaSockets;
+			gemAEPKGreen = ((6 * strVal) * kingsMultiplier) * nonMetaSockets;
+			AEPK = AEPK + ( (((12 * agiVal) * kingsMultiplier) + 750) * metaSockets );
 			
-			if (AEP > 0 or AEPK > 0 or true) then
-				if (not lineAdded) then tooltip:AddLine(" "); end
-				lineAdded = true;
+			if ( (AEP + gemAEPBlue + gemAEPGreen) > 0 or (AEPK + gemAEPKBlue + gemAEPKGreen) > 0 or Enhancer.db.profile.EPZero) then
+				if (not lineAdded) then
+					tooltip:AddLine(" ");
+					tooltip:AddLine("Enhancer Equivalence Points:", c["r"], c["g"], c["b"]);
+					lineAdded = true;
+				end
+				
 				
 				if ( (gemAEPBlue == gemAEPGreen) and (gemAEPKBlue == gemAEPKGreen) ) then
-					tooltip:AddLine( string.format( L["aep_tooltip0"], (AEP + gemAEPBlue), (AEPK + gemAEPKBlue) ) );
+					tooltip:AddDoubleLine(L["aep_tooltip0"], string.format( L["ep_numbers"], (AEP + gemAEPBlue), (AEPK + gemAEPKBlue) ), c["r"], c["g"], c["b"], c["r"], c["g"], c["b"]);
 				else
-					tooltip:AddLine( string.format( L["aep_tooltip1"], (AEP + gemAEPBlue), (AEPK + gemAEPKBlue) ) );
-					tooltip:AddLine( string.format( L["aep_tooltip2"], (AEP + gemAEPGreen), (AEPK + gemAEPKGreen) ) );
+					tooltip:AddDoubleLine(L["aep_tooltip1"], string.format( L["ep_numbers"], (AEP + gemAEPBlue), (AEPK + gemAEPKBlue) ), c["r"], c["g"], c["b"], c["r"], c["g"], c["b"]);
+					tooltip:AddDoubleLine(L["aep_tooltip2"], string.format( L["ep_numbers"], (AEP + gemAEPGreen), (AEPK + gemAEPKGreen) ), c["r"], c["g"], c["b"], c["r"], c["g"], c["b"]);
 				end
 				
 				tinsert(infos, L["aep_info"]);
 			end
 		end
 		
+		--[[ Do Attackpower Equivalence Points but without hit ]]--
+		if (Enhancer.db.profile.AEPH) then
+			if (Enhancer.db.profile.AEP and not bonuses.CR_HIT) then
+				-- We allready added AEP (with Hit) but since the item doesn't have any Hit it's pointless ;)
+				-- so skip it
+			else
+				local AEP, AEPK = 0, 0;
+				local gemAEPBlue, gemAEPKBlue = 0, 0;
+				local gemAEPGreen, gemAEPKGreen = 0, 0;
+				
+				--[[ Set point values here so it's easy to change ]]--
+				local hasteVal = 22;
+				local strVal = 20;
+				local critVal = 20;
+				local agiVal = 18;
+				local apVal = 10;
+				
+				AEP = AEP + ( (bonuses.CR_HASTE or 0) * hasteVal );
+				AEP = AEP + ( (bonuses.STR or 0) * strVal );
+				AEP = AEP + ( (bonuses.CR_CRIT or 0) * critVal );
+				AEP = AEP + ( (bonuses.AGI or 0) * agiVal );
+				AEP = AEP + ( (bonuses.ATTACKPOWER or 0) * apVal );
+				gemAEPBlue = (8 * strVal) * nonMetaSockets; -- Bold Living Ruby 8 str
+				gemAEPGreen = (6 * strVal) * nonMetaSockets; -- Bold Blood Garnet 8 str
+				AEP = AEP + ( ((12 * agiVal) + 750) * metaSockets ); -- Relentless Earthstorm Diamond: +12 Agility & 3% Increased Critical Damage -- 3% Increased Critical Damage can't be calculated so using a fixed value for it -- Apply Aura: Mod Crit Damage Bonus (Melee) (895)
+				-- 3% Increased Critical Damage doesn't show in ItemBonusLib
+				
+				AEPK = AEPK + ( (bonuses.CR_HASTE or 0) * hasteVal );
+				AEPK = AEPK + ( (bonuses.STR or 0) * (strVal * kingsMultiplier) );
+				AEPK = AEPK + ( (bonuses.CR_CRIT or 0) * critVal );
+				AEPK = AEPK + ( (bonuses.AGI or 0) * (agiVal * kingsMultiplier) );
+				AEPK = AEPK + ( (bonuses.ATTACKPOWER or 0) * apVal );
+				gemAEPKBlue = ((8 * strVal) * kingsMultiplier) * nonMetaSockets;
+				gemAEPKGreen = ((6 * strVal) * kingsMultiplier) * nonMetaSockets;
+				AEPK = AEPK + ( (((12 * agiVal) * kingsMultiplier) + 750) * metaSockets );
+				
+				if ( (AEP + gemAEPBlue + gemAEPGreen) > 0 or (AEPK + gemAEPKBlue + gemAEPKGreen) > 0 or Enhancer.db.profile.EPZero) then
+					if (not lineAdded) then
+						tooltip:AddLine(" ");
+						tooltip:AddLine("Enhancer Equivalence Points:", c["r"], c["g"], c["b"]);
+						lineAdded = true;
+					end
+					
+					if ( (gemAEPBlue == gemAEPGreen) and (gemAEPKBlue == gemAEPKGreen) ) then
+						tooltip:AddDoubleLine(L["aeph_tooltip0"], string.format( L["ep_numbers"], (AEP + gemAEPBlue), (AEPK + gemAEPKBlue) ), c["r"], c["g"], c["b"], c["r"], c["g"], c["b"]);
+					else
+						tooltip:AddDoubleLine(L["aeph_tooltip1"], string.format( L["ep_numbers"], (AEP + gemAEPBlue), (AEPK + gemAEPKBlue) ), c["r"], c["g"], c["b"], c["r"], c["g"], c["b"]);
+						tooltip:AddDoubleLine(L["aeph_tooltip2"], string.format( L["ep_numbers"], (AEP + gemAEPGreen), (AEPK + gemAEPKGreen) ), c["r"], c["g"], c["b"], c["r"], c["g"], c["b"]);
+					end
+					
+					if (not Enhancer.db.profile.AEP) then
+						tinsert(infos, L["aep_info"]);
+					end
+				end
+			end
+		end
+		
 		--[[ Do Healing Equivalence Points ]]--
 		if (Enhancer.db.profile.HEP) then
-			-- Values used are shit is a primary concern :P
-			
 			local HEP, HEPK = 0, 0;
 			local gemHEPBlue, gemHEPKBlue = 0, 0;
 			local gemHEPGreen, gemHEPKGreen = 0, 0;
 			
-			HEP = HEP + (bonuses.INT or 0) * 80;
-			HEP = HEP + (bonuses.HEAL or 0) * 100;
-			HEP = HEP + (bonuses.CR_SPELLCRIT or 0) * 10;
-			HEP = HEP + (bonuses.MANAREG or 0) * 570;
-			--gemHEPBlue = nonMetaSockets * 160;
-			--HEP = HEP + (((12 * 18) + 750) * metaSockets);
+			--[[ Set point values here so it's easy to change ]]--
+			local intVal = 8;
+			local healVal = 10;
+			local scritVal = 1;
+			local regenVal = 50;
+			-- Values used are probably still shit is a primary concern :P
 			
-			HEPK = HEPK + (bonuses.INT or 0) * 88;
-			HEPK = HEPK + (bonuses.HEAL or 0) * 100;
-			HEPK = HEPK + (bonuses.CR_SPELLCRIT or 0) * 10;
-			HEPK = HEPK + (bonuses.MANAREG or 0) * 570;
-			--gemHEPKBlue = nonMetaSockets * 176;
-			--HEPK = HEPK + (((12 * 20) + 750) * metaSockets);
-	
+			HEP = HEP + ( (bonuses.INT or 0) * intVal );
+			HEP = HEP + ( (bonuses.HEAL or 0) * healVal );
+			HEP = HEP + ( (bonuses.CR_SPELLCRIT or 0) * scritVal );
+			HEP = HEP + ( (bonuses.MANAREG or 0) * regenVal );
 			
-			if (HEP > 0 or HEPK > 0 or true) then
-				if (not lineAdded) then tooltip:AddLine(" "); end
-				lineAdded = true;
-				
-				if ( (gemHEPBlue == gemHEPGreen) and (gemHEPKBlue == gemHEPKGreen) ) then
-					tooltip:AddLine( string.format( L["hep_tooltip0"], (HEP + gemHEPBlue), (HEPK + gemHEPKBlue) ) );
-				else
-					tooltip:AddLine( string.format( L["hep_tooltip1"], (HEP + gemHEPBlue), (HEPK + gemHEPKBlue) ) );
-					tooltip:AddLine( string.format( L["hep_tooltip2"], (HEP + gemHEPGreen), (HEPK + gemHEPKGreen) ) );
+			gemHEPBlue = ( (9 * healVal) + (2 * regenVal) ) * nonMetaSockets;
+			-- Royal Nightseye +9 Healing Spells and +2 Mana every 5 seconds 90 + 100 = 190
+			-- Teardrop Living Ruby +18 Healing 180 = 180
+			
+			gemHEPGreen = (13 * healVal) * nonMetaSockets;
+			-- Teardrop Blood Garnet +13 Healing 130
+			-- Royal Shadow Draenite +7 Healing Spells & +1 Mana per 5 Seconds  70 + 50 = 120
+			-- Luminous Flame Spessarite +7 Healing Spells and +3 Intellect 70 + 24 = 94
+			
+			HEP = HEP + ((26 * healVal) * metaSockets);
+			-- Bracing Earthstorm Diamond +26 Healing Spells & 2% Reduced Threat -- THREATREDUCTION = 2 (in ItemBonusLib)
+			
+			HEPK = HEPK + ( (bonuses.INT or 0) * (intVal * kingsMultiplier) );
+			HEPK = HEPK + ( (bonuses.HEAL or 0) * healVal );
+			HEPK = HEPK + ( (bonuses.CR_SPELLCRIT or 0) * scritVal );
+			HEPK = HEPK + ( (bonuses.MANAREG or 0) * regenVal );
+			gemHEPKBlue = gemHEPBlue;
+			gemHEPKGreen = gemHEPGreen;
+			HEPK = HEPK + ( (26 * healVal) * metaSockets );
+			
+			if ( (HEP + gemHEPBlue + gemHEPGreen) > 0 or (HEPK + gemHEPKBlue + gemHEPKGreen) > 0 or Enhancer.db.profile.EPZero) then
+				if (not lineAdded) then
+					tooltip:AddLine(" ");
+					tooltip:AddLine("Enhancer Equivalence Points:", c["r"], c["g"], c["b"]);
+					lineAdded = true;
 				end
 				
-				tinsert(infos, L["hep_info"]);
+				if ( (gemHEPBlue == gemHEPGreen) and (gemHEPKBlue == gemHEPKGreen) ) then
+					tooltip:AddDoubleLine(L["hep_tooltip0"], string.format( L["ep_numbers"], (HEP + gemHEPBlue), (HEPK + gemHEPKBlue) ), c["r"], c["g"], c["b"], c["r"], c["g"], c["b"]);
+				else
+					tooltip:AddDoubleLine(L["hep_tooltip1"], string.format( L["ep_numbers"], (HEP + gemHEPBlue), (HEPK + gemHEPKBlue) ), c["r"], c["g"], c["b"], c["r"], c["g"], c["b"]);
+					tooltip:AddDoubleLine(L["hep_tooltip2"], string.format( L["ep_numbers"], (HEP + gemHEPGreen), (HEPK + gemHEPKGreen) ), c["r"], c["g"], c["b"], c["r"], c["g"], c["b"]);
+				end
+				
+				-- tinsert(infos, L["hep_info"]);
 			end
 		end
 		
 		if (lineAdded) then
 			for _, infoLine in ipairs(infos) do
-				tooltip:AddLine( infoLine );
+				tooltip:AddLine( infoLine, c["r"], c["g"], c["b"] );
 			end
 			
 			tooltip:Show();
@@ -178,11 +269,12 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 	end
 end
 
-function EnhancerEP:StripGems(itemlink)
+function EnhancerEP:StripGemsAndEnchants(itemlink)
 	local found, _, itemstring = string.find(itemlink, "^|c%x+|H(.+)|h%[.+%]")
 	if (not found) then return itemlink; end
 	
 	local linkType, itemId, enchantId, jewelId1, jewelId2, jewelId3, jewelId4, suffixId, uniqueId = strsplit(":", itemstring)
+	enchantId = "0";
 	jewelId1 = "0";
 	jewelId2 = "0";
 	jewelId3 = "0";
