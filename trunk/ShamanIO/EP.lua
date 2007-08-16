@@ -5,13 +5,6 @@ local ibl = AceLibrary("ItemBonusLib-1.0");
 local TipHooker = AceLibrary("TipHooker-1.0");
 local Gratuity = AceLibrary("Gratuity-2.0")
 
-local c = {
-	["r"] = (47 / 100);
-	["g"] = (100 / 100);
-	["b"] = (073 / 100);
-};
--- c["r"], c["g"], c["b"]
-
 function EnhancerEP:OnInitialize()
 	if (Enhancer.englishClass ~= "SHAMAN") then return; end
 end
@@ -130,16 +123,16 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 			if ( (AEP + gemAEPBlue + gemAEPGreen) > 0 or (AEPK + gemAEPKBlue + gemAEPKGreen) > 0 or Enhancer.db.profile.EPZero) then
 				if (not lineAdded) then
 					tooltip:AddLine(" ");
-					tooltip:AddLine("Enhancer Equivalence Points:", c["r"], c["g"], c["b"]);
+					tooltip:AddLine(L["eep_info"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
 					lineAdded = true;
 				end
 				
 				
 				if ( (gemAEPBlue == gemAEPGreen) and (gemAEPKBlue == gemAEPKGreen) ) then
-					tooltip:AddDoubleLine(L["aep_tooltip0"], string.format( L["ep_numbers"], (AEP + gemAEPBlue), (AEPK + gemAEPKBlue) ), c["r"], c["g"], c["b"], c["r"], c["g"], c["b"]);
+					tooltip:AddDoubleLine(L["aep_tooltip0"], string.format( L["ep_numbers"], (AEP + gemAEPBlue), (AEPK + gemAEPKBlue) ), RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
 				else
-					tooltip:AddDoubleLine(L["aep_tooltip1"], string.format( L["ep_numbers"], (AEP + gemAEPBlue), (AEPK + gemAEPKBlue) ), c["r"], c["g"], c["b"], c["r"], c["g"], c["b"]);
-					tooltip:AddDoubleLine(L["aep_tooltip2"], string.format( L["ep_numbers"], (AEP + gemAEPGreen), (AEPK + gemAEPKGreen) ), c["r"], c["g"], c["b"], c["r"], c["g"], c["b"]);
+					tooltip:AddDoubleLine(L["aep_tooltip1"], string.format( L["ep_numbers"], (AEP + gemAEPBlue), (AEPK + gemAEPKBlue) ), RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
+					tooltip:AddDoubleLine(L["aep_tooltip2"], string.format( L["ep_numbers"], (AEP + gemAEPGreen), (AEPK + gemAEPKGreen) ), RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
 				end
 				
 				tinsert(infos, L["aep_info"]);
@@ -185,15 +178,15 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 				if ( (AEP + gemAEPBlue + gemAEPGreen) > 0 or (AEPK + gemAEPKBlue + gemAEPKGreen) > 0 or Enhancer.db.profile.EPZero) then
 					if (not lineAdded) then
 						tooltip:AddLine(" ");
-						tooltip:AddLine("Enhancer Equivalence Points:", c["r"], c["g"], c["b"]);
+						tooltip:AddLine(L["eep_info"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
 						lineAdded = true;
 					end
 					
 					if ( (gemAEPBlue == gemAEPGreen) and (gemAEPKBlue == gemAEPKGreen) ) then
-						tooltip:AddDoubleLine(L["aeph_tooltip0"], string.format( L["ep_numbers"], (AEP + gemAEPBlue), (AEPK + gemAEPKBlue) ), c["r"], c["g"], c["b"], c["r"], c["g"], c["b"]);
+						tooltip:AddDoubleLine(L["aeph_tooltip0"], string.format( L["ep_numbers"], (AEP + gemAEPBlue), (AEPK + gemAEPKBlue) ), RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
 					else
-						tooltip:AddDoubleLine(L["aeph_tooltip1"], string.format( L["ep_numbers"], (AEP + gemAEPBlue), (AEPK + gemAEPKBlue) ), c["r"], c["g"], c["b"], c["r"], c["g"], c["b"]);
-						tooltip:AddDoubleLine(L["aeph_tooltip2"], string.format( L["ep_numbers"], (AEP + gemAEPGreen), (AEPK + gemAEPKGreen) ), c["r"], c["g"], c["b"], c["r"], c["g"], c["b"]);
+						tooltip:AddDoubleLine(L["aeph_tooltip1"], string.format( L["ep_numbers"], (AEP + gemAEPBlue), (AEPK + gemAEPKBlue) ), RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
+						tooltip:AddDoubleLine(L["aeph_tooltip2"], string.format( L["ep_numbers"], (AEP + gemAEPGreen), (AEPK + gemAEPKGreen) ), RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
 					end
 					
 					if (not Enhancer.db.profile.AEP) then
@@ -211,23 +204,24 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 			
 			--[[ Set point values here so it's easy to change ]]--
 			local intVal = 8;
+			-- local spiVal = 3;
 			local healVal = 10;
 			local scritVal = 1;
-			local regenVal = 50;
-			-- Values used are probably still shit is a primary concern :P
+			local regenVal = 27;
+			-- local hasteVal = 8;
 			
 			HEP = HEP + ( (bonuses.INT or 0) * intVal );
 			HEP = HEP + ( (bonuses.HEAL or 0) * healVal );
 			HEP = HEP + ( (bonuses.CR_SPELLCRIT or 0) * scritVal );
 			HEP = HEP + ( (bonuses.MANAREG or 0) * regenVal );
 			
-			gemHEPBlue = ( (9 * healVal) + (2 * regenVal) ) * nonMetaSockets;
-			-- Royal Nightseye +9 Healing Spells and +2 Mana every 5 seconds 90 + 100 = 190
+			gemHEPBlue = (18 * healVal) * nonMetaSockets;
+			-- Royal Nightseye +9 Healing Spells and +2 Mana every 5 seconds 90 + 54 = 1440
 			-- Teardrop Living Ruby +18 Healing 180 = 180
 			
 			gemHEPGreen = (13 * healVal) * nonMetaSockets;
 			-- Teardrop Blood Garnet +13 Healing 130
-			-- Royal Shadow Draenite +7 Healing Spells & +1 Mana per 5 Seconds  70 + 50 = 120
+			-- Royal Shadow Draenite +7 Healing Spells & +1 Mana per 5 Seconds  70 + 27 = 97
 			-- Luminous Flame Spessarite +7 Healing Spells and +3 Intellect 70 + 24 = 94
 			
 			HEP = HEP + ((26 * healVal) * metaSockets);
@@ -244,24 +238,36 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 			if ( (HEP + gemHEPBlue + gemHEPGreen) > 0 or (HEPK + gemHEPKBlue + gemHEPKGreen) > 0 or Enhancer.db.profile.EPZero) then
 				if (not lineAdded) then
 					tooltip:AddLine(" ");
-					tooltip:AddLine("Enhancer Equivalence Points:", c["r"], c["g"], c["b"]);
+					tooltip:AddLine(L["eep_info"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
 					lineAdded = true;
 				end
 				
 				if ( (gemHEPBlue == gemHEPGreen) and (gemHEPKBlue == gemHEPKGreen) ) then
-					tooltip:AddDoubleLine(L["hep_tooltip0"], string.format( L["ep_numbers"], (HEP + gemHEPBlue), (HEPK + gemHEPKBlue) ), c["r"], c["g"], c["b"], c["r"], c["g"], c["b"]);
+					tooltip:AddDoubleLine(L["hep_tooltip0"], string.format( L["ep_numbers"], (HEP + gemHEPBlue), (HEPK + gemHEPKBlue) ), RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
 				else
-					tooltip:AddDoubleLine(L["hep_tooltip1"], string.format( L["ep_numbers"], (HEP + gemHEPBlue), (HEPK + gemHEPKBlue) ), c["r"], c["g"], c["b"], c["r"], c["g"], c["b"]);
-					tooltip:AddDoubleLine(L["hep_tooltip2"], string.format( L["ep_numbers"], (HEP + gemHEPGreen), (HEPK + gemHEPKGreen) ), c["r"], c["g"], c["b"], c["r"], c["g"], c["b"]);
+					tooltip:AddDoubleLine(L["hep_tooltip1"], string.format( L["ep_numbers"], (HEP + gemHEPBlue), (HEPK + gemHEPKBlue) ), RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
+					tooltip:AddDoubleLine(L["hep_tooltip2"], string.format( L["ep_numbers"], (HEP + gemHEPGreen), (HEPK + gemHEPKGreen) ), RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
 				end
 				
 				-- tinsert(infos, L["hep_info"]);
 			end
 		end
 		
+		--[[ Do spellDamage Equivalence Points ]]--
+		if (Enhancer.db.profile.DEP) then
+			--[[ Set point values here so it's easy to change ]]--
+			local intVal = 1;
+			-- local spiVal = 1;
+			local sdmgVal = 10;
+			local scritVal = 2;
+			local shitVal = 6;
+			local regenVal = 15;
+			-- local hasteVal = 3;
+		end
+		
 		if (lineAdded) then
 			for _, infoLine in ipairs(infos) do
-				tooltip:AddLine( infoLine, c["r"], c["g"], c["b"] );
+				tooltip:AddLine( infoLine, RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"] );
 			end
 			
 			tooltip:Show();
@@ -292,33 +298,96 @@ end
 		Agility = 1.8 (2 w/Kings)
 		Hit Rating = 1.4
 		Attack Power = 1
-		
-		Debug stuff:
-		Bonuses for: [Swiftsteel Bludgeon]
-		WEAPON_MAX = 196
-		WEAPON_SPEED = 1.5
-		ATTACKPOWER = 40
-		CR_HASTE = 27
-		CR_HIT = 19
-		WEAPON_MIN = 105
 ]]--
 
 --[[
-	Healing Equivalency Points: (Not sure at all about numbers)
+function EnhancerEP:GemPicker(gem, values)
+	local totVal = 0;
+	
+	for stat, value in pairs(gem) do
+		totVal = totVal + (gem[stat] * values[stat]);
+	end
+	
+	return totVal;
+end
 
-	Healing = 1.12
-	SpellCrit = 0.101
-	MP5 = 6.403
-	INT = 0.8975
+ItemBonusLib will return the following values:
+
+	Might be able to use on of the lookup-tables to set values cared about as:
+	AEPCube = {
+		["Strength"] = { ["value"] = 2, ["kings"] = true },
+		["Attack Power"] = { ["value"] = 1, ["kings"] = nil },
+	}
+	and then build a new "cube" replacing keys from ItemBonusLib otherwise just use ItemBonusLib keys directly
+
+	STR = "Strength",
+	AGI = "Agility",
+	STA = "Stamina",
+	INT = "Intellect",
+	SPI = "Spirit",
+	ARMOR = "Reinforced Armor",
 	
-	-- HEAL, INT, MANAREG, CR_SPELLCRIT, DMG
-	-- Question comes in here Damage/Healing is caught as Healing or not by ItemBonusLib: it is
+	ARCANERES = "Arcane Resistance",
+	FIRERES = "Fire Resistance",
+	NATURERES = "Nature Resistance",
+	FROSTRES = "Frost Resistance",
+	SHADOWRES = "Shadow Resistance",
 	
-	Int = 15 Mana, 0.083 MP5, 0.336 Healing, 0.0279 Spell Crit
-	http://forums.wow-europe.com/thread.html?topicId=14551513&sid=1
+	FISHING = "Fishing",
+	MINING = "Mining",
+	HERBALISM = "Herbalism",
+	SKINNING = "Skinning",
+	DEFENSE = "Defense",
 	
-	INT = 0.8
-	HEAL = 1
-	CR_SPELLCRIT = 0.1
-	MANAREG = 5.7
+	BLOCK = "Chance to Block",
+	BLOCKVALUE = "Block value",
+	DODGE = "Dodge",
+	PARRY = "Parry",
+	ATTACKPOWER = "Attack Power",
+	ATTACKPOWERUNDEAD = "Attack Power against Undead",
+	ATTACKPOWERBEAST = "Attack Power against Beasts",
+	ATTACKPOWERFERAL = "Attack Power in feral form",
+	CRIT = "Crit. hits",
+	RANGEDATTACKPOWER = "Ranged Attack Power",
+	RANGEDCRIT = "Crit. Shots",
+	TOHIT = "Chance to Hit",
+	IGNOREARMOR = "Ignore Armor",
+	
+	DMG = "Spell Damage",
+	DMGUNDEAD = "Spell Damage against Undead",
+	ARCANEDMG = "Arcane Damage",
+	FIREDMG = "Fire Damage",
+	FROSTDMG = "Frost Damage",
+	HOLYDMG = "Holy Damage",
+	NATUREDMG = "Nature Damage",
+	SHADOWDMG = "Shadow Damage",
+	SPELLCRIT = "Crit. Spell",
+	SPELLTOHIT = "Chance to Hit with spells",
+	SPELLPEN = "Spell Penetration",
+	HEAL = "Healing",
+	HOLYCRIT = "Crit. Holy Spell",
+	
+	HEALTHREG = "Life Regeneration",
+	MANAREG = "Mana Regeneration",
+	HEALTH = "Life Points",
+	MANA = "Mana Points",
+	
+	CR_WEAPON = "Weapon rating",
+	CR_DEFENSE = "Defense rating",
+	CR_DODGE = "Dodge rating",
+	CR_PARRY = "Parry rating",
+	CR_BLOCK = "Block rating",
+	CR_HIT = "Hit rating",
+	CR_CRIT = "Critical strike rating",
+	CR_HASTE = "Haste rating",
+	CR_SPELLHIT = "Hit with spell rating",
+	CR_SPELLCRIT = "Critical strike with spell rating",
+	CR_SPELLHASTE = "Spell haste rating",
+	CR_RESILIENCE = "Resilience",
+	CR_WEAPON_AXE = "Axe skill rating",
+	CR_WEAPON_DAGGER = "Dagger skill rating",
+	CR_WEAPON_MACE = "Mace skill rating",
+	CR_WEAPON_SWORD = "Sword skill rating",
+	CR_WEAPON_SWORD_2H = "Two-Handed Swords skill rating",
+	SNARERES = "Snare and Root effects Resistance",
 ]]--

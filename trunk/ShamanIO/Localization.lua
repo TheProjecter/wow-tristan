@@ -104,19 +104,26 @@ L_AEP:RegisterTranslations("enUS", function() return {
 	["Meta Socket"] = true,
 	
 	--[[ Tooltip strings ]]--
-	["aep_tooltip0"] = string.rep(" ", 3) .. "AEP Summary (inc BoK):",
-	["aep_tooltip1"] = string.rep(" ", 3) .. "AEP Summary rare gems (inc BoK):",
-	["aep_tooltip2"] = string.rep(" ", 3) .. "AEP Summary uncommon gems (inc BoK):",
+	["eep_info"] = "Enhancer's Equivalence Points:",
+	
+	["aep_tooltip0"] = string.rep(" ", 3) .. "AttackpowerEP (inc BoK):",
+	["aep_tooltip1"] = string.rep(" ", 3) .. "AttackpowerEP r-gems (inc BoK):",
+	["aep_tooltip2"] = string.rep(" ", 3) .. "AttackpowerEP u-gems (inc BoK):",
 	["aep_info"] = "AEP model from Tornhoof/Pater",
 	
-	["aeph_tooltip0"] = string.rep(" ", 3) .. "AEP Summary w/o hit (inc BoK):",
-	["aeph_tooltip1"] = string.rep(" ", 3) .. "AEP Summary rare gems w/o hit (inc BoK):",
-	["aeph_tooltip2"] = string.rep(" ", 3) .. "AEP Summary uncommon gems w/o hit (inc BoK):",
+	["aeph_tooltip0"] = string.rep(" ", 3) .. "AttackpowerEP w/o hit (inc BoK):",
+	["aeph_tooltip1"] = string.rep(" ", 3) .. "AttackpowerEP r-gems w/o hit (inc BoK):",
+	["aeph_tooltip2"] = string.rep(" ", 3) .. "AttackpowerEP u-gems w/o hit (inc BoK):",
 	
-	["hep_tooltip0"] = string.rep(" ", 3) .. "HEP Summary (inc BoK):",
-	["hep_tooltip1"] = string.rep(" ", 3) .. "HEP Summary rare gems (inc BoK):",
-	["hep_tooltip2"] = string.rep(" ", 3) .. "HEP Summary uncommon gems (inc BoK):",
+	["hep_tooltip0"] = string.rep(" ", 3) .. "HealingEP (inc BoK):",
+	["hep_tooltip1"] = string.rep(" ", 3) .. "HealingEP r-gems (inc BoK):",
+	["hep_tooltip2"] = string.rep(" ", 3) .. "HealingEP u-gems (inc BoK):",
 	["hep_info"] = "Numbers from Leion (possibly very inaccurate and shouldn't be trusted at all)",
+	
+	["dep_tooltip0"] = string.rep(" ", 3) .. "DamageEP (inc BoK):",
+	["dep_tooltip1"] = string.rep(" ", 3) .. "DamageEP r-gems (inc BoK):",
+	["dep_tooltip2"] = string.rep(" ", 3) .. "DamageEP u-gems (inc BoK):",
+	["dep_info"] = "Numbers from Leion (possibly very inaccurate and shouldn't be trusted at all)",
 	
 	["ep_numbers"] = "%d (%d)",
 	
