@@ -21,6 +21,7 @@ local defaults = {
 	AEP = true,
 	AEPH = true,
 	HEP = true,
+	DEP = true,
 	EPGems = {
 		maxQuality = 3,
 		metaGems = true,
@@ -169,9 +170,18 @@ local consoleoptions = {
 					end,
 					order = 3,
 				},
+				[L["dep_cmd"]] = {
+					name = L["dep_cmd"], type = "toggle",
+					desc = L["dep_desc"],
+					get = function() return Enhancer.db.profile.DEP; end,
+					set = function()
+						Enhancer.db.profile.DEP = not Enhancer.db.profile.DEP;
+					end,
+					order = 4,
+				},
 				firstSpacer = {
 					type = "header",
-					order = 4,
+					order = 5,
 				},
 				[L["ep_gemq_cmd"]] = {
 					name = L["ep_gemq_cmd"], type = "range",
@@ -183,7 +193,7 @@ local consoleoptions = {
 					set = function(v)
 						Enhancer.db.profile.EPGems.maxQuality = v;
 					end,
-					order = 5,
+					order = 6,
 				},
 				[L["ep_gemm_cmd"]] = {
 					name = L["ep_gemm_cmd"], type = "toggle",
@@ -192,7 +202,7 @@ local consoleoptions = {
 					set = function()
 						Enhancer.db.profile.EPGems.metaGems = not Enhancer.db.profile.EPGems.metaGems;
 					end,
-					order = 6,
+					order = 7,
 				},
 			},
 		},
