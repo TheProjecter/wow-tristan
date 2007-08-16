@@ -32,6 +32,8 @@ L_Main:RegisterTranslations("enUS", function() return {
 	["aeph_desc"] = "Toggle showing Attackpower Equivalence Points (w/o hit) in Tooltips",
 	["hep_cmd"] = "HEP",
 	["hep_desc"] = "Toggle showing Healing Equivalence Points in Tooltips",
+	["dep_cmd"] = "DEP",
+	["dep_desc"] = "Toggle showing spellDamage Equivalence Points in Tooltips",
 	["ep_gemq_cmd"] = "GemQuality",
 	["ep_gemq_desc"] = "Set Max Quality for Gems (1 = Common, 2 = Uncommon, 3 = Rare)", --, 4 = Epic)",
 	["ep_gemm_cmd"] = "MetaGem",
