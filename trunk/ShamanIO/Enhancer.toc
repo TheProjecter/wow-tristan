@@ -5,7 +5,7 @@
 ## X-AuthorRealm: Frostmane[EU]
 
 ## SavedVariables: EnhancerDB
-## OptionalDeps: Ace2, DeuceCommander, Niagara, ItemBonusLib, Babble-2.2, Babble-Spell-2.2, GratuityLib, SpecialEventsEmbed, Parser-3.0
+## OptionalDeps: Ace2, DeuceCommander, Niagara, ItemBonusLib, Babble-2.2, Babble-Spell-2.2, GratuityLib, SpecialEventsEmbed, Parser-3.0, TipHookerLib
 
 ## Version: 1.0.$Revision$
 ## X-LastUpdate: $Date$
@@ -23,17 +23,21 @@ libs\AceLibrary\AceLibrary.lua
 libs\AceOO-2.0\AceOO-2.0.lua
 libs\AceAddon-2.0\AceAddon-2.0.lua
 libs\AceConsole-2.0\AceConsole-2.0.lua
-libs\AceDB-2.0\AceDB-2.0.lua
+Libs\AceDB-2.0\AceDB-2.0.lua
 libs\AceEvent-2.0\AceEvent-2.0.lua
 libs\AceLocale-2.2\AceLocale-2.2.lua
+libs\AceDebug-2.0\AceDebug-2.0.lua
+libs\AceModuleCore-2.0\AceModuleCore-2.0.lua
 
 libs\Deformat-2.0\Deformat-2.0.lua
-libs\Babble-Spell-2.2.lua
-libs\Gratuity-2.0.lua
-libs\ItemBonusLib-1.0.lua
-libs\Metrognome-2.0.lua
-libs\Parser-3.0.lua
-libs\SpecialEvents-Aura-2.0.lua
+
+libs\Babble-Spell-2.2\Babble-Spell-2.2.lua
+libs\Gratuity-2.0\Gratuity-2.0.lua
+libs\ItemBonusLib-1.0\ItemBonusLib-1.0.lua
+libs\Metrognome-2.0\Metrognome-2.0.lua
+libs\Parser-3.0\Parser-3.0.lua
+libs\SpecialEvents-Aura-2.0\SpecialEvents-Aura-2.0.lua
+libs\TipHooker-1.0\TipHooker-1.0.lua
 
 Localization.lua
 AddOn.lua

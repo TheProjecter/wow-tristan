@@ -7,6 +7,10 @@ local Gratuity = AceLibrary("Gratuity-2.0")
 
 function EnhancerEP:OnInitialize()
 	if (Enhancer.englishClass ~= "SHAMAN") then return; end
+	
+	-- Just a place to give bonus to special gems
+	EnhancerEP.gems["Relentless Earthstorm Diamond"]["AEP"] = 750;
+	EnhancerEP.gems["Relentless Earthstorm Diamond"]["AEPH"] = 750;
 end
 
 function EnhancerEP:OnEnable()
@@ -51,7 +55,6 @@ end
 EnhancerEP.ProcessTypes = { [L["Armor"]] = true, [L["Gem"]] = true, [L["Weapon"]] = true, [L["Recipe"]] = true, } -- [L["Projectile"]] = true, [L["Quiver"]] = true, 
 EnhancerEP.NotProcessSubTypes = { [L["Plate"]] = true, [L["Idols"]] = true, [L["Librams"]] = true, [L["Fishing Pole"]] = true, [L["One-Handed Swords"]] = true, [L["Polearms"]] = true, [L["Two-Handed Swords"]] = true, [L["Bows"]] = true, [L["Crossbows"]] = true, [L["Guns"]] = true, [L["Thrown"]] = true, [L["Wands"]] = true, }
 function EnhancerEP.ProcessTooltip(tooltip, name, link)
-	
 	if (link) then
 		
 		--[[ Check if we care about this item ]]--
@@ -85,55 +88,37 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 				metaSockets = metaSockets + 1;
 			end
 		end
+		-- nonMetaSockets, metaSockets
 		
 		--[[ Do Attackpower Equivalence Points ]]--
+		local lastValue, lastKingsValue = nil, nil;
 		if (Enhancer.db.profile.AEP) then
-			local AEP, AEPK = 0, 0;
-			local gemAEPBlue, gemAEPKBlue = 0, 0;
-			local gemAEPGreen, gemAEPKGreen = 0, 0;
-			
 			--[[ Set point values here so it's easy to change ]]--
-			local hasteVal = 22;
-			local strVal = 20;
-			local critVal = 20;
-			local agiVal = 18;
-			local hitVal = 14;
-			local apVal = 10;
+			values = {
+				["ATTACKPOWER"] = { ["value"] = 10, ["kings"] = nil },
+				
+				["STR"] = { ["value"] = 20, ["kings"] = true },
+				["AGI"] = { ["value"] = 18, ["kings"] = true },
+				
+				["CR_CRIT"] = { ["value"] = 20, ["kings"] = nil },
+				["CR_HIT"] = { ["value"] = 14, ["kings"] = nil },
+				["CR_HASTE"] = { ["value"] = 22, ["kings"] = nil },
+				-- local apVal = 10-20;
+			}
 			
-			AEP = AEP + ( (bonuses.CR_HASTE or 0) * hasteVal );
-			AEP = AEP + ( (bonuses.STR or 0) * strVal );
-			AEP = AEP + ( (bonuses.CR_CRIT or 0) * critVal );
-			AEP = AEP + ( (bonuses.AGI or 0) * agiVal );
-			AEP = AEP + ( (bonuses.CR_HIT or 0) * hitVal );
-			AEP = AEP + ( (bonuses.ATTACKPOWER or 0) * apVal );
-			gemAEPBlue = (8 * strVal) * nonMetaSockets; -- Bold Living Ruby 8 str
-			gemAEPGreen = (6 * strVal) * nonMetaSockets; -- Bold Blood Garnet 8 str
-			AEP = AEP + ( ((12 * agiVal) + 750) * metaSockets ); -- Relentless Earthstorm Diamond: +12 Agility & 3% Increased Critical Damage -- 3% Increased Critical Damage can't be calculated so using a fixed value for it -- Apply Aura: Mod Crit Damage Bonus (Melee) (895)
+			-- EnhancerEP:Calculate(values, bonuses, gemcount, metacount, gemcachekey)
+			-- return self:Round(total), self:Round(kingstotal), gemName, kingsgemName, metagemName, kingsmetagemName;
+			local EP, EPK, gem1, gem2, gem3, gem4 = EnhancerEP:Calculate(values, bonuses, nonMetaSockets, metaSockets, "AEP");
+			lastValue, lastKingsValue = EP, EPK;
 			
-			AEPK = AEPK + ( (bonuses.CR_HASTE or 0) * hasteVal );
-			AEPK = AEPK + ( (bonuses.STR or 0) * (strVal * kingsMultiplier) );
-			AEPK = AEPK + ( (bonuses.CR_CRIT or 0) * critVal );
-			AEPK = AEPK + ( (bonuses.AGI or 0) * (agiVal * kingsMultiplier) );
-			AEPK = AEPK + ( (bonuses.CR_HIT or 0) * hitVal );
-			AEPK = AEPK + ( (bonuses.ATTACKPOWER or 0) * apVal );
-			gemAEPKBlue = ((8 * strVal) * kingsMultiplier) * nonMetaSockets;
-			gemAEPKGreen = ((6 * strVal) * kingsMultiplier) * nonMetaSockets;
-			AEPK = AEPK + ( (((12 * agiVal) * kingsMultiplier) + 750) * metaSockets );
-			
-			if ( (AEP + gemAEPBlue + gemAEPGreen) > 0 or (AEPK + gemAEPKBlue + gemAEPKGreen) > 0 or Enhancer.db.profile.EPZero) then
+			if ( EP > 0 or Enhancer.db.profile.EPZero ) then
 				if (not lineAdded) then
 					tooltip:AddLine(" ");
 					tooltip:AddLine(L["eep_info"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
 					lineAdded = true;
 				end
 				
-				
-				if ( (gemAEPBlue == gemAEPGreen) and (gemAEPKBlue == gemAEPKGreen) ) then
-					tooltip:AddDoubleLine(L["aep_tooltip0"], string.format( L["ep_numbers"], (AEP + gemAEPBlue), (AEPK + gemAEPKBlue) ), RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
-				else
-					tooltip:AddDoubleLine(L["aep_tooltip1"], string.format( L["ep_numbers"], (AEP + gemAEPBlue), (AEPK + gemAEPKBlue) ), RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
-					tooltip:AddDoubleLine(L["aep_tooltip2"], string.format( L["ep_numbers"], (AEP + gemAEPGreen), (AEPK + gemAEPKGreen) ), RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
-				end
+				tooltip:AddDoubleLine(L["aep_tooltip"], string.format( L["ep_numbers"], EP, EPK ), RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
 				
 				tinsert(infos, L["aep_info"]);
 			end
@@ -141,113 +126,64 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 		
 		--[[ Do Attackpower Equivalence Points but without hit ]]--
 		if (Enhancer.db.profile.AEPH) then
-			if (Enhancer.db.profile.AEP and not bonuses.CR_HIT) then
-				-- We allready added AEP (with Hit) but since the item doesn't have any Hit it's pointless ;)
-				-- so skip it
-			else
-				local AEP, AEPK = 0, 0;
-				local gemAEPBlue, gemAEPKBlue = 0, 0;
-				local gemAEPGreen, gemAEPKGreen = 0, 0;
-				
-				--[[ Set point values here so it's easy to change ]]--
-				local hasteVal = 22;
-				local strVal = 20;
-				local critVal = 20;
-				local agiVal = 18;
-				local apVal = 10;
-				
-				AEP = AEP + ( (bonuses.CR_HASTE or 0) * hasteVal );
-				AEP = AEP + ( (bonuses.STR or 0) * strVal );
-				AEP = AEP + ( (bonuses.CR_CRIT or 0) * critVal );
-				AEP = AEP + ( (bonuses.AGI or 0) * agiVal );
-				AEP = AEP + ( (bonuses.ATTACKPOWER or 0) * apVal );
-				gemAEPBlue = (8 * strVal) * nonMetaSockets; -- Bold Living Ruby 8 str
-				gemAEPGreen = (6 * strVal) * nonMetaSockets; -- Bold Blood Garnet 8 str
-				AEP = AEP + ( ((12 * agiVal) + 750) * metaSockets ); -- Relentless Earthstorm Diamond: +12 Agility & 3% Increased Critical Damage -- 3% Increased Critical Damage can't be calculated so using a fixed value for it -- Apply Aura: Mod Crit Damage Bonus (Melee) (895)
-				-- 3% Increased Critical Damage doesn't show in ItemBonusLib
-				
-				AEPK = AEPK + ( (bonuses.CR_HASTE or 0) * hasteVal );
-				AEPK = AEPK + ( (bonuses.STR or 0) * (strVal * kingsMultiplier) );
-				AEPK = AEPK + ( (bonuses.CR_CRIT or 0) * critVal );
-				AEPK = AEPK + ( (bonuses.AGI or 0) * (agiVal * kingsMultiplier) );
-				AEPK = AEPK + ( (bonuses.ATTACKPOWER or 0) * apVal );
-				gemAEPKBlue = ((8 * strVal) * kingsMultiplier) * nonMetaSockets;
-				gemAEPKGreen = ((6 * strVal) * kingsMultiplier) * nonMetaSockets;
-				AEPK = AEPK + ( (((12 * agiVal) * kingsMultiplier) + 750) * metaSockets );
-				
-				if ( (AEP + gemAEPBlue + gemAEPGreen) > 0 or (AEPK + gemAEPKBlue + gemAEPKGreen) > 0 or Enhancer.db.profile.EPZero) then
-					if (not lineAdded) then
-						tooltip:AddLine(" ");
-						tooltip:AddLine(L["eep_info"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
-						lineAdded = true;
-					end
-					
-					if ( (gemAEPBlue == gemAEPGreen) and (gemAEPKBlue == gemAEPKGreen) ) then
-						tooltip:AddDoubleLine(L["aeph_tooltip0"], string.format( L["ep_numbers"], (AEP + gemAEPBlue), (AEPK + gemAEPKBlue) ), RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
-					else
-						tooltip:AddDoubleLine(L["aeph_tooltip1"], string.format( L["ep_numbers"], (AEP + gemAEPBlue), (AEPK + gemAEPKBlue) ), RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
-						tooltip:AddDoubleLine(L["aeph_tooltip2"], string.format( L["ep_numbers"], (AEP + gemAEPGreen), (AEPK + gemAEPKGreen) ), RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
-					end
-					
-					if (not Enhancer.db.profile.AEP) then
-						tinsert(infos, L["aep_info"]);
-					end
-				end
-			end
-		end
-		
-		--[[ Do Healing Equivalence Points ]]--
-		if (Enhancer.db.profile.HEP) then
-			local HEP, HEPK = 0, 0;
-			local gemHEPBlue, gemHEPKBlue = 0, 0;
-			local gemHEPGreen, gemHEPKGreen = 0, 0;
-			
 			--[[ Set point values here so it's easy to change ]]--
-			local intVal = 8;
-			-- local spiVal = 3;
-			local healVal = 10;
-			local scritVal = 1;
-			local regenVal = 27;
-			-- local hasteVal = 8;
+			values = {
+				["ATTACKPOWER"] = { ["value"] = 10, ["kings"] = nil },
+				
+				["STR"] = { ["value"] = 20, ["kings"] = true },
+				["AGI"] = { ["value"] = 18, ["kings"] = true },
+				
+				["CR_CRIT"] = { ["value"] = 20, ["kings"] = nil },
+				["CR_HASTE"] = { ["value"] = 22, ["kings"] = nil },
+				-- local apVal = 10-20;
+			}
 			
-			HEP = HEP + ( (bonuses.INT or 0) * intVal );
-			HEP = HEP + ( (bonuses.HEAL or 0) * healVal );
-			HEP = HEP + ( (bonuses.CR_SPELLCRIT or 0) * scritVal );
-			HEP = HEP + ( (bonuses.MANAREG or 0) * regenVal );
+			-- EnhancerEP:Calculate(values, bonuses, gemcount, metacount, gemcachekey)
+			-- return self:Round(total), self:Round(kingstotal), gemName, kingsgemName, metagemName, kingsmetagemName;
+			local EP, EPK, gem1, gem2, gem3, gem4 = EnhancerEP:Calculate(values, bonuses, nonMetaSockets, metaSockets, "AEPH");
 			
-			gemHEPBlue = (18 * healVal) * nonMetaSockets;
-			-- Royal Nightseye +9 Healing Spells and +2 Mana every 5 seconds 90 + 54 = 1440
-			-- Teardrop Living Ruby +18 Healing 180 = 180
-			
-			gemHEPGreen = (13 * healVal) * nonMetaSockets;
-			-- Teardrop Blood Garnet +13 Healing 130
-			-- Royal Shadow Draenite +7 Healing Spells & +1 Mana per 5 Seconds  70 + 27 = 97
-			-- Luminous Flame Spessarite +7 Healing Spells and +3 Intellect 70 + 24 = 94
-			
-			HEP = HEP + ((26 * healVal) * metaSockets);
-			-- Bracing Earthstorm Diamond +26 Healing Spells & 2% Reduced Threat -- THREATREDUCTION = 2 (in ItemBonusLib)
-			
-			HEPK = HEPK + ( (bonuses.INT or 0) * (intVal * kingsMultiplier) );
-			HEPK = HEPK + ( (bonuses.HEAL or 0) * healVal );
-			HEPK = HEPK + ( (bonuses.CR_SPELLCRIT or 0) * scritVal );
-			HEPK = HEPK + ( (bonuses.MANAREG or 0) * regenVal );
-			gemHEPKBlue = gemHEPBlue;
-			gemHEPKGreen = gemHEPGreen;
-			HEPK = HEPK + ( (26 * healVal) * metaSockets );
-			
-			if ( (HEP + gemHEPBlue + gemHEPGreen) > 0 or (HEPK + gemHEPKBlue + gemHEPKGreen) > 0 or Enhancer.db.profile.EPZero) then
+			local skipThis = ( lastValue and lastKingsValue and lastValue == EP and lastKingsValue == EPK );
+			if ( (EP > 0 or Enhancer.db.profile.EPZero) and (not skipThis) ) then
 				if (not lineAdded) then
 					tooltip:AddLine(" ");
 					tooltip:AddLine(L["eep_info"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
 					lineAdded = true;
 				end
 				
-				if ( (gemHEPBlue == gemHEPGreen) and (gemHEPKBlue == gemHEPKGreen) ) then
-					tooltip:AddDoubleLine(L["hep_tooltip0"], string.format( L["ep_numbers"], (HEP + gemHEPBlue), (HEPK + gemHEPKBlue) ), RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
-				else
-					tooltip:AddDoubleLine(L["hep_tooltip1"], string.format( L["ep_numbers"], (HEP + gemHEPBlue), (HEPK + gemHEPKBlue) ), RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
-					tooltip:AddDoubleLine(L["hep_tooltip2"], string.format( L["ep_numbers"], (HEP + gemHEPGreen), (HEPK + gemHEPKGreen) ), RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
+				tooltip:AddDoubleLine(L["aeph_tooltip"], string.format( L["ep_numbers"], EP, EPK ), RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
+				
+				if (not Enhancer.db.profile.AEP) then
+					tinsert(infos, L["aep_info"]);
 				end
+			end
+		end
+		
+		--[[ Do Healing Equivalence Points ]]--
+		if (Enhancer.db.profile.HEP) then
+			--[[ Set point values here so it's easy to change ]]--
+			values = {
+				["HEAL"] = { ["value"] = 10, ["kings"] = nil },
+				
+				["INT"] = { ["value"] = 8, ["kings"] = true },
+				-- ["SPI"] = { ["value"] = 1, ["kings"] = true },
+				
+				["CR_SPELLCRIT"] = { ["value"] = 1, ["kings"] = nil },
+				-- ["CR_SPELLHASTE"] = { ["value"] = 3, ["kings"] = nil },
+				["MANAREG"] = { ["value"] = 27, ["kings"] = nil },
+			}
+			
+			-- EnhancerEP:Calculate(values, bonuses, gemcount, metacount, gemcachekey)
+			-- return self:Round(total), self:Round(kingstotal), gemName, kingsgemName, metagemName, kingsmetagemName;
+			local EP, EPK, gem1, gem2, gem3, gem4 = EnhancerEP:Calculate(values, bonuses, nonMetaSockets, metaSockets, "HEP");
+			
+			if ( EP > 0 or Enhancer.db.profile.EPZero) then
+				if (not lineAdded) then
+					tooltip:AddLine(" ");
+					tooltip:AddLine(L["eep_info"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
+					lineAdded = true;
+				end
+				
+				tooltip:AddDoubleLine(L["hep_tooltip"], string.format( L["ep_numbers"], EP, EPK ), RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
 				
 				-- tinsert(infos, L["hep_info"]);
 			end
@@ -256,22 +192,42 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 		--[[ Do spellDamage Equivalence Points ]]--
 		if (Enhancer.db.profile.DEP) then
 			--[[ Set point values here so it's easy to change ]]--
-			local intVal = 1;
-			-- local spiVal = 1;
-			local sdmgVal = 10;
-			local scritVal = 2;
-			local shitVal = 6;
-			local regenVal = 15;
-			-- local hasteVal = 3;
+			values = {
+				["DMG"] = { ["value"] = 10, ["kings"] = nil },
+				
+				["INT"] = { ["value"] = 1, ["kings"] = true },
+				-- ["SPI"] = { ["value"] = 1, ["kings"] = true },
+				
+				["CR_SPELLCRIT"] = { ["value"] = 2, ["kings"] = nil },
+				["CR_SPELLHIT"] = { ["value"] = 6, ["kings"] = nil },
+				-- ["CR_SPELLHASTE"] = { ["value"] = 3, ["kings"] = nil },
+				["MANAREG"] = { ["value"] = 15, ["kings"] = nil },
+			}
+			
+			-- EnhancerEP:Calculate(values, bonuses, gemcount, metacount, gemcachekey)
+			-- return self:Round(total), self:Round(kingstotal), gemName, kingsgemName, metagemName, kingsmetagemName;
+			local EP, EPK, gem1, gem2, gem3, gem4 = EnhancerEP:Calculate(values, bonuses, nonMetaSockets, metaSockets, "DEP");
+			
+			if ( EP > 0 or Enhancer.db.profile.EPZero) then
+				if (not lineAdded) then
+					tooltip:AddLine(" ");
+					tooltip:AddLine(L["eep_info"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
+					lineAdded = true;
+				end
+				
+				tooltip:AddDoubleLine(L["dep_tooltip"], string.format( L["ep_numbers"], EP, EPK ), RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
+				
+				-- tinsert(infos, L["dep_info"]);
+			end
 		end
 		
 		if (lineAdded) then
 			for _, infoLine in ipairs(infos) do
 				tooltip:AddLine( infoLine, RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"] );
 			end
-			
-			tooltip:Show();
 		end
+		
+		if (lineAdded) then tooltip:Show(); end
 	end
 end
 
@@ -290,6 +246,81 @@ function EnhancerEP:StripGemsAndEnchants(itemlink)
 	return newLink;
 end
 
+local kingsMultiplier = (110 / 100);
+function EnhancerEP:Calculate(values, bonuses, gemcount, metacount, gemcachekey)
+	local total, kingstotal = 0, 0;
+	local gemTotal, gemName = 0, nil;
+	local kingsgemTotal, kingsgemName = 0, nil;
+	local metagemTotal, metagemName = 0, nil;
+	local kingsmetagemTotal, kingsmetagemName = 0, nil;
+	
+	for statKey, statTable in pairs(values) do
+		total = total + ( (bonuses[statKey] or 0) * statTable.value );
+		kingstotal = kingstotal + ( ((bonuses[statKey] or 0) * statTable.value) * ((statTable.kings and kingsMultiplier) or 1) );
+	end
+	
+	if (gemcount and tonumber(gemcount) and tonumber(gemcount) > 0) then
+		gemTotal, gemName = EnhancerEP:GemPicker(gemcachekey, values, false, false);
+		kingsgemTotal, kingsgemName = EnhancerEP:GemPicker(gemcachekey, values, false, true);
+		
+		total = total + ( gemTotal * gemcount );
+		kingstotal = kingstotal + ( kingsgemTotal * gemcount );
+	end
+	
+	if (metacount and tonumber(metacount) and tonumber(metacount) > 0 and Enhancer.db.profile.EPGems.metaGems) then
+		metagemTotal, metagemName = EnhancerEP:GemPicker(gemcachekey, values, true, false);
+		kingsmetagemTotal, kingsmetagemName = EnhancerEP:GemPicker(gemcachekey, values, true, true)
+		
+		total = total + ( metagemTotal * metacount );
+		kingstotal = kingstotal + ( kingsmetagemTotal * metacount );
+	end
+	
+	return self:Round(total), self:Round(kingstotal), gemName, kingsgemName, metagemName, kingsmetagemName;
+end
+
+function EnhancerEP:Round(number, decimals)
+  local multiplier = 10^(decimals or 0)
+  return math.floor(number * multiplier + 0.5) / multiplier
+end
+
+function EnhancerEP:GemPicker(cachekey, values, meta, blessingofkings)
+	local bestGem = { name = "", value = 0 };
+	local totalCacheKey = tostring(cachekey) .. "|" .. tostring(meta) .. "|" .. tostring(blessingofkings) .. "|" .. tostring(Enhancer.db.profile.EPGems.maxQuality);
+	
+	if (not EnhancerEP.gemCache[totalCacheKey]) then
+		for gemName, gemBonusTable in pairs(EnhancerEP.gems) do
+			
+			local valid = false;
+			if (meta) then
+				valid = gemBonusTable["Meta Gem"];
+			else
+				if (not gemBonusTable["Meta Gem"]) then
+					valid = (tonumber(gemBonusTable["Gem Quality"]) <= Enhancer.db.profile.EPGems.maxQuality);
+				end
+			end
+			
+			if (valid) then	
+				local total = 0;
+				for statKey, statTable in pairs(values) do
+					total = total + ( ((gemBonusTable[statKey] or 0) * statTable.value) * (((blessingofkings and statTable.kings) and kingsMultiplier) or 1) );
+				end
+				total = total + (EnhancerEP.gems[gemName][cachekey] or 0);
+				
+				if (self:Round(total) > bestGem.value) then
+					bestGem.value = total;
+					bestGem.name = gemName;
+				end
+			end
+			
+			EnhancerEP.gemCache[totalCacheKey] = {}
+			EnhancerEP.gemCache[totalCacheKey].value = bestGem.value;
+			EnhancerEP.gemCache[totalCacheKey].name = bestGem.name;
+		end
+	end
+	
+	return EnhancerEP.gemCache[totalCacheKey].value, EnhancerEP.gemCache[totalCacheKey].name;
+end
+
 --[[
 		Tornhoof/Pater from http://elitistjerks.com/f31/t13297-enhance_shaman_collected_works_theorycraft_vol_i/
 		Haste Rating = 2.2
@@ -301,25 +332,6 @@ end
 ]]--
 
 --[[
-function EnhancerEP:GemPicker(gem, values)
-	local totVal = 0;
-	
-	for stat, value in pairs(gem) do
-		totVal = totVal + (gem[stat] * values[stat]);
-	end
-	
-	return totVal;
-end
-
-ItemBonusLib will return the following values:
-
-	Might be able to use on of the lookup-tables to set values cared about as:
-	AEPCube = {
-		["Strength"] = { ["value"] = 2, ["kings"] = true },
-		["Attack Power"] = { ["value"] = 1, ["kings"] = nil },
-	}
-	and then build a new "cube" replacing keys from ItemBonusLib otherwise just use ItemBonusLib keys directly
-
 	STR = "Strength",
 	AGI = "Agility",
 	STA = "Stamina",
@@ -391,3 +403,429 @@ ItemBonusLib will return the following values:
 	CR_WEAPON_SWORD_2H = "Two-Handed Swords skill rating",
 	SNARERES = "Snare and Root effects Resistance",
 ]]--
+EnhancerEP.gemCache = {}
+EnhancerEP.gems = {
+	["Balanced Nightseye"] = {
+		["Gem Quality"] = 3,
+		["ATTACKPOWER"] = 8,
+		["STA"] = 6,
+	},
+	["Bold Living Ruby"] = {
+		["Gem Quality"] = 3,
+		["STR"] = 8,
+	},
+	["Bracing Earthstorm Diamond"] = {
+		["Gem Quality"] = 3,
+		["HEAL"] = 26,
+		["Meta Gem"] = true,
+	},
+	["Bright Living Ruby"] = {
+		["Gem Quality"] = 3,
+		["ATTACKPOWER"] = 16,
+	},
+	["Brilliant Dawnstone"] = {
+		["Gem Quality"] = 3,
+		["INT"] = 8,
+	},
+	["Brutal Earthstorm Diamond"] = {
+		["Gem Quality"] = 3,
+		["Meta Gem"] = true,
+	},
+	["Dazzling Talasite"] = {
+		["Gem Quality"] = 3,
+		["INT"] = 4,
+		["MANAREG"] = 2,
+	},
+	["Delicate Living Ruby"] = {
+		["Gem Quality"] = 3,
+		["AGI"] = 8,
+	},
+	["Destructive Skyfire Diamond"] = {
+		["Gem Quality"] = 3,
+		["Meta Gem"] = true,
+	},
+	["Enduring Talasite"] = {
+		["Gem Quality"] = 3,
+		["STA"] = 6,
+		["CR_DEFENSE"] = 4,
+	},
+	["Enigmatic Skyfire Diamond"] = {
+		["Gem Quality"] = 3,
+		["CR_CRIT"] = 12,
+		["Meta Gem"] = true,
+	},
+	["Flashing Living Ruby"] = {
+		["Gem Quality"] = 3,
+		["CR_PARRY"] = 8,
+	},
+	["Gleaming Dawnstone"] = {
+		["Gem Quality"] = 3,
+		["CR_SPELLCRIT"] = 8,
+	},
+	["Glinting Noble Topaz"] = {
+		["Gem Quality"] = 3,
+		["AGI"] = 4,
+		["CR_HIT"] = 4,
+	},
+	["Glowing Nightseye"] = {
+		["Gem Quality"] = 3,
+		["STA"] = 6,
+		["DMG"] = 5,
+	},
+	["Great Dawnstone"] = {
+		["Gem Quality"] = 3,
+		["CR_SPELLHIT"] = 8,
+	},
+	["Imbued Unstable Diamond"] = {
+		["Gem Quality"] = 3,
+		["DMG"] = 14,
+		["Meta Gem"] = true,
+	},
+	["Infused Nightseye"] = {
+		["Gem Quality"] = 3,
+		["ATTACKPOWER"] = 8,
+		["MANAREG"] = 2,
+	},
+	["Inscribed Noble Topaz"] = {
+		["Gem Quality"] = 3,
+		["STR"] = 4,
+		["CR_CRIT"] = 4,
+	},
+	["Insightful Earthstorm Diamond"] = {
+		["Gem Quality"] = 3,
+		["INT"] = 12,
+		["Meta Gem"] = true,
+	},
+	["Jagged Talasite"] = {
+		["Gem Quality"] = 3,
+		["CR_CRIT"] = 4,
+		["STA"] = 6,
+	},
+	["Luminous Noble Topaz"] = {
+		["Gem Quality"] = 3,
+		["INT"] = 4,
+		["HEAL"] = 9,
+	},
+	["Lustrous Star of Elune"] = {
+		["Gem Quality"] = 3,
+		["MANAREG"] = 3,
+	},
+	["Mystic Dawnstone"] = {
+		["Gem Quality"] = 3,
+		["CR_RESILIENCE"] = 8,
+	},
+	["Mystical Skyfire Diamond"] = {
+		["Gem Quality"] = 3,
+		["Meta Gem"] = true,
+	},
+	["Potent Noble Topaz"] = {
+		["Gem Quality"] = 3,
+		["CR_SPELLCRIT"] = 4,
+		["DMG"] = 5,
+	},
+	["Potent Unstable Diamond"] = {
+		["Gem Quality"] = 3,
+		["ATTACKPOWER"] = 24,
+		["Meta Gem"] = true,
+	},
+	["Powerful Earthstorm Diamond"] = {
+		["Gem Quality"] = 3,
+		["STA"] = 18,
+		["Meta Gem"] = true,
+	},
+	["Prismatic Sphere"] = {
+		["Gem Quality"] = 3,
+	},
+	["Purified Shadow Pearl"] = {
+		["Gem Quality"] = 3,
+		["SPI"] = 4,
+		["HEAL"] = 9,
+	},
+	["Radiant Talasite"] = {
+		["Gem Quality"] = 3,
+		["SPELLPEN"] = 5,
+		["CR_SPELLCRIT"] = 4,
+	},
+	["Relentless Earthstorm Diamond"] = {
+		["Gem Quality"] = 3,
+		["AGI"] = 12,
+		["Meta Gem"] = true,
+	},
+	["Rigid Dawnstone"] = {
+		["Gem Quality"] = 3,
+		["CR_HIT"] = 8,
+	},
+	["Royal Nightseye"] = {
+		["Gem Quality"] = 3,
+		["MANAREG"] = 2,
+		["HEAL"] = 9,
+	},
+	["Runed Living Ruby"] = {
+		["Gem Quality"] = 3,
+		["DMG"] = 9,
+	},
+	["Shifting Nightseye"] = {
+		["Gem Quality"] = 3,
+		["AGI"] = 4,
+		["STA"] = 6,
+	},
+	["Smooth Dawnstone"] = {
+		["Gem Quality"] = 3,
+		["CR_CRIT"] = 8,
+	},
+	["Solid Star of Elune"] = {
+		["Gem Quality"] = 3,
+		["STA"] = 12,
+	},
+	["Sovereign Nightseye"] = {
+		["Gem Quality"] = 3,
+		["STR"] = 4,
+		["STA"] = 6,
+	},
+	["Sparkling Star of Elune"] = {
+		["Gem Quality"] = 3,
+		["SPI"] = 8,
+	},
+	["Steady Talasite"] = {
+		["Gem Quality"] = 3,
+		["STA"] = 6,
+		["CR_RESILIENCE"] = 4,
+	},
+	["Stormy Star of Elune"] = {
+		["Gem Quality"] = 3,
+		["SPELLPEN"] = 10,
+	},
+	["Subtle Living Ruby"] = {
+		["Gem Quality"] = 3,
+		["CR_DODGE"] = 8,
+	},
+	["Swift Skyfire Diamond"] = {
+		["Gem Quality"] = 3,
+		["ATTACKPOWER"] = 24,
+		["Meta Gem"] = true,
+	},
+	["Teardrop Living Ruby"] = {
+		["Gem Quality"] = 3,
+		["HEAL"] = 18,
+	},
+	["Tenacious Earthstorm Diamond"] = {
+		["Gem Quality"] = 3,
+		["CR_DEFENSE"] = 12,
+		["Meta Gem"] = true,
+	},
+	["Thick Dawnstone"] = {
+		["Gem Quality"] = 3,
+		["CR_DEFENSE"] = 8,
+	},
+	["Thundering Skyfire Diamond"] = {
+		["Gem Quality"] = 3,
+		["Meta Gem"] = true,
+	},
+	["Veiled Noble Topaz"] = {
+		["Gem Quality"] = 3,
+		["CR_SPELLHIT"] = 4,
+		["DMG"] = 5,
+	},
+	["Wicked Noble Topaz"] = {
+		["Gem Quality"] = 3,
+		["ATTACKPOWER"] = 8,
+		["CR_CRIT"] = 4,
+	},
+	["Balanced Shadow Draenite"] = {
+		["Gem Quality"] = 2,
+		["ATTACKPOWER"] = 6,
+		["STA"] = 4,
+	},
+	["Bold Blood Garnet"] = {
+		["Gem Quality"] = 2,
+		["STR"] = 6,
+	},
+	["Bright Blood Garnet"] = {
+		["Gem Quality"] = 2,
+		["ATTACKPOWER"] = 12,
+	},
+	["Brilliant Golden Draenite"] = {
+		["Gem Quality"] = 2,
+		["INT"] = 6,
+	},
+	["Dazzling Deep Peridot"] = {
+		["Gem Quality"] = 2,
+		["INT"] = 3,
+		["MANAREG"] = 1,
+	},
+	["Delicate Blood Garnet"] = {
+		["Gem Quality"] = 2,
+		["AGI"] = 6,
+	},
+	["Enduring Deep Peridot"] = {
+		["Gem Quality"] = 2,
+		["STA"] = 4,
+		["CR_DEFENSE"] = 3,
+	},
+	["Gleaming Golden Draenite"] = {
+		["Gem Quality"] = 2,
+		["CR_SPELLCRIT"] = 6,
+	},
+	["Glinting Flame Spessarite"] = {
+		["Gem Quality"] = 2,
+		["AGI"] = 3,
+		["CR_HIT"] = 3,
+	},
+	["Glowing Shadow Draenite"] = {
+		["Gem Quality"] = 2,
+		["STA"] = 4,
+		["DMG"] = 4,
+	},
+	["Great Golden Draenite"] = {
+		["Gem Quality"] = 2,
+		["CR_SPELLHIT"] = 6,
+	},
+	["Infused Shadow Draenite"] = {
+		["Gem Quality"] = 2,
+		["ATTACKPOWER"] = 6,
+		["MANAREG"] = 1,
+	},
+	["Inscribed Flame Spessarite"] = {
+		["Gem Quality"] = 2,
+		["STR"] = 3,
+		["CR_CRIT"] = 3,
+	},
+	["Jagged Deep Peridot"] = {
+		["Gem Quality"] = 2,
+		["CR_CRIT"] = 3,
+		["STA"] = 4,
+	},
+	["Luminous Flame Spessarite"] = {
+		["Gem Quality"] = 2,
+		["INT"] = 3,
+		["HEAL"] = 7,
+	},
+	["Lustrous Azure Moonstone"] = {
+		["Gem Quality"] = 2,
+		["MANAREG"] = 2,
+	},
+	["Potent Flame Spessarite"] = {
+		["Gem Quality"] = 2,
+		["CR_SPELLCRIT"] = 3,
+		["DMG"] = 4,
+	},
+	["Purified Jaggal Pearl"] = {
+		["Gem Quality"] = 2,
+		["SPI"] = 3,
+		["HEAL"] = 7,
+	},
+	["Radiant Deep Peridot"] = {
+		["Gem Quality"] = 2,
+		["SPELLPEN"] = 4,
+		["CR_SPELLCRIT"] = 3,
+	},
+	["Rigid Golden Draenite"] = {
+		["Gem Quality"] = 2,
+		["CR_HIT"] = 6,
+	},
+	["Royal Shadow Draenite"] = {
+		["Gem Quality"] = 2,
+		["MANAREG"] = 1,
+		["HEAL"] = 7,
+	},
+	["Runed Blood Garnet"] = {
+		["Gem Quality"] = 2,
+		["DMG"] = 7,
+	},
+	["Shifting Shadow Draenite"] = {
+		["Gem Quality"] = 2,
+		["AGI"] = 3,
+		["STA"] = 4,
+	},
+	["Smooth Golden Draenite"] = {
+		["Gem Quality"] = 2,
+		["CR_CRIT"] = 6,
+	},
+	["Solid Azure Moonstone"] = {
+		["Gem Quality"] = 2,
+		["STA"] = 9,
+	},
+	["Sovereign Shadow Draenite"] = {
+		["Gem Quality"] = 2,
+		["STR"] = 3,
+		["STA"] = 4,
+	},
+	["Sparkling Azure Moonstone"] = {
+		["Gem Quality"] = 2,
+		["SPI"] = 6,
+	},
+	["Stormy Azure Moonstone"] = {
+		["Gem Quality"] = 2,
+		["SPELLPEN"] = 8,
+	},
+	["Teardrop Blood Garnet"] = {
+		["Gem Quality"] = 2,
+		["HEAL"] = 13,
+	},
+	["Thick Golden Draenite"] = {
+		["Gem Quality"] = 2,
+		["CR_DEFENSE"] = 6,
+	},
+	["Veiled Flame Spessarite"] = {
+		["Gem Quality"] = 2,
+		["CR_SPELLHIT"] = 3,
+		["DMG"] = 4,
+	},
+	["Wicked Flame Spessarite"] = {
+		["Gem Quality"] = 2,
+		["ATTACKPOWER"] = 6,
+		["CR_CRIT"] = 3,
+	},
+	["Bold Tourmaline"] = {
+		["Gem Quality"] = 1,
+		["STR"] = 4,
+	},
+	["Bright Tourmaline"] = {
+		["Gem Quality"] = 1,
+		["ATTACKPOWER"] = 8,
+	},
+	["Brilliant Amber"] = {
+		["Gem Quality"] = 1,
+		["INT"] = 4,
+	},
+	["Delicate Tourmaline"] = {
+		["Gem Quality"] = 1,
+		["AGI"] = 4,
+	},
+	["Gleaming Amber"] = {
+		["Gem Quality"] = 1,
+		["CR_SPELLCRIT"] = 4,
+	},
+	["Lustrous Zircon"] = {
+		["Gem Quality"] = 1,
+		["MANAREG"] = 1,
+	},
+	["Rigid Amber"] = {
+		["Gem Quality"] = 1,
+		["CR_HIT"] = 4,
+	},
+	["Runed Tourmaline"] = {
+		["Gem Quality"] = 1,
+		["DMG"] = 5,
+	},
+	["Smooth Amber"] = {
+		["Gem Quality"] = 1,
+		["CR_CRIT"] = 4,
+	},
+	["Solid Zircon"] = {
+		["Gem Quality"] = 1,
+		["STA"] = 6,
+	},
+	["Sparkling Zircon"] = {
+		["Gem Quality"] = 1,
+		["SPI"] = 4,
+	},
+	["Teardrop Tourmaline"] = {
+		["Gem Quality"] = 1,
+		["HEAL"] = 9,
+	},
+	["Thick Amber"] = {
+		["Gem Quality"] = 1,
+		["CR_DEFENSE"] = 4,
+	},
+}
