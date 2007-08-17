@@ -227,7 +227,11 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 			end
 		end
 		
-		if (lineAdded) then tooltip:Show(); end
+		if (lineAdded) then
+			-- Add a warning about using Equivalence Points at skew values
+			-- http://www.wowwiki.com/Formulas:Item_Values Calculate ItemLevel based on stats you care about ;)
+			tooltip:Show();
+		end
 	end
 end
 
