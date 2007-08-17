@@ -103,7 +103,7 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 				["CR_CRIT"] = { ["value"] = 20, ["kings"] = nil },
 				["CR_HIT"] = { ["value"] = 14, ["kings"] = nil },
 				["CR_HASTE"] = { ["value"] = 22, ["kings"] = nil },
-				-- local apVal = 10-20;
+				--["IGNOREARMOR"] = { ["value"] = 0, ["kings"] = nil }, -- local apVal = 10-20;
 			}
 			
 			-- EnhancerEP:Calculate(values, bonuses, gemcount, metacount, gemcachekey)
@@ -135,7 +135,7 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 				
 				["CR_CRIT"] = { ["value"] = 20, ["kings"] = nil },
 				["CR_HASTE"] = { ["value"] = 22, ["kings"] = nil },
-				-- local apVal = 10-20;
+				--["IGNOREARMOR"] = { ["value"] = 0, ["kings"] = nil }, -- local apVal = 10-20;
 			}
 			
 			-- EnhancerEP:Calculate(values, bonuses, gemcount, metacount, gemcachekey)
@@ -225,11 +225,40 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 			for _, infoLine in ipairs(infos) do
 				tooltip:AddLine( infoLine, RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"] );
 			end
+			-- Add a warning about using Equivalence Points at skew values
+		end
+		
+		-- http://www.wowwiki.com/Formulas:Item_Values Calculate ItemLevel based on stats you care about ;)
+		--[[ Do Enhancement ItemLevel ]]--
+		if (Enhancer.db.profile.EIL or true) then
+			--[[ Set point values here so it's easy to change ]]--
+			values = {
+				["ATTACKPOWER"] = { ["value"] = (5 / 10), ["kings"] = nil },
+				
+				["STR"] = { ["value"] = 1, ["kings"] = nil },
+				["AGI"] = { ["value"] = 1, ["kings"] = nil },
+				
+				["CR_CRIT"] = { ["value"] = 1, ["kings"] = nil },
+				["CR_HIT"] = { ["value"] = 1, ["kings"] = nil },
+				["CR_HASTE"] = { ["value"] = 1, ["kings"] = nil },
+				["IGNOREARMOR"] = { ["value"] = 0, ["kings"] = nil }, -- local apVal = 10-20;
+				
+				["WEAPON_MAX"] = { ["value"] = (25 / 100), ["kings"] = nil },
+				["WEAPON_SPEED"] = { ["value"] = 2, ["kings"] = nil },
+			}
+			
+			-- EnhancerEP:Calculate(values, bonuses, gemcount, metacount, gemcachekey)
+			-- return self:Round(total), self:Round(kingstotal), gemName, kingsgemName, metagemName, kingsmetagemName;
+			local IL = EnhancerEP:Calculate(values, bonuses, nonMetaSockets, metaSockets, "EIL");
+			
+			if ( IL > 0 or Enhancer.db.profile.EPZero) then
+				tooltip:AddDoubleLine(L["eil_tooltip"], IL, RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
+				lineAdded = true;
+				-- tooltip:AddLine( L["eil_info"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"] );
+			end
 		end
 		
 		if (lineAdded) then
-			-- Add a warning about using Equivalence Points at skew values
-			-- http://www.wowwiki.com/Formulas:Item_Values Calculate ItemLevel based on stats you care about ;)
 			tooltip:Show();
 		end
 	end
@@ -406,6 +435,10 @@ end
 	CR_WEAPON_SWORD = "Sword skill rating",
 	CR_WEAPON_SWORD_2H = "Two-Handed Swords skill rating",
 	SNARERES = "Snare and Root effects Resistance",
+	
+	WEAPON_MIN = dmg_min
+	WEAPON_MAX = dmg_max
+	WEAPON_SPEED
 ]]--
 EnhancerEP.gemCache = {}
 EnhancerEP.gems = {

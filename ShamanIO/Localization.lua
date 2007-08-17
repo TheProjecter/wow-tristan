@@ -122,6 +122,9 @@ L_AEP:RegisterTranslations("enUS", function() return {
 	["dep_tooltip"] = string.rep(" ", 3) .. "DamageEP (inc BoK):",
 	["dep_info"] = "Numbers from Leion (possibly very inaccurate and shouldn't be trusted at all)",
 	
+	["eil_tooltip"] = "Enhancement ItemLevel",
+	["eil_info"] = "Numbers from Leion (possibly very inaccurate and shouldn't be trusted at all)",
+	
 	["ep_numbers"] = "%d (%d)",
 	
 } end )
