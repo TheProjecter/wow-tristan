@@ -1,7 +1,7 @@
 ## Interface: 20100
 ## Title: Enhancer (Shamanistic Control) |cff7fff7f -Ace2-|r
 ## Notes: Totem timers and some other usefull things like WF Hidden cooldown tracking etc
-## Author:  Leion (Tristan)
+## Author:  Leion/Tristan (Frostmane[EU])
 ## X-AuthorRealm: Frostmane[EU]
 
 ## SavedVariables: EnhancerDB
