@@ -78,8 +78,8 @@ L_Main:RegisterTranslations("enUS", function() return {
 } end )
 
 
-local L_AEP = AceLibrary("AceLocale-2.2"):new("EnhancerEP")
-L_AEP:RegisterTranslations("enUS", function() return {
+local L_EP = AceLibrary("AceLocale-2.2"):new("EnhancerEP")
+L_EP:RegisterTranslations("enUS", function() return {
 	
 	--[[ ItemTypes ]]--
 	["Armor"] = true,
@@ -122,7 +122,7 @@ L_AEP:RegisterTranslations("enUS", function() return {
 	["dep_tooltip"] = string.rep(" ", 3) .. "DamageEP (inc BoK):",
 	["dep_info"] = "Numbers from Leion (possibly very inaccurate and shouldn't be trusted at all)",
 	
-	["eil_tooltip"] = "Enhancement ItemLevel",
+	["eil_tooltip"] = "Enhancer ItemLevel",
 	["eil_info"] = "Numbers from Leion (possibly very inaccurate and shouldn't be trusted at all)",
 	
 	["ep_numbers"] = "%d (%d)",
