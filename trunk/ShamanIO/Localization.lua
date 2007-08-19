@@ -34,6 +34,8 @@ L_Main:RegisterTranslations("enUS", function() return {
 	["hep_desc"] = "Toggle showing Healing Equivalence Points in Tooltips",
 	["dep_cmd"] = "DEP",
 	["dep_desc"] = "Toggle showing spellDamage Equivalence Points in Tooltips",
+	["eil_cmd"] = "EIL",
+	["eil_desc"] = "Toggle showing Enhancement Item Level in Tooltips",
 	["ep_gemq_cmd"] = "GemQuality",
 	["ep_gemq_desc"] = "Set Max Quality for Gems (1 = Common, 2 = Uncommon, 3 = Rare)", --, 4 = Epic)",
 	["ep_gemm_cmd"] = "MetaGem",
@@ -122,7 +124,7 @@ L_EP:RegisterTranslations("enUS", function() return {
 	["dep_tooltip"] = string.rep(" ", 3) .. "DamageEP (inc BoK):",
 	["dep_info"] = "Numbers from Leion (possibly very inaccurate and shouldn't be trusted at all)",
 	
-	["eil_tooltip"] = "Enhancer ItemLevel",
+	["eil_tooltip"] = "Enhancement ItemLevel",
 	["eil_info"] = "Numbers from Leion (possibly very inaccurate and shouldn't be trusted at all)",
 	
 	["ep_numbers"] = "%d (%d)",
