@@ -20,8 +20,9 @@ local defaults = {
 	EPZero = true,
 	AEP = true,
 	AEPH = true,
-	HEP = true,
-	DEP = true,
+	HEP = false,
+	DEP = false,
+	EIL = true,
 	EPGems = {
 		maxQuality = 3,
 		metaGems = true,
@@ -126,6 +127,27 @@ local consoleoptions = {
   		desc = L["ep_group_desc"],
   		order = 9,
   		args = {
+				[L["ep_gemq_cmd"]] = {
+					name = L["ep_gemq_cmd"], type = "range",
+					desc = L["ep_gemq_desc"],
+					min = 1,
+					max = 3,
+					step = 1,
+					get = function() return Enhancer.db.profile.EPGems.maxQuality; end,
+					set = function(v)
+						Enhancer.db.profile.EPGems.maxQuality = v;
+					end,
+					order = 1,
+				},
+				[L["ep_gemm_cmd"]] = {
+					name = L["ep_gemm_cmd"], type = "toggle",
+					desc = L["ep_gemm_desc"],
+					get = function() return Enhancer.db.profile.EPGems.metaGems; end,
+					set = function()
+						Enhancer.db.profile.EPGems.metaGems = not Enhancer.db.profile.EPGems.metaGems;
+					end,
+					order = 2,
+				},
   			[L["epz_cmd"]] = {
 					name = L["epz_cmd"], type = "toggle",
 					desc = L["epz_desc"],
@@ -133,13 +155,17 @@ local consoleoptions = {
 					set = function()
 						Enhancer.db.profile.EPZero = not Enhancer.db.profile.EPZero;
 					end,
-					order = 1,
+					order = 3,
+				},
+				firstSpacer = {
+					type = "header",
+					order = 4,
 				},
 				[L["aep_group_cmd"]] = {
 		  		type = "group",
 		  		name = L["aep_group_cmd"],
 		  		desc = L["aep_group_desc"],
-		  		order = 2,
+		  		order = 5,
 		  		args = {
 		  			[L["aep_cmd"]] = {
 							name = L["aep_cmd"], type = "toggle",
@@ -168,7 +194,7 @@ local consoleoptions = {
 					set = function()
 						Enhancer.db.profile.HEP = not Enhancer.db.profile.HEP;
 					end,
-					order = 3,
+					order = 6,
 				},
 				[L["dep_cmd"]] = {
 					name = L["dep_cmd"], type = "toggle",
@@ -177,30 +203,14 @@ local consoleoptions = {
 					set = function()
 						Enhancer.db.profile.DEP = not Enhancer.db.profile.DEP;
 					end,
-					order = 4,
+					order = 7,
 				},
-				firstSpacer = {
-					type = "header",
-					order = 5,
-				},
-				[L["ep_gemq_cmd"]] = {
-					name = L["ep_gemq_cmd"], type = "range",
-					desc = L["ep_gemq_desc"],
-					min = 1,
-					max = 3,
-					step = 1,
-					get = function() return Enhancer.db.profile.EPGems.maxQuality; end,
-					set = function(v)
-						Enhancer.db.profile.EPGems.maxQuality = v;
-					end,
-					order = 6,
-				},
-				[L["ep_gemm_cmd"]] = {
-					name = L["ep_gemm_cmd"], type = "toggle",
-					desc = L["ep_gemm_desc"],
-					get = function() return Enhancer.db.profile.EPGems.metaGems; end,
+				[L["eil_cmd"]] = {
+					name = L["eil_cmd"], type = "toggle",
+					desc = L["eil_desc"],
+					get = function() return Enhancer.db.profile.EIL; end,
 					set = function()
-						Enhancer.db.profile.EPGems.metaGems = not Enhancer.db.profile.EPGems.metaGems;
+						Enhancer.db.profile.EIL = not Enhancer.db.profile.EIL;
 					end,
 					order = 7,
 				},
@@ -329,4 +339,4 @@ local consoleoptions = {
 Enhancer:RegisterDefaults('profile', defaults)
 Enhancer:RegisterChatCommand( { "/Enhancer", "/enh", "/ShammySpy" }, consoleoptions )
 
--- Enhancer.db.profile.
+-- Enhancer.db.profile.EIL
