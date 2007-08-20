@@ -11,13 +11,14 @@ function Enhancer:OutOfCombat()
 end
 
 function Enhancer:PlayerDead()
-	for _, element in ipairs(self.totemframes) do
+	for _, frame in ipairs(self.totemframes) do
 		self:FrameDeathBegin(frame)
 	end
 end
 
-function Enhancer:CastingTotem(player, totem, rank)
+function Enhancer:CastingTotem(unit, totem, rank)
 	-- Gets called for all spellcasting so just check if it was a totem :)
+	if (unit ~= "player") then return; end
 	
 	if (totem == Enhancer.BS["Totemic Call"]) then
 		for _, frame in ipairs(self.totemframes) do

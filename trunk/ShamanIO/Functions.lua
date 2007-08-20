@@ -1,10 +1,13 @@
-function Enhancer:ShowRunningModules()
-	
-	for _, frame in ipairs(self.totemframes) do
-		Enhancer:ShowFrame(frame);
+function Enhancer:CheckRunningModules()
+	if ( self:IsModuleActive("Earth") or self:IsModuleActive("Fire") or self:IsModuleActive("Water") or self:IsModuleActive("Air") ) then
+		if ( not self:IsEventRegistered("UNIT_SPELLCAST_SUCCEEDED") ) then
+			self:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED", "CastingTotem")
+		end
+	else
+		if ( self:IsEventRegistered("UNIT_SPELLCAST_SUCCEEDED") ) then
+			self:UnregisterEvent("UNIT_SPELLCAST_SUCCEEDED");
+		end
 	end
-	
-	-- windfury, reincarnation and invigorated is enabled/disabled in their separate files
 end
 
 function Enhancer:CreateTotem(totem, rank)
@@ -15,6 +18,8 @@ function Enhancer:CreateTotem(totem, rank)
 	local Element = Enhancer.Totems[totem].Element;
 	local HitPoints = Enhancer.Totems[totem].Life;
 	local Pulse = Enhancer.Totems[totem].Pulse;
+	
+	if (not Enhancer:IsModuleActive(Element)) then return; end
 	
 	local frame = string.lower(Element);
 	
@@ -110,4 +115,16 @@ function Enhancer:FormatTime(seconds)
 	secs = mod(seconds, 60);
 	mins = (seconds - secs) / 60;
 	return mins..":"..string.sub("00"..secs, -2);
+end
+
+function Enhancer:Round(number, decimals)
+  local multiplier = 10^(decimals or 0)
+  return math.floor(number * multiplier + 0.5) / multiplier
+end
+
+function Enhancer:TestCastingTotem()
+	Enhancer:CastingTotem("player", Enhancer.BS["Strength of Earth Totem"], "Rank 1");
+	Enhancer:CastingTotem("player", Enhancer.BS["Totem of Wrath"], "Rank 1");
+	Enhancer:CastingTotem("player", Enhancer.BS["Mana Spring Totem"], "Rank 1");
+	Enhancer:CastingTotem("player", Enhancer.BS["Windfury Totem"], "Rank 1");
 end

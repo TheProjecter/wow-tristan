@@ -9,12 +9,20 @@ L_Main:RegisterTranslations("enUS", function() return {
 	["resize_cmd"] = "Size",
 	["resize_desc"] = "Set the size of frames",
 	
+	["element_group_cmd"] = "ElementFrames",
+	["element_group_desc"] = "Toggle element frames on and off",
+	["earth_cmd"] = "Earth",
+	["fire_cmd"] = "Fire",
+	["water_cmd"] = "Water",
+	["air_cmd"] = "Air",
+	["element_desc"] = "Toggle the frame for all %s totems",
+	
+	["bonus_group_cmd"] = "BonusFrames",
+	["bonus_group_desc"] = "Toggle bonus frames on and off",
 	["windfury_cmd"] = "Windfury",
 	["windfury_desc"] = "Toggle frame for showing the \"hidden\" windfury cooldown",
-	
 	["reincarnation_cmd"] = "Reincarnation",
 	["reincarnation_desc"] = "Toggle frame for showing Reincarnation cooldown",
-	
 	["invigorated_cmd"] = "Invigorated",
 	["invigorated_desc"] = "Toggle frame for showing when Invigorated is up (Untested)",
 	
@@ -22,10 +30,14 @@ L_Main:RegisterTranslations("enUS", function() return {
 	["ep_desc"] = "Toggle showing Equivalence Points in Tooltips",
 	["ep_group_cmd"] = "EPTypes",
 	["ep_group_desc"] = "Set wich Equivalence Points to show",
+	["ep_gemq_cmd"] = "GemQuality",
+	["ep_gemq_desc"] = "Set Max Quality for Gems (1 = Common, 2 = Uncommon, 3 = Rare)", --, 4 = Epic)",
+	["ep_gemm_cmd"] = "MetaGem",
+	["ep_gemm_desc"] = "Toggle including Meta gems in calculations",
 	["epz_cmd"] = "EPZero",
 	["epz_desc"] = "Show Equivalence Points even if summary is zero",
-	["aep_group_cmd"] = "AEP",
-	["aep_group_desc"] = "Select wich Attackpower Equivalence Points to show in Tooltips",
+	--["aep_group_cmd"] = "AEP",
+	--["aep_group_desc"] = "Select wich Attackpower Equivalence Points to show in Tooltips",
 	["aep_cmd"] = "AEP",
 	["aep_desc"] = "Toggle showing Attackpower Equivalence Points in Tooltips",
 	["aeph_cmd"] = "AEPH",
@@ -36,11 +48,27 @@ L_Main:RegisterTranslations("enUS", function() return {
 	["dep_desc"] = "Toggle showing spellDamage Equivalence Points in Tooltips",
 	["eil_cmd"] = "EIL",
 	["eil_desc"] = "Toggle showing Enhancement Item Level in Tooltips",
-	["ep_gemq_cmd"] = "GemQuality",
-	["ep_gemq_desc"] = "Set Max Quality for Gems (1 = Common, 2 = Uncommon, 3 = Rare)", --, 4 = Epic)",
-	["ep_gemm_cmd"] = "MetaGem",
-	["ep_gemm_desc"] = "Toggle including Meta gems in calculations",
+	["ep_divide_cmd"] = "DivideBy10",
+	["ep_divide_desc"] = "For simplicity AEP numbers are multiplied by 10 to avoid fractions, toggling this to ON will divide by 10 again",
+	["ep_numbers_cmd"] = "EPNumbers",
+	["ep_numbers_desc"] = "Here you can change weights for the EP numbers (0 disables that stat)",
 	
+	["AGI"] = "Agility",
+	["ATTACKPOWER"] = "Attackpower",
+	["CR_CRIT"] = "MeleeCrit",
+	["CR_HASTE"] = "MeleeHaste",
+	["CR_HIT"] = "MeleeHit",
+	["CR_SPELLCRIT"] = "SpellCrit",
+	["CR_SPELLHASTE"] = "SpellHaste",
+	["CR_SPELLHIT"] = "SpellHit",
+	["DMG"] = "SpellDamage",
+	["HEAL"] = "SpellHeal",
+	["IGNOREARMOR"] = "IgnoreArmor",
+	["INT"] = "Intelligence",
+	["MANAREG"] = "MP5",
+	["SPI"] = "Spirit",
+	["STR"] = "Strength",
+		
 	["sound_cmd"] = "Sound",
 	["sound_desc"] = "Toggle playing sound when a totem expires",
 	
@@ -65,10 +93,8 @@ L_Main:RegisterTranslations("enUS", function() return {
 	["alpha_ic_inactive_cmd"] = "InactiveInCombat",
 	["alpha_ic_inactive_desc"] = "Alpha for frames when inactive and in combat",
 	
-	["debug_cmd"] = "Debug",
-	["debug_desc"] = "Toggle debugging",
-	["debug_lock_cmd"] = "DebugLock",
-	["debug_lock_desc"] = "Toggle locking of the debug frame",
+	["specialalpha_cmd"] = "SpecialAlpha",
+	["specialalpha_desc"] = "Enable special alpha settings for \"bonus\" frames",
 	
 	--[[ Strings used for frames ]]--
 	["DragToMoveFrame"] = "Click and drag to move frame",
@@ -127,6 +153,7 @@ L_EP:RegisterTranslations("enUS", function() return {
 	["eil_tooltip"] = "Enhancement ItemLevel",
 	["eil_info"] = "Numbers from Leion (possibly very inaccurate and shouldn't be trusted at all)",
 	
-	["ep_numbers"] = "%d (%d)",
+	["ep_numbers1"] = "%d (%d)",
+	["ep_numbers2"] = "%.1f (%.1f)",
 	
 } end )

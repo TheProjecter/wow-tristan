@@ -180,7 +180,9 @@ function Enhancer:DefaultPos()
 end
 
 function Enhancer:UpdateAlphaBegin(frames)
-	if (type(frames) == "table") then
+	if (not frames) then
+		self:UpdateAlphaBegin(self.allframes);
+	elseif (type(frames) == "table") then
 		for _, frame in pairs(frames) do
 			self:UpdateAlphaEnd(frame);
 		end
@@ -199,9 +201,35 @@ function Enhancer:UpdateAlphaEnd(frame)
 		self[frame].textcenter:SetAlpha(1);
 		self[frame].textbelow:SetAlpha(1);
 		self[frame].mainframe:SetBackdropColor(r, g, b, 1);
+	elseif ( (frame == "reincarnation"  or frame == "windfury") and self.db.profile.specialAlpha ) then
+		
+		-- Special Handling of these frames
+		if (self[frame].active) then
+			self[frame].textcenter:SetAlpha(Enhancer.db.profile.combatAlpha);
+			self[frame].textbelow:SetAlpha(Enhancer.db.profile.combatAlpha);
+			self[frame].mainframe:SetBackdropColor(r, g, b, Enhancer.db.profile.combatAlpha);
+		else
+			self[frame].textcenter:SetAlpha(Enhancer.db.profile.combatinactiveAlpha);
+			self[frame].textbelow:SetAlpha(Enhancer.db.profile.combatinactiveAlpha);
+			self[frame].mainframe:SetBackdropColor(r, g, b, Enhancer.db.profile.combatinactiveAlpha);
+		end
+	
+	elseif ( (frame == "invigorated") and self.db.profile.specialAlpha ) then
+	
+		-- Special Handling of these frames
+		if (self[frame].active) then
+			self[frame].textcenter:SetAlpha(Enhancer.db.profile.combatAlpha);
+			self[frame].textbelow:SetAlpha(Enhancer.db.profile.combatAlpha);
+			self[frame].mainframe:SetBackdropColor(r, g, b, Enhancer.db.profile.combatAlpha);
+		else
+			self[frame].textcenter:SetAlpha(Enhancer.db.profile.oocinactiveAlpha);
+			self[frame].textbelow:SetAlpha(Enhancer.db.profile.oocinactiveAlpha);
+			self[frame].mainframe:SetBackdropColor(r, g, b, Enhancer.db.profile.oocinactiveAlpha);
+		end
+	
 	elseif (self[frame].active) then
 		
-		if (self.inCombat or frame == "reincarnation" or frame == "windfury" or frame == "invigorated") then
+		if (self.inCombat) then
 			self[frame].textcenter:SetAlpha(Enhancer.db.profile.combatAlpha);
 			self[frame].textbelow:SetAlpha(Enhancer.db.profile.combatAlpha);
 			self[frame].mainframe:SetBackdropColor(r, g, b, Enhancer.db.profile.combatAlpha);
@@ -213,7 +241,7 @@ function Enhancer:UpdateAlphaEnd(frame)
 		
 	else
 		
-		if ( (self.inCombat or frame == "reincarnation" or frame == "windfury") and (frame ~= "invigorated") ) then
+		if (self.inCombat) then
 			self[frame].textcenter:SetAlpha(Enhancer.db.profile.combatinactiveAlpha);
 			self[frame].textbelow:SetAlpha(Enhancer.db.profile.combatinactiveAlpha);
 			self[frame].mainframe:SetBackdropColor(r, g, b, Enhancer.db.profile.combatinactiveAlpha);

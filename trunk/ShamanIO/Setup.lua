@@ -37,17 +37,9 @@ function Enhancer:Setup()
 		sourceID = "player",
 	}, "ParserMiss");
 	
-	self:ShowRunningModules();
-	
 	self:DefaultPos();
 	self:LoadPos();
 	self:ToggleLock();
-end
-
---[[ Below functions are created just so we don't get an error from parts using them if their "module" is not available ]]--
-function Enhancer:Debug(message)
-end
-function Enhancer:DebugLock()
 end
 
 --[[
@@ -55,6 +47,4 @@ end
 Left to do:
 
 	Windfury calculation and display! (FontString midscreen that grows on crit?)
-	
-	?? Add Paths to dependencies in toc
 ]]--

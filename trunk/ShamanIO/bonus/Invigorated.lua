@@ -1,39 +1,19 @@
-EnhancerInvigorated = AceLibrary("AceAddon-2.0"):new("AceEvent-2.0");
+EnhancerInvigorated = Enhancer:NewModule("Invigorated", "AceEvent-2.0");
+Enhancer:SetModuleDefaultState("Invigorated", false);
 
 function EnhancerInvigorated:OnInitialize()
-	if (Enhancer.englishClass ~= "SHAMAN") then return; end
+	
 end
 
 function EnhancerInvigorated:OnEnable()
-	if (Enhancer.englishClass ~= "SHAMAN") then return; end
-	if (not Enhancer.db.profile.Invigorated) then return; end
-	self.enabled = true;
-	
 	Enhancer:ShowFrame("invigorated");
 	self:RegisterEvent("SpecialEvents_PlayerBuffGained", "PlayerBuffGained")
 	self:RegisterEvent("SpecialEvents_PlayerBuffLost", "PlayerBuffLost")
 end
 
 function EnhancerInvigorated:OnDisable()
-	if (Enhancer.englishClass ~= "SHAMAN") then return; end
-	self.enabled = false;
-	
 	Enhancer:HideFrame("invigorated");
 	self:UnregisterAllEvents();
-end
-
-function EnhancerInvigorated:Toggle()
-	if (self.enabled) then
-		Enhancer.db.profile.Invigorated = false;
-		self:OnDisable();
-	else
-		Enhancer.db.profile.Invigorated = true;
-		self:OnEnable();
-	end
-end
-
-function EnhancerInvigorated:Active()
-	return self.enabled;
 end
 
 function EnhancerInvigorated:PlayerBuffGained(buffName, buffIndex, applications, texture, rank, index)

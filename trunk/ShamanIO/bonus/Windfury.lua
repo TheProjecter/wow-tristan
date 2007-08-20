@@ -1,41 +1,20 @@
-EnhancerWindfury = AceLibrary("AceAddon-2.0"):new("AceEvent-2.0");
+EnhancerWindfury = Enhancer:NewModule("Windfury", "AceEvent-2.0");
+Enhancer:SetModuleDefaultState("Windfury", true);
 
 function EnhancerWindfury:OnInitialize()
-	if (Enhancer.englishClass ~= "SHAMAN") then return; end
+	
 end
 
 function EnhancerWindfury:OnEnable()
-	if (Enhancer.englishClass ~= "SHAMAN") then return; end
-	if (not Enhancer.db.profile.Windfury) then return; end
-	self.enabled = true;
-	
 	Enhancer:ShowFrame("windfury");
 end
 
 function EnhancerWindfury:OnDisable()
-	if (Enhancer.englishClass ~= "SHAMAN") then return; end
-	self.enabled = false;
-	
 	Enhancer:HideFrame("windfury");
-	self:UnregisterAllEvents();
-end
-
-function EnhancerWindfury:Toggle()
-	if (self.enabled) then
-		Enhancer.db.profile.Windfury = false;
-		self:OnDisable();
-	else
-		Enhancer.db.profile.Windfury = true;
-		self:OnEnable();
-	end
-end
-
-function EnhancerWindfury:Active()
-	return self.enabled;
 end
 
 function Enhancer:WindfuryHit()
-	if (not EnhancerWindfury:Active()) then return; end -- Don't do shit unless "module" is enabled;
+	if (not Enhancer:IsModuleActive("Windfury")) then return; end -- Don't do shit unless module is enabled;
 	if (self.windfury.active) then return; end -- Second WF shouldn't reset the timer ;)
 	
 	self.windfury.active = true;
