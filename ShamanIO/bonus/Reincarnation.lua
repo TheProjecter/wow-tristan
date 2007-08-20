@@ -1,48 +1,27 @@
-EnhancerReincarnation = AceLibrary("AceAddon-2.0"):new("AceEvent-2.0");
+EnhancerReincarnation = Enhancer:NewModule("Reincarnation", "AceEvent-2.0");
+Enhancer:SetModuleDefaultState("Reincarnation", true);
 
 function EnhancerReincarnation:OnInitialize()
-	if (Enhancer.englishClass ~= "SHAMAN") then return; end
+	
 end
 
 function EnhancerReincarnation:OnEnable()
-	if (Enhancer.englishClass ~= "SHAMAN") then return; end
-	if (not Enhancer.db.profile.Reincarnation) then return; end
-	self.enabled = true;
-	
 	Enhancer:ShowFrame("reincarnation");
 	self:BAG_UPDATE();
 	
 	self:RegisterEvent("PLAYER_ALIVE", "PLAYER_ALIVE");
-	-- Can't use Reincarnation after releasing anyway but keeping it in case I want it for something else -- self:RegisterEvent("PLAYER_UNGHOST", "PLAYER_ALIVE");
 	self:RegisterEvent("BAG_UPDATE");
 	
 	self:ScheduleEvent("CheckReincarnation", self.CheckReincarnation, 5, self);
 end
 
 function EnhancerReincarnation:OnDisable()
-	if (Enhancer.englishClass ~= "SHAMAN") then return; end
-	self.enabled = false;
-	
 	if (self:IsEventScheduled("ReincarnationUpdate")) then
 		self:CancelScheduledEvent("ReincarnationUpdate");
 	end
 	
 	Enhancer:HideFrame("reincarnation");
 	self:UnregisterAllEvents();
-end
-
-function EnhancerReincarnation:Toggle()
-	if (self.enabled) then
-		Enhancer.db.profile.Reincarnation = false;
-		self:OnDisable();
-	else
-		Enhancer.db.profile.Reincarnation = true;
-		self:OnEnable();
-	end
-end
-
-function EnhancerReincarnation:Active()
-	return self.enabled;
 end
 
 function EnhancerReincarnation:PLAYER_ALIVE()

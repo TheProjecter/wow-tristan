@@ -1,22 +1,18 @@
 local L = AceLibrary("AceLocale-2.2"):new("EnhancerEP")
-EnhancerEP = AceLibrary("AceAddon-2.0"):new("AceEvent-2.0");
+EnhancerEP = Enhancer:NewModule("EP", "AceEvent-2.0");
+Enhancer:SetModuleDefaultState("EP", true);
 
 local ibl = AceLibrary("ItemBonusLib-1.0");
 local TipHooker = AceLibrary("TipHooker-1.0");
 local Gratuity = AceLibrary("Gratuity-2.0")
 
 function EnhancerEP:OnInitialize()
-	if (Enhancer.englishClass ~= "SHAMAN") then return; end
-	
 	-- Just a place to give bonus to special gems
 	EnhancerEP.gems["Relentless Earthstorm Diamond"]["AEP"] = 750;
 	EnhancerEP.gems["Relentless Earthstorm Diamond"]["AEPH"] = 750;
 end
 
 function EnhancerEP:OnEnable()
-	if (Enhancer.englishClass ~= "SHAMAN") then return; end
-	if (not Enhancer.db.profile.EP) then return; end
-	self.enabled = true;
 	TipHooker:Hook(self.ProcessTooltip, "item");
 	
 	--[[ For some reason I can't get TipHooker to work without enabling
@@ -25,9 +21,6 @@ function EnhancerEP:OnEnable()
 end
 
 function EnhancerEP:OnDisable()
-	if (Enhancer.englishClass ~= "SHAMAN") then return; end
-	self.enabled = false;
-	
 	TipHooker:Unhook(self.ProcessTooltip, "item");
 end
 
@@ -36,20 +29,6 @@ function EnhancerEP:Tooltip()
 			 RatingBuster wich sux so I hacked a bit here ]]--
 	local FunctionThatNeverExecutes = TipHooker.OnEventFrame:GetScript("OnEvent");
 	pcall( FunctionThatNeverExecutes );
-end
-
-function EnhancerEP:Toggle()
-	if (self.enabled) then
-		Enhancer.db.profile.EP = false;
-		self:OnDisable();
-	else
-		Enhancer.db.profile.EP = true;
-		self:OnEnable();
-	end
-end
-
-function EnhancerEP:Active()
-	return self.enabled;
 end
 
 EnhancerEP.ProcessTypes = { [L["Armor"]] = true, [L["Gem"]] = true, [L["Weapon"]] = true, [L["Recipe"]] = true, } -- [L["Projectile"]] = true, [L["Quiver"]] = true, 
@@ -61,6 +40,9 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 		local _, _, _, _, _, ItemType, ItemSubType = GetItemInfo(link)
 		if (not EnhancerEP.ProcessTypes[ItemType]) then return; end
 		if (EnhancerEP.NotProcessSubTypes[ItemSubType]) then return; end
+		
+		local numberFormat = L["ep_numbers1"];
+		if (Enhancer.db.profile.DivideBy10) then numberFormat = L["ep_numbers2"]; end
 		
 		--[[ ItemBonusLib doesn't count empty sockets wich we prefer since
 				 inspected gear can have shit gems in them ;) ]]--
@@ -95,20 +77,23 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 		if (Enhancer.db.profile.AEP) then
 			--[[ Set point values here so it's easy to change ]]--
 			values = {
-				["ATTACKPOWER"] = { ["value"] = 10, ["kings"] = nil },
+				["ATTACKPOWER"] = { ["value"] = Enhancer.db.profile.AEPNumbers.ATTACKPOWER, ["kings"] = nil },
 				
-				["STR"] = { ["value"] = 20, ["kings"] = true },
-				["AGI"] = { ["value"] = 18, ["kings"] = true },
+				["STR"] = { ["value"] = Enhancer.db.profile.AEPNumbers.STR, ["kings"] = true },
+				["AGI"] = { ["value"] = Enhancer.db.profile.AEPNumbers.AGI, ["kings"] = true },
 				
-				["CR_CRIT"] = { ["value"] = 20, ["kings"] = nil },
-				["CR_HIT"] = { ["value"] = 14, ["kings"] = nil },
-				["CR_HASTE"] = { ["value"] = 22, ["kings"] = nil },
-				--["IGNOREARMOR"] = { ["value"] = 0, ["kings"] = nil }, -- local apVal = 10-20;
+				["CR_CRIT"] = { ["value"] = Enhancer.db.profile.AEPNumbers.CR_CRIT, ["kings"] = nil },
+				["CR_HIT"] = { ["value"] = Enhancer.db.profile.AEPNumbers.CR_HIT, ["kings"] = nil },
+				["CR_HASTE"] = { ["value"] = Enhancer.db.profile.AEPNumbers.CR_HASTE, ["kings"] = nil },
+				
+				["IGNOREARMOR"] = { ["value"] = Enhancer.db.profile.AEPNumbers.IGNOREARMOR, ["kings"] = nil },
 			}
 			
 			-- EnhancerEP:Calculate(values, bonuses, gemcount, metacount, gemcachekey)
-			-- return self:Round(total), self:Round(kingstotal), gemName, kingsgemName, metagemName, kingsmetagemName;
+			-- return Enhancer:Round(total), Enhancer:Round(kingstotal), gemName, kingsgemName, metagemName, kingsmetagemName;
 			local EP, EPK, gem1, gem2, gem3, gem4 = EnhancerEP:Calculate(values, bonuses, nonMetaSockets, metaSockets, "AEP");
+			EP = Enhancer:Round((EP / ((Enhancer.db.profile.DivideBy10 and 10) or 1)), ((Enhancer.db.profile.DivideBy10 and 1) or nil));
+			EPK = Enhancer:Round((EPK / ((Enhancer.db.profile.DivideBy10 and 10) or 1)), ((Enhancer.db.profile.DivideBy10 and 1) or nil));
 			lastValue, lastKingsValue = EP, EPK;
 			
 			if ( EP > 0 or Enhancer.db.profile.EPZero ) then
@@ -118,7 +103,7 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 					lineAdded = true;
 				end
 				
-				tooltip:AddDoubleLine(L["aep_tooltip"], string.format( L["ep_numbers"], EP, EPK ), RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
+				tooltip:AddDoubleLine(L["aep_tooltip"], string.format( numberFormat, EP, EPK ), RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
 				
 				tinsert(infos, L["aep_info"]);
 			end
@@ -128,19 +113,22 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 		if (Enhancer.db.profile.AEPH) then
 			--[[ Set point values here so it's easy to change ]]--
 			values = {
-				["ATTACKPOWER"] = { ["value"] = 10, ["kings"] = nil },
+				["ATTACKPOWER"] = { ["value"] = Enhancer.db.profile.AEPNumbers.ATTACKPOWER, ["kings"] = nil },
 				
-				["STR"] = { ["value"] = 20, ["kings"] = true },
-				["AGI"] = { ["value"] = 18, ["kings"] = true },
+				["STR"] = { ["value"] = Enhancer.db.profile.AEPNumbers.STR, ["kings"] = true },
+				["AGI"] = { ["value"] = Enhancer.db.profile.AEPNumbers.AGI, ["kings"] = true },
 				
-				["CR_CRIT"] = { ["value"] = 20, ["kings"] = nil },
-				["CR_HASTE"] = { ["value"] = 22, ["kings"] = nil },
-				--["IGNOREARMOR"] = { ["value"] = 0, ["kings"] = nil }, -- local apVal = 10-20;
+				["CR_CRIT"] = { ["value"] = Enhancer.db.profile.AEPNumbers.CR_CRIT, ["kings"] = nil },
+				["CR_HASTE"] = { ["value"] = Enhancer.db.profile.AEPNumbers.CR_HASTE, ["kings"] = nil },
+				
+				["IGNOREARMOR"] = { ["value"] = Enhancer.db.profile.AEPNumbers.IGNOREARMOR, ["kings"] = nil },
 			}
 			
 			-- EnhancerEP:Calculate(values, bonuses, gemcount, metacount, gemcachekey)
-			-- return self:Round(total), self:Round(kingstotal), gemName, kingsgemName, metagemName, kingsmetagemName;
+			-- return Enhancer:Round(total), Enhancer:Round(kingstotal), gemName, kingsgemName, metagemName, kingsmetagemName;
 			local EP, EPK, gem1, gem2, gem3, gem4 = EnhancerEP:Calculate(values, bonuses, nonMetaSockets, metaSockets, "AEPH");
+			EP = Enhancer:Round((EP / ((Enhancer.db.profile.DivideBy10 and 10) or 1)), ((Enhancer.db.profile.DivideBy10 and 1) or nil));
+			EPK = Enhancer:Round((EPK / ((Enhancer.db.profile.DivideBy10 and 10) or 1)), ((Enhancer.db.profile.DivideBy10 and 1) or nil));
 			
 			local skipThis = ( lastValue and lastKingsValue and lastValue == EP and lastKingsValue == EPK );
 			if ( (EP > 0 or Enhancer.db.profile.EPZero) and (not skipThis) ) then
@@ -150,7 +138,7 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 					lineAdded = true;
 				end
 				
-				tooltip:AddDoubleLine(L["aeph_tooltip"], string.format( L["ep_numbers"], EP, EPK ), RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
+				tooltip:AddDoubleLine(L["aeph_tooltip"], string.format( numberFormat, EP, EPK ), RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
 				
 				if (not Enhancer.db.profile.AEP) then
 					tinsert(infos, L["aep_info"]);
@@ -162,19 +150,22 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 		if (Enhancer.db.profile.HEP) then
 			--[[ Set point values here so it's easy to change ]]--
 			values = {
-				["HEAL"] = { ["value"] = 10, ["kings"] = nil },
+				["HEAL"] = { ["value"] = Enhancer.db.profile.HEPNumbers.HEAL, ["kings"] = nil },
 				
-				["INT"] = { ["value"] = 8, ["kings"] = true },
-				-- ["SPI"] = { ["value"] = 1, ["kings"] = true },
+				["INT"] = { ["value"] = Enhancer.db.profile.HEPNumbers.INT, ["kings"] = true },
+				["SPI"] = { ["value"] = Enhancer.db.profile.HEPNumbers.SPI, ["kings"] = true },
 				
-				["CR_SPELLCRIT"] = { ["value"] = 1, ["kings"] = nil },
-				-- ["CR_SPELLHASTE"] = { ["value"] = 3, ["kings"] = nil },
-				["MANAREG"] = { ["value"] = 27, ["kings"] = nil },
+				["CR_SPELLCRIT"] = { ["value"] = Enhancer.db.profile.HEPNumbers.CR_SPELLCRIT, ["kings"] = nil },
+				["CR_SPELLHASTE"] = { ["value"] = Enhancer.db.profile.HEPNumbers.CR_SPELLHASTE, ["kings"] = nil },
+				
+				["MANAREG"] = { ["value"] = Enhancer.db.profile.HEPNumbers.MANAREG, ["kings"] = nil },
 			}
 			
 			-- EnhancerEP:Calculate(values, bonuses, gemcount, metacount, gemcachekey)
-			-- return self:Round(total), self:Round(kingstotal), gemName, kingsgemName, metagemName, kingsmetagemName;
+			-- return Enhancer:Round(total), Enhancer:Round(kingstotal), gemName, kingsgemName, metagemName, kingsmetagemName;
 			local EP, EPK, gem1, gem2, gem3, gem4 = EnhancerEP:Calculate(values, bonuses, nonMetaSockets, metaSockets, "HEP");
+			EP = Enhancer:Round((EP / ((Enhancer.db.profile.DivideBy10 and 10) or 1)), ((Enhancer.db.profile.DivideBy10 and 1) or nil));
+			EPK = Enhancer:Round((EPK / ((Enhancer.db.profile.DivideBy10 and 10) or 1)), ((Enhancer.db.profile.DivideBy10 and 1) or nil));
 			
 			if ( EP > 0 or Enhancer.db.profile.EPZero) then
 				if (not lineAdded) then
@@ -183,7 +174,7 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 					lineAdded = true;
 				end
 				
-				tooltip:AddDoubleLine(L["hep_tooltip"], string.format( L["ep_numbers"], EP, EPK ), RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
+				tooltip:AddDoubleLine(L["hep_tooltip"], string.format( numberFormat, EP, EPK ), RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
 				
 				-- tinsert(infos, L["hep_info"]);
 			end
@@ -193,20 +184,22 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 		if (Enhancer.db.profile.DEP) then
 			--[[ Set point values here so it's easy to change ]]--
 			values = {
-				["DMG"] = { ["value"] = 10, ["kings"] = nil },
+				["DMG"] = { ["value"] = Enhancer.db.profile.DEPNumbers.DMG, ["kings"] = nil },
 				
-				["INT"] = { ["value"] = 1, ["kings"] = true },
-				-- ["SPI"] = { ["value"] = 1, ["kings"] = true },
+				["INT"] = { ["value"] = Enhancer.db.profile.DEPNumbers.INT, ["kings"] = true },
+				["SPI"] = { ["value"] = Enhancer.db.profile.DEPNumbers.SPI, ["kings"] = true },
 				
-				["CR_SPELLCRIT"] = { ["value"] = 2, ["kings"] = nil },
-				["CR_SPELLHIT"] = { ["value"] = 6, ["kings"] = nil },
-				-- ["CR_SPELLHASTE"] = { ["value"] = 3, ["kings"] = nil },
-				["MANAREG"] = { ["value"] = 15, ["kings"] = nil },
+				["CR_SPELLCRIT"] = { ["value"] = Enhancer.db.profile.DEPNumbers.CR_SPELLCRIT, ["kings"] = nil },
+				["CR_SPELLHIT"] = { ["value"] = Enhancer.db.profile.DEPNumbers.CR_SPELLHIT, ["kings"] = nil },
+				["CR_SPELLHASTE"] = { ["value"] = Enhancer.db.profile.DEPNumbers.CR_SPELLHASTE, ["kings"] = nil },
+				["MANAREG"] = { ["value"] = Enhancer.db.profile.DEPNumbers.MANAREG, ["kings"] = nil },
 			}
 			
 			-- EnhancerEP:Calculate(values, bonuses, gemcount, metacount, gemcachekey)
-			-- return self:Round(total), self:Round(kingstotal), gemName, kingsgemName, metagemName, kingsmetagemName;
+			-- return Enhancer:Round(total), Enhancer:Round(kingstotal), gemName, kingsgemName, metagemName, kingsmetagemName;
 			local EP, EPK, gem1, gem2, gem3, gem4 = EnhancerEP:Calculate(values, bonuses, nonMetaSockets, metaSockets, "DEP");
+			EP = Enhancer:Round((EP / ((Enhancer.db.profile.DivideBy10 and 10) or 1)), ((Enhancer.db.profile.DivideBy10 and 1) or nil));
+			EPK = Enhancer:Round((EPK / ((Enhancer.db.profile.DivideBy10 and 10) or 1)), ((Enhancer.db.profile.DivideBy10 and 1) or nil));
 			
 			if ( EP > 0 or Enhancer.db.profile.EPZero) then
 				if (not lineAdded) then
@@ -215,7 +208,7 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 					lineAdded = true;
 				end
 				
-				tooltip:AddDoubleLine(L["dep_tooltip"], string.format( L["ep_numbers"], EP, EPK ), RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
+				tooltip:AddDoubleLine(L["dep_tooltip"], string.format( numberFormat, EP, EPK ), RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
 				
 				-- tinsert(infos, L["dep_info"]);
 			end
@@ -248,7 +241,7 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 			}
 			
 			-- EnhancerEP:Calculate(values, bonuses, gemcount, metacount, gemcachekey)
-			-- return self:Round(total), self:Round(kingstotal), gemName, kingsgemName, metagemName, kingsmetagemName;
+			-- return Enhancer:Round(total), Enhancer:Round(kingstotal), gemName, kingsgemName, metagemName, kingsmetagemName;
 			local IL = EnhancerEP:Calculate(values, bonuses, nonMetaSockets, metaSockets, "EIL");
 			
 			if ( IL > 0 or Enhancer.db.profile.EPZero) then
@@ -308,12 +301,7 @@ function EnhancerEP:Calculate(values, bonuses, gemcount, metacount, gemcachekey)
 		kingstotal = kingstotal + ( kingsmetagemTotal * metacount );
 	end
 	
-	return self:Round(total), self:Round(kingstotal), gemName, kingsgemName, metagemName, kingsmetagemName;
-end
-
-function EnhancerEP:Round(number, decimals)
-  local multiplier = 10^(decimals or 0)
-  return math.floor(number * multiplier + 0.5) / multiplier
+	return Enhancer:Round(total), Enhancer:Round(kingstotal), gemName, kingsgemName, metagemName, kingsmetagemName;
 end
 
 function EnhancerEP:GemPicker(cachekey, values, meta, blessingofkings)
@@ -339,7 +327,7 @@ function EnhancerEP:GemPicker(cachekey, values, meta, blessingofkings)
 				end
 				total = total + (EnhancerEP.gems[gemName][cachekey] or 0);
 				
-				if (self:Round(total) > bestGem.value) then
+				if (Enhancer:Round(total) > bestGem.value) then
 					bestGem.value = total;
 					bestGem.name = gemName;
 				end
@@ -352,6 +340,10 @@ function EnhancerEP:GemPicker(cachekey, values, meta, blessingofkings)
 	end
 	
 	return EnhancerEP.gemCache[totalCacheKey].value, EnhancerEP.gemCache[totalCacheKey].name;
+end
+
+function EnhancerEP:Round(number, decimals)
+  return Enhancer:Round(number, decimals);
 end
 
 --[[
