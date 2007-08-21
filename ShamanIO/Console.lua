@@ -328,7 +328,10 @@ local consoleoptions = {
 							desc = L["ATTACKPOWER"],
 							min = 0, max = 50, step = 1,
 							get = function() return Enhancer.db.profile.AEPNumbers.ATTACKPOWER; end,
-							set = function(v) Enhancer.db.profile.AEPNumbers.ATTACKPOWER = v; end,
+							set = function(v)
+								Enhancer.db.profile.AEPNumbers.ATTACKPOWER = v;
+								Enhancer:EPValuesChanged();
+							end,
 							order = OrderNum(),
 						},
 						
@@ -339,7 +342,10 @@ local consoleoptions = {
 							desc = L["STR"],
 							min = 0, max = 50, step = 1,
 							get = function() return Enhancer.db.profile.AEPNumbers.STR; end,
-							set = function(v) Enhancer.db.profile.AEPNumbers.STR = v; end,
+							set = function(v)
+								Enhancer.db.profile.AEPNumbers.STR = v;
+								Enhancer:EPValuesChanged();
+							end,
 							order = OrderNum(),
 						},
 						[L["AGI"]] = {
@@ -347,7 +353,10 @@ local consoleoptions = {
 							desc = L["AGI"],
 							min = 0, max = 50, step = 1,
 							get = function() return Enhancer.db.profile.AEPNumbers.AGI; end,
-							set = function(v) Enhancer.db.profile.AEPNumbers.AGI = v; end,
+							set = function(v)
+								Enhancer.db.profile.AEPNumbers.AGI = v;
+								Enhancer:EPValuesChanged();
+							end,
 							order = OrderNum(),
 						},
 						
@@ -358,7 +367,10 @@ local consoleoptions = {
 							desc = L["CR_CRIT"],
 							min = 0, max = 50, step = 7,
 							get = function() return Enhancer.db.profile.AEPNumbers.CR_CRIT; end,
-							set = function(v) Enhancer.db.profile.AEPNumbers.CR_CRIT = v; end,
+							set = function(v)
+								Enhancer.db.profile.AEPNumbers.CR_CRIT = v;
+								Enhancer:EPValuesChanged();
+							end,
 							order = OrderNum(),
 						},
 						[L["CR_HIT"]] = {
@@ -366,7 +378,10 @@ local consoleoptions = {
 							desc = L["CR_HIT"],
 							min = 0, max = 50, step = 1,
 							get = function() return Enhancer.db.profile.AEPNumbers.CR_HIT; end,
-							set = function(v) Enhancer.db.profile.AEPNumbers.CR_HIT = v; end,
+							set = function(v)
+								Enhancer.db.profile.AEPNumbers.CR_HIT = v;
+								Enhancer:EPValuesChanged();
+							end,
 							order = OrderNum(),
 						},
 						[L["CR_HASTE"]] = {
@@ -374,7 +389,10 @@ local consoleoptions = {
 							desc = L["CR_HASTE"],
 							min = 0, max = 50, step = 1,
 							get = function() return Enhancer.db.profile.AEPNumbers.CR_HASTE; end,
-							set = function(v) Enhancer.db.profile.AEPNumbers.CR_HASTE = v; end,
+							set = function(v)
+								Enhancer.db.profile.AEPNumbers.CR_HASTE = v;
+								Enhancer:EPValuesChanged();
+							end,
 							order = OrderNum(),
 						},
 						
@@ -385,7 +403,10 @@ local consoleoptions = {
 							desc = L["IGNOREARMOR"],
 							min = 0, max = 50, step = 1,
 							get = function() return Enhancer.db.profile.AEPNumbers.IGNOREARMOR; end,
-							set = function(v) Enhancer.db.profile.AEPNumbers.IGNOREARMOR = v; end,
+							set = function(v)
+								Enhancer.db.profile.AEPNumbers.IGNOREARMOR = v;
+								Enhancer:EPValuesChanged();
+							end,
 							order = OrderNum(),
 						},
 						
@@ -415,7 +436,10 @@ local consoleoptions = {
 							desc = L["HEAL"],
 							min = 0, max = 50, step = 1,
 							get = function() return Enhancer.db.profile.HEPNumbers.HEAL; end,
-							set = function(v) Enhancer.db.profile.HEPNumbers.HEAL = v; end,
+							set = function(v)
+								Enhancer.db.profile.HEPNumbers.HEAL = v;
+								Enhancer:EPValuesChanged();
+							end,
 							order = OrderNum(),
 						},
 						
@@ -426,7 +450,10 @@ local consoleoptions = {
 							desc = L["INT"],
 							min = 0, max = 50, step = 1,
 							get = function() return Enhancer.db.profile.HEPNumbers.INT; end,
-							set = function(v) Enhancer.db.profile.HEPNumbers.INT = v; end,
+							set = function(v)
+								Enhancer.db.profile.HEPNumbers.INT = v;
+								Enhancer:EPValuesChanged();
+							end,
 							order = OrderNum(),
 						},
 						[L["SPI"]] = {
@@ -434,7 +461,10 @@ local consoleoptions = {
 							desc = L["AGI"],
 							min = 0, max = 50, step = 1,
 							get = function() return Enhancer.db.profile.HEPNumbers.SPI; end,
-							set = function(v) Enhancer.db.profile.HEPNumbers.SPI = v; end,
+							set = function(v)
+								Enhancer.db.profile.HEPNumbers.SPI = v;
+								Enhancer:EPValuesChanged();
+							end,
 							order = OrderNum(),
 						},
 						
@@ -445,7 +475,10 @@ local consoleoptions = {
 							desc = L["CR_SPELLCRIT"],
 							min = 0, max = 50, step = 7,
 							get = function() return Enhancer.db.profile.HEPNumbers.CR_SPELLCRIT; end,
-							set = function(v) Enhancer.db.profile.HEPNumbers.CR_SPELLCRIT = v; end,
+							set = function(v)
+								Enhancer.db.profile.HEPNumbers.CR_SPELLCRIT = v;
+								Enhancer:EPValuesChanged();
+							end,
 							order = OrderNum(),
 						},
 						[L["CR_SPELLHASTE"]] = {
@@ -453,7 +486,10 @@ local consoleoptions = {
 							desc = L["CR_SPELLHASTE"],
 							min = 0, max = 50, step = 1,
 							get = function() return Enhancer.db.profile.HEPNumbers.CR_SPELLHASTE; end,
-							set = function(v) Enhancer.db.profile.HEPNumbers.CR_SPELLHASTE = v; end,
+							set = function(v)
+								Enhancer.db.profile.HEPNumbers.CR_SPELLHASTE = v;
+								Enhancer:EPValuesChanged();
+							end,
 							order = OrderNum(),
 						},
 						
@@ -464,7 +500,10 @@ local consoleoptions = {
 							desc = L["MANAREG"],
 							min = 0, max = 50, step = 1,
 							get = function() return Enhancer.db.profile.HEPNumbers.MANAREG; end,
-							set = function(v) Enhancer.db.profile.HEPNumbers.MANAREG = v; end,
+							set = function(v)
+								Enhancer.db.profile.HEPNumbers.MANAREG = v;
+								Enhancer:EPValuesChanged();
+							end,
 							order = OrderNum(),
 						},
 						
@@ -494,7 +533,10 @@ local consoleoptions = {
 							desc = L["DMG"],
 							min = 0, max = 50, step = 1,
 							get = function() return Enhancer.db.profile.DEPNumbers.DMG; end,
-							set = function(v) Enhancer.db.profile.DEPNumbers.DMG = v; end,
+							set = function(v)
+								Enhancer.db.profile.DEPNumbers.DMG = v;
+								Enhancer:EPValuesChanged();
+							end,
 							order = OrderNum(),
 						},
 						
@@ -505,7 +547,10 @@ local consoleoptions = {
 							desc = L["INT"],
 							min = 0, max = 50, step = 1,
 							get = function() return Enhancer.db.profile.DEPNumbers.INT; end,
-							set = function(v) Enhancer.db.profile.DEPNumbers.INT = v; end,
+							set = function(v)
+								Enhancer.db.profile.DEPNumbers.INT = v;
+								Enhancer:EPValuesChanged();
+							end,
 							order = OrderNum(),
 						},
 						[L["SPI"]] = {
@@ -513,7 +558,10 @@ local consoleoptions = {
 							desc = L["SPI"],
 							min = 0, max = 50, step = 1,
 							get = function() return Enhancer.db.profile.DEPNumbers.SPI; end,
-							set = function(v) Enhancer.db.profile.DEPNumbers.SPI = v; end,
+							set = function(v)
+								Enhancer.db.profile.DEPNumbers.SPI = v;
+								Enhancer:EPValuesChanged();
+							end,
 							order = OrderNum(),
 						},
 						
@@ -524,7 +572,10 @@ local consoleoptions = {
 							desc = L["CR_SPELLCRIT"],
 							min = 0, max = 50, step = 7,
 							get = function() return Enhancer.db.profile.DEPNumbers.CR_SPELLCRIT; end,
-							set = function(v) Enhancer.db.profile.DEPNumbers.CR_SPELLCRIT = v; end,
+							set = function(v)
+								Enhancer.db.profile.DEPNumbers.CR_SPELLCRIT = v;
+								Enhancer:EPValuesChanged();
+							end,
 							order = OrderNum(),
 						},
 						[L["CR_SPELLHIT"]] = {
@@ -532,7 +583,10 @@ local consoleoptions = {
 							desc = L["CR_SPELLHIT"],
 							min = 0, max = 50, step = 1,
 							get = function() return Enhancer.db.profile.DEPNumbers.CR_SPELLHIT; end,
-							set = function(v) Enhancer.db.profile.DEPNumbers.CR_SPELLHIT = v; end,
+							set = function(v)
+								Enhancer.db.profile.DEPNumbers.CR_SPELLHIT = v;
+								Enhancer:EPValuesChanged();
+							end,
 							order = OrderNum(),
 						},
 						[L["CR_SPELLHASTE"]] = {
@@ -540,7 +594,10 @@ local consoleoptions = {
 							desc = L["CR_SPELLHASTE"],
 							min = 0, max = 50, step = 1,
 							get = function() return Enhancer.db.profile.DEPNumbers.CR_SPELLHASTE; end,
-							set = function(v) Enhancer.db.profile.DEPNumbers.CR_SPELLHASTE = v; end,
+							set = function(v)
+								Enhancer.db.profile.DEPNumbers.CR_SPELLHASTE = v;
+								Enhancer:EPValuesChanged();
+							end,
 							order = OrderNum(),
 						},
 						
@@ -551,7 +608,10 @@ local consoleoptions = {
 							desc = L["MANAREG"],
 							min = 0, max = 50, step = 1,
 							get = function() return Enhancer.db.profile.DEPNumbers.MANAREG; end,
-							set = function(v) Enhancer.db.profile.DEPNumbers.MANAREG = v; end,
+							set = function(v)
+								Enhancer.db.profile.DEPNumbers.MANAREG = v;
+								Enhancer:EPValuesChanged();
+							end,
 							order = OrderNum(),
 						},
 						

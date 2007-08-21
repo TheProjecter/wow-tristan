@@ -1,7 +1,7 @@
 local L = AceLibrary("AceLocale-2.2"):new("Enhancer")
 
 function Enhancer:ParserDamage(info)
-	if (info.sourceID == "player") then self:WFTest(info); end
+	-- if (info.sourceID == "player") then self:WFTest(info); end
 	
 	if ( (info.abilityName == Enhancer.BS["Windfury"] or info.abilityName == Enhancer.BS["Windfury Attack"]) and info.sourceID == "player" ) then
 		self:WindfuryHit();
@@ -21,5 +21,5 @@ function Enhancer:ParserDamage(info)
 end
 
 function Enhancer:ParserMiss(info)
-	if (info.sourceID == "player") then self:WFTest(info); end
+	-- if (info.sourceID == "player") then self:WFTest(info); end
 end

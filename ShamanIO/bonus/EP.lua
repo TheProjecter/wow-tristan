@@ -304,6 +304,11 @@ function EnhancerEP:Calculate(values, bonuses, gemcount, metacount, gemcachekey)
 	return Enhancer:Round(total), Enhancer:Round(kingstotal), gemName, kingsgemName, metagemName, kingsmetagemName;
 end
 
+function EnhancerEP:ResetGemCache()
+	EnhancerEP.gemCache = nil;
+	EnhancerEP.gemCache = {};
+end
+
 function EnhancerEP:GemPicker(cachekey, values, meta, blessingofkings)
 	local bestGem = { name = "", value = 0 };
 	local totalCacheKey = tostring(cachekey) .. "|" .. tostring(meta) .. "|" .. tostring(blessingofkings) .. "|" .. tostring(Enhancer.db.profile.EPGems.maxQuality);
@@ -432,7 +437,7 @@ end
 	WEAPON_MAX = dmg_max
 	WEAPON_SPEED
 ]]--
-EnhancerEP.gemCache = {}
+EnhancerEP.gemCache = {};
 EnhancerEP.gems = {
 	["Balanced Nightseye"] = {
 		["Gem Quality"] = 3,
@@ -857,4 +862,4 @@ EnhancerEP.gems = {
 		["Gem Quality"] = 1,
 		["CR_DEFENSE"] = 4,
 	},
-}
+};

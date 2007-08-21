@@ -128,3 +128,10 @@ function Enhancer:TestCastingTotem()
 	Enhancer:CastingTotem("player", Enhancer.BS["Mana Spring Totem"], "Rank 1");
 	Enhancer:CastingTotem("player", Enhancer.BS["Windfury Totem"], "Rank 1");
 end
+
+function Enhancer:EPValuesChanged()
+	if (not Enhancer:HasModule("EP")) then return; end
+	if (not Enhancer:IsModule("EP")) then return; end
+	local EPModule = Enhancer:GetModule("EP");
+	EPModule:ResetGemCache();
+end
