@@ -13,6 +13,7 @@ function Enhancer:OnInitialize()
 	if (self.englishClass ~= "SHAMAN") then return; end
 	
 	self:Setup();
+	self:InspectEPValues()
 end
 
 function Enhancer:OnEnable()

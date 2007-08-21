@@ -20,7 +20,6 @@ local defaults = {
 	HEP = false,
 	DEP = false,
 	EIL = true,
-	DivideBy10 = false,
 	EPGems = {
 		maxQuality = 3,
 		metaGems = true,
@@ -37,30 +36,36 @@ local defaults = {
 	belowFont = CreateFont("EnhancerBelowFont"),
 	
 	AEPNumbers = {
-		ATTACKPOWER = 10,
-		STR = 20,
-		AGI = 18,
-		CR_CRIT = 20,
-		CR_HIT = 14,
-		CR_HASTE = 22,
-		IGNOREARMOR = 0, -- 10-20
+		ATTACKPOWER = (10 / 10),
+		STR = (20 / 10),
+		AGI = (18 / 10),
+		STA = (0 / 10),
+		CR_CRIT = (20 / 10),
+		CR_HIT = (14 / 10),
+		CR_HASTE = (22 / 10),
+		CR_RESILIENCE = (0 / 10),
+		IGNOREARMOR = (0 / 10), -- 10-20
 	},
 	HEPNumbers = {
-		HEAL = 10,
-		INT = 8,
-		SPI = 0, --1
-		CR_SPELLCRIT = 1,
-		CR_SPELLHASTE = 0, --3
-		MANAREG = 27,
+		HEAL = (10 / 10),
+		INT = (8 / 10),
+		SPI = (0 / 10), --1
+		STA = (0 / 10),
+		CR_SPELLCRIT = (1 / 10),
+		CR_SPELLHASTE = (0 / 10), --3
+		CR_RESILIENCE = (0 / 10),
+		MANAREG = (27 / 10),
 	},
 	DEPNumbers = {
-		DMG = 10,
-		INT = 1,
-		SPI = 0, --1,
-		CR_SPELLCRIT = 2,
-		CR_SPELLHIT = 6,
-		CR_SPELLHASTE = 0, --3,
-		MANAREG = 15,
+		DMG = (10 / 10),
+		INT = (1 / 10),
+		SPI = (0 / 10), --1,
+		STA = (0 / 10),
+		CR_SPELLCRIT = (2 / 10),
+		CR_SPELLHIT = (6 / 10),
+		CR_SPELLHASTE = (0 / 10), --3,
+		CR_RESILIENCE = (0 / 10),
+		MANAREG = (15 / 10),
 	},
 }
 
@@ -219,40 +224,6 @@ local consoleoptions = {
   		desc = L["ep_group_desc"],
   		order = OrderNum(),
   		args = {
-				[L["ep_gemq_cmd"]] = {
-					name = L["ep_gemq_cmd"], type = "range",
-					desc = L["ep_gemq_desc"],
-					min = 1,
-					max = 4,
-					step = 1,
-					get = function() return Enhancer.db.profile.EPGems.maxQuality; end,
-					set = function(v)
-						Enhancer.db.profile.EPGems.maxQuality = v;
-						Enhancer:EPValuesChanged();
-					end,
-					order = OrderNum(),
-				},
-				[L["ep_gemm_cmd"]] = {
-					name = L["ep_gemm_cmd"], type = "toggle",
-					desc = L["ep_gemm_desc"],
-					get = function() return Enhancer.db.profile.EPGems.metaGems; end,
-					set = function()
-						Enhancer.db.profile.EPGems.metaGems = not Enhancer.db.profile.EPGems.metaGems;
-					end,
-					order = OrderNum(),
-				},
-  			[L["epz_cmd"]] = {
-					name = L["epz_cmd"], type = "toggle",
-					desc = L["epz_desc"],
-					get = function() return Enhancer.db.profile.EPZero; end,
-					set = function()
-						Enhancer.db.profile.EPZero = not Enhancer.db.profile.EPZero;
-					end,
-					order = OrderNum(),
-				},
-				
-				[SpacerName()] = SpacerTable(),
-				
 				[L["aep_cmd"]] = {
 					name = L["aep_cmd"], type = "toggle",
 					desc = L["aep_desc"],
@@ -289,24 +260,27 @@ local consoleoptions = {
 					end,
 					order = OrderNum(),
 				},
-				[L["eil_cmd"]] = {
-					name = L["eil_cmd"], type = "toggle",
-					desc = L["eil_desc"],
-					get = function() return Enhancer.db.profile.EIL; end,
+				
+				[SpacerName()] = SpacerTable(),
+				
+				[L["epz_cmd"]] = {
+					name = L["epz_cmd"], type = "toggle",
+					desc = L["epz_desc"],
+					get = function() return Enhancer.db.profile.EPZero; end,
 					set = function()
-						Enhancer.db.profile.EIL = not Enhancer.db.profile.EIL;
+						Enhancer.db.profile.EPZero = not Enhancer.db.profile.EPZero;
 					end,
 					order = OrderNum(),
 				},
 				
 				[SpacerName()] = SpacerTable(),
 				
-				[L["ep_divide_cmd"]] = {
-					name = L["ep_divide_cmd"], type = "toggle",
-					desc = L["ep_divide_desc"],
-					get = function() return Enhancer.db.profile.DivideBy10; end,
+				[L["eil_cmd"]] = {
+					name = L["eil_cmd"], type = "toggle",
+					desc = L["eil_desc"],
+					get = function() return Enhancer.db.profile.EIL; end,
 					set = function()
-						Enhancer.db.profile.DivideBy10 = not Enhancer.db.profile.DivideBy10;
+						Enhancer.db.profile.EIL = not Enhancer.db.profile.EIL;
 					end,
 					order = OrderNum(),
 				},
@@ -327,7 +301,7 @@ local consoleoptions = {
 		  			[L["ATTACKPOWER"]] = {
 							name = L["ATTACKPOWER"], type = "range",
 							desc = L["ATTACKPOWER"],
-							min = 0, max = 50, step = 1,
+							min = 0, max = 5, step = (1 / 10),
 							get = function() return Enhancer.db.profile.AEPNumbers.ATTACKPOWER; end,
 							set = function(v)
 								Enhancer.db.profile.AEPNumbers.ATTACKPOWER = v;
@@ -341,7 +315,7 @@ local consoleoptions = {
 						[L["STR"]] = {
 							name = L["STR"], type = "range",
 							desc = L["STR"],
-							min = 0, max = 50, step = 1,
+							min = 0, max = 5, step = (1 / 10),
 							get = function() return Enhancer.db.profile.AEPNumbers.STR; end,
 							set = function(v)
 								Enhancer.db.profile.AEPNumbers.STR = v;
@@ -352,10 +326,21 @@ local consoleoptions = {
 						[L["AGI"]] = {
 							name = L["AGI"], type = "range",
 							desc = L["AGI"],
-							min = 0, max = 50, step = 1,
+							min = 0, max = 5, step = (1 / 10),
 							get = function() return Enhancer.db.profile.AEPNumbers.AGI; end,
 							set = function(v)
 								Enhancer.db.profile.AEPNumbers.AGI = v;
+								Enhancer:EPValuesChanged();
+							end,
+							order = OrderNum(),
+						},
+						[L["STA"]] = {
+							name = L["STA"], type = "range",
+							desc = L["STA"],
+							min = 0, max = 5, step = (1 / 10),
+							get = function() return Enhancer.db.profile.AEPNumbers.STA; end,
+							set = function(v)
+								Enhancer.db.profile.AEPNumbers.STA = v;
 								Enhancer:EPValuesChanged();
 							end,
 							order = OrderNum(),
@@ -366,7 +351,7 @@ local consoleoptions = {
 						[L["CR_CRIT"]] = {
 							name = L["CR_CRIT"], type = "range",
 							desc = L["CR_CRIT"],
-							min = 0, max = 50, step = 7,
+							min = 0, max = 5, step = (1 / 10),
 							get = function() return Enhancer.db.profile.AEPNumbers.CR_CRIT; end,
 							set = function(v)
 								Enhancer.db.profile.AEPNumbers.CR_CRIT = v;
@@ -377,7 +362,7 @@ local consoleoptions = {
 						[L["CR_HIT"]] = {
 							name = L["CR_HIT"], type = "range",
 							desc = L["CR_HIT"],
-							min = 0, max = 50, step = 1,
+							min = 0, max = 5, step = (1 / 10),
 							get = function() return Enhancer.db.profile.AEPNumbers.CR_HIT; end,
 							set = function(v)
 								Enhancer.db.profile.AEPNumbers.CR_HIT = v;
@@ -388,10 +373,21 @@ local consoleoptions = {
 						[L["CR_HASTE"]] = {
 							name = L["CR_HASTE"], type = "range",
 							desc = L["CR_HASTE"],
-							min = 0, max = 50, step = 1,
+							min = 0, max = 5, step = (1 / 10),
 							get = function() return Enhancer.db.profile.AEPNumbers.CR_HASTE; end,
 							set = function(v)
 								Enhancer.db.profile.AEPNumbers.CR_HASTE = v;
+								Enhancer:EPValuesChanged();
+							end,
+							order = OrderNum(),
+						},
+						[L["CR_RESILIENCE"]] = {
+							name = L["CR_RESILIENCE"], type = "range",
+							desc = L["CR_RESILIENCE"],
+							min = 0, max = 5, step = (1 / 10),
+							get = function() return Enhancer.db.profile.AEPNumbers.CR_RESILIENCE; end,
+							set = function(v)
+								Enhancer.db.profile.AEPNumbers.CR_RESILIENCE = v;
 								Enhancer:EPValuesChanged();
 							end,
 							order = OrderNum(),
@@ -402,7 +398,7 @@ local consoleoptions = {
 						[L["IGNOREARMOR"]] = {
 							name = L["IGNOREARMOR"], type = "range",
 							desc = L["IGNOREARMOR"],
-							min = 0, max = 50, step = 1,
+							min = 0, max = 5, step = (1 / 10),
 							get = function() return Enhancer.db.profile.AEPNumbers.IGNOREARMOR; end,
 							set = function(v)
 								Enhancer.db.profile.AEPNumbers.IGNOREARMOR = v;
@@ -413,6 +409,66 @@ local consoleoptions = {
 						
 						[SpacerName()] = SpacerTable(),
 						
+						[L["bestgem_cmd"]] = {
+							type = "group",
+				  		name = L["bestgem_cmd"],
+				  		desc = L["bestgem_desc"],
+				  		order = OrderNum(),
+				  		args = {
+				  			[L["blue"]] = {
+					  			type = "execute",
+								  name = L["blue"],
+									desc = L["blue"],
+								  func = function()
+								  	if (Enhancer:HasModule("EP") and Enhancer:IsModuleActive("EP")) then
+								  		Enhancer:GetModule("EP"):BestGem(Enhancer.db.profile.AEPNumbers, "Blue");
+								  	else
+								  		Enhancer:Print("EP module not active\available!");
+								  	end
+								  end,
+								  order = OrderNum(),
+								},
+								[L["yellow"]] = {
+					  			type = "execute",
+								  name = L["yellow"],
+									desc = L["yellow"],
+								  func = function()
+								  	if (Enhancer:HasModule("EP") and Enhancer:IsModuleActive("EP")) then
+								  		Enhancer:GetModule("EP"):BestGem(Enhancer.db.profile.AEPNumbers, "Yellow");
+								  	else
+								  		Enhancer:Print("EP module not active\available!");
+								  	end
+								  end,
+								  order = OrderNum(),
+								},
+								[L["red"]] = {
+					  			type = "execute",
+								  name = L["red"],
+									desc = L["red"],
+								  func = function()
+								  	if (Enhancer:HasModule("EP") and Enhancer:IsModuleActive("EP")) then
+								  		Enhancer:GetModule("EP"):BestGem(Enhancer.db.profile.AEPNumbers, "Red");
+								  	else
+								  		Enhancer:Print("EP module not active\available!");
+								  	end
+								  end,
+								  order = OrderNum(),
+								},
+								[L["any"]] = {
+					  			type = "execute",
+								  name = L["any"],
+									desc = L["any"],
+								  func = function()
+								  	if (Enhancer:HasModule("EP") and Enhancer:IsModuleActive("EP")) then
+								  		Enhancer:GetModule("EP"):BestGem(Enhancer.db.profile.AEPNumbers);
+								  	else
+								  		Enhancer:Print("EP module not active\available!");
+								  	end
+								  end,
+								  order = OrderNum(),
+								},
+							},
+						},
 						[L["reset_cmd"]] = {
 							type = "execute",
 						  name = L["reset_cmd"],
@@ -435,7 +491,7 @@ local consoleoptions = {
 		  			[L["HEAL"]] = {
 							name = L["HEAL"], type = "range",
 							desc = L["HEAL"],
-							min = 0, max = 50, step = 1,
+							min = 0, max = 5, step = (1 / 10),
 							get = function() return Enhancer.db.profile.HEPNumbers.HEAL; end,
 							set = function(v)
 								Enhancer.db.profile.HEPNumbers.HEAL = v;
@@ -449,7 +505,7 @@ local consoleoptions = {
 						[L["INT"]] = {
 							name = L["INT"], type = "range",
 							desc = L["INT"],
-							min = 0, max = 50, step = 1,
+							min = 0, max = 5, step = (1 / 10),
 							get = function() return Enhancer.db.profile.HEPNumbers.INT; end,
 							set = function(v)
 								Enhancer.db.profile.HEPNumbers.INT = v;
@@ -460,10 +516,21 @@ local consoleoptions = {
 						[L["SPI"]] = {
 							name = L["AGI"], type = "range",
 							desc = L["AGI"],
-							min = 0, max = 50, step = 1,
+							min = 0, max = 5, step = (1 / 10),
 							get = function() return Enhancer.db.profile.HEPNumbers.SPI; end,
 							set = function(v)
 								Enhancer.db.profile.HEPNumbers.SPI = v;
+								Enhancer:EPValuesChanged();
+							end,
+							order = OrderNum(),
+						},
+						[L["STA"]] = {
+							name = L["STA"], type = "range",
+							desc = L["STA"],
+							min = 0, max = 5, step = (1 / 10),
+							get = function() return Enhancer.db.profile.HEPNumbers.STA; end,
+							set = function(v)
+								Enhancer.db.profile.HEPNumbers.STA = v;
 								Enhancer:EPValuesChanged();
 							end,
 							order = OrderNum(),
@@ -474,7 +541,7 @@ local consoleoptions = {
 						[L["CR_SPELLCRIT"]] = {
 							name = L["CR_SPELLCRIT"], type = "range",
 							desc = L["CR_SPELLCRIT"],
-							min = 0, max = 50, step = 7,
+							min = 0, max = 5, step = (1 / 10),
 							get = function() return Enhancer.db.profile.HEPNumbers.CR_SPELLCRIT; end,
 							set = function(v)
 								Enhancer.db.profile.HEPNumbers.CR_SPELLCRIT = v;
@@ -485,10 +552,21 @@ local consoleoptions = {
 						[L["CR_SPELLHASTE"]] = {
 							name = L["CR_SPELLHASTE"], type = "range",
 							desc = L["CR_SPELLHASTE"],
-							min = 0, max = 50, step = 1,
+							min = 0, max = 5, step = (1 / 10),
 							get = function() return Enhancer.db.profile.HEPNumbers.CR_SPELLHASTE; end,
 							set = function(v)
 								Enhancer.db.profile.HEPNumbers.CR_SPELLHASTE = v;
+								Enhancer:EPValuesChanged();
+							end,
+							order = OrderNum(),
+						},
+						[L["CR_RESILIENCE"]] = {
+							name = L["CR_RESILIENCE"], type = "range",
+							desc = L["CR_RESILIENCE"],
+							min = 0, max = 5, step = (1 / 10),
+							get = function() return Enhancer.db.profile.HEPNumbers.CR_RESILIENCE; end,
+							set = function(v)
+								Enhancer.db.profile.HEPNumbers.CR_RESILIENCE = v;
 								Enhancer:EPValuesChanged();
 							end,
 							order = OrderNum(),
@@ -499,7 +577,7 @@ local consoleoptions = {
 						[L["MANAREG"]] = {
 							name = L["MANAREG"], type = "range",
 							desc = L["MANAREG"],
-							min = 0, max = 50, step = 1,
+							min = 0, max = 5, step = (1 / 10),
 							get = function() return Enhancer.db.profile.HEPNumbers.MANAREG; end,
 							set = function(v)
 								Enhancer.db.profile.HEPNumbers.MANAREG = v;
@@ -510,6 +588,66 @@ local consoleoptions = {
 						
 						[SpacerName()] = SpacerTable(),
 						
+						[L["bestgem_cmd"]] = {
+							type = "group",
+				  		name = L["bestgem_cmd"],
+				  		desc = L["bestgem_desc"],
+				  		order = OrderNum(),
+				  		args = {
+				  			[L["blue"]] = {
+					  			type = "execute",
+								  name = L["blue"],
+									desc = L["blue"],
+								  func = function()
+								  	if (Enhancer:HasModule("EP") and Enhancer:IsModuleActive("EP")) then
+								  		Enhancer:GetModule("EP"):BestGem(Enhancer.db.profile.HEPNumbers, "Blue");
+								  	else
+								  		Enhancer:Print("EP module not active\available!");
+								  	end
+								  end,
+								  order = OrderNum(),
+								},
+								[L["yellow"]] = {
+					  			type = "execute",
+								  name = L["yellow"],
+									desc = L["yellow"],
+								  func = function()
+								  	if (Enhancer:HasModule("EP") and Enhancer:IsModuleActive("EP")) then
+								  		Enhancer:GetModule("EP"):BestGem(Enhancer.db.profile.HEPNumbers, "Yellow");
+								  	else
+								  		Enhancer:Print("EP module not active\available!");
+								  	end
+								  end,
+								  order = OrderNum(),
+								},
+								[L["red"]] = {
+					  			type = "execute",
+								  name = L["red"],
+									desc = L["red"],
+								  func = function()
+								  	if (Enhancer:HasModule("EP") and Enhancer:IsModuleActive("EP")) then
+								  		Enhancer:GetModule("EP"):BestGem(Enhancer.db.profile.HEPNumbers, "Red");
+								  	else
+								  		Enhancer:Print("EP module not active\available!");
+								  	end
+								  end,
+								  order = OrderNum(),
+								},
+								[L["any"]] = {
+					  			type = "execute",
+								  name = L["any"],
+									desc = L["any"],
+								  func = function()
+								  	if (Enhancer:HasModule("EP") and Enhancer:IsModuleActive("EP")) then
+								  		Enhancer:GetModule("EP"):BestGem(Enhancer.db.profile.HEPNumbers);
+								  	else
+								  		Enhancer:Print("EP module not active\available!");
+								  	end
+								  end,
+								  order = OrderNum(),
+								},
+							},
+						},
 						[L["reset_cmd"]] = {
 							type = "execute",
 						  name = L["reset_cmd"],
@@ -532,7 +670,7 @@ local consoleoptions = {
 		  			[L["DMG"]] = {
 							name = L["DMG"], type = "range",
 							desc = L["DMG"],
-							min = 0, max = 50, step = 1,
+							min = 0, max = 5, step = (1 / 10),
 							get = function() return Enhancer.db.profile.DEPNumbers.DMG; end,
 							set = function(v)
 								Enhancer.db.profile.DEPNumbers.DMG = v;
@@ -546,7 +684,7 @@ local consoleoptions = {
 						[L["INT"]] = {
 							name = L["INT"], type = "range",
 							desc = L["INT"],
-							min = 0, max = 50, step = 1,
+							min = 0, max = 5, step = (1 / 10),
 							get = function() return Enhancer.db.profile.DEPNumbers.INT; end,
 							set = function(v)
 								Enhancer.db.profile.DEPNumbers.INT = v;
@@ -557,10 +695,21 @@ local consoleoptions = {
 						[L["SPI"]] = {
 							name = L["SPI"], type = "range",
 							desc = L["SPI"],
-							min = 0, max = 50, step = 1,
+							min = 0, max = 5, step = (1 / 10),
 							get = function() return Enhancer.db.profile.DEPNumbers.SPI; end,
 							set = function(v)
 								Enhancer.db.profile.DEPNumbers.SPI = v;
+								Enhancer:EPValuesChanged();
+							end,
+							order = OrderNum(),
+						},
+						[L["STA"]] = {
+							name = L["STA"], type = "range",
+							desc = L["STA"],
+							min = 0, max = 5, step = (1 / 10),
+							get = function() return Enhancer.db.profile.DEPNumbers.STA; end,
+							set = function(v)
+								Enhancer.db.profile.DEPNumbers.STA = v;
 								Enhancer:EPValuesChanged();
 							end,
 							order = OrderNum(),
@@ -571,7 +720,7 @@ local consoleoptions = {
 						[L["CR_SPELLCRIT"]] = {
 							name = L["CR_SPELLCRIT"], type = "range",
 							desc = L["CR_SPELLCRIT"],
-							min = 0, max = 50, step = 7,
+							min = 0, max = 5, step = (1 / 10),
 							get = function() return Enhancer.db.profile.DEPNumbers.CR_SPELLCRIT; end,
 							set = function(v)
 								Enhancer.db.profile.DEPNumbers.CR_SPELLCRIT = v;
@@ -582,7 +731,7 @@ local consoleoptions = {
 						[L["CR_SPELLHIT"]] = {
 							name = L["CR_SPELLHIT"], type = "range",
 							desc = L["CR_SPELLHIT"],
-							min = 0, max = 50, step = 1,
+							min = 0, max = 5, step = (1 / 10),
 							get = function() return Enhancer.db.profile.DEPNumbers.CR_SPELLHIT; end,
 							set = function(v)
 								Enhancer.db.profile.DEPNumbers.CR_SPELLHIT = v;
@@ -593,10 +742,21 @@ local consoleoptions = {
 						[L["CR_SPELLHASTE"]] = {
 							name = L["CR_SPELLHASTE"], type = "range",
 							desc = L["CR_SPELLHASTE"],
-							min = 0, max = 50, step = 1,
+							min = 0, max = 5, step = (1 / 10),
 							get = function() return Enhancer.db.profile.DEPNumbers.CR_SPELLHASTE; end,
 							set = function(v)
 								Enhancer.db.profile.DEPNumbers.CR_SPELLHASTE = v;
+								Enhancer:EPValuesChanged();
+							end,
+							order = OrderNum(),
+						},
+						[L["CR_RESILIENCE"]] = {
+							name = L["CR_RESILIENCE"], type = "range",
+							desc = L["CR_RESILIENCE"],
+							min = 0, max = 5, step = (1 / 10),
+							get = function() return Enhancer.db.profile.DEPNumbers.CR_RESILIENCE; end,
+							set = function(v)
+								Enhancer.db.profile.DEPNumbers.CR_RESILIENCE = v;
 								Enhancer:EPValuesChanged();
 							end,
 							order = OrderNum(),
@@ -607,7 +767,7 @@ local consoleoptions = {
 						[L["MANAREG"]] = {
 							name = L["MANAREG"], type = "range",
 							desc = L["MANAREG"],
-							min = 0, max = 50, step = 1,
+							min = 0, max = 5, step = (1 / 10),
 							get = function() return Enhancer.db.profile.DEPNumbers.MANAREG; end,
 							set = function(v)
 								Enhancer.db.profile.DEPNumbers.MANAREG = v;
@@ -618,6 +778,66 @@ local consoleoptions = {
 						
 						[SpacerName()] = SpacerTable(),
 						
+						[L["bestgem_cmd"]] = {
+							type = "group",
+				  		name = L["bestgem_cmd"],
+				  		desc = L["bestgem_desc"],
+				  		order = OrderNum(),
+				  		args = {
+				  			[L["blue"]] = {
+					  			type = "execute",
+								  name = L["blue"],
+									desc = L["blue"],
+								  func = function()
+								  	if (Enhancer:HasModule("EP") and Enhancer:IsModuleActive("EP")) then
+								  		Enhancer:GetModule("EP"):BestGem(Enhancer.db.profile.DEPNumbers, "Blue");
+								  	else
+								  		Enhancer:Print("EP module not active\available!");
+								  	end
+								  end,
+								  order = OrderNum(),
+								},
+								[L["yellow"]] = {
+					  			type = "execute",
+								  name = L["yellow"],
+									desc = L["yellow"],
+								  func = function()
+								  	if (Enhancer:HasModule("EP") and Enhancer:IsModuleActive("EP")) then
+								  		Enhancer:GetModule("EP"):BestGem(Enhancer.db.profile.DEPNumbers, "Yellow");
+								  	else
+								  		Enhancer:Print("EP module not active\available!");
+								  	end
+								  end,
+								  order = OrderNum(),
+								},
+								[L["red"]] = {
+					  			type = "execute",
+								  name = L["red"],
+									desc = L["red"],
+								  func = function()
+								  	if (Enhancer:HasModule("EP") and Enhancer:IsModuleActive("EP")) then
+								  		Enhancer:GetModule("EP"):BestGem(Enhancer.db.profile.DEPNumbers, "Red");
+								  	else
+								  		Enhancer:Print("EP module not active\available!");
+								  	end
+								  end,
+								  order = OrderNum(),
+								},
+								[L["any"]] = {
+					  			type = "execute",
+								  name = L["any"],
+									desc = L["any"],
+								  func = function()
+								  	if (Enhancer:HasModule("EP") and Enhancer:IsModuleActive("EP")) then
+								  		Enhancer:GetModule("EP"):BestGem(Enhancer.db.profile.DEPNumbers);
+								  	else
+								  		Enhancer:Print("EP module not active\available!");
+								  	end
+								  end,
+								  order = OrderNum(),
+								},
+							},
+						},
 						[L["reset_cmd"]] = {
 							type = "execute",
 						  name = L["reset_cmd"],
@@ -631,6 +851,31 @@ local consoleoptions = {
 						},
 		  		},
 		  	},
+		  	
+		  	[SpacerName()] = SpacerTable(),
+		  	
+  			[L["ep_gemq_cmd"]] = {
+					name = L["ep_gemq_cmd"], type = "range",
+					desc = L["ep_gemq_desc"],
+					min = 1,
+					max = 4,
+					step = 1,
+					get = function() return Enhancer.db.profile.EPGems.maxQuality; end,
+					set = function(v)
+						Enhancer.db.profile.EPGems.maxQuality = v;
+						Enhancer:EPValuesChanged();
+					end,
+					order = OrderNum(),
+				},
+				[L["ep_gemm_cmd"]] = {
+					name = L["ep_gemm_cmd"], type = "toggle",
+					desc = L["ep_gemm_desc"],
+					get = function() return Enhancer.db.profile.EPGems.metaGems; end,
+					set = function()
+						Enhancer.db.profile.EPGems.metaGems = not Enhancer.db.profile.EPGems.metaGems;
+					end,
+					order = OrderNum(),
+				},
   		},
   	},
 		
@@ -738,9 +983,41 @@ local consoleoptions = {
 	  	},
 	  },
 	},
-}
+};
 
-Enhancer:RegisterDefaults('profile', defaults)
-Enhancer:RegisterChatCommand( { "/Enhancer", "/enh", "/ShammySpy" }, consoleoptions )
+Enhancer:RegisterDefaults('profile', defaults);
+Enhancer:RegisterChatCommand( { "/Enhancer", "/enh", "/ShammySpy" }, consoleoptions );
 
--- Enhancer.db.profile.
+function Enhancer:InspectEPValues()
+	local resetNeeded = false;
+	
+	for _, value in pairs(Enhancer.db.profile.AEPNumbers) do
+		if (value > 5) then
+			resetNeeded = true;
+		end
+	end
+	for _, value in pairs(Enhancer.db.profile.HEPNumbers) do
+		if (value > 5) then
+			resetNeeded = true;
+		end
+	end
+	for _, value in pairs(Enhancer.db.profile.DEPNumbers) do
+		if (value > 5) then
+			resetNeeded = true;
+		end
+	end
+	
+	if (resetNeeded) then
+		for key, value in pairs(defaults.AEPNumbers) do
+			Enhancer.db.profile.AEPNumbers[key] = defaults.AEPNumbers[key];
+		end
+		for key, value in pairs(defaults.HEPNumbers) do
+			Enhancer.db.profile.HEPNumbers[key] = defaults.HEPNumbers[key];
+		end
+		for key, value in pairs(defaults.DEPNumbers) do
+			Enhancer.db.profile.DEPNumbers[key] = defaults.DEPNumbers[key];
+		end
+		
+		self:Print("Your AEP values have been reset due to a major change, there was sadly no alternative!");
+	end
+end
