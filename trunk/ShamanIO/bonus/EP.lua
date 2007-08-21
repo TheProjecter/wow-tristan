@@ -297,7 +297,7 @@ function EnhancerEP:ResetGemCache()
 end
 
 function EnhancerEP:GemPicker(cachekey, values, meta, blessingofkings, color)
-	local bestGem = { name = "", value = 0 };
+	local bestGem = { name = "None", value = 0 };
 	local totalCacheKey = tostring(cachekey) .. "|" .. tostring(meta) .. "|" .. tostring(blessingofkings) .. "|" .. tostring(Enhancer.db.profile.EPGems.maxQuality);
 	
 	if (not cachekey or not EnhancerEP.gemCache[totalCacheKey]) then
@@ -353,11 +353,14 @@ function EnhancerEP:BestGem(inputValues, color)
 		values[stat]["kings"] = EnhancerEP.AffectedByKings[stat];
 	end
 	
-	local value, name = EnhancerEP:GemPicker(nil, values, false, true, color);
-	local _, link = GetItemInfo( EnhancerEP.gems[name]["ItemID"] );
+	local value, name = EnhancerEP:GemPicker(nil, values, false, false, color);
+	local kingsValue, kingsName = EnhancerEP:GemPicker(nil, values, false, true, color);
+	local link, kingsLink = nil, nil;
+	if (EnhancerEP.gems[name]) then _, link = GetItemInfo( EnhancerEP.gems[name]["ItemID"] ); end
+	if (EnhancerEP.gems[kingsName]) then _, kingsLink = GetItemInfo( EnhancerEP.gems[name]["ItemID"] ); end
 	
 	local formatString = (link and L["bestgem_link"]) or L["bestgem_nolink"];
-	Enhancer:Print( string.format(formatString, L[color or "Any"], link, value) );
+	Enhancer:Print( string.format(formatString, L[color or "Any"], link or name, value or 0, kingsLink or kingsName, kingsValue or 0) );
 end
 
 --function EnhancerEP:Round(number, decimals)
