@@ -223,11 +223,12 @@ local consoleoptions = {
 					name = L["ep_gemq_cmd"], type = "range",
 					desc = L["ep_gemq_desc"],
 					min = 1,
-					max = 3,
+					max = 4,
 					step = 1,
 					get = function() return Enhancer.db.profile.EPGems.maxQuality; end,
 					set = function(v)
 						Enhancer.db.profile.EPGems.maxQuality = v;
+						Enhancer:EPValuesChanged();
 					end,
 					order = OrderNum(),
 				},
