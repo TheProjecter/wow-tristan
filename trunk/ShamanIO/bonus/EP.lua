@@ -54,6 +54,7 @@ end
 
 EnhancerEP.ProcessTypes = { [L["Armor"]] = true, [L["Gem"]] = true, [L["Weapon"]] = true, [L["Recipe"]] = true, } -- [L["Projectile"]] = true, [L["Quiver"]] = true, 
 EnhancerEP.NotProcessSubTypes = { [L["Plate"]] = true, [L["Idols"]] = true, [L["Librams"]] = true, [L["Fishing Pole"]] = true, [L["One-Handed Swords"]] = true, [L["Polearms"]] = true, [L["Two-Handed Swords"]] = true, [L["Bows"]] = true, [L["Crossbows"]] = true, [L["Guns"]] = true, [L["Thrown"]] = true, [L["Wands"]] = true, }
+EnhancerEP.AffectedByKings = { STR = true, AGI = true, STA = true, INT = true, SPI = true};
 function EnhancerEP.ProcessTooltip(tooltip, name, link)
 	if (link) then
 		
@@ -62,8 +63,7 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 		if (not EnhancerEP.ProcessTypes[ItemType]) then return; end
 		if (EnhancerEP.NotProcessSubTypes[ItemSubType]) then return; end
 		
-		local numberFormat = L["ep_numbers1"];
-		if (Enhancer.db.profile.DivideBy10) then numberFormat = L["ep_numbers2"]; end
+		local numberFormat = L["ep_numbers2"];
 		
 		--[[ ItemBonusLib doesn't count empty sockets wich we prefer since
 				 inspected gear can have shit gems in them ;) ]]--
@@ -96,25 +96,16 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 		--[[ Do Attackpower Equivalence Points ]]--
 		local lastValue, lastKingsValue = nil, nil;
 		if (Enhancer.db.profile.AEP) then
-			--[[ Set point values here so it's easy to change ]]--
-			values = {
-				["ATTACKPOWER"] = { ["value"] = Enhancer.db.profile.AEPNumbers.ATTACKPOWER, ["kings"] = nil },
-				
-				["STR"] = { ["value"] = Enhancer.db.profile.AEPNumbers.STR, ["kings"] = true },
-				["AGI"] = { ["value"] = Enhancer.db.profile.AEPNumbers.AGI, ["kings"] = true },
-				
-				["CR_CRIT"] = { ["value"] = Enhancer.db.profile.AEPNumbers.CR_CRIT, ["kings"] = nil },
-				["CR_HIT"] = { ["value"] = Enhancer.db.profile.AEPNumbers.CR_HIT, ["kings"] = nil },
-				["CR_HASTE"] = { ["value"] = Enhancer.db.profile.AEPNumbers.CR_HASTE, ["kings"] = nil },
-				
-				["IGNOREARMOR"] = { ["value"] = Enhancer.db.profile.AEPNumbers.IGNOREARMOR, ["kings"] = nil },
-			}
+			local values = {};
+			for stat,value in pairs(Enhancer.db.profile.AEPNumbers) do
+				values[stat] = {};
+				values[stat]["value"] = Enhancer.db.profile.AEPNumbers[stat];
+				values[stat]["kings"] = EnhancerEP.AffectedByKings[stat];
+			end
 			
 			-- EnhancerEP:Calculate(values, bonuses, gemcount, metacount, gemcachekey)
-			-- return Enhancer:Round(total), Enhancer:Round(kingstotal), gemName, kingsgemName, metagemName, kingsmetagemName;
+			-- return total, kingstotal, gemName, kingsgemName, metagemName, kingsmetagemName;
 			local EP, EPK, gem1, gem2, gem3, gem4 = EnhancerEP:Calculate(values, bonuses, nonMetaSockets, metaSockets, "AEP");
-			EP = Enhancer:Round((EP / ((Enhancer.db.profile.DivideBy10 and 10) or 1)), ((Enhancer.db.profile.DivideBy10 and 1) or nil));
-			EPK = Enhancer:Round((EPK / ((Enhancer.db.profile.DivideBy10 and 10) or 1)), ((Enhancer.db.profile.DivideBy10 and 1) or nil));
 			lastValue, lastKingsValue = EP, EPK;
 			
 			if ( EP > 0 or Enhancer.db.profile.EPZero ) then
@@ -132,24 +123,18 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 		
 		--[[ Do Attackpower Equivalence Points but without hit ]]--
 		if (Enhancer.db.profile.AEPH) then
-			--[[ Set point values here so it's easy to change ]]--
-			values = {
-				["ATTACKPOWER"] = { ["value"] = Enhancer.db.profile.AEPNumbers.ATTACKPOWER, ["kings"] = nil },
-				
-				["STR"] = { ["value"] = Enhancer.db.profile.AEPNumbers.STR, ["kings"] = true },
-				["AGI"] = { ["value"] = Enhancer.db.profile.AEPNumbers.AGI, ["kings"] = true },
-				
-				["CR_CRIT"] = { ["value"] = Enhancer.db.profile.AEPNumbers.CR_CRIT, ["kings"] = nil },
-				["CR_HASTE"] = { ["value"] = Enhancer.db.profile.AEPNumbers.CR_HASTE, ["kings"] = nil },
-				
-				["IGNOREARMOR"] = { ["value"] = Enhancer.db.profile.AEPNumbers.IGNOREARMOR, ["kings"] = nil },
-			}
+			local values = {};
+			for stat,value in pairs(Enhancer.db.profile.AEPNumbers) do
+				if (stat ~= "CR_HIT") then
+					values[stat] = {};
+					values[stat]["value"] = Enhancer.db.profile.AEPNumbers[stat];
+					values[stat]["kings"] = EnhancerEP.AffectedByKings[stat];
+				end
+			end
 			
 			-- EnhancerEP:Calculate(values, bonuses, gemcount, metacount, gemcachekey)
-			-- return Enhancer:Round(total), Enhancer:Round(kingstotal), gemName, kingsgemName, metagemName, kingsmetagemName;
+			-- return total, kingstotal, gemName, kingsgemName, metagemName, kingsmetagemName;
 			local EP, EPK, gem1, gem2, gem3, gem4 = EnhancerEP:Calculate(values, bonuses, nonMetaSockets, metaSockets, "AEPH");
-			EP = Enhancer:Round((EP / ((Enhancer.db.profile.DivideBy10 and 10) or 1)), ((Enhancer.db.profile.DivideBy10 and 1) or nil));
-			EPK = Enhancer:Round((EPK / ((Enhancer.db.profile.DivideBy10 and 10) or 1)), ((Enhancer.db.profile.DivideBy10 and 1) or nil));
 			
 			local skipThis = ( lastValue and lastKingsValue and lastValue == EP and lastKingsValue == EPK );
 			if ( (EP > 0 or Enhancer.db.profile.EPZero) and (not skipThis) ) then
@@ -169,24 +154,16 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 		
 		--[[ Do Healing Equivalence Points ]]--
 		if (Enhancer.db.profile.HEP) then
-			--[[ Set point values here so it's easy to change ]]--
-			values = {
-				["HEAL"] = { ["value"] = Enhancer.db.profile.HEPNumbers.HEAL, ["kings"] = nil },
-				
-				["INT"] = { ["value"] = Enhancer.db.profile.HEPNumbers.INT, ["kings"] = true },
-				["SPI"] = { ["value"] = Enhancer.db.profile.HEPNumbers.SPI, ["kings"] = true },
-				
-				["CR_SPELLCRIT"] = { ["value"] = Enhancer.db.profile.HEPNumbers.CR_SPELLCRIT, ["kings"] = nil },
-				["CR_SPELLHASTE"] = { ["value"] = Enhancer.db.profile.HEPNumbers.CR_SPELLHASTE, ["kings"] = nil },
-				
-				["MANAREG"] = { ["value"] = Enhancer.db.profile.HEPNumbers.MANAREG, ["kings"] = nil },
-			}
+			local values = {};
+			for stat,value in pairs(Enhancer.db.profile.HEPNumbers) do
+				values[stat] = {};
+				values[stat]["value"] = Enhancer.db.profile.HEPNumbers[stat];
+				values[stat]["kings"] = EnhancerEP.AffectedByKings[stat];
+			end
 			
 			-- EnhancerEP:Calculate(values, bonuses, gemcount, metacount, gemcachekey)
-			-- return Enhancer:Round(total), Enhancer:Round(kingstotal), gemName, kingsgemName, metagemName, kingsmetagemName;
+			-- return total, kingstotal, gemName, kingsgemName, metagemName, kingsmetagemName;
 			local EP, EPK, gem1, gem2, gem3, gem4 = EnhancerEP:Calculate(values, bonuses, nonMetaSockets, metaSockets, "HEP");
-			EP = Enhancer:Round((EP / ((Enhancer.db.profile.DivideBy10 and 10) or 1)), ((Enhancer.db.profile.DivideBy10 and 1) or nil));
-			EPK = Enhancer:Round((EPK / ((Enhancer.db.profile.DivideBy10 and 10) or 1)), ((Enhancer.db.profile.DivideBy10 and 1) or nil));
 			
 			if ( EP > 0 or Enhancer.db.profile.EPZero) then
 				if (not lineAdded) then
@@ -203,24 +180,16 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 		
 		--[[ Do spellDamage Equivalence Points ]]--
 		if (Enhancer.db.profile.DEP) then
-			--[[ Set point values here so it's easy to change ]]--
-			values = {
-				["DMG"] = { ["value"] = Enhancer.db.profile.DEPNumbers.DMG, ["kings"] = nil },
-				
-				["INT"] = { ["value"] = Enhancer.db.profile.DEPNumbers.INT, ["kings"] = true },
-				["SPI"] = { ["value"] = Enhancer.db.profile.DEPNumbers.SPI, ["kings"] = true },
-				
-				["CR_SPELLCRIT"] = { ["value"] = Enhancer.db.profile.DEPNumbers.CR_SPELLCRIT, ["kings"] = nil },
-				["CR_SPELLHIT"] = { ["value"] = Enhancer.db.profile.DEPNumbers.CR_SPELLHIT, ["kings"] = nil },
-				["CR_SPELLHASTE"] = { ["value"] = Enhancer.db.profile.DEPNumbers.CR_SPELLHASTE, ["kings"] = nil },
-				["MANAREG"] = { ["value"] = Enhancer.db.profile.DEPNumbers.MANAREG, ["kings"] = nil },
-			}
+			local values = {};
+			for stat,value in pairs(Enhancer.db.profile.DEPNumbers) do
+				values[stat] = {};
+				values[stat]["value"] = Enhancer.db.profile.DEPNumbers[stat];
+				values[stat]["kings"] = EnhancerEP.AffectedByKings[stat];
+			end
 			
 			-- EnhancerEP:Calculate(values, bonuses, gemcount, metacount, gemcachekey)
-			-- return Enhancer:Round(total), Enhancer:Round(kingstotal), gemName, kingsgemName, metagemName, kingsmetagemName;
+			-- return total, kingstotal, gemName, kingsgemName, metagemName, kingsmetagemName;
 			local EP, EPK, gem1, gem2, gem3, gem4 = EnhancerEP:Calculate(values, bonuses, nonMetaSockets, metaSockets, "DEP");
-			EP = Enhancer:Round((EP / ((Enhancer.db.profile.DivideBy10 and 10) or 1)), ((Enhancer.db.profile.DivideBy10 and 1) or nil));
-			EPK = Enhancer:Round((EPK / ((Enhancer.db.profile.DivideBy10 and 10) or 1)), ((Enhancer.db.profile.DivideBy10 and 1) or nil));
 			
 			if ( EP > 0 or Enhancer.db.profile.EPZero) then
 				if (not lineAdded) then
@@ -255,14 +224,10 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 				["CR_CRIT"] = { ["value"] = 1, ["kings"] = nil },
 				["CR_HIT"] = { ["value"] = 1, ["kings"] = nil },
 				["CR_HASTE"] = { ["value"] = 1, ["kings"] = nil },
-				["IGNOREARMOR"] = { ["value"] = 0, ["kings"] = nil }, -- local apVal = 10-20;
-				
-				["WEAPON_MAX"] = { ["value"] = (25 / 100), ["kings"] = nil },
-				["WEAPON_SPEED"] = { ["value"] = 2, ["kings"] = nil },
 			}
 			
 			-- EnhancerEP:Calculate(values, bonuses, gemcount, metacount, gemcachekey)
-			-- return Enhancer:Round(total), Enhancer:Round(kingstotal), gemName, kingsgemName, metagemName, kingsmetagemName;
+			-- return total, kingstotal, gemName, kingsgemName, metagemName, kingsmetagemName;
 			local IL = EnhancerEP:Calculate(values, bonuses, nonMetaSockets, metaSockets, "EIL");
 			
 			if ( IL > 0 or Enhancer.db.profile.EPZero) then
@@ -307,34 +272,35 @@ function EnhancerEP:Calculate(values, bonuses, gemcount, metacount, gemcachekey)
 	end
 	
 	if (gemcount and tonumber(gemcount) and tonumber(gemcount) > 0) then
-		gemTotal, gemName = EnhancerEP:GemPicker(gemcachekey, values, false, false);
-		kingsgemTotal, kingsgemName = EnhancerEP:GemPicker(gemcachekey, values, false, true);
+		gemTotal, gemName = EnhancerEP:GemPicker(gemcachekey, values, false, false, false);
+		kingsgemTotal, kingsgemName = EnhancerEP:GemPicker(gemcachekey, values, false, true, false);
 		
 		total = total + ( gemTotal * gemcount );
 		kingstotal = kingstotal + ( kingsgemTotal * gemcount );
 	end
 	
 	if (metacount and tonumber(metacount) and tonumber(metacount) > 0 and Enhancer.db.profile.EPGems.metaGems) then
-		metagemTotal, metagemName = EnhancerEP:GemPicker(gemcachekey, values, true, false);
-		kingsmetagemTotal, kingsmetagemName = EnhancerEP:GemPicker(gemcachekey, values, true, true)
+		metagemTotal, metagemName = EnhancerEP:GemPicker(gemcachekey, values, true, false, false);
+		kingsmetagemTotal, kingsmetagemName = EnhancerEP:GemPicker(gemcachekey, values, true, true, false)
 		
 		total = total + ( metagemTotal * metacount );
 		kingstotal = kingstotal + ( kingsmetagemTotal * metacount );
 	end
 	
-	return Enhancer:Round(total), Enhancer:Round(kingstotal), gemName, kingsgemName, metagemName, kingsmetagemName;
+	return Enhancer:Round(total, 1), Enhancer:Round(kingstotal, 1), gemName, kingsgemName, metagemName, kingsmetagemName;
 end
 
+EnhancerEP.gemCache = {};
 function EnhancerEP:ResetGemCache()
 	EnhancerEP.gemCache = nil;
 	EnhancerEP.gemCache = {};
 end
 
-function EnhancerEP:GemPicker(cachekey, values, meta, blessingofkings)
+function EnhancerEP:GemPicker(cachekey, values, meta, blessingofkings, color)
 	local bestGem = { name = "", value = 0 };
 	local totalCacheKey = tostring(cachekey) .. "|" .. tostring(meta) .. "|" .. tostring(blessingofkings) .. "|" .. tostring(Enhancer.db.profile.EPGems.maxQuality);
 	
-	if (not EnhancerEP.gemCache[totalCacheKey]) then
+	if (not cachekey or not EnhancerEP.gemCache[totalCacheKey]) then
 		for gemName, gemBonusTable in pairs(EnhancerEP.gems) do
 			
 			local valid = false;
@@ -342,7 +308,11 @@ function EnhancerEP:GemPicker(cachekey, values, meta, blessingofkings)
 				valid = gemBonusTable["Meta Gem"];
 			else
 				if (not gemBonusTable["Meta Gem"]) then
-					valid = (tonumber(gemBonusTable["Gem Quality"]) <= Enhancer.db.profile.EPGems.maxQuality);
+					if (color) then
+						valid = gemBonusTable[color] and (tonumber(gemBonusTable["Gem Quality"]) <= Enhancer.db.profile.EPGems.maxQuality);
+					else
+						valid = (tonumber(gemBonusTable["Gem Quality"]) <= Enhancer.db.profile.EPGems.maxQuality);
+					end
 				end
 			end
 			
@@ -353,24 +323,46 @@ function EnhancerEP:GemPicker(cachekey, values, meta, blessingofkings)
 				end
 				total = total + (EnhancerEP.gems[gemName][cachekey] or 0);
 				
-				if (Enhancer:Round(total) > bestGem.value) then
+				if (Enhancer:Round(total, 1) > bestGem.value) then
 					bestGem.value = total;
 					bestGem.name = gemName;
 				end
 			end
 			
-			EnhancerEP.gemCache[totalCacheKey] = {}
-			EnhancerEP.gemCache[totalCacheKey].value = bestGem.value;
-			EnhancerEP.gemCache[totalCacheKey].name = bestGem.name;
+			if (cachekey) then
+				EnhancerEP.gemCache[totalCacheKey] = {}
+				EnhancerEP.gemCache[totalCacheKey].value = bestGem.value;
+				EnhancerEP.gemCache[totalCacheKey].name = bestGem.name;
+			end
+		end
+		
+		if (not cachekey) then
+			return bestGem.value, bestGem.name
 		end
 	end
 	
 	return EnhancerEP.gemCache[totalCacheKey].value, EnhancerEP.gemCache[totalCacheKey].name;
 end
 
-function EnhancerEP:Round(number, decimals)
-  return Enhancer:Round(number, decimals);
+function EnhancerEP:BestGem(inputValues, color)
+	local values = {};
+	-- Enhancer.db.profile.AEPNumbers
+	for stat,value in pairs(inputValues) do
+		values[stat] = {};
+		values[stat]["value"] = inputValues[stat];
+		values[stat]["kings"] = EnhancerEP.AffectedByKings[stat];
+	end
+	
+	local value, name = EnhancerEP:GemPicker(nil, values, false, true, color);
+	local _, link = GetItemInfo( EnhancerEP.gems[name]["ItemID"] );
+	
+	local formatString = (link and L["bestgem_link"]) or L["bestgem_nolink"];
+	Enhancer:Print( string.format(formatString, L[color or "Any"], link, value) );
 end
+
+--function EnhancerEP:Round(number, decimals)
+--  return Enhancer:Round(number, decimals);
+--end
 
 --[[
 		Tornhoof/Pater from http://elitistjerks.com/f31/t13297-enhance_shaman_collected_works_theorycraft_vol_i/
@@ -458,891 +450,3 @@ end
 	WEAPON_MAX = dmg_max
 	WEAPON_SPEED
 ]]--
-EnhancerEP.gemCache = {};
-EnhancerEP.gems = {
-		["Balanced Shadowsong Amethyst"] = {
-		["Gem Quality"] = 4,
-		["ATTACKPOWER"] = 10,
-		["STA"] = 7,
-	},
-	["Bold Crimson Spinel"] = {
-		["Gem Quality"] = 4,
-		["STR"] = 10,
-	},
-	["Bright Crimson Spinel"] = {
-		["Gem Quality"] = 4,
-		["ATTACKPOWER"] = 20,
-	},
-	["Brilliant Lionseye"] = {
-		["Gem Quality"] = 4,
-		["INT"] = 10,
-	},
-	["Dazzling Seaspray Emerald"] = {
-		["Gem Quality"] = 4,
-		["INT"] = 5,
-		["MANAREG"] = 2,
-	},
-	["Delicate Crimson Spinel"] = {
-		["Gem Quality"] = 4,
-		["AGI"] = 10,
-	},
-	["Enduring Seaspray Emerald"] = {
-		["Gem Quality"] = 4,
-		["STA"] = 7,
-		["CR_DEFENSE"] = 5,
-	},
-	["Flashing Crimson Spinel"] = {
-		["Gem Quality"] = 4,
-		["CR_PARRY"] = 10,
-	},
-	["Gleaming Lionseye"] = {
-		["Gem Quality"] = 4,
-		["CR_SPELLCRIT"] = 10,
-	},
-	["Glinting Pyrestone"] = {
-		["Gem Quality"] = 4,
-		["AGI"] = 5,
-		["CR_HIT"] = 5,
-	},
-	["Glowing Shadowsong Amethyst"] = {
-		["Gem Quality"] = 4,
-		["STA"] = 7,
-		["DMG"] = 6,
-	},
-	["Great Lionseye"] = {
-		["Gem Quality"] = 4,
-		["CR_SPELLHIT"] = 10,
-	},
-	["Infused Amethyst"] = {
-		["Gem Quality"] = 4,
-		["STA"] = 6,
-		["DMG"] = 6,
-	},
-	["Infused Shadowsong Amethyst"] = {
-		["Gem Quality"] = 4,
-		["ATTACKPOWER"] = 10,
-		["MANAREG"] = 2,
-	},
-	["Inscribed Pyrestone"] = {
-		["Gem Quality"] = 4,
-		["STR"] = 5,
-		["CR_CRIT"] = 5,
-	},
-	["Jagged Seaspray Emerald"] = {
-		["Gem Quality"] = 4,
-		["CR_CRIT"] = 5,
-		["STA"] = 7,
-	},
-	["Luminous Pyrestone"] = {
-		["Gem Quality"] = 4,
-		["INT"] = 5,
-		["HEAL"] = 11,
-	},
-	["Lustrous Empyrean Sapphire"] = {
-		["Gem Quality"] = 4,
-		["MANAREG"] = 4,
-	},
-	["Mystic Lionseye"] = {
-		["Gem Quality"] = 4,
-		["CR_RESILIENCE"] = 10,
-	},
-	["Potent Pyrestone"] = {
-		["Gem Quality"] = 4,
-		["CR_SPELLCRIT"] = 5,
-		["DMG"] = 6,
-	},
-	["Pulsing Amethyst"] = {
-		["Gem Quality"] = 4,
-		["ATTACKPOWER"] = 10,
-		["STA"] = 6,
-	},
-	["Radiant Seaspray Emerald"] = {
-		["Gem Quality"] = 4,
-		["SPELLPEN"] = 6,
-		["CR_SPELLCRIT"] = 5,
-	},
-	["Rigid Lionseye"] = {
-		["Gem Quality"] = 4,
-		["CR_HIT"] = 10,
-	},
-	["Royal Shadowsong Amethyst"] = {
-		["Gem Quality"] = 4,
-		["MANAREG"] = 2,
-		["HEAL"] = 11,
-	},
-	["Runed Crimson Spinel"] = {
-		["Gem Quality"] = 4,
-		["DMG"] = 12,
-	},
-	["Shifting Shadowsong Amethyst"] = {
-		["Gem Quality"] = 4,
-		["AGI"] = 5,
-		["STA"] = 7,
-	},
-	["Smooth Lionseye"] = {
-		["Gem Quality"] = 4,
-		["CR_CRIT"] = 10,
-	},
-	["Solid Empyrean Sapphire"] = {
-		["Gem Quality"] = 4,
-		["STA"] = 15,
-	},
-	["Soothing Amethyst"] = {
-		["Gem Quality"] = 4,
-		["STA"] = 6,
-		["HEAL"] = 11,
-	},
-	["Sovereign Shadowsong Amethyst"] = {
-		["Gem Quality"] = 4,
-		["STR"] = 5,
-		["STA"] = 7,
-	},
-	["Sparkling Empyrean Sapphire"] = {
-		["Gem Quality"] = 4,
-		["SPI"] = 10,
-	},
-	["Stormy Empyrean Sapphire"] = {
-		["Gem Quality"] = 4,
-		["SPELLPEN"] = 13,
-	},
-	["Subtle Crimson Spinel"] = {
-		["Gem Quality"] = 4,
-		["CR_DODGE"] = 10,
-	},
-	["Teardrop Crimson Spinel"] = {
-		["Gem Quality"] = 4,
-		["HEAL"] = 22,
-	},
-	["Thick Lionseye"] = {
-		["Gem Quality"] = 4,
-		["CR_DEFENSE"] = 10,
-	},
-	["Veiled Pyrestone"] = {
-		["Gem Quality"] = 4,
-		["CR_SPELLHIT"] = 5,
-		["DMG"] = 6,
-	},
-	["Void Sphere"] = {
-		["Gem Quality"] = 4,
-	},
-	["Wicked Pyrestone"] = {
-		["Gem Quality"] = 4,
-		["ATTACKPOWER"] = 10,
-		["CR_CRIT"] = 5,
-	},
-	["Balanced Nightseye"] = {
-		["Gem Quality"] = 3,
-		["ATTACKPOWER"] = 8,
-		["STA"] = 6,
-	},
-	["Bold Living Ruby"] = {
-		["Gem Quality"] = 3,
-		["STR"] = 8,
-	},
-	["Bracing Earthstorm Diamond"] = {
-		["Gem Quality"] = 3,
-		["HEAL"] = 26,
-		["Meta Gem"] = true,
-	},
-	["Bright Living Ruby"] = {
-		["Gem Quality"] = 3,
-		["ATTACKPOWER"] = 16,
-	},
-	["Brilliant Dawnstone"] = {
-		["Gem Quality"] = 3,
-		["INT"] = 8,
-	},
-	["Brutal Earthstorm Diamond"] = {
-		["Gem Quality"] = 3,
-		["Meta Gem"] = true,
-	},
-	["Dazzling Talasite"] = {
-		["Gem Quality"] = 3,
-		["INT"] = 4,
-		["MANAREG"] = 2,
-	},
-	["Delicate Living Ruby"] = {
-		["Gem Quality"] = 3,
-		["AGI"] = 8,
-	},
-	["Destructive Skyfire Diamond"] = {
-		["Gem Quality"] = 3,
-		["Meta Gem"] = true,
-	},
-	["Enduring Talasite"] = {
-		["Gem Quality"] = 3,
-		["STA"] = 6,
-		["CR_DEFENSE"] = 4,
-	},
-	["Enigmatic Skyfire Diamond"] = {
-		["Gem Quality"] = 3,
-		["CR_CRIT"] = 12,
-		["Meta Gem"] = true,
-	},
-	["Flashing Living Ruby"] = {
-		["Gem Quality"] = 3,
-		["CR_PARRY"] = 8,
-	},
-	["Gleaming Dawnstone"] = {
-		["Gem Quality"] = 3,
-		["CR_SPELLCRIT"] = 8,
-	},
-	["Glinting Noble Topaz"] = {
-		["Gem Quality"] = 3,
-		["AGI"] = 4,
-		["CR_HIT"] = 4,
-	},
-	["Glowing Nightseye"] = {
-		["Gem Quality"] = 3,
-		["STA"] = 6,
-		["DMG"] = 5,
-	},
-	["Great Dawnstone"] = {
-		["Gem Quality"] = 3,
-		["CR_SPELLHIT"] = 8,
-	},
-	["Imbued Unstable Diamond"] = {
-		["Gem Quality"] = 3,
-		["DMG"] = 14,
-		["Meta Gem"] = true,
-	},
-	["Infused Nightseye"] = {
-		["Gem Quality"] = 3,
-		["ATTACKPOWER"] = 8,
-		["MANAREG"] = 2,
-	},
-	["Inscribed Noble Topaz"] = {
-		["Gem Quality"] = 3,
-		["STR"] = 4,
-		["CR_CRIT"] = 4,
-	},
-	["Insightful Earthstorm Diamond"] = {
-		["Gem Quality"] = 3,
-		["INT"] = 12,
-		["Meta Gem"] = true,
-	},
-	["Jagged Talasite"] = {
-		["Gem Quality"] = 3,
-		["CR_CRIT"] = 4,
-		["STA"] = 6,
-	},
-	["Luminous Noble Topaz"] = {
-		["Gem Quality"] = 3,
-		["INT"] = 4,
-		["HEAL"] = 9,
-	},
-	["Lustrous Star of Elune"] = {
-		["Gem Quality"] = 3,
-		["MANAREG"] = 3,
-	},
-	["Mystic Dawnstone"] = {
-		["Gem Quality"] = 3,
-		["CR_RESILIENCE"] = 8,
-	},
-	["Mystical Skyfire Diamond"] = {
-		["Gem Quality"] = 3,
-		["Meta Gem"] = true,
-	},
-	["Potent Noble Topaz"] = {
-		["Gem Quality"] = 3,
-		["CR_SPELLCRIT"] = 4,
-		["DMG"] = 5,
-	},
-	["Potent Unstable Diamond"] = {
-		["Gem Quality"] = 3,
-		["ATTACKPOWER"] = 24,
-		["Meta Gem"] = true,
-	},
-	["Powerful Earthstorm Diamond"] = {
-		["Gem Quality"] = 3,
-		["STA"] = 18,
-		["Meta Gem"] = true,
-	},
-	["Prismatic Sphere"] = {
-		["Gem Quality"] = 3,
-	},
-	["Purified Shadow Pearl"] = {
-		["Gem Quality"] = 3,
-		["SPI"] = 4,
-		["HEAL"] = 9,
-	},
-	["Radiant Talasite"] = {
-		["Gem Quality"] = 3,
-		["SPELLPEN"] = 5,
-		["CR_SPELLCRIT"] = 4,
-	},
-	["Relentless Earthstorm Diamond"] = {
-		["Gem Quality"] = 3,
-		["AGI"] = 12,
-		["Meta Gem"] = true,
-	},
-	["Rigid Dawnstone"] = {
-		["Gem Quality"] = 3,
-		["CR_HIT"] = 8,
-	},
-	["Royal Nightseye"] = {
-		["Gem Quality"] = 3,
-		["MANAREG"] = 2,
-		["HEAL"] = 9,
-	},
-	["Runed Living Ruby"] = {
-		["Gem Quality"] = 3,
-		["DMG"] = 9,
-	},
-	["Shifting Nightseye"] = {
-		["Gem Quality"] = 3,
-		["AGI"] = 4,
-		["STA"] = 6,
-	},
-	["Smooth Dawnstone"] = {
-		["Gem Quality"] = 3,
-		["CR_CRIT"] = 8,
-	},
-	["Solid Star of Elune"] = {
-		["Gem Quality"] = 3,
-		["STA"] = 12,
-	},
-	["Sovereign Nightseye"] = {
-		["Gem Quality"] = 3,
-		["STR"] = 4,
-		["STA"] = 6,
-	},
-	["Sparkling Star of Elune"] = {
-		["Gem Quality"] = 3,
-		["SPI"] = 8,
-	},
-	["Steady Talasite"] = {
-		["Gem Quality"] = 3,
-		["STA"] = 6,
-		["CR_RESILIENCE"] = 4,
-	},
-	["Stormy Star of Elune"] = {
-		["Gem Quality"] = 3,
-		["SPELLPEN"] = 10,
-	},
-	["Subtle Living Ruby"] = {
-		["Gem Quality"] = 3,
-		["CR_DODGE"] = 8,
-	},
-	["Swift Skyfire Diamond"] = {
-		["Gem Quality"] = 3,
-		["ATTACKPOWER"] = 24,
-		["Meta Gem"] = true,
-	},
-	["Teardrop Living Ruby"] = {
-		["Gem Quality"] = 3,
-		["HEAL"] = 18,
-	},
-	["Tenacious Earthstorm Diamond"] = {
-		["Gem Quality"] = 3,
-		["CR_DEFENSE"] = 12,
-		["Meta Gem"] = true,
-	},
-	["Thick Dawnstone"] = {
-		["Gem Quality"] = 3,
-		["CR_DEFENSE"] = 8,
-	},
-	["Thundering Skyfire Diamond"] = {
-		["Gem Quality"] = 3,
-		["Meta Gem"] = true,
-	},
-	["Veiled Noble Topaz"] = {
-		["Gem Quality"] = 3,
-		["CR_SPELLHIT"] = 4,
-		["DMG"] = 5,
-	},
-	["Wicked Noble Topaz"] = {
-		["Gem Quality"] = 3,
-		["ATTACKPOWER"] = 8,
-		["CR_CRIT"] = 4,
-	},
-	["Balanced Shadow Draenite"] = {
-		["Gem Quality"] = 2,
-		["ATTACKPOWER"] = 6,
-		["STA"] = 4,
-	},
-	["Bold Blood Garnet"] = {
-		["Gem Quality"] = 2,
-		["STR"] = 6,
-	},
-	["Bright Blood Garnet"] = {
-		["Gem Quality"] = 2,
-		["ATTACKPOWER"] = 12,
-	},
-	["Brilliant Golden Draenite"] = {
-		["Gem Quality"] = 2,
-		["INT"] = 6,
-	},
-	["Dazzling Deep Peridot"] = {
-		["Gem Quality"] = 2,
-		["INT"] = 3,
-		["MANAREG"] = 1,
-	},
-	["Delicate Blood Garnet"] = {
-		["Gem Quality"] = 2,
-		["AGI"] = 6,
-	},
-	["Enduring Deep Peridot"] = {
-		["Gem Quality"] = 2,
-		["STA"] = 4,
-		["CR_DEFENSE"] = 3,
-	},
-	["Gleaming Golden Draenite"] = {
-		["Gem Quality"] = 2,
-		["CR_SPELLCRIT"] = 6,
-	},
-	["Glinting Flame Spessarite"] = {
-		["Gem Quality"] = 2,
-		["AGI"] = 3,
-		["CR_HIT"] = 3,
-	},
-	["Glowing Shadow Draenite"] = {
-		["Gem Quality"] = 2,
-		["STA"] = 4,
-		["DMG"] = 4,
-	},
-	["Great Golden Draenite"] = {
-		["Gem Quality"] = 2,
-		["CR_SPELLHIT"] = 6,
-	},
-	["Infused Shadow Draenite"] = {
-		["Gem Quality"] = 2,
-		["ATTACKPOWER"] = 6,
-		["MANAREG"] = 1,
-	},
-	["Inscribed Flame Spessarite"] = {
-		["Gem Quality"] = 2,
-		["STR"] = 3,
-		["CR_CRIT"] = 3,
-	},
-	["Jagged Deep Peridot"] = {
-		["Gem Quality"] = 2,
-		["CR_CRIT"] = 3,
-		["STA"] = 4,
-	},
-};
---[[
-	["Balanced Nightseye"] = {
-		["Gem Quality"] = 3,
-		["ATTACKPOWER"] = 8,
-		["STA"] = 6,
-	},
-	["Bold Living Ruby"] = {
-		["Gem Quality"] = 3,
-		["STR"] = 8,
-	},
-	["Bracing Earthstorm Diamond"] = {
-		["Gem Quality"] = 3,
-		["HEAL"] = 26,
-		["Meta Gem"] = true,
-	},
-	["Bright Living Ruby"] = {
-		["Gem Quality"] = 3,
-		["ATTACKPOWER"] = 16,
-	},
-	["Brilliant Dawnstone"] = {
-		["Gem Quality"] = 3,
-		["INT"] = 8,
-	},
-	["Brutal Earthstorm Diamond"] = {
-		["Gem Quality"] = 3,
-		["Meta Gem"] = true,
-	},
-	["Dazzling Talasite"] = {
-		["Gem Quality"] = 3,
-		["INT"] = 4,
-		["MANAREG"] = 2,
-	},
-	["Delicate Living Ruby"] = {
-		["Gem Quality"] = 3,
-		["AGI"] = 8,
-	},
-	["Destructive Skyfire Diamond"] = {
-		["Gem Quality"] = 3,
-		["Meta Gem"] = true,
-	},
-	["Enduring Talasite"] = {
-		["Gem Quality"] = 3,
-		["STA"] = 6,
-		["CR_DEFENSE"] = 4,
-	},
-	["Enigmatic Skyfire Diamond"] = {
-		["Gem Quality"] = 3,
-		["CR_CRIT"] = 12,
-		["Meta Gem"] = true,
-	},
-	["Flashing Living Ruby"] = {
-		["Gem Quality"] = 3,
-		["CR_PARRY"] = 8,
-	},
-	["Gleaming Dawnstone"] = {
-		["Gem Quality"] = 3,
-		["CR_SPELLCRIT"] = 8,
-	},
-	["Glinting Noble Topaz"] = {
-		["Gem Quality"] = 3,
-		["AGI"] = 4,
-		["CR_HIT"] = 4,
-	},
-	["Glowing Nightseye"] = {
-		["Gem Quality"] = 3,
-		["STA"] = 6,
-		["DMG"] = 5,
-	},
-	["Great Dawnstone"] = {
-		["Gem Quality"] = 3,
-		["CR_SPELLHIT"] = 8,
-	},
-	["Imbued Unstable Diamond"] = {
-		["Gem Quality"] = 3,
-		["DMG"] = 14,
-		["Meta Gem"] = true,
-	},
-	["Infused Nightseye"] = {
-		["Gem Quality"] = 3,
-		["ATTACKPOWER"] = 8,
-		["MANAREG"] = 2,
-	},
-	["Inscribed Noble Topaz"] = {
-		["Gem Quality"] = 3,
-		["STR"] = 4,
-		["CR_CRIT"] = 4,
-	},
-	["Insightful Earthstorm Diamond"] = {
-		["Gem Quality"] = 3,
-		["INT"] = 12,
-		["Meta Gem"] = true,
-	},
-	["Jagged Talasite"] = {
-		["Gem Quality"] = 3,
-		["CR_CRIT"] = 4,
-		["STA"] = 6,
-	},
-	["Luminous Noble Topaz"] = {
-		["Gem Quality"] = 3,
-		["INT"] = 4,
-		["HEAL"] = 9,
-	},
-	["Lustrous Star of Elune"] = {
-		["Gem Quality"] = 3,
-		["MANAREG"] = 3,
-	},
-	["Mystic Dawnstone"] = {
-		["Gem Quality"] = 3,
-		["CR_RESILIENCE"] = 8,
-	},
-	["Mystical Skyfire Diamond"] = {
-		["Gem Quality"] = 3,
-		["Meta Gem"] = true,
-	},
-	["Potent Noble Topaz"] = {
-		["Gem Quality"] = 3,
-		["CR_SPELLCRIT"] = 4,
-		["DMG"] = 5,
-	},
-	["Potent Unstable Diamond"] = {
-		["Gem Quality"] = 3,
-		["ATTACKPOWER"] = 24,
-		["Meta Gem"] = true,
-	},
-	["Powerful Earthstorm Diamond"] = {
-		["Gem Quality"] = 3,
-		["STA"] = 18,
-		["Meta Gem"] = true,
-	},
-	["Prismatic Sphere"] = {
-		["Gem Quality"] = 3,
-	},
-	["Purified Shadow Pearl"] = {
-		["Gem Quality"] = 3,
-		["SPI"] = 4,
-		["HEAL"] = 9,
-	},
-	["Radiant Talasite"] = {
-		["Gem Quality"] = 3,
-		["SPELLPEN"] = 5,
-		["CR_SPELLCRIT"] = 4,
-	},
-	["Relentless Earthstorm Diamond"] = {
-		["Gem Quality"] = 3,
-		["AGI"] = 12,
-		["Meta Gem"] = true,
-	},
-	["Rigid Dawnstone"] = {
-		["Gem Quality"] = 3,
-		["CR_HIT"] = 8,
-	},
-	["Royal Nightseye"] = {
-		["Gem Quality"] = 3,
-		["MANAREG"] = 2,
-		["HEAL"] = 9,
-	},
-	["Runed Living Ruby"] = {
-		["Gem Quality"] = 3,
-		["DMG"] = 9,
-	},
-	["Shifting Nightseye"] = {
-		["Gem Quality"] = 3,
-		["AGI"] = 4,
-		["STA"] = 6,
-	},
-	["Smooth Dawnstone"] = {
-		["Gem Quality"] = 3,
-		["CR_CRIT"] = 8,
-	},
-	["Solid Star of Elune"] = {
-		["Gem Quality"] = 3,
-		["STA"] = 12,
-	},
-	["Sovereign Nightseye"] = {
-		["Gem Quality"] = 3,
-		["STR"] = 4,
-		["STA"] = 6,
-	},
-	["Sparkling Star of Elune"] = {
-		["Gem Quality"] = 3,
-		["SPI"] = 8,
-	},
-	["Steady Talasite"] = {
-		["Gem Quality"] = 3,
-		["STA"] = 6,
-		["CR_RESILIENCE"] = 4,
-	},
-	["Stormy Star of Elune"] = {
-		["Gem Quality"] = 3,
-		["SPELLPEN"] = 10,
-	},
-	["Subtle Living Ruby"] = {
-		["Gem Quality"] = 3,
-		["CR_DODGE"] = 8,
-	},
-	["Swift Skyfire Diamond"] = {
-		["Gem Quality"] = 3,
-		["ATTACKPOWER"] = 24,
-		["Meta Gem"] = true,
-	},
-	["Teardrop Living Ruby"] = {
-		["Gem Quality"] = 3,
-		["HEAL"] = 18,
-	},
-	["Tenacious Earthstorm Diamond"] = {
-		["Gem Quality"] = 3,
-		["CR_DEFENSE"] = 12,
-		["Meta Gem"] = true,
-	},
-	["Thick Dawnstone"] = {
-		["Gem Quality"] = 3,
-		["CR_DEFENSE"] = 8,
-	},
-	["Thundering Skyfire Diamond"] = {
-		["Gem Quality"] = 3,
-		["Meta Gem"] = true,
-	},
-	["Veiled Noble Topaz"] = {
-		["Gem Quality"] = 3,
-		["CR_SPELLHIT"] = 4,
-		["DMG"] = 5,
-	},
-	["Wicked Noble Topaz"] = {
-		["Gem Quality"] = 3,
-		["ATTACKPOWER"] = 8,
-		["CR_CRIT"] = 4,
-	},
-	["Balanced Shadow Draenite"] = {
-		["Gem Quality"] = 2,
-		["ATTACKPOWER"] = 6,
-		["STA"] = 4,
-	},
-	["Bold Blood Garnet"] = {
-		["Gem Quality"] = 2,
-		["STR"] = 6,
-	},
-	["Bright Blood Garnet"] = {
-		["Gem Quality"] = 2,
-		["ATTACKPOWER"] = 12,
-	},
-	["Brilliant Golden Draenite"] = {
-		["Gem Quality"] = 2,
-		["INT"] = 6,
-	},
-	["Dazzling Deep Peridot"] = {
-		["Gem Quality"] = 2,
-		["INT"] = 3,
-		["MANAREG"] = 1,
-	},
-	["Delicate Blood Garnet"] = {
-		["Gem Quality"] = 2,
-		["AGI"] = 6,
-	},
-	["Enduring Deep Peridot"] = {
-		["Gem Quality"] = 2,
-		["STA"] = 4,
-		["CR_DEFENSE"] = 3,
-	},
-	["Gleaming Golden Draenite"] = {
-		["Gem Quality"] = 2,
-		["CR_SPELLCRIT"] = 6,
-	},
-	["Glinting Flame Spessarite"] = {
-		["Gem Quality"] = 2,
-		["AGI"] = 3,
-		["CR_HIT"] = 3,
-	},
-	["Glowing Shadow Draenite"] = {
-		["Gem Quality"] = 2,
-		["STA"] = 4,
-		["DMG"] = 4,
-	},
-	["Great Golden Draenite"] = {
-		["Gem Quality"] = 2,
-		["CR_SPELLHIT"] = 6,
-	},
-	["Infused Shadow Draenite"] = {
-		["Gem Quality"] = 2,
-		["ATTACKPOWER"] = 6,
-		["MANAREG"] = 1,
-	},
-	["Inscribed Flame Spessarite"] = {
-		["Gem Quality"] = 2,
-		["STR"] = 3,
-		["CR_CRIT"] = 3,
-	},
-	["Jagged Deep Peridot"] = {
-		["Gem Quality"] = 2,
-		["CR_CRIT"] = 3,
-		["STA"] = 4,
-	},
-	["Luminous Flame Spessarite"] = {
-		["Gem Quality"] = 2,
-		["INT"] = 3,
-		["HEAL"] = 7,
-	},
-	["Lustrous Azure Moonstone"] = {
-		["Gem Quality"] = 2,
-		["MANAREG"] = 2,
-	},
-	["Potent Flame Spessarite"] = {
-		["Gem Quality"] = 2,
-		["CR_SPELLCRIT"] = 3,
-		["DMG"] = 4,
-	},
-	["Purified Jaggal Pearl"] = {
-		["Gem Quality"] = 2,
-		["SPI"] = 3,
-		["HEAL"] = 7,
-	},
-	["Radiant Deep Peridot"] = {
-		["Gem Quality"] = 2,
-		["SPELLPEN"] = 4,
-		["CR_SPELLCRIT"] = 3,
-	},
-	["Rigid Golden Draenite"] = {
-		["Gem Quality"] = 2,
-		["CR_HIT"] = 6,
-	},
-	["Royal Shadow Draenite"] = {
-		["Gem Quality"] = 2,
-		["MANAREG"] = 1,
-		["HEAL"] = 7,
-	},
-	["Runed Blood Garnet"] = {
-		["Gem Quality"] = 2,
-		["DMG"] = 7,
-	},
-	["Shifting Shadow Draenite"] = {
-		["Gem Quality"] = 2,
-		["AGI"] = 3,
-		["STA"] = 4,
-	},
-	["Smooth Golden Draenite"] = {
-		["Gem Quality"] = 2,
-		["CR_CRIT"] = 6,
-	},
-	["Solid Azure Moonstone"] = {
-		["Gem Quality"] = 2,
-		["STA"] = 9,
-	},
-	["Sovereign Shadow Draenite"] = {
-		["Gem Quality"] = 2,
-		["STR"] = 3,
-		["STA"] = 4,
-	},
-	["Sparkling Azure Moonstone"] = {
-		["Gem Quality"] = 2,
-		["SPI"] = 6,
-	},
-	["Stormy Azure Moonstone"] = {
-		["Gem Quality"] = 2,
-		["SPELLPEN"] = 8,
-	},
-	["Teardrop Blood Garnet"] = {
-		["Gem Quality"] = 2,
-		["HEAL"] = 13,
-	},
-	["Thick Golden Draenite"] = {
-		["Gem Quality"] = 2,
-		["CR_DEFENSE"] = 6,
-	},
-	["Veiled Flame Spessarite"] = {
-		["Gem Quality"] = 2,
-		["CR_SPELLHIT"] = 3,
-		["DMG"] = 4,
-	},
-	["Wicked Flame Spessarite"] = {
-		["Gem Quality"] = 2,
-		["ATTACKPOWER"] = 6,
-		["CR_CRIT"] = 3,
-	},
-	["Bold Tourmaline"] = {
-		["Gem Quality"] = 1,
-		["STR"] = 4,
-	},
-	["Bright Tourmaline"] = {
-		["Gem Quality"] = 1,
-		["ATTACKPOWER"] = 8,
-	},
-	["Brilliant Amber"] = {
-		["Gem Quality"] = 1,
-		["INT"] = 4,
-	},
-	["Delicate Tourmaline"] = {
-		["Gem Quality"] = 1,
-		["AGI"] = 4,
-	},
-	["Gleaming Amber"] = {
-		["Gem Quality"] = 1,
-		["CR_SPELLCRIT"] = 4,
-	},
-	["Lustrous Zircon"] = {
-		["Gem Quality"] = 1,
-		["MANAREG"] = 1,
-	},
-	["Rigid Amber"] = {
-		["Gem Quality"] = 1,
-		["CR_HIT"] = 4,
-	},
-	["Runed Tourmaline"] = {
-		["Gem Quality"] = 1,
-		["DMG"] = 5,
-	},
-	["Smooth Amber"] = {
-		["Gem Quality"] = 1,
-		["CR_CRIT"] = 4,
-	},
-	["Solid Zircon"] = {
-		["Gem Quality"] = 1,
-		["STA"] = 6,
-	},
-	["Sparkling Zircon"] = {
-		["Gem Quality"] = 1,
-		["SPI"] = 4,
-	},
-	["Teardrop Tourmaline"] = {
-		["Gem Quality"] = 1,
-		["HEAL"] = 9,
-	},
-	["Thick Amber"] = {
-		["Gem Quality"] = 1,
-		["CR_DEFENSE"] = 4,
-	},
-};]]

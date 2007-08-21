@@ -1,5 +1,5 @@
 ## Interface: 20100
-## Title: Enhancer (Shamanistic Control) |cff7fff7f -Ace2-|r
+## Title: Enhancer |cff7fff7f -Ace2-|r
 ## Notes: Totem timers and some other usefull things like WF Hidden cooldown tracking etc
 ## Author:  Leion/Tristan (Frostmane[EU])
 ## X-AuthorRealm: Frostmane[EU]
@@ -12,6 +12,7 @@
 
 ## X-Website: http://www.wowace.com/files
 ## X-Email: dennis.hafstrom@gmail.com
+## X-AlternativeNameIdeas: Shamanistic Control
 ## X-Category: Shaman
 ## X-Embeds: Ace2
 
@@ -56,5 +57,6 @@ bonus\Windfury.lua
 bonus\Reincarnation.lua
 bonus\Invigorated.lua
 bonus\EP.lua
+bonus\EPGems.lua
 
 Debug.lua

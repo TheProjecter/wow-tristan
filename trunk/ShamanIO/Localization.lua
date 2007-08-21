@@ -48,10 +48,14 @@ L_Main:RegisterTranslations("enUS", function() return {
 	["dep_desc"] = "Toggle showing spellDamage Equivalence Points in Tooltips",
 	["eil_cmd"] = "EIL",
 	["eil_desc"] = "Toggle showing Enhancement Item Level in Tooltips",
-	["ep_divide_cmd"] = "DivideBy10",
-	["ep_divide_desc"] = "For simplicity AEP numbers are multiplied by 10 to avoid fractions, toggling this to ON will divide by 10 again",
 	["ep_numbers_cmd"] = "EPNumbers",
 	["ep_numbers_desc"] = "Here you can change weights for the EP numbers (0 disables that stat)",
+	["bestgem_cmd"] = "BestGem",
+	["bestgem_desc"] = "Calculates the best gem based on your settings",
+	["blue"] = "Blue",
+	["yellow"] = "Yellow",
+	["red"] = "Red",
+	["any"] = "Any",
 	
 	["AGI"] = "Agility",
 	["ATTACKPOWER"] = "Attackpower",
@@ -61,6 +65,7 @@ L_Main:RegisterTranslations("enUS", function() return {
 	["CR_SPELLCRIT"] = "SpellCrit",
 	["CR_SPELLHASTE"] = "SpellHaste",
 	["CR_SPELLHIT"] = "SpellHit",
+	["CR_RESILIENCE"] = "Resilience",
 	["DMG"] = "SpellDamage",
 	["HEAL"] = "SpellHeal",
 	["IGNOREARMOR"] = "IgnoreArmor",
@@ -68,6 +73,7 @@ L_Main:RegisterTranslations("enUS", function() return {
 	["MANAREG"] = "MP5",
 	["SPI"] = "Spirit",
 	["STR"] = "Strength",
+	["STA"] = "Stamina",
 		
 	["sound_cmd"] = "Sound",
 	["sound_desc"] = "Toggle playing sound when a totem expires",
@@ -155,5 +161,12 @@ L_EP:RegisterTranslations("enUS", function() return {
 	
 	["ep_numbers1"] = "%d (%d)",
 	["ep_numbers2"] = "%.1f (%.1f)",
+	
+	["bestgem_link"] = "Best gem (color %s) with current values is: %s at %.1f",
+	["bestgem_nolink"] = "Best gem (color %s) with current values is: %s at %.1f",
+	["Red"] = "red",
+	["Yellow"] = "yellow",
+	["Blue"] = "blue",
+	["Any"] = "any",
 	
 } end )
