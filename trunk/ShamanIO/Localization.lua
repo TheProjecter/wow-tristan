@@ -31,7 +31,7 @@ L_Main:RegisterTranslations("enUS", function() return {
 	["ep_group_cmd"] = "EPTypes",
 	["ep_group_desc"] = "Set wich Equivalence Points to show",
 	["ep_gemq_cmd"] = "GemQuality",
-	["ep_gemq_desc"] = "Set Max Quality for Gems (1 = Common, 2 = Uncommon, 3 = Rare)", --, 4 = Epic)",
+	["ep_gemq_desc"] = "Set Max Quality for Gems (1 = Common, 2 = Uncommon, 3 = Rare, 4 = Epic)",
 	["ep_gemm_cmd"] = "MetaGem",
 	["ep_gemm_desc"] = "Toggle including Meta gems in calculations",
 	["epz_cmd"] = "EPZero",

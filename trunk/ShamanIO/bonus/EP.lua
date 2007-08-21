@@ -10,6 +10,27 @@ function EnhancerEP:OnInitialize()
 	-- Just a place to give bonus to special gems
 	EnhancerEP.gems["Relentless Earthstorm Diamond"]["AEP"] = 750;
 	EnhancerEP.gems["Relentless Earthstorm Diamond"]["AEPH"] = 750;
+	
+	--[[
+                3% Increased Critical Damage -- is given 750 for Enhancement above
+                +4 Resist All
+                2% Reduced Threat
+                +3 Melee Damage
+                Chance to Stun Target
+                +14 Spell Crit Rating and 
+                1% Spell Reflect
+                5% Snare and Root Resist
+                5% Stun Resistance
+                Chance to restore mana on spellcast
+                5% on spellcast - next spell cast in half time
+                5% Stun Resistance
+                5% Stun Resist
+                +3 Resist All
+                3% Increased Critical Damage
+                Minor Run Speed Increase
+                Chance to Restore Health on hit
+                Chance to Increase Melee/Ranged Attack Speed
+	]]--
 end
 
 function EnhancerEP:OnEnable()
@@ -439,6 +460,468 @@ end
 ]]--
 EnhancerEP.gemCache = {};
 EnhancerEP.gems = {
+		["Balanced Shadowsong Amethyst"] = {
+		["Gem Quality"] = 4,
+		["ATTACKPOWER"] = 10,
+		["STA"] = 7,
+	},
+	["Bold Crimson Spinel"] = {
+		["Gem Quality"] = 4,
+		["STR"] = 10,
+	},
+	["Bright Crimson Spinel"] = {
+		["Gem Quality"] = 4,
+		["ATTACKPOWER"] = 20,
+	},
+	["Brilliant Lionseye"] = {
+		["Gem Quality"] = 4,
+		["INT"] = 10,
+	},
+	["Dazzling Seaspray Emerald"] = {
+		["Gem Quality"] = 4,
+		["INT"] = 5,
+		["MANAREG"] = 2,
+	},
+	["Delicate Crimson Spinel"] = {
+		["Gem Quality"] = 4,
+		["AGI"] = 10,
+	},
+	["Enduring Seaspray Emerald"] = {
+		["Gem Quality"] = 4,
+		["STA"] = 7,
+		["CR_DEFENSE"] = 5,
+	},
+	["Flashing Crimson Spinel"] = {
+		["Gem Quality"] = 4,
+		["CR_PARRY"] = 10,
+	},
+	["Gleaming Lionseye"] = {
+		["Gem Quality"] = 4,
+		["CR_SPELLCRIT"] = 10,
+	},
+	["Glinting Pyrestone"] = {
+		["Gem Quality"] = 4,
+		["AGI"] = 5,
+		["CR_HIT"] = 5,
+	},
+	["Glowing Shadowsong Amethyst"] = {
+		["Gem Quality"] = 4,
+		["STA"] = 7,
+		["DMG"] = 6,
+	},
+	["Great Lionseye"] = {
+		["Gem Quality"] = 4,
+		["CR_SPELLHIT"] = 10,
+	},
+	["Infused Amethyst"] = {
+		["Gem Quality"] = 4,
+		["STA"] = 6,
+		["DMG"] = 6,
+	},
+	["Infused Shadowsong Amethyst"] = {
+		["Gem Quality"] = 4,
+		["ATTACKPOWER"] = 10,
+		["MANAREG"] = 2,
+	},
+	["Inscribed Pyrestone"] = {
+		["Gem Quality"] = 4,
+		["STR"] = 5,
+		["CR_CRIT"] = 5,
+	},
+	["Jagged Seaspray Emerald"] = {
+		["Gem Quality"] = 4,
+		["CR_CRIT"] = 5,
+		["STA"] = 7,
+	},
+	["Luminous Pyrestone"] = {
+		["Gem Quality"] = 4,
+		["INT"] = 5,
+		["HEAL"] = 11,
+	},
+	["Lustrous Empyrean Sapphire"] = {
+		["Gem Quality"] = 4,
+		["MANAREG"] = 4,
+	},
+	["Mystic Lionseye"] = {
+		["Gem Quality"] = 4,
+		["CR_RESILIENCE"] = 10,
+	},
+	["Potent Pyrestone"] = {
+		["Gem Quality"] = 4,
+		["CR_SPELLCRIT"] = 5,
+		["DMG"] = 6,
+	},
+	["Pulsing Amethyst"] = {
+		["Gem Quality"] = 4,
+		["ATTACKPOWER"] = 10,
+		["STA"] = 6,
+	},
+	["Radiant Seaspray Emerald"] = {
+		["Gem Quality"] = 4,
+		["SPELLPEN"] = 6,
+		["CR_SPELLCRIT"] = 5,
+	},
+	["Rigid Lionseye"] = {
+		["Gem Quality"] = 4,
+		["CR_HIT"] = 10,
+	},
+	["Royal Shadowsong Amethyst"] = {
+		["Gem Quality"] = 4,
+		["MANAREG"] = 2,
+		["HEAL"] = 11,
+	},
+	["Runed Crimson Spinel"] = {
+		["Gem Quality"] = 4,
+		["DMG"] = 12,
+	},
+	["Shifting Shadowsong Amethyst"] = {
+		["Gem Quality"] = 4,
+		["AGI"] = 5,
+		["STA"] = 7,
+	},
+	["Smooth Lionseye"] = {
+		["Gem Quality"] = 4,
+		["CR_CRIT"] = 10,
+	},
+	["Solid Empyrean Sapphire"] = {
+		["Gem Quality"] = 4,
+		["STA"] = 15,
+	},
+	["Soothing Amethyst"] = {
+		["Gem Quality"] = 4,
+		["STA"] = 6,
+		["HEAL"] = 11,
+	},
+	["Sovereign Shadowsong Amethyst"] = {
+		["Gem Quality"] = 4,
+		["STR"] = 5,
+		["STA"] = 7,
+	},
+	["Sparkling Empyrean Sapphire"] = {
+		["Gem Quality"] = 4,
+		["SPI"] = 10,
+	},
+	["Stormy Empyrean Sapphire"] = {
+		["Gem Quality"] = 4,
+		["SPELLPEN"] = 13,
+	},
+	["Subtle Crimson Spinel"] = {
+		["Gem Quality"] = 4,
+		["CR_DODGE"] = 10,
+	},
+	["Teardrop Crimson Spinel"] = {
+		["Gem Quality"] = 4,
+		["HEAL"] = 22,
+	},
+	["Thick Lionseye"] = {
+		["Gem Quality"] = 4,
+		["CR_DEFENSE"] = 10,
+	},
+	["Veiled Pyrestone"] = {
+		["Gem Quality"] = 4,
+		["CR_SPELLHIT"] = 5,
+		["DMG"] = 6,
+	},
+	["Void Sphere"] = {
+		["Gem Quality"] = 4,
+	},
+	["Wicked Pyrestone"] = {
+		["Gem Quality"] = 4,
+		["ATTACKPOWER"] = 10,
+		["CR_CRIT"] = 5,
+	},
+	["Balanced Nightseye"] = {
+		["Gem Quality"] = 3,
+		["ATTACKPOWER"] = 8,
+		["STA"] = 6,
+	},
+	["Bold Living Ruby"] = {
+		["Gem Quality"] = 3,
+		["STR"] = 8,
+	},
+	["Bracing Earthstorm Diamond"] = {
+		["Gem Quality"] = 3,
+		["HEAL"] = 26,
+		["Meta Gem"] = true,
+	},
+	["Bright Living Ruby"] = {
+		["Gem Quality"] = 3,
+		["ATTACKPOWER"] = 16,
+	},
+	["Brilliant Dawnstone"] = {
+		["Gem Quality"] = 3,
+		["INT"] = 8,
+	},
+	["Brutal Earthstorm Diamond"] = {
+		["Gem Quality"] = 3,
+		["Meta Gem"] = true,
+	},
+	["Dazzling Talasite"] = {
+		["Gem Quality"] = 3,
+		["INT"] = 4,
+		["MANAREG"] = 2,
+	},
+	["Delicate Living Ruby"] = {
+		["Gem Quality"] = 3,
+		["AGI"] = 8,
+	},
+	["Destructive Skyfire Diamond"] = {
+		["Gem Quality"] = 3,
+		["Meta Gem"] = true,
+	},
+	["Enduring Talasite"] = {
+		["Gem Quality"] = 3,
+		["STA"] = 6,
+		["CR_DEFENSE"] = 4,
+	},
+	["Enigmatic Skyfire Diamond"] = {
+		["Gem Quality"] = 3,
+		["CR_CRIT"] = 12,
+		["Meta Gem"] = true,
+	},
+	["Flashing Living Ruby"] = {
+		["Gem Quality"] = 3,
+		["CR_PARRY"] = 8,
+	},
+	["Gleaming Dawnstone"] = {
+		["Gem Quality"] = 3,
+		["CR_SPELLCRIT"] = 8,
+	},
+	["Glinting Noble Topaz"] = {
+		["Gem Quality"] = 3,
+		["AGI"] = 4,
+		["CR_HIT"] = 4,
+	},
+	["Glowing Nightseye"] = {
+		["Gem Quality"] = 3,
+		["STA"] = 6,
+		["DMG"] = 5,
+	},
+	["Great Dawnstone"] = {
+		["Gem Quality"] = 3,
+		["CR_SPELLHIT"] = 8,
+	},
+	["Imbued Unstable Diamond"] = {
+		["Gem Quality"] = 3,
+		["DMG"] = 14,
+		["Meta Gem"] = true,
+	},
+	["Infused Nightseye"] = {
+		["Gem Quality"] = 3,
+		["ATTACKPOWER"] = 8,
+		["MANAREG"] = 2,
+	},
+	["Inscribed Noble Topaz"] = {
+		["Gem Quality"] = 3,
+		["STR"] = 4,
+		["CR_CRIT"] = 4,
+	},
+	["Insightful Earthstorm Diamond"] = {
+		["Gem Quality"] = 3,
+		["INT"] = 12,
+		["Meta Gem"] = true,
+	},
+	["Jagged Talasite"] = {
+		["Gem Quality"] = 3,
+		["CR_CRIT"] = 4,
+		["STA"] = 6,
+	},
+	["Luminous Noble Topaz"] = {
+		["Gem Quality"] = 3,
+		["INT"] = 4,
+		["HEAL"] = 9,
+	},
+	["Lustrous Star of Elune"] = {
+		["Gem Quality"] = 3,
+		["MANAREG"] = 3,
+	},
+	["Mystic Dawnstone"] = {
+		["Gem Quality"] = 3,
+		["CR_RESILIENCE"] = 8,
+	},
+	["Mystical Skyfire Diamond"] = {
+		["Gem Quality"] = 3,
+		["Meta Gem"] = true,
+	},
+	["Potent Noble Topaz"] = {
+		["Gem Quality"] = 3,
+		["CR_SPELLCRIT"] = 4,
+		["DMG"] = 5,
+	},
+	["Potent Unstable Diamond"] = {
+		["Gem Quality"] = 3,
+		["ATTACKPOWER"] = 24,
+		["Meta Gem"] = true,
+	},
+	["Powerful Earthstorm Diamond"] = {
+		["Gem Quality"] = 3,
+		["STA"] = 18,
+		["Meta Gem"] = true,
+	},
+	["Prismatic Sphere"] = {
+		["Gem Quality"] = 3,
+	},
+	["Purified Shadow Pearl"] = {
+		["Gem Quality"] = 3,
+		["SPI"] = 4,
+		["HEAL"] = 9,
+	},
+	["Radiant Talasite"] = {
+		["Gem Quality"] = 3,
+		["SPELLPEN"] = 5,
+		["CR_SPELLCRIT"] = 4,
+	},
+	["Relentless Earthstorm Diamond"] = {
+		["Gem Quality"] = 3,
+		["AGI"] = 12,
+		["Meta Gem"] = true,
+	},
+	["Rigid Dawnstone"] = {
+		["Gem Quality"] = 3,
+		["CR_HIT"] = 8,
+	},
+	["Royal Nightseye"] = {
+		["Gem Quality"] = 3,
+		["MANAREG"] = 2,
+		["HEAL"] = 9,
+	},
+	["Runed Living Ruby"] = {
+		["Gem Quality"] = 3,
+		["DMG"] = 9,
+	},
+	["Shifting Nightseye"] = {
+		["Gem Quality"] = 3,
+		["AGI"] = 4,
+		["STA"] = 6,
+	},
+	["Smooth Dawnstone"] = {
+		["Gem Quality"] = 3,
+		["CR_CRIT"] = 8,
+	},
+	["Solid Star of Elune"] = {
+		["Gem Quality"] = 3,
+		["STA"] = 12,
+	},
+	["Sovereign Nightseye"] = {
+		["Gem Quality"] = 3,
+		["STR"] = 4,
+		["STA"] = 6,
+	},
+	["Sparkling Star of Elune"] = {
+		["Gem Quality"] = 3,
+		["SPI"] = 8,
+	},
+	["Steady Talasite"] = {
+		["Gem Quality"] = 3,
+		["STA"] = 6,
+		["CR_RESILIENCE"] = 4,
+	},
+	["Stormy Star of Elune"] = {
+		["Gem Quality"] = 3,
+		["SPELLPEN"] = 10,
+	},
+	["Subtle Living Ruby"] = {
+		["Gem Quality"] = 3,
+		["CR_DODGE"] = 8,
+	},
+	["Swift Skyfire Diamond"] = {
+		["Gem Quality"] = 3,
+		["ATTACKPOWER"] = 24,
+		["Meta Gem"] = true,
+	},
+	["Teardrop Living Ruby"] = {
+		["Gem Quality"] = 3,
+		["HEAL"] = 18,
+	},
+	["Tenacious Earthstorm Diamond"] = {
+		["Gem Quality"] = 3,
+		["CR_DEFENSE"] = 12,
+		["Meta Gem"] = true,
+	},
+	["Thick Dawnstone"] = {
+		["Gem Quality"] = 3,
+		["CR_DEFENSE"] = 8,
+	},
+	["Thundering Skyfire Diamond"] = {
+		["Gem Quality"] = 3,
+		["Meta Gem"] = true,
+	},
+	["Veiled Noble Topaz"] = {
+		["Gem Quality"] = 3,
+		["CR_SPELLHIT"] = 4,
+		["DMG"] = 5,
+	},
+	["Wicked Noble Topaz"] = {
+		["Gem Quality"] = 3,
+		["ATTACKPOWER"] = 8,
+		["CR_CRIT"] = 4,
+	},
+	["Balanced Shadow Draenite"] = {
+		["Gem Quality"] = 2,
+		["ATTACKPOWER"] = 6,
+		["STA"] = 4,
+	},
+	["Bold Blood Garnet"] = {
+		["Gem Quality"] = 2,
+		["STR"] = 6,
+	},
+	["Bright Blood Garnet"] = {
+		["Gem Quality"] = 2,
+		["ATTACKPOWER"] = 12,
+	},
+	["Brilliant Golden Draenite"] = {
+		["Gem Quality"] = 2,
+		["INT"] = 6,
+	},
+	["Dazzling Deep Peridot"] = {
+		["Gem Quality"] = 2,
+		["INT"] = 3,
+		["MANAREG"] = 1,
+	},
+	["Delicate Blood Garnet"] = {
+		["Gem Quality"] = 2,
+		["AGI"] = 6,
+	},
+	["Enduring Deep Peridot"] = {
+		["Gem Quality"] = 2,
+		["STA"] = 4,
+		["CR_DEFENSE"] = 3,
+	},
+	["Gleaming Golden Draenite"] = {
+		["Gem Quality"] = 2,
+		["CR_SPELLCRIT"] = 6,
+	},
+	["Glinting Flame Spessarite"] = {
+		["Gem Quality"] = 2,
+		["AGI"] = 3,
+		["CR_HIT"] = 3,
+	},
+	["Glowing Shadow Draenite"] = {
+		["Gem Quality"] = 2,
+		["STA"] = 4,
+		["DMG"] = 4,
+	},
+	["Great Golden Draenite"] = {
+		["Gem Quality"] = 2,
+		["CR_SPELLHIT"] = 6,
+	},
+	["Infused Shadow Draenite"] = {
+		["Gem Quality"] = 2,
+		["ATTACKPOWER"] = 6,
+		["MANAREG"] = 1,
+	},
+	["Inscribed Flame Spessarite"] = {
+		["Gem Quality"] = 2,
+		["STR"] = 3,
+		["CR_CRIT"] = 3,
+	},
+	["Jagged Deep Peridot"] = {
+		["Gem Quality"] = 2,
+		["CR_CRIT"] = 3,
+		["STA"] = 4,
+	},
+};
+--[[
 	["Balanced Nightseye"] = {
 		["Gem Quality"] = 3,
 		["ATTACKPOWER"] = 8,
@@ -862,4 +1345,4 @@ EnhancerEP.gems = {
 		["Gem Quality"] = 1,
 		["CR_DEFENSE"] = 4,
 	},
-};
+};]]

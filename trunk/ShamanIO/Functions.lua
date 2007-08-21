@@ -14,9 +14,9 @@ function Enhancer:CreateTotem(totem, rank)
 	-- Pickup the data we need:
 	
 	local Icon = Enhancer.Totems[totem].Icon;
-	local TimeToLive = Enhancer.Totems[totem].Time;
+	local TimeToLive = Enhancer.Totems[totem].Time or Enhancer.Totems[totem][rank].Time;
 	local Element = Enhancer.Totems[totem].Element;
-	local HitPoints = Enhancer.Totems[totem].Life;
+	local HitPoints = Enhancer.Totems[totem].Life or Enhancer.Totems[totem][rank].Life;
 	local Pulse = Enhancer.Totems[totem].Pulse;
 	
 	if (not Enhancer:IsModuleActive(Element)) then return; end
