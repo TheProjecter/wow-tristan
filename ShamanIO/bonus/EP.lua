@@ -93,8 +93,10 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 		end
 		-- nonMetaSockets, metaSockets
 		
+		local lastValue, lastKingsValue;
+		
+		lastValue, lastKingsValue = nil, nil; -- Reset these between different types of EP (used for compairing a main set with a subset, such as all values but hit)
 		--[[ Do Attackpower Equivalence Points ]]--
-		local lastValue, lastKingsValue = nil, nil;
 		if (Enhancer.db.profile.AEP) then
 			local values = {};
 			for stat,value in pairs(Enhancer.db.profile.AEPNumbers) do
@@ -117,7 +119,7 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 				
 				tooltip:AddDoubleLine(L["aep_tooltip"], string.format( numberFormat, EP, EPK ), RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
 				
-				tinsert(infos, L["aep_info"]);
+				-- tinsert(infos, L["aep_info"]);
 			end
 		end
 		
@@ -147,11 +149,12 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 				tooltip:AddDoubleLine(L["aeph_tooltip"], string.format( numberFormat, EP, EPK ), RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
 				
 				if (not Enhancer.db.profile.AEP) then
-					tinsert(infos, L["aep_info"]);
+					-- tinsert(infos, L["aep_info"]);
 				end
 			end
 		end
 		
+		lastValue, lastKingsValue = nil, nil; -- Reset these between different types of EP (used for compairing a main set with a subset, such as all values but hit)
 		--[[ Do Healing Equivalence Points ]]--
 		if (Enhancer.db.profile.HEP) then
 			local values = {};
@@ -178,6 +181,7 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 			end
 		end
 		
+		lastValue, lastKingsValue = nil, nil; -- Reset these between different types of EP (used for compairing a main set with a subset, such as all values but hit)
 		--[[ Do spellDamage Equivalence Points ]]--
 		if (Enhancer.db.profile.DEP) then
 			local values = {};
@@ -190,6 +194,7 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 			-- EnhancerEP:Calculate(values, bonuses, gemcount, metacount, gemcachekey)
 			-- return total, kingstotal, gemName, kingsgemName, metagemName, kingsmetagemName;
 			local EP, EPK, gem1, gem2, gem3, gem4 = EnhancerEP:Calculate(values, bonuses, nonMetaSockets, metaSockets, "DEP");
+			lastValue, lastKingsValue = EP, EPK;
 			
 			if ( EP > 0 or Enhancer.db.profile.EPZero) then
 				if (not lineAdded) then
@@ -204,6 +209,35 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 			end
 		end
 		
+		--[[ Do spellDamage Equivalence Points but without hit ]]--
+		if (Enhancer.db.profile.DEP) then
+			local values = {};
+			for stat,value in pairs(Enhancer.db.profile.DEPNumbers) do
+				if (stat ~= "CR_SPELLHIT") then
+					values[stat] = {};
+					values[stat]["value"] = Enhancer.db.profile.DEPNumbers[stat];
+					values[stat]["kings"] = EnhancerEP.AffectedByKings[stat];
+				end
+			end
+			
+			-- EnhancerEP:Calculate(values, bonuses, gemcount, metacount, gemcachekey)
+			-- return total, kingstotal, gemName, kingsgemName, metagemName, kingsmetagemName;
+			local EP, EPK, gem1, gem2, gem3, gem4 = EnhancerEP:Calculate(values, bonuses, nonMetaSockets, metaSockets, "DEP");
+			
+			local skipThis = ( lastValue and lastKingsValue and lastValue == EP and lastKingsValue == EPK );
+			if ( (EP > 0 or Enhancer.db.profile.EPZero) and (not skipThis) ) then
+				if (not lineAdded) then
+					tooltip:AddLine(" ");
+					tooltip:AddLine(L["eep_info"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
+					lineAdded = true;
+				end
+				
+				tooltip:AddDoubleLine(L["deph_tooltip"], string.format( numberFormat, EP, EPK ), RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
+				
+				-- tinsert(infos, L["dep_info"]);
+			end
+		end
+		
 		if (lineAdded) then
 			for _, infoLine in ipairs(infos) do
 				tooltip:AddLine( infoLine, RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"] );
@@ -213,7 +247,7 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 		
 		-- http://www.wowwiki.com/Formulas:Item_Values Calculate ItemLevel based on stats you care about ;)
 		--[[ Do Enhancement ItemLevel ]]--
-		if (Enhancer.db.profile.EIL or true) then
+		if (Enhancer.db.profile.EIP or true) then
 			--[[ Set point values here so it's easy to change ]]--
 			values = {
 				["ATTACKPOWER"] = { ["value"] = (5 / 10), ["kings"] = nil },
@@ -228,12 +262,13 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 			
 			-- EnhancerEP:Calculate(values, bonuses, gemcount, metacount, gemcachekey)
 			-- return total, kingstotal, gemName, kingsgemName, metagemName, kingsmetagemName;
-			local IL = EnhancerEP:Calculate(values, bonuses, nonMetaSockets, metaSockets, "EIL");
+			-- local IP = EnhancerEP:Calculate(values, bonuses, nonMetaSockets, metaSockets, "EIP");
+			local IP = EnhancerEP:ItemValue(values, bonuses, gemcount, metacount);
 			
-			if ( IL > 0 or Enhancer.db.profile.EPZero) then
-				tooltip:AddDoubleLine(L["eil_tooltip"], IL, RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
+			if ( IP > 0 or Enhancer.db.profile.EPZero) then
+				tooltip:AddDoubleLine(L["eip_tooltip"], string.format("%.1f", IP), RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
 				lineAdded = true;
-				-- tooltip:AddLine( L["eil_info"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"] );
+				-- tooltip:AddLine( L["eip_info"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"] );
 			end
 		end
 		
@@ -259,7 +294,17 @@ function EnhancerEP:StripGemsAndEnchants(itemlink)
 end
 
 function EnhancerEP:ItemValue(values, bonuses, gemcount, metacount)
-	--
+	-- local ItemValue = math.pow( (math.pow( (12 * 1), 1.5 ) + math.pow( (22 * 1), 1.5 ) + math.pow( (9 * 1), 1.5 )), (2/3) );
+	-- local ItemSlotValue = ItemValue * 1.82; -- Ring, skip
+	-- local ilvl = ItemSlotValue * 1.3 + 1.30; -- Epic, skip
+	
+	local ItemValue = 0;
+	
+	for statKey, statTable in pairs(values) do
+		ItemValue = ItemValue + math.pow( ((bonuses[statKey] or 0) * statTable.value), 1.5 );
+	end
+	
+	return math.pow(ItemValue, (2/3));
 end
 
 local kingsMultiplier = (110 / 100);
