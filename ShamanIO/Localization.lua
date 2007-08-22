@@ -40,14 +40,16 @@ L_Main:RegisterTranslations("enUS", function() return {
 	--["aep_group_desc"] = "Select wich Attackpower Equivalence Points to show in Tooltips",
 	["aep_cmd"] = "AEP",
 	["aep_desc"] = "Toggle showing Attackpower Equivalence Points in Tooltips",
-	["aeph_cmd"] = "AEPH",
+	["aeph_cmd"] = "AEPwoH",
 	["aeph_desc"] = "Toggle showing Attackpower Equivalence Points (w/o hit) in Tooltips",
 	["hep_cmd"] = "HEP",
 	["hep_desc"] = "Toggle showing Healing Equivalence Points in Tooltips",
 	["dep_cmd"] = "DEP",
 	["dep_desc"] = "Toggle showing spellDamage Equivalence Points in Tooltips",
-	["eil_cmd"] = "EIL",
-	["eil_desc"] = "Toggle showing Enhancement Item Level in Tooltips",
+	["deph_cmd"] = "DEPwoH",
+	["deph_desc"] = "Toggle showing spellDamage Equivalence Points (w/o hit) in Tooltips",
+	["eip_cmd"] = "EIP",
+	["eip_desc"] = "Toggle showing Enhancement Itemization Points in Tooltips",
 	["ep_numbers_cmd"] = "EPNumbers",
 	["ep_numbers_desc"] = "Here you can change weights for the EP numbers (0 disables that stat)",
 	["bestgem_cmd"] = "BestGem",
@@ -147,17 +149,18 @@ L_EP:RegisterTranslations("enUS", function() return {
 	["eep_info"] = "Enhancer's Equivalence Points:",
 	
 	["aep_tooltip"] = string.rep(" ", 3) .. "AttackpowerEP (inc BoK):",
-	["aep_info"] = "AEP model from Tornhoof/Pater",
+	["aep_info"] = "AEP model from Tornhoof/Pater", -- Not used atm
 	["aeph_tooltip"] = string.rep(" ", 3) .. "AttackpowerEP w/o hit (inc BoK):",
 	
 	["hep_tooltip"] = string.rep(" ", 3) .. "HealingEP (inc BoK):",
-	["hep_info"] = "Numbers from Leion (possibly very inaccurate and shouldn't be trusted at all)",
+	["hep_info"] = "Numbers from Leion (possibly very inaccurate and shouldn't be trusted at all)", -- Not used atm
 	
 	["dep_tooltip"] = string.rep(" ", 3) .. "DamageEP (inc BoK):",
-	["dep_info"] = "Numbers from Leion (possibly very inaccurate and shouldn't be trusted at all)",
+	["dep_info"] = "Numbers from Leion (possibly very inaccurate and shouldn't be trusted at all)", -- Not used atm
+	["deph_tooltip"] = string.rep(" ", 3) .. "DamageEP w/o hit (inc BoK):",
 	
-	["eil_tooltip"] = "Enhancement ItemLevel",
-	["eil_info"] = "Numbers from Leion (possibly very inaccurate and shouldn't be trusted at all)",
+	["eip_tooltip"] = "Enhancement Itemization Points",
+	["eip_info"] = "Numbers from Leion (possibly very inaccurate and shouldn't be trusted at all)", -- Not used atm
 	
 	["ep_numbers1"] = "%d (%d)",
 	["ep_numbers2"] = "%.1f (%.1f)",
