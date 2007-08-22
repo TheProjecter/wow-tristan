@@ -224,7 +224,7 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 				["CR_CRIT"] = { ["value"] = 1, ["kings"] = nil },
 				["CR_HIT"] = { ["value"] = 1, ["kings"] = nil },
 				["CR_HASTE"] = { ["value"] = 1, ["kings"] = nil },
-			}
+			};
 			
 			-- EnhancerEP:Calculate(values, bonuses, gemcount, metacount, gemcachekey)
 			-- return total, kingstotal, gemName, kingsgemName, metagemName, kingsmetagemName;
@@ -256,6 +256,10 @@ function EnhancerEP:StripGemsAndEnchants(itemlink)
 	local newItemString = strjoin(":", linkType, itemId, enchantId, jewelId1, jewelId2, jewelId3, jewelId4, suffixId, uniqueId);
 	local _, newLink = GetItemInfo(newItemString);
 	return newLink;
+end
+
+function EnhancerEP:ItemValue(values, bonuses, gemcount, metacount)
+	--
 end
 
 local kingsMultiplier = (110 / 100);
@@ -344,7 +348,7 @@ function EnhancerEP:GemPicker(cachekey, values, meta, blessingofkings, color)
 	return EnhancerEP.gemCache[totalCacheKey].value, EnhancerEP.gemCache[totalCacheKey].name;
 end
 
-function EnhancerEP:BestGem(inputValues, color)
+function EnhancerEP:BestGem(inputValues, color, quiet)
 	local values = {};
 	-- Enhancer.db.profile.AEPNumbers
 	for stat,value in pairs(inputValues) do
@@ -355,12 +359,17 @@ function EnhancerEP:BestGem(inputValues, color)
 	
 	local value, name = EnhancerEP:GemPicker(nil, values, false, false, color);
 	local kingsValue, kingsName = EnhancerEP:GemPicker(nil, values, false, true, color);
+	
 	local link, kingsLink = nil, nil;
-	if (EnhancerEP.gems[name]) then _, link = GetItemInfo( EnhancerEP.gems[name]["ItemID"] ); end
-	if (EnhancerEP.gems[kingsName]) then _, kingsLink = GetItemInfo( EnhancerEP.gems[name]["ItemID"] ); end
+	_, link = GetItemInfo( EnhancerEP.gems[name]["ItemID"] );
+	_, kingsLink = GetItemInfo( EnhancerEP.gems[kingsName]["ItemID"] );
 	
 	local formatString = (link and L["bestgem_link"]) or L["bestgem_nolink"];
-	Enhancer:Print( string.format(formatString, L[color or "Any"], link or name, value or 0, kingsLink or kingsName, kingsValue or 0) );
+	if (quiet) then
+		return name, kingsName;
+	else
+		Enhancer:Print( string.format(formatString, L[color or "Any"], link or name, value or 0, kingsLink or kingsName, kingsValue or 0) );
+	end
 end
 
 --function EnhancerEP:Round(number, decimals)
