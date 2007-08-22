@@ -19,7 +19,8 @@ local defaults = {
 	AEPH = true,
 	HEP = false,
 	DEP = false,
-	EIL = true,
+	DEPH = false,
+	EIP = true,
 	EPGems = {
 		maxQuality = 3,
 		metaGems = true,
@@ -260,6 +261,16 @@ local consoleoptions = {
 					end,
 					order = OrderNum(),
 				},
+				[L["deph_cmd"]] = {
+					name = L["deph_cmd"], type = "toggle",
+					desc = L["deph_desc"],
+					get = function() return Enhancer.db.profile.DEPH; end,
+					set = function()
+						Enhancer.db.profile.DEPH = not Enhancer.db.profile.DEPH;
+					end,
+					order = OrderNum(),
+				},
+				
 				
 				[SpacerName()] = SpacerTable(),
 				
@@ -275,12 +286,12 @@ local consoleoptions = {
 				
 				[SpacerName()] = SpacerTable(),
 				
-				[L["eil_cmd"]] = {
-					name = L["eil_cmd"], type = "toggle",
-					desc = L["eil_desc"],
-					get = function() return Enhancer.db.profile.EIL; end,
+				[L["eip_cmd"]] = {
+					name = L["eip_cmd"], type = "toggle",
+					desc = L["eip_desc"],
+					get = function() return Enhancer.db.profile.EIP; end,
 					set = function()
-						Enhancer.db.profile.EIL = not Enhancer.db.profile.EIL;
+						Enhancer.db.profile.EIP = not Enhancer.db.profile.EIP;
 					end,
 					order = OrderNum(),
 				},
