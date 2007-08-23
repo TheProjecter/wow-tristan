@@ -14,6 +14,16 @@ function Enhancer:OnInitialize()
 	
 	self:Setup();
 	self:InspectEPValues()
+	self:ScheduleEvent("DelayAnnounce", self.DelayAnnounce, 10, self)
+end
+
+function Enhancer:DelayAnnounce()
+	-- Special thing for now so allowed to be in this file ;)
+	--if (not Enhancer.db.announcements) then Enhancer.db.announcements = {}; end
+	--Enhancer.db.announcements.v1 = (Enhancer.db.announcements.v1 or 0) + 1;
+	--if (Enhancer.db.announcements.v1 < 3) then
+		self:Print(L["Announcement"]);
+	--end
 end
 
 function Enhancer:OnEnable()

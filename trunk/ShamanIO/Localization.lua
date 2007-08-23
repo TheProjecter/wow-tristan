@@ -52,6 +52,8 @@ L_Main:RegisterTranslations("enUS", function() return {
 	["eip_desc"] = "Toggle showing Enhancement Itemization Points in Tooltips",
 	["ep_numbers_cmd"] = "EPNumbers",
 	["ep_numbers_desc"] = "Here you can change weights for the EP numbers (0 disables that stat)",
+	["ep_guess_cmd"] = "EPEstimates",
+	["ep_guess_desc"] = "Include guesstimates of non static bonuses on weapons (procs/use) for EP",
 	["bestgem_cmd"] = "BestGem",
 	["bestgem_desc"] = "Calculates the best gem based on your settings",
 	["blue"] = "Blue",
@@ -111,6 +113,9 @@ L_Main:RegisterTranslations("enUS", function() return {
 	["TotemExpiring"] = "%s (%s) expires soon",
 	["TotemSlain"] = "%s (%s) was slain!!!",
 	["TotemDeath"] = "%s (%s) has expired",
+	
+	--[[ Announcement ]]--
+	["Announcement"] = "Enhancer is currently being developed if you find a bug somewhere or something you think is wrong, feel free to email me at dennis.hafstrom@gmail.com",
 } end )
 
 
