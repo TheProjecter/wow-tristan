@@ -7,6 +7,7 @@ function Enhancer:ParserDamage(info)
 		self:WindfuryHit();
 	end
 	
+	if (self.PrintCrappyMessages) then self:Print(info.recipientName); end
 	if (not self.combatLog[info.recipientName]) then return; end
 	
 	local frame = self.combatLog[info.recipientName];

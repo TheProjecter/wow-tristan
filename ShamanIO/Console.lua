@@ -25,6 +25,7 @@ local defaults = {
 		maxQuality = 3,
 		metaGems = true,
 	},
+	EPGuesstimates = false,
 	
 	centerFontName = "Fonts\\FRIZQT__.TTF",
 	centerFontSize = (46 / 3),
@@ -884,6 +885,15 @@ local consoleoptions = {
 					get = function() return Enhancer.db.profile.EPGems.metaGems; end,
 					set = function()
 						Enhancer.db.profile.EPGems.metaGems = not Enhancer.db.profile.EPGems.metaGems;
+					end,
+					order = OrderNum(),
+				},
+				[L["ep_guess_cmd"]] = {
+					name = L["ep_guess_cmd"], type = "toggle",
+					desc = L["ep_guess_desc"],
+					get = function() return Enhancer.db.profile.EPGems.EPGuesstimates; end,
+					set = function()
+						Enhancer.db.profile.EPGems.EPGuesstimates = not Enhancer.db.profile.EPGems.EPGuesstimates;
 					end,
 					order = OrderNum(),
 				},

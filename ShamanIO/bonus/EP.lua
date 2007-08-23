@@ -7,12 +7,17 @@ local TipHooker = AceLibrary("TipHooker-1.0");
 local Gratuity = AceLibrary("Gratuity-2.0")
 
 function EnhancerEP:OnInitialize()
-	-- Just a place to give bonus to special gems
-	EnhancerEP.gems["Relentless Earthstorm Diamond"]["AEP"] = 750;
-	EnhancerEP.gems["Relentless Earthstorm Diamond"]["AEPH"] = 750;
+	-- Give guesstimate bonus to special gems/items
+	EnhancerEP.gems["Relentless Earthstorm Diamond"]["AEP"] = 75; -- 3% Increased Critical Damage
+	EnhancerEP.gems["Relentless Earthstorm Diamond"]["AEPH"] = 75; -- 3% Increased Critical Damage
+	
+	EnhancerEP.ItemBonus = {};
+	EnhancerEP.ItemBonus[28437] = 199.7; -- Drakefist Hammer, Chance on hit: Increases your haste rating by 212 for 10 sec.
+	EnhancerEP.ItemBonus[28438] = 199.7; -- Dragonmaw, Chance on hit: Increases your haste rating by 212 for 10 sec.
+	EnhancerEP.ItemBonus[28439] = 199.7; -- Dragonstrike, Chance on hit: Increases your haste rating by 212 for 10 sec.
 	
 	--[[
-                3% Increased Critical Damage -- is given 750 for Enhancement above
+                3% Increased Critical Damage -- is given 75 for Enhancement EP above
                 +4 Resist All
                 2% Reduced Threat
                 +3 Melee Damage
@@ -263,7 +268,7 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 			-- EnhancerEP:Calculate(values, bonuses, gemcount, metacount, gemcachekey)
 			-- return total, kingstotal, gemName, kingsgemName, metagemName, kingsmetagemName;
 			-- local IP = EnhancerEP:Calculate(values, bonuses, nonMetaSockets, metaSockets, "EIP");
-			local IP = EnhancerEP:ItemValue(values, bonuses, gemcount, metacount);
+			local IP = EnhancerEP:ItemValue(values, bonuses, gemcount, metacount, link);
 			
 			if ( IP > 0 or Enhancer.db.profile.EPZero) then
 				tooltip:AddDoubleLine(L["eip_tooltip"], string.format("%.1f", IP), RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
@@ -293,7 +298,7 @@ function EnhancerEP:StripGemsAndEnchants(itemlink)
 	return newLink;
 end
 
-function EnhancerEP:ItemValue(values, bonuses, gemcount, metacount)
+function EnhancerEP:ItemValue(values, bonuses, gemcount, metacount, link)
 	-- local ItemValue = math.pow( (math.pow( (12 * 1), 1.5 ) + math.pow( (22 * 1), 1.5 ) + math.pow( (9 * 1), 1.5 )), (2/3) );
 	-- local ItemSlotValue = ItemValue * 1.82; -- Ring, skip
 	-- local ilvl = ItemSlotValue * 1.3 + 1.30; -- Epic, skip
@@ -302,6 +307,16 @@ function EnhancerEP:ItemValue(values, bonuses, gemcount, metacount)
 	
 	for statKey, statTable in pairs(values) do
 		ItemValue = ItemValue + math.pow( ((bonuses[statKey] or 0) * statTable.value), 1.5 );
+	end
+	
+	if (Enhancer.db.profile.EPGems.EPGuesstimates) then
+		local found, _, itemstring = string.find(link, "^|c%x+|H(.+)|h%[.+%]");
+		if (found) then
+			local _, itemid = strsplit(":", itemstring)
+			if (itemid and tonumber(itemid) and EnhancerEP.ItemBonus[tonumber(itemid)] and tonumber(EnhancerEP.ItemBonus[tonumber(itemid)])) then
+			ItemValue = ItemValue + tonumber(EnhancerEP.ItemBonus[tonumber(itemid)]);
+			end
+		end
 	end
 	
 	return math.pow(ItemValue, (2/3));
@@ -370,7 +385,9 @@ function EnhancerEP:GemPicker(cachekey, values, meta, blessingofkings, color)
 				for statKey, statTable in pairs(values) do
 					total = total + ( ((gemBonusTable[statKey] or 0) * statTable.value) * (((blessingofkings and statTable.kings) and kingsMultiplier) or 1) );
 				end
-				total = total + (EnhancerEP.gems[gemName][cachekey] or 0);
+				if (Enhancer.db.profile.EPGems.EPGuesstimates) then
+					total = total + (EnhancerEP.gems[gemName][cachekey] or 0);
+				end
 				
 				if (Enhancer:Round(total, 1) > bestGem.value) then
 					bestGem.value = total;
