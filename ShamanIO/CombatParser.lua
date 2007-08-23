@@ -7,7 +7,12 @@ function Enhancer:ParserDamage(info)
 		self:WindfuryHit();
 	end
 	
-	if (self.PrintCrappyMessages) then self:Print(info.recipientName); end
+	if (self.PrintCrappyMessages and string.find(info.recipientName, "Totem")) then
+		if (ChatFrame4) then
+			ChatFrame4:AddMessage(info.recipientName);
+		end
+	end
+	
 	if (not self.combatLog[info.recipientName]) then return; end
 	
 	local frame = self.combatLog[info.recipientName];
