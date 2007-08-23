@@ -44,7 +44,7 @@ local defaults = {
 		STA = (0 / 10),
 		CR_CRIT = (20 / 10),
 		CR_HIT = (14 / 10),
-		CR_HASTE = (22 / 10),
+		CR_HASTE = (14 / 10), --(22 / 10),
 		CR_RESILIENCE = (0 / 10),
 		IGNOREARMOR = (0 / 10), -- 10-20
 	},
