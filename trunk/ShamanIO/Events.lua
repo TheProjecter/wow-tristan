@@ -12,7 +12,7 @@ end
 
 function Enhancer:PlayerDead()
 	for _, frame in ipairs(self.totemframes) do
-		self:FrameDeathBegin(frame)
+		self:FrameDeathPreBegin(frame)
 	end
 end
 
@@ -22,11 +22,11 @@ function Enhancer:CastingTotem(unit, totem, rank)
 	
 	if (totem == Enhancer.BS["Totemic Call"]) then
 		for _, frame in ipairs(self.totemframes) do
-			self:FrameDeathBegin(frame);
+			self:FrameDeathPreBegin(frame);
 		end
 	elseif Enhancer.Totems[totem] then
 		
-		--[[ Figure out what rank he cast ]]--
+		--[[ Figure out what rank was cast ]]--
 		local ranknumber;
 		if (rank == "") then rank = nil; end
 		
@@ -38,6 +38,6 @@ function Enhancer:CastingTotem(unit, totem, rank)
 			totem = Enhancer.BS["Enamored Water Spirit"];
 		end
 		
-		self:CreateTotem(totem, rank);
+		self:CreateTotem(totem, ranknumber);
 	end
 end

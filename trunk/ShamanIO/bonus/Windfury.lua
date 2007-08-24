@@ -41,7 +41,7 @@ function Enhancer:WindfuryCooldownNumber()
 			self:CancelScheduledEvent("WindfuryCooldownNumber")
 		end
 		
-		self:FrameDeathBegin("windfury");
+		self:FrameDeathPreBegin("windfury");
 	else
 		-- Cooldown running
 		self.windfury.textcenter:SetText(cd);
