@@ -13,6 +13,7 @@ function Enhancer:ParserDamage(info)
 		end
 	end
 	
+	-- Totem and Rank hits Windfury Totem V for example so need to either add rank to the string or get rid of it in this one ;)
 	if (not self.combatLog[info.recipientName]) then return; end
 	
 	local frame = self.combatLog[info.recipientName];
