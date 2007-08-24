@@ -22,8 +22,13 @@ function Enhancer:CreateTotem(totem, rank)
 	if (not Enhancer:IsModuleActive(Element)) then return; end
 	
 	local frame = string.lower(Element);
+	for k, v in pairs(self.combatLog) do
+		if (v == frame) then self.combatLog[k] = nil; end
+	end
 	
-	self.combatLog[totem] = frame;
+	local combatLogName = totem;
+	if (rank and rank > 1) then combatLogName = combatLogName .. " " .. self.Ranks[rank]; end
+	self.combatLog[combatLogName] = frame;
 	if (Enhancer.Totems[totem].CombatLog) then
 		for _, logName in ipairs(Enhancer.Totems[totem].CombatLog) do
 			self.combatLog[logName] = frame;
