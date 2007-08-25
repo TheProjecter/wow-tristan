@@ -1,3 +1,4 @@
+--[[ http://www.wowace.com/wiki/Joker ]]--
 Enhancer = AceLibrary("AceAddon-2.0"):new("AceEvent-2.0", "AceDB-2.0", "AceConsole-2.0", "AceModuleCore-2.0", "Parser-3.0");
 Enhancer:RegisterDB("EnhancerDB");
 
@@ -15,7 +16,7 @@ function Enhancer:OnInitialize()
 	self:Setup();
 	self:InspectEPValues()
 	
-	if (self.db.profile.startAnnounce) then
+	if (not self.db.profile.startAnnounceDisabled) then
 		self:ScheduleEvent("DelayAnnounce", self.DelayAnnounce, 10, self)
 	end
 end

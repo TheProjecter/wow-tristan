@@ -16,6 +16,7 @@ function Enhancer:PlayerDead()
 	end
 end
 
+local LRank = AceLibrary("AceLocale-2.2"):new("EnhancerRank")
 function Enhancer:CastingTotem(unit, totem, rank)
 	-- Gets called for all spellcasting so just check if it was a totem :)
 	if (unit ~= "player") then return; end
@@ -25,31 +26,14 @@ function Enhancer:CastingTotem(unit, totem, rank)
 			self:FrameDeathPreBegin(frame);
 		end
 	elseif Enhancer.Totems[totem] then
-		
-		--[[ Figure out what rank was cast ]]--
-		local ranknumber = nil;
-		if (rank == "") then rank = nil; end
-		if rank then
-			ranknumber = tonumber(string.sub(rank, string.find(rank, "%d")));
-		end
-		rank = ranknumber;
-		
-		if (totem == Enhancer.BS["Mana Spring Totem"] and not ranknumber) then
+		if (totem == Enhancer.BS["Mana Spring Totem"] and LRank[rank] == 0) then
 			totem = Enhancer.BS["Enamored Water Spirit"];
 		end
 		
-		self:CreateTotem(totem, rank);
+		self:CreateTotem(totem, LRank[rank]);
 	end
 end
 
 function Enhancer:Ding()
 	self.PlayerLevel = arg1;
-end
-
-function Enhancer:AuraUpdate(unit)
-	self:Print("Hallo");
-	if (ChatFrame4) then
-		ChatFrame4:AddMessage(tostring(arg1) .. " - " .. tostring(arg2) .. " - " .. tostring(arg3) .. " - " .. tostring(arg4) .. " - " .. tostring(arg5) .. " - " .. tostring(arg6) .. " - " .. tostring(arg7));
-	end
-	self:Print(unit, args, arg1, arg3, args2);
 end

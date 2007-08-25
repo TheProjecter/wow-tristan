@@ -70,7 +70,7 @@ local defaults = {
 		MANAREG = (15 / 10),
 	},
 	
-	startAnnounce = true,
+	startAnnounceDisabled = false,
 }
 
 defaults.centerFont:SetFont(defaults.centerFontName, defaults.centerFontSize, defaults.centerFontFlags);
@@ -1023,9 +1023,9 @@ local consoleoptions = {
 				[L["a_disable_cmd"]] = {
 					name = L["a_disable_cmd"], type = "toggle",
 					desc = L["a_disable_desc"],
-					get = function() return Enhancer.db.profile.startAnnounce; end,
+					get = function() return Enhancer.db.profile.startAnnounceDisabled; end,
 					set = function()
-						Enhancer.db.profile.startAnnounce = not Enhancer.db.profile.startAnnounce;
+						Enhancer.db.profile.startAnnounceDisabled = not Enhancer.db.profile.startAnnounceDisabled;
 					end,
 					order = OrderNum(),
 				},

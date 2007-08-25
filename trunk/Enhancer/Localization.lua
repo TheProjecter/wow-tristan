@@ -124,6 +124,30 @@ L_Main:RegisterTranslations("enUS", function() return {
 	["a_disable_desc"] = "Disable Announcement(s) at load",
 } end )
 
+local LRank = AceLibrary("AceLocale-2.2"):new("EnhancerRank")
+LRank:RegisterTranslations("enUS", function() return {
+	[""] = 0, -- No Rank spell
+	["Rank 1"] = 1,
+	["Rank 2"] = 2,
+	["Rank 3"] = 3,
+	["Rank 4"] = 4,
+	["Rank 5"] = 5,
+	["Rank 6"] = 6,
+	["Rank 7"] = 7,
+	["Rank 8"] = 8,
+	["Rank 9"] = 9,
+	["Rank 10"] = 10,
+	["Rank 11"] = 11,
+	["Rank 12"] = 12,
+	["Rank 13"] = 13,
+	["Rank 14"] = 14,
+	["Rank 15"] = 15,
+	["Rank 16"] = 16,
+	["Rank 17"] = 17,
+	["Rank 18"] = 18,
+	["Rank 19"] = 19,
+	["Rank 20"] = 20,
+} end )
 
 local L_EP = AceLibrary("AceLocale-2.2"):new("EnhancerEP")
 L_EP:RegisterTranslations("enUS", function() return {

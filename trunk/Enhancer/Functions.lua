@@ -1,3 +1,5 @@
+local L = AceLibrary("AceLocale-2.2"):new("EnhancerRank")
+
 function Enhancer:CheckRunningModules()
 	if ( self:IsModuleActive("Earth") or self:IsModuleActive("Fire") or self:IsModuleActive("Water") or self:IsModuleActive("Air") ) then
 		if ( not self:IsEventRegistered("UNIT_SPELLCAST_SUCCEEDED") ) then
@@ -11,7 +13,14 @@ function Enhancer:CheckRunningModules()
 end
 
 function Enhancer:CreateTotem(totem, rank)
-	-- Pickup the data we need:
+	if (type(rank) ~= "number") then
+		if (tonumber(rank)) then
+			rank = tonumber(rank);
+		else
+			self:Print("Big Error: Rank was not a number nor could it be converted. Please mail dennis.hafstrom@gmail.com with info about what rank you cast");
+			return;
+		end
+	end
 	
 	local Icon = Enhancer.Totems[totem].Icon;
 	local TimeToLive = Enhancer.Totems[totem].Time or (Enhancer.Totems[totem][rank] and Enhancer.Totems[totem][rank].Time);
@@ -27,7 +36,7 @@ function Enhancer:CreateTotem(totem, rank)
 	end
 	
 	local combatLogName = totem;
-	if (rank and rank > 1) then combatLogName = combatLogName .. " " .. self.Ranks[rank]; end
+	if (rank > 1) then combatLogName = combatLogName .. " " .. self.Ranks[rank]; end
 	self.combatLog[combatLogName] = frame;
 	if (Enhancer.Totems[totem].CombatLog) then
 		for _, logName in ipairs(Enhancer.Totems[totem].CombatLog) do
@@ -135,10 +144,10 @@ function Enhancer:Round(number, decimals)
 end
 
 function Enhancer:TestCastingTotem()
-	Enhancer:CastingTotem("player", Enhancer.BS["Strength of Earth Totem"], "Rank 1");
-	Enhancer:CastingTotem("player", Enhancer.BS["Totem of Wrath"], "Rank 1");
-	Enhancer:CastingTotem("player", Enhancer.BS["Mana Spring Totem"], "Rank 1");
-	Enhancer:CastingTotem("player", Enhancer.BS["Windfury Totem"], "Rank 1");
+	Enhancer:CastingTotem("player", Enhancer.BS["Strength of Earth Totem"], L:GetReverseTranslation(1));
+	Enhancer:CastingTotem("player", Enhancer.BS["Totem of Wrath"], L:GetReverseTranslation(1));
+	Enhancer:CastingTotem("player", Enhancer.BS["Mana Spring Totem"], L:GetReverseTranslation(0));
+	Enhancer:CastingTotem("player", Enhancer.BS["Windfury Totem"], L:GetReverseTranslation(1));
 end
 
 function Enhancer:EPValuesChanged()
