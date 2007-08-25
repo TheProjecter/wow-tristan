@@ -1,5 +1,3 @@
-local L = AceLibrary("AceLocale-2.2"):new("EnhancerRank")
-
 function Enhancer:CheckRunningModules()
 	if ( self:IsModuleActive("Earth") or self:IsModuleActive("Fire") or self:IsModuleActive("Water") or self:IsModuleActive("Air") ) then
 		if ( not self:IsEventRegistered("UNIT_SPELLCAST_SUCCEEDED") ) then
@@ -84,24 +82,49 @@ function Enhancer:ScreenMessage(message, r, g, b, a, h)
 	UIErrorsFrame:AddMessage(message, r or 1, g or 1, b or 1, a or 1, h or 3);
 end
 
-function Enhancer:ToggleLock()
-	for _, frame in ipairs(self.allframes) do
-		if (self.db.profile.locked) then
-			self[frame].anchor:Hide();
-			self[frame].unlocked = nil;
-		else
-			if (self[frame].mainframe:IsVisible()) then
-				self[frame].anchor:Show();
-				self[frame].unlocked = true;
-			end
-		end
+function Enhancer:AddFrameToList(framename, all, totem, death)
+	if (all) then
+		table.insert(Enhancer.aFrames, framename);
 	end
 	
-	self:UpdateAlphaBegin(self.allframes);
+	if (totem) then
+		table.insert(Enhancer.tFrames, framename);
+	end
+	
+	if (death) then
+		table.insert(Enhancer.dFrames, framename);
+	end
+	
+	self:MakeMoveable(framename);
+	self:LoadPos(framename);
+end
+
+function Enhancer:ToggleLock(framelist)
+	if (not framelist) then framelist = Enhancer.aFrames; end
+	
+	if (type(framelist) == "table") then
+		for _, framename in ipairs(framelist) do
+			self:ToggleLock(framename);
+		end
+	else
+		local framename = framelist;
+		
+		if (self.db.profile.locked) then
+			self[framename].anchor:Hide();
+			self[framename].unlocked = nil;
+		else
+			if (self[framename].mainframe:IsVisible()) then
+				self[framename].anchor:Show();
+				self[framename].unlocked = true;
+			end
+		end
+		
+		self:UpdateAlphaBegin(framename);
+	end
 end
 
 function Enhancer:Resize()
-	for _, frame in ipairs(self.allframes) do
+	for _, frame in ipairs(Enhancer.aFrames) do
 		self[frame].mainframe:SetWidth(Enhancer.db.profile.framesize);
 		self[frame].mainframe:SetHeight(Enhancer.db.profile.framesize);
 		
@@ -126,12 +149,13 @@ function Enhancer:UpdateFont()
 	Enhancer.db.profile.belowFont = CreateFont("EnhancerBelowFont");
 	Enhancer.db.profile.belowFont:SetFont(Enhancer.db.profile.belowFontName, Enhancer.db.profile.belowFontSize, Enhancer.db.profile.belowFontFlags);
 	
-	for _, frame in ipairs(self.allframes) do
+	for _, frame in ipairs(Enhancer.aFrames) do
 		self[frame].textbelow:SetHeight(Enhancer.db.profile.belowFontSize + 10);
 	end
 end
 
 function Enhancer:FormatTime(seconds)
+	seconds = seconds;
 	seconds = floor(seconds);
 	secs = mod(seconds, 60);
 	mins = (seconds - secs) / 60;
@@ -144,6 +168,7 @@ function Enhancer:Round(number, decimals)
 end
 
 function Enhancer:TestCastingTotem()
+	local L = AceLibrary("AceLocale-2.2"):new("EnhancerRank")
 	Enhancer:CastingTotem("player", Enhancer.BS["Strength of Earth Totem"], L:GetReverseTranslation(1));
 	Enhancer:CastingTotem("player", Enhancer.BS["Totem of Wrath"], L:GetReverseTranslation(1));
 	Enhancer:CastingTotem("player", Enhancer.BS["Mana Spring Totem"], L:GetReverseTranslation(0));

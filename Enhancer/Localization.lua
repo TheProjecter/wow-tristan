@@ -25,6 +25,8 @@ L_Main:RegisterTranslations("enUS", function() return {
 	["reincarnation_desc"] = "Toggle frame for showing Reincarnation cooldown",
 	["invigorated_cmd"] = "Invigorated",
 	["invigorated_desc"] = "Toggle frame for showing when Invigorated is up (Untested)",
+	["tench_cmd"] = "Enchants",
+	["tench_desc"] = "Toggle frames for showing temporary enchants",
 	
 	["ep_cmd"] = "EP",
 	["ep_desc"] = "Toggle showing Equivalence Points in Tooltips",
@@ -36,8 +38,6 @@ L_Main:RegisterTranslations("enUS", function() return {
 	["ep_gemm_desc"] = "Toggle including Meta gems in calculations",
 	["epz_cmd"] = "EPZero",
 	["epz_desc"] = "Show Equivalence Points even if summary is zero",
-	--["aep_group_cmd"] = "AEP",
-	--["aep_group_desc"] = "Select wich Attackpower Equivalence Points to show in Tooltips",
 	["aep_cmd"] = "AEP",
 	["aep_desc"] = "Toggle showing Attackpower Equivalence Points in Tooltips",
 	["aeph_cmd"] = "AEPwoH",

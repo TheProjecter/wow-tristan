@@ -1,12 +1,17 @@
 EnhancerReincarnation = Enhancer:NewModule("Reincarnation", "AceEvent-2.0");
 Enhancer:SetModuleDefaultState("Reincarnation", true);
+local FrameName = "reincarnation";
 
 function EnhancerReincarnation:OnInitialize()
-	
+	Enhancer.reincarnation = Enhancer:CreateButton("EnhancerFrameReincarnation", "Spell_Nature_Reincarnation", 0, -150);
+	Enhancer.reincarnation.borderColor = { ["r"] = (139/255), ["g"] = (69/255), ["b"] = (19/255), ["a"] = 1, }
+	Enhancer:AddFrameToList(FrameName, true, false, false) --[[ Enhancer:AddFrameToList(framename, all, totem, death) ]]--
 end
 
 function EnhancerReincarnation:OnEnable()
-	Enhancer:ShowFrame("reincarnation");
+	Enhancer:ShowFrame(FrameName);
+	Enhancer:ToggleLock(FrameName);
+	
 	self:BAG_UPDATE();
 	
 	self:RegisterEvent("PLAYER_ALIVE", "PLAYER_ALIVE");
@@ -16,11 +21,12 @@ function EnhancerReincarnation:OnEnable()
 end
 
 function EnhancerReincarnation:OnDisable()
+	Enhancer:HideFrame(FrameName);
+	
 	if (self:IsEventScheduled("ReincarnationUpdate")) then
 		self:CancelScheduledEvent("ReincarnationUpdate");
 	end
 	
-	Enhancer:HideFrame("reincarnation");
 	self:UnregisterAllEvents();
 end
 

@@ -40,7 +40,6 @@ libs\TipHooker-1.0\TipHooker-1.0.lua
 
 Localization.lua
 AddOn.lua
-Setup.lua
 Console.lua
 Functions.lua
 Events.lua

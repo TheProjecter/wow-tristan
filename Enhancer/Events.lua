@@ -1,17 +1,17 @@
 function Enhancer:EnterCombat()
 	self.inCombat = true;
 	
-	self:UpdateAlphaBegin(self.allframes);
+	self:UpdateAlphaBegin(Enhancer.aFrames);
 end
 
 function Enhancer:OutOfCombat()
 	self.inCombat = nil;
 	
-	self:UpdateAlphaBegin(self.allframes);
+	self:UpdateAlphaBegin(Enhancer.aFrames);
 end
 
 function Enhancer:PlayerDead()
-	for _, frame in ipairs(self.totemframes) do
+	for _, frame in ipairs(Enhancer.dFrames) do
 		self:FrameDeathPreBegin(frame)
 	end
 end
@@ -22,7 +22,7 @@ function Enhancer:CastingTotem(unit, totem, rank)
 	if (unit ~= "player") then return; end
 	
 	if (totem == Enhancer.BS["Totemic Call"]) then
-		for _, frame in ipairs(self.totemframes) do
+		for _, frame in ipairs(Enhancer.tFrames) do
 			self:FrameDeathPreBegin(frame);
 		end
 	elseif Enhancer.Totems[totem] then
