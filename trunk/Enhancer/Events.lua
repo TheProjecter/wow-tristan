@@ -41,3 +41,15 @@ function Enhancer:CastingTotem(unit, totem, rank)
 		self:CreateTotem(totem, rank);
 	end
 end
+
+function Enhancer:Ding()
+	self.PlayerLevel = arg1;
+end
+
+function Enhancer:AuraUpdate(unit)
+	self:Print("Hallo");
+	if (ChatFrame4) then
+		ChatFrame4:AddMessage(tostring(arg1) .. " - " .. tostring(arg2) .. " - " .. tostring(arg3) .. " - " .. tostring(arg4) .. " - " .. tostring(arg5) .. " - " .. tostring(arg6) .. " - " .. tostring(arg7));
+	end
+	self:Print(unit, args, arg1, arg3, args2);
+end

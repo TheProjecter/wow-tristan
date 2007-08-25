@@ -7,12 +7,6 @@ function Enhancer:ParserDamage(info)
 		self:WindfuryHit();
 	end
 	
-	if (self.PrintCrappyMessages and string.find(info.recipientName, "Totem")) then
-		if (ChatFrame4) then
-			ChatFrame4:AddMessage(info.recipientName);
-		end
-	end
-	
 	-- Totem and Rank hits Windfury Totem V for example so need to either add rank to the string or get rid of it in this one ;)
 	if (not self.combatLog[info.recipientName]) then return; end
 	

@@ -44,7 +44,7 @@ local defaults = {
 		STA = (0 / 10),
 		CR_CRIT = (20 / 10),
 		CR_HIT = (14 / 10),
-		CR_HASTE = (14 / 10), --(22 / 10),
+		CR_HASTE = (15 / 10), --(22 / 10),
 		CR_RESILIENCE = (0 / 10),
 		IGNOREARMOR = (0 / 10), -- 10-20
 	},
@@ -69,6 +69,8 @@ local defaults = {
 		CR_RESILIENCE = (0 / 10),
 		MANAREG = (15 / 10),
 	},
+	
+	startAnnounce = true,
 }
 
 defaults.centerFont:SetFont(defaults.centerFontName, defaults.centerFontSize, defaults.centerFontFlags);
@@ -130,12 +132,12 @@ local consoleoptions = {
 		[SpacerName()] = SpacerTable(),
 		
 		[L["element_group_cmd"]] = {
-  		type = "group",
-  		name = L["element_group_cmd"],
-  		desc = L["element_group_desc"],
-  		order = OrderNum(),
-  		args = {
-  			[L["earth_cmd"]] = {
+			type = "group",
+			name = L["element_group_cmd"],
+			desc = L["element_group_desc"],
+			order = OrderNum(),
+			args = {
+				[L["earth_cmd"]] = {
 					name = L["earth_cmd"], type = "toggle",
 					desc = string.format(L["element_desc"], L["earth_cmd"]),
 					get = function() return Enhancer:IsModuleActive("Earth"); end,
@@ -171,15 +173,15 @@ local consoleoptions = {
 					end,
 					order = OrderNum(),
 				},
-  		},
+			},
 		},
 		[L["bonus_group_cmd"]] = {
-  		type = "group",
-  		name = L["bonus_group_cmd"],
-  		desc = L["bonus_group_desc"],
-  		order = OrderNum(),
-  		args = {
-  			[L["windfury_cmd"]] = {
+			type = "group",
+			name = L["bonus_group_cmd"],
+			desc = L["bonus_group_desc"],
+			order = OrderNum(),
+			args = {
+				[L["windfury_cmd"]] = {
 					name = L["windfury_cmd"], type = "toggle",
 					desc = L["windfury_desc"],
 					get = function() return Enhancer:IsModuleActive("Windfury"); end,
@@ -206,7 +208,7 @@ local consoleoptions = {
 					end,
 					order = OrderNum(),
 				},
-  		},
+			},
 		},
 		[L["ep_cmd"]] = {
 			name = L["ep_cmd"], type = "toggle",
@@ -221,11 +223,11 @@ local consoleoptions = {
 		[SpacerName()] = SpacerTable(),
 		
 		[L["ep_group_cmd"]] = {
-  		type = "group",
-  		name = L["ep_group_cmd"],
-  		desc = L["ep_group_desc"],
-  		order = OrderNum(),
-  		args = {
+			type = "group",
+			name = L["ep_group_cmd"],
+			desc = L["ep_group_desc"],
+			order = OrderNum(),
+			args = {
 				[L["aep_cmd"]] = {
 					name = L["aep_cmd"], type = "toggle",
 					desc = L["aep_desc"],
@@ -299,18 +301,18 @@ local consoleoptions = {
 			},
 		},
 		[L["ep_numbers_cmd"]] = {
-  		type = "group",
-  		name = L["ep_numbers_cmd"],
-  		desc = L["ep_numbers_desc"],
-  		order = OrderNum(),
-  		args = {
-  			[L["aep_cmd"]] = {
-		  		type = "group",
-		  		name = L["aep_cmd"],
-		  		desc = L["aep_cmd"],
-		  		order = OrderNum(),
-		  		args = {
-		  			[L["ATTACKPOWER"]] = {
+			type = "group",
+			name = L["ep_numbers_cmd"],
+			desc = L["ep_numbers_desc"],
+			order = OrderNum(),
+			args = {
+				[L["aep_cmd"]] = {
+					type = "group",
+					name = L["aep_cmd"],
+					desc = L["aep_cmd"],
+					order = OrderNum(),
+					args = {
+						[L["ATTACKPOWER"]] = {
 							name = L["ATTACKPOWER"], type = "range",
 							desc = L["ATTACKPOWER"],
 							min = 0, max = 5, step = (1 / 10),
@@ -423,84 +425,84 @@ local consoleoptions = {
 						
 						[L["bestgem_cmd"]] = {
 							type = "group",
-				  		name = L["bestgem_cmd"],
-				  		desc = L["bestgem_desc"],
-				  		order = OrderNum(),
-				  		args = {
-				  			[L["blue"]] = {
-					  			type = "execute",
-								  name = L["blue"],
+							name = L["bestgem_cmd"],
+							desc = L["bestgem_desc"],
+							order = OrderNum(),
+							args = {
+								[L["blue"]] = {
+									type = "execute",
+									name = L["blue"],
 									desc = L["blue"],
-								  func = function()
-								  	if (Enhancer:HasModule("EP") and Enhancer:IsModuleActive("EP")) then
-								  		Enhancer:GetModule("EP"):BestGem(Enhancer.db.profile.AEPNumbers, "Blue");
-								  	else
-								  		Enhancer:Print("EP module not active\available!");
-								  	end
-								  end,
-								  order = OrderNum(),
+									func = function()
+										if (Enhancer:HasModule("EP") and Enhancer:IsModuleActive("EP")) then
+											Enhancer:GetModule("EP"):BestGem(Enhancer.db.profile.AEPNumbers, "Blue");
+										else
+											Enhancer:Print("EP module not active\available!");
+										end
+									end,
+									order = OrderNum(),
 								},
 								[L["yellow"]] = {
-					  			type = "execute",
-								  name = L["yellow"],
+									type = "execute",
+									name = L["yellow"],
 									desc = L["yellow"],
-								  func = function()
-								  	if (Enhancer:HasModule("EP") and Enhancer:IsModuleActive("EP")) then
-								  		Enhancer:GetModule("EP"):BestGem(Enhancer.db.profile.AEPNumbers, "Yellow");
-								  	else
-								  		Enhancer:Print("EP module not active\available!");
-								  	end
-								  end,
-								  order = OrderNum(),
+									func = function()
+										if (Enhancer:HasModule("EP") and Enhancer:IsModuleActive("EP")) then
+											Enhancer:GetModule("EP"):BestGem(Enhancer.db.profile.AEPNumbers, "Yellow");
+										else
+											Enhancer:Print("EP module not active\available!");
+										end
+									end,
+									order = OrderNum(),
 								},
 								[L["red"]] = {
-					  			type = "execute",
-								  name = L["red"],
+									type = "execute",
+									name = L["red"],
 									desc = L["red"],
-								  func = function()
-								  	if (Enhancer:HasModule("EP") and Enhancer:IsModuleActive("EP")) then
-								  		Enhancer:GetModule("EP"):BestGem(Enhancer.db.profile.AEPNumbers, "Red");
-								  	else
-								  		Enhancer:Print("EP module not active\available!");
-								  	end
-								  end,
-								  order = OrderNum(),
+									func = function()
+										if (Enhancer:HasModule("EP") and Enhancer:IsModuleActive("EP")) then
+											Enhancer:GetModule("EP"):BestGem(Enhancer.db.profile.AEPNumbers, "Red");
+										else
+											Enhancer:Print("EP module not active\available!");
+										end
+									end,
+									order = OrderNum(),
 								},
 								[L["any"]] = {
-					  			type = "execute",
-								  name = L["any"],
+									type = "execute",
+									name = L["any"],
 									desc = L["any"],
-								  func = function()
-								  	if (Enhancer:HasModule("EP") and Enhancer:IsModuleActive("EP")) then
-								  		Enhancer:GetModule("EP"):BestGem(Enhancer.db.profile.AEPNumbers);
-								  	else
-								  		Enhancer:Print("EP module not active\available!");
-								  	end
-								  end,
-								  order = OrderNum(),
+									func = function()
+										if (Enhancer:HasModule("EP") and Enhancer:IsModuleActive("EP")) then
+											Enhancer:GetModule("EP"):BestGem(Enhancer.db.profile.AEPNumbers);
+										else
+											Enhancer:Print("EP module not active\available!");
+										end
+									end,
+									order = OrderNum(),
 								},
 							},
 						},
 						[L["reset_cmd"]] = {
 							type = "execute",
-						  name = L["reset_cmd"],
+							name = L["reset_cmd"],
 							desc = L["reset_cmd"],
-						  func = function()
-						  	for key, value in pairs(defaults.AEPNumbers) do
-						  		Enhancer.db.profile.AEPNumbers[key] = defaults.AEPNumbers[key];
-						  	end
-						  end,
-						  order = OrderNum(),
+							func = function()
+								for key, value in pairs(defaults.AEPNumbers) do
+									Enhancer.db.profile.AEPNumbers[key] = defaults.AEPNumbers[key];
+								end
+							end,
+							order = OrderNum(),
 						},
-		  		},
-		  	},
-		  	[L["hep_cmd"]] = {
-		  		type = "group",
-		  		name = L["hep_cmd"],
-		  		desc = L["hep_cmd"],
-		  		order = OrderNum(),
-		  		args = {
-		  			[L["HEAL"]] = {
+					},
+				},
+				[L["hep_cmd"]] = {
+					type = "group",
+					name = L["hep_cmd"],
+					desc = L["hep_cmd"],
+					order = OrderNum(),
+					args = {
+						[L["HEAL"]] = {
 							name = L["HEAL"], type = "range",
 							desc = L["HEAL"],
 							min = 0, max = 5, step = (1 / 10),
@@ -602,84 +604,84 @@ local consoleoptions = {
 						
 						[L["bestgem_cmd"]] = {
 							type = "group",
-				  		name = L["bestgem_cmd"],
-				  		desc = L["bestgem_desc"],
-				  		order = OrderNum(),
-				  		args = {
-				  			[L["blue"]] = {
-					  			type = "execute",
-								  name = L["blue"],
+							name = L["bestgem_cmd"],
+							desc = L["bestgem_desc"],
+							order = OrderNum(),
+							args = {
+								[L["blue"]] = {
+									type = "execute",
+									name = L["blue"],
 									desc = L["blue"],
-								  func = function()
-								  	if (Enhancer:HasModule("EP") and Enhancer:IsModuleActive("EP")) then
-								  		Enhancer:GetModule("EP"):BestGem(Enhancer.db.profile.HEPNumbers, "Blue");
-								  	else
-								  		Enhancer:Print("EP module not active\available!");
-								  	end
-								  end,
-								  order = OrderNum(),
+									func = function()
+										if (Enhancer:HasModule("EP") and Enhancer:IsModuleActive("EP")) then
+											Enhancer:GetModule("EP"):BestGem(Enhancer.db.profile.HEPNumbers, "Blue");
+										else
+											Enhancer:Print("EP module not active\available!");
+										end
+									end,
+									order = OrderNum(),
 								},
 								[L["yellow"]] = {
-					  			type = "execute",
-								  name = L["yellow"],
+									type = "execute",
+									name = L["yellow"],
 									desc = L["yellow"],
-								  func = function()
-								  	if (Enhancer:HasModule("EP") and Enhancer:IsModuleActive("EP")) then
-								  		Enhancer:GetModule("EP"):BestGem(Enhancer.db.profile.HEPNumbers, "Yellow");
-								  	else
-								  		Enhancer:Print("EP module not active\available!");
-								  	end
-								  end,
-								  order = OrderNum(),
+									func = function()
+										if (Enhancer:HasModule("EP") and Enhancer:IsModuleActive("EP")) then
+											Enhancer:GetModule("EP"):BestGem(Enhancer.db.profile.HEPNumbers, "Yellow");
+										else
+											Enhancer:Print("EP module not active\available!");
+										end
+									end,
+									order = OrderNum(),
 								},
 								[L["red"]] = {
-					  			type = "execute",
-								  name = L["red"],
+									type = "execute",
+									name = L["red"],
 									desc = L["red"],
-								  func = function()
-								  	if (Enhancer:HasModule("EP") and Enhancer:IsModuleActive("EP")) then
-								  		Enhancer:GetModule("EP"):BestGem(Enhancer.db.profile.HEPNumbers, "Red");
-								  	else
-								  		Enhancer:Print("EP module not active\available!");
-								  	end
-								  end,
-								  order = OrderNum(),
+									func = function()
+										if (Enhancer:HasModule("EP") and Enhancer:IsModuleActive("EP")) then
+											Enhancer:GetModule("EP"):BestGem(Enhancer.db.profile.HEPNumbers, "Red");
+										else
+											Enhancer:Print("EP module not active\available!");
+										end
+									end,
+									order = OrderNum(),
 								},
 								[L["any"]] = {
-					  			type = "execute",
-								  name = L["any"],
+									type = "execute",
+									name = L["any"],
 									desc = L["any"],
-								  func = function()
-								  	if (Enhancer:HasModule("EP") and Enhancer:IsModuleActive("EP")) then
-								  		Enhancer:GetModule("EP"):BestGem(Enhancer.db.profile.HEPNumbers);
-								  	else
-								  		Enhancer:Print("EP module not active\available!");
-								  	end
-								  end,
-								  order = OrderNum(),
+									func = function()
+										if (Enhancer:HasModule("EP") and Enhancer:IsModuleActive("EP")) then
+											Enhancer:GetModule("EP"):BestGem(Enhancer.db.profile.HEPNumbers);
+										else
+											Enhancer:Print("EP module not active\available!");
+										end
+									end,
+									order = OrderNum(),
 								},
 							},
 						},
 						[L["reset_cmd"]] = {
 							type = "execute",
-						  name = L["reset_cmd"],
+							name = L["reset_cmd"],
 							desc = L["reset_cmd"],
-						  func = function()
-						  	for key, value in pairs(defaults.HEPNumbers) do
-						  		Enhancer.db.profile.HEPNumbers[key] = defaults.HEPNumbers[key];
-						  	end
-						  end,
-						  order = OrderNum(),
+							func = function()
+								for key, value in pairs(defaults.HEPNumbers) do
+									Enhancer.db.profile.HEPNumbers[key] = defaults.HEPNumbers[key];
+								end
+							end,
+							order = OrderNum(),
 						},
-		  		},
-		  	},
-		  	[L["dep_cmd"]] = {
-		  		type = "group",
-		  		name = L["dep_cmd"],
-		  		desc = L["dep_cmd"],
-		  		order = OrderNum(),
-		  		args = {
-		  			[L["DMG"]] = {
+					},
+				},
+				[L["dep_cmd"]] = {
+					type = "group",
+					name = L["dep_cmd"],
+					desc = L["dep_cmd"],
+					order = OrderNum(),
+					args = {
+						[L["DMG"]] = {
 							name = L["DMG"], type = "range",
 							desc = L["DMG"],
 							min = 0, max = 5, step = (1 / 10),
@@ -792,81 +794,81 @@ local consoleoptions = {
 						
 						[L["bestgem_cmd"]] = {
 							type = "group",
-				  		name = L["bestgem_cmd"],
-				  		desc = L["bestgem_desc"],
-				  		order = OrderNum(),
-				  		args = {
-				  			[L["blue"]] = {
-					  			type = "execute",
-								  name = L["blue"],
+							name = L["bestgem_cmd"],
+							desc = L["bestgem_desc"],
+							order = OrderNum(),
+							args = {
+								[L["blue"]] = {
+									type = "execute",
+									name = L["blue"],
 									desc = L["blue"],
-								  func = function()
-								  	if (Enhancer:HasModule("EP") and Enhancer:IsModuleActive("EP")) then
-								  		Enhancer:GetModule("EP"):BestGem(Enhancer.db.profile.DEPNumbers, "Blue");
-								  	else
-								  		Enhancer:Print("EP module not active\available!");
-								  	end
-								  end,
-								  order = OrderNum(),
+									func = function()
+										if (Enhancer:HasModule("EP") and Enhancer:IsModuleActive("EP")) then
+											Enhancer:GetModule("EP"):BestGem(Enhancer.db.profile.DEPNumbers, "Blue");
+										else
+											Enhancer:Print("EP module not active\available!");
+										end
+									end,
+									order = OrderNum(),
 								},
 								[L["yellow"]] = {
-					  			type = "execute",
-								  name = L["yellow"],
+									type = "execute",
+									name = L["yellow"],
 									desc = L["yellow"],
-								  func = function()
-								  	if (Enhancer:HasModule("EP") and Enhancer:IsModuleActive("EP")) then
-								  		Enhancer:GetModule("EP"):BestGem(Enhancer.db.profile.DEPNumbers, "Yellow");
-								  	else
-								  		Enhancer:Print("EP module not active\available!");
-								  	end
-								  end,
-								  order = OrderNum(),
+									func = function()
+										if (Enhancer:HasModule("EP") and Enhancer:IsModuleActive("EP")) then
+											Enhancer:GetModule("EP"):BestGem(Enhancer.db.profile.DEPNumbers, "Yellow");
+										else
+											Enhancer:Print("EP module not active\available!");
+										end
+									end,
+									order = OrderNum(),
 								},
 								[L["red"]] = {
-					  			type = "execute",
-								  name = L["red"],
+									type = "execute",
+									name = L["red"],
 									desc = L["red"],
-								  func = function()
-								  	if (Enhancer:HasModule("EP") and Enhancer:IsModuleActive("EP")) then
-								  		Enhancer:GetModule("EP"):BestGem(Enhancer.db.profile.DEPNumbers, "Red");
-								  	else
-								  		Enhancer:Print("EP module not active\available!");
-								  	end
-								  end,
-								  order = OrderNum(),
+									func = function()
+										if (Enhancer:HasModule("EP") and Enhancer:IsModuleActive("EP")) then
+											Enhancer:GetModule("EP"):BestGem(Enhancer.db.profile.DEPNumbers, "Red");
+										else
+											Enhancer:Print("EP module not active\available!");
+										end
+									end,
+									order = OrderNum(),
 								},
 								[L["any"]] = {
-					  			type = "execute",
-								  name = L["any"],
+									type = "execute",
+									name = L["any"],
 									desc = L["any"],
-								  func = function()
-								  	if (Enhancer:HasModule("EP") and Enhancer:IsModuleActive("EP")) then
-								  		Enhancer:GetModule("EP"):BestGem(Enhancer.db.profile.DEPNumbers);
-								  	else
-								  		Enhancer:Print("EP module not active\available!");
-								  	end
-								  end,
-								  order = OrderNum(),
+									func = function()
+										if (Enhancer:HasModule("EP") and Enhancer:IsModuleActive("EP")) then
+											Enhancer:GetModule("EP"):BestGem(Enhancer.db.profile.DEPNumbers);
+										else
+											Enhancer:Print("EP module not active\available!");
+										end
+									end,
+									order = OrderNum(),
 								},
 							},
 						},
 						[L["reset_cmd"]] = {
 							type = "execute",
-						  name = L["reset_cmd"],
+							name = L["reset_cmd"],
 							desc = L["reset_cmd"],
-						  func = function()
-						  	for key, value in pairs(defaults.DEPNumbers) do
-						  		Enhancer.db.profile.DEPNumbers[key] = defaults.DEPNumbers[key];
-						  	end
-						  end,
-						  order = OrderNum(),
+							func = function()
+								for key, value in pairs(defaults.DEPNumbers) do
+									Enhancer.db.profile.DEPNumbers[key] = defaults.DEPNumbers[key];
+								end
+							end,
+							order = OrderNum(),
 						},
-		  		},
-		  	},
-		  	
-		  	[SpacerName()] = SpacerTable(),
-		  	
-  			[L["ep_gemq_cmd"]] = {
+					},
+				},
+				
+				[SpacerName()] = SpacerTable(),
+				
+				[L["ep_gemq_cmd"]] = {
 					name = L["ep_gemq_cmd"], type = "range",
 					desc = L["ep_gemq_desc"],
 					min = 1,
@@ -897,8 +899,8 @@ local consoleoptions = {
 					end,
 					order = OrderNum(),
 				},
-  		},
-  	},
+			},
+		},
 		
 		[SpacerName()] = SpacerTable(),
 		
@@ -933,12 +935,12 @@ local consoleoptions = {
 		[SpacerName()] = SpacerTable(),
 		
 		[L["alpha_cmd"]] = {
-  		type = "group",
-  		name = L["alpha_cmd"],
-  		desc = L["alpha_desc"],
-  		order = OrderNum(),
-  		args = {
-  			[L["alpha_ic_active_cmd"]] = {
+			type = "group",
+			name = L["alpha_cmd"],
+			desc = L["alpha_desc"],
+			order = OrderNum(),
+			args = {
+				[L["alpha_ic_active_cmd"]] = {
 					name = L["alpha_ic_active_cmd"], type = "range",
 					desc = L["alpha_ic_active_desc"],
 					min = 0,
@@ -1001,8 +1003,34 @@ local consoleoptions = {
 					end,
 					order = OrderNum(),
 				},
-	  	},
-	  },
+			},
+		},
+		[L["Announcement_cmd"]] = {
+			type = "group",
+			name = L["Announcement_cmd"],
+			desc = L["Announcement_desc"],
+			order = OrderNum(),
+			args = {
+				[L["a_show_cmd"]] = {
+					type = "execute",
+					name = L["a_show_cmd"],
+					desc = L["a_show_desc"],
+					func = function()
+						Enhancer:DelayAnnounce();
+					end,
+					order = OrderNum(),
+				},
+				[L["a_disable_cmd"]] = {
+					name = L["a_disable_cmd"], type = "toggle",
+					desc = L["a_disable_desc"],
+					get = function() return Enhancer.db.profile.startAnnounce; end,
+					set = function()
+						Enhancer.db.profile.startAnnounce = not Enhancer.db.profile.startAnnounce;
+					end,
+					order = OrderNum(),
+				},
+			},
+		},
 	},
 };
 

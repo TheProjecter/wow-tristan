@@ -14,16 +14,15 @@ function Enhancer:OnInitialize()
 	
 	self:Setup();
 	self:InspectEPValues()
-	self:ScheduleEvent("DelayAnnounce", self.DelayAnnounce, 10, self)
+	
+	if (self.db.profile.startAnnounce) then
+		self:ScheduleEvent("DelayAnnounce", self.DelayAnnounce, 10, self)
+	end
 end
 
 function Enhancer:DelayAnnounce()
-	-- Special thing for now so allowed to be in this file ;)
-	--if (not Enhancer.db.announcements) then Enhancer.db.announcements = {}; end
-	--Enhancer.db.announcements.v1 = (Enhancer.db.announcements.v1 or 0) + 1;
-	--if (Enhancer.db.announcements.v1 < 3) then
-		self:Print(L["Announcement"]);
-	--end
+	-- Special thing so allowed to be in this file ;)
+	self:Print(L["Announcement"]);
 end
 
 function Enhancer:OnEnable()
@@ -35,7 +34,14 @@ function Enhancer:OnEnable()
 	self:RegisterEvent("PLAYER_DEAD", "PlayerDead");
 	
 	-- Check if the player casts a totem :)
-	self:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED", "CastingTotem")
+	self:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED", "CastingTotem");
+	
+	self.PlayerLevel = UnitLevel("player");
+	self:RegisterEvent("PLAYER_LEVEL_UP", "Ding");
+	
+	-- self:RegisterEvent("UNIT_AURA", "AuraChanged");
+	-- self:RegisterEvent("PLAYER_AURAS_CHANGED", "AuraChanged");
+	-- MH, OH Temporary Enchant
 end
 
 function Enhancer:OnDisable()

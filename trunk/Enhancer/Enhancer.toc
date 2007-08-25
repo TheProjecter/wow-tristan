@@ -58,5 +58,6 @@ bonus\Reincarnation.lua
 bonus\Invigorated.lua
 bonus\EP.lua
 bonus\EPGems.lua
+bonus\Tench.lua
 
 Debug.lua

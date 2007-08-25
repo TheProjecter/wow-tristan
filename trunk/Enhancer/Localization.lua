@@ -116,6 +116,12 @@ L_Main:RegisterTranslations("enUS", function() return {
 	
 	--[[ Announcement ]]--
 	["Announcement"] = "Enhancer is currently being developed if you find a bug somewhere or something you think is wrong, feel free to email me at dennis.hafstrom@gmail.com or report on http://code.google.com/p/wow-tristan/issues/list",
+	["Announcement_cmd"] = "Announcement",
+	["Announcement_desc"] = "Announcement (the spam at load ;) settings",
+	["a_show_cmd"] = "Show",
+	["a_show_desc"] = "Show Announcement(s)",
+	["a_disable_cmd"] = "Disable",
+	["a_disable_desc"] = "Disable Announcement(s) at load",
 } end )
 
 
