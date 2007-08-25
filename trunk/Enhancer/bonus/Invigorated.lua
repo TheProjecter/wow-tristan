@@ -1,18 +1,24 @@
 EnhancerInvigorated = Enhancer:NewModule("Invigorated", "AceEvent-2.0");
 Enhancer:SetModuleDefaultState("Invigorated", false);
+local FrameName = "invigorated";
 
 function EnhancerInvigorated:OnInitialize()
-	
+	Enhancer.invigorated = Enhancer:CreateButton("EnhancerFrameInvigorated", "Spell_Nature_NatureResistanceTotem", 0, 170);
+	Enhancer.invigorated.borderColor = { ["r"] = (0/255), ["g"] = (245/255), ["b"] = (255/255), ["a"] = 1, }
+	Enhancer:AddFrameToList(FrameName, true, false, true) --[[ Enhancer:AddFrameToList(framename, all, totem, death) ]]--
 end
 
 function EnhancerInvigorated:OnEnable()
-	Enhancer:ShowFrame("invigorated");
+	Enhancer:ShowFrame(FrameName);
+	Enhancer:ToggleLock(FrameName);
+	
 	self:RegisterEvent("SpecialEvents_PlayerBuffGained", "PlayerBuffGained")
 	self:RegisterEvent("SpecialEvents_PlayerBuffLost", "PlayerBuffLost")
 end
 
 function EnhancerInvigorated:OnDisable()
-	Enhancer:HideFrame("invigorated");
+	Enhancer:HideFrame(FrameName);
+	
 	self:UnregisterAllEvents();
 end
 

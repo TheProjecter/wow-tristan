@@ -110,7 +110,7 @@ local consoleoptions = {
 			name = L["reset_cmd"], type = "execute",
 			desc = L["reset_desc"],
 			func = function(v)
-				Enhancer:DefaultPos();
+				Enhancer:ResetPos();
 				if (Enhancer.db.profile.framePositions) then Enhancer.db.profile.framePositions = nil; end
 			end,
 			order = OrderNum(),
@@ -205,6 +205,15 @@ local consoleoptions = {
 					get = function() return Enhancer:IsModuleActive("Invigorated"); end,
 					set = function()
 						Enhancer:ToggleModuleActive("Invigorated");
+					end,
+					order = OrderNum(),
+				},
+				[L["tench_cmd"]] = {
+					name = L["tench_cmd"], type = "toggle",
+					desc = L["tench_desc"],
+					get = function() return Enhancer:IsModuleActive("Tench"); end,
+					set = function()
+						Enhancer:ToggleModuleActive("Tench");
 					end,
 					order = OrderNum(),
 				},
@@ -949,7 +958,7 @@ local consoleoptions = {
 					get = function() return Enhancer.db.profile.combatAlpha; end,
 					set = function(v)
 						Enhancer.db.profile.combatAlpha = v;
-						Enhancer:UpdateAlphaBegin( Enhancer.allframes );
+						Enhancer:UpdateAlphaBegin( Enhancer.aFrames );
 					end,
 					order = OrderNum(),
 				},
@@ -962,7 +971,7 @@ local consoleoptions = {
 					get = function() return Enhancer.db.profile.oocombatAlpha; end,
 					set = function(v)
 						Enhancer.db.profile.oocombatAlpha = v;
-						Enhancer:UpdateAlphaBegin( Enhancer.allframes );
+						Enhancer:UpdateAlphaBegin( Enhancer.aFrames );
 					end,
 					order = OrderNum(),
 				},
@@ -975,7 +984,7 @@ local consoleoptions = {
 					get = function() return Enhancer.db.profile.combatinactiveAlpha; end,
 					set = function(v)
 						Enhancer.db.profile.combatinactiveAlpha = v;
-						Enhancer:UpdateAlphaBegin( Enhancer.allframes );
+						Enhancer:UpdateAlphaBegin( Enhancer.aFrames );
 					end,
 					order = OrderNum(),
 				},
@@ -988,7 +997,7 @@ local consoleoptions = {
 					get = function() return Enhancer.db.profile.oocinactiveAlpha; end,
 					set = function(v)
 						Enhancer.db.profile.oocinactiveAlpha = v;
-						Enhancer:UpdateAlphaBegin( Enhancer.allframes );
+						Enhancer:UpdateAlphaBegin( Enhancer.aFrames );
 					end,
 					order = OrderNum(),
 				},
@@ -1036,37 +1045,3 @@ local consoleoptions = {
 
 Enhancer:RegisterDefaults('profile', defaults);
 Enhancer:RegisterChatCommand( { "/Enhancer", "/enh", "/ShammySpy" }, consoleoptions );
-
-function Enhancer:InspectEPValues()
-	local resetNeeded = false;
-	
-	for _, value in pairs(Enhancer.db.profile.AEPNumbers) do
-		if (value > 5) then
-			resetNeeded = true;
-		end
-	end
-	for _, value in pairs(Enhancer.db.profile.HEPNumbers) do
-		if (value > 5) then
-			resetNeeded = true;
-		end
-	end
-	for _, value in pairs(Enhancer.db.profile.DEPNumbers) do
-		if (value > 5) then
-			resetNeeded = true;
-		end
-	end
-	
-	if (resetNeeded) then
-		for key, value in pairs(defaults.AEPNumbers) do
-			Enhancer.db.profile.AEPNumbers[key] = defaults.AEPNumbers[key];
-		end
-		for key, value in pairs(defaults.HEPNumbers) do
-			Enhancer.db.profile.HEPNumbers[key] = defaults.HEPNumbers[key];
-		end
-		for key, value in pairs(defaults.DEPNumbers) do
-			Enhancer.db.profile.DEPNumbers[key] = defaults.DEPNumbers[key];
-		end
-		
-		self:Print("Your AEP values have been reset due to a major change, there was sadly no alternative!");
-	end
-end

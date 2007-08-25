@@ -1,49 +1,63 @@
-EnhancerWindfury = Enhancer:NewModule("Windfury", "AceEvent-2.0");
+EnhancerWindfury = Enhancer:NewModule("Windfury", "AceEvent-2.0", "Parser-3.0");
 Enhancer:SetModuleDefaultState("Windfury", true);
+local FrameName = "windfury";
 
 function EnhancerWindfury:OnInitialize()
-	
+	Enhancer.windfury = Enhancer:CreateButton("EnhancerFrameWindfury", "Spell_Nature_Cyclone", 0, -25);
+	Enhancer.windfury.borderColor = { ["r"] = (127/255), ["g"] = (255/255), ["b"] = (212/255), ["a"] = 1, }
+	Enhancer:AddFrameToList(FrameName, true, false, false) --[[ Enhancer:AddFrameToList(framename, all, totem, death) ]]--
 end
 
 function EnhancerWindfury:OnEnable()
-	Enhancer:ShowFrame("windfury");
+	Enhancer:ShowFrame(FrameName);
+	Enhancer:ToggleLock(FrameName);
+	
+	self:RegisterParserEvent({
+		eventType = 'Damage',
+	}, "ParserDamage");
 end
 
 function EnhancerWindfury:OnDisable()
-	Enhancer:HideFrame("windfury");
+	Enhancer:HideFrame(FrameName);
+	
+	self:UnregisterAllParserEvents();
 end
 
-function Enhancer:WindfuryHit()
-	if (not Enhancer:IsModuleActive("Windfury")) then return; end -- Don't do shit unless module is enabled;
-	if (self.windfury.active) then return; end -- Second WF shouldn't reset the timer ;)
-	
-	self.windfury.active = true;
-	self.windfury.cooldownstart = GetTime();
-	self.windfury.cooldownend = GetTime() + 3;
-	
-	self.windfury.cooldown:SetCooldown(Enhancer.windfury.cooldownstart, 3);
-	self:UpdateAlphaBegin("windfury");
-	self:WindfuryCooldownNumber();
-	
-	if ( not (self:IsEventScheduled("WindfuryCooldownNumber")) ) then
-		self:ScheduleRepeatingEvent("WindfuryCooldownNumber", self.WindfuryCooldownNumber, 1, self)
+function EnhancerWindfury:ParserDamage(info)
+	if ( (info.abilityName == Enhancer.BS["Windfury"] or info.abilityName == Enhancer.BS["Windfury Attack"]) and info.sourceID == "player" ) then
+		self:WindfuryHit();
 	end
 end
 
-function Enhancer:WindfuryCooldownNumber()
-	local cdstart = self.windfury.cooldownstart;
-	local cdend = self.windfury.cooldownend;
+function EnhancerWindfury:WindfuryHit()
+	if (Enhancer.windfury.active) then return; end -- Second WF shouldn't reset the timer ;)
+	
+	Enhancer.windfury.active = true;
+	Enhancer.windfury.cooldownstart = GetTime();
+	Enhancer.windfury.cooldownend = GetTime() + 3;
+	
+	Enhancer.windfury.cooldown:SetCooldown(Enhancer.windfury.cooldownstart, 3);
+	Enhancer:UpdateAlphaBegin(FrameName);
+	self:WindfuryCooldownNumber();
+	
+	if ( not (self:IsEventScheduled("WindfuryCooldownNumber")) ) then
+		self:ScheduleRepeatingEvent("WindfuryCooldownNumber", self.WindfuryCooldownNumber, (1 / 2), self)
+	end
+end
+
+function EnhancerWindfury:WindfuryCooldownNumber()
+	local cdstart = Enhancer.windfury.cooldownstart;
+	local cdend = Enhancer.windfury.cooldownend;
 	local cd = ceil(cdend - GetTime())
 	
 	if (cd <= 0) then
-		self.windfury.textcenter:SetText("");
+		Enhancer.windfury.textcenter:SetText("");
 		if (self:IsEventScheduled("WindfuryCooldownNumber")) then
 			self:CancelScheduledEvent("WindfuryCooldownNumber")
 		end
 		
-		self:FrameDeathPreBegin("windfury");
+		Enhancer:FrameDeathPreBegin(FrameName);
 	else
-		-- Cooldown running
-		self.windfury.textcenter:SetText(cd);
+		Enhancer.windfury.textcenter:SetText(cd);
 	end
 end

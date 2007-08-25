@@ -1,13 +1,8 @@
 local L = AceLibrary("AceLocale-2.2"):new("Enhancer")
 
+--[[ HEALS? ]]--
+
 function Enhancer:ParserDamage(info)
-	-- if (info.sourceID == "player") then self:WFTest(info); end
-	
-	if ( (info.abilityName == Enhancer.BS["Windfury"] or info.abilityName == Enhancer.BS["Windfury Attack"]) and info.sourceID == "player" ) then
-		self:WindfuryHit();
-	end
-	
-	-- Totem and Rank hits Windfury Totem V for example so need to either add rank to the string or get rid of it in this one ;)
 	if (not self.combatLog[info.recipientName]) then return; end
 	
 	local frame = self.combatLog[info.recipientName];

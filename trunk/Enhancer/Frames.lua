@@ -1,101 +1,108 @@
 local L = AceLibrary("AceLocale-2.2"):new("Enhancer");
+local _G = getfenv();
 local strataToUse = "BACKGROUND"; --TOOLTIP
 
-function Enhancer:CreateButton(globalname, bgFile)
+function Enhancer:CreateButton(globalname, bgFile, xOffset, yOffset)
 	local retVal = {};
 	local object;
 	
-	if (not getglobal(globalname)) then
-		--[[ Create an anchor ]]
-		object = CreateFrame("Button", globalname.."Anchor", UIParent);
-		object:Hide();
-		object:SetWidth(150);
-		object:SetHeight(30);
-		object:SetPoint("CENTER", UIParent, "CENTER",  0,  0);
-		object:SetMovable(true);
-		object:RegisterForDrag("LeftButton");
-		object:SetFrameStrata("HIGH");
-		object:SetClampedToScreen(true);
-		object:SetBackdrop({
-			bgFile = "Interface/Tooltips/UI-Tooltip-Background",
-			edgeFile = "Interface/Tooltips/UI-Tooltip-Border",
-			tile = false, tileSize = 16, edgeSize = 16,
-			insets = { left = 5, right = 5, top = 5, bottom = 5 }
-		});
-		retVal["anchor"] = object;
-		
-		--[[ Create a fontstring for the Anchor ]]
-		object = retVal["anchor"]:CreateFontString(globalname.."AnchorText", "OVERLAY");
-		object:SetFontObject(Enhancer.db.profile.belowFont);
-		object:ClearAllPoints();
-		object:SetTextColor(1, 1, 1, 1);
-		object:SetWidth(120);
-		object:SetHeight(25);
-		object:SetPoint("CENTER", globalname.."Anchor", "CENTER");
-		object:SetJustifyH("CENTER");
-		object:SetJustifyV("MIDDLE");
-		object:SetText(L["DragToMoveFrame"]);
-		retVal["anchortext"] = object;
-		
-		--[[ Create a frame ]]
-		object = CreateFrame("Frame", globalname.."Frame", UIParent);
-		object.bgFileDefault = bgFile;
-		object:SetWidth(Enhancer.db.profile.framesize);
-		object:SetHeight(Enhancer.db.profile.framesize);
-		object:SetFrameStrata(strataToUse);
-		object:SetPoint("TOP", globalname.."Anchor", "BOTTOM", 0, 0);
-		object:SetMovable(true);
-		object:SetBackdrop({
-			bgFile = "Interface/Icons/" .. object.bgFileDefault,
-			edgeFile = "Interface/Tooltips/UI-Tooltip-Border",
-			tile = false, tileSize = 16, edgeSize = 16,
-			insets = { left = 5, right = 5, top = 5, bottom = 5 }
-		});
-		object:SetBackdropColor( 1, 1, 1, Enhancer.db.profile.oocinactiveAlpha);
-		object:SetBackdropBorderColor( 1, 1, 1, 0);
-		retVal["mainframe"] = object;
-		
-		--[[ Create a Cooldown ]]
-		object = CreateFrame("Cooldown", globalname.."FrameCooldown", MainFrame, "CooldownFrameTemplate");
-		object:ClearAllPoints();
-		object:SetWidth(Enhancer.db.profile.framesize - (Enhancer.db.profile.framesize / 3));
-		object:SetHeight(Enhancer.db.profile.framesize - (Enhancer.db.profile.framesize / 3));
-		object:SetPoint("CENTER", globalname.."Frame", "CENTER", 0, 0);
-		retVal["cooldown"] = object;
-		
-		--[[ Create a fontstring below ]]
-		object = retVal["mainframe"]:CreateFontString(globalname.."FrameText1", "OVERLAY");
-		object:SetFontObject(Enhancer.db.profile.belowFont);
-		object:ClearAllPoints();
-		object:SetTextColor(1, 1, 1, 1);
-		object:SetWidth(Enhancer.db.profile.framesize);
-		object:SetHeight(Enhancer.db.profile.belowFontSize + 10);
-		object:SetPoint("TOP", globalname.."Frame", "BOTTOM");
-		object:SetJustifyH("CENTER");
-		object:SetJustifyV("MIDDLE");
-		object:SetText("");
-		object:SetAlpha(Enhancer.db.profile.oocinactiveAlpha);
-		retVal["textbelow"] = object;
-		
-		--[[ Create the 2nd fontstring ]]
-		object = retVal["mainframe"]:CreateFontString(globalname.."FrameText2", "OVERLAY");
-		object:SetFontObject(Enhancer.db.profile.centerFont);
-		object:ClearAllPoints();
-		object:SetTextColor(1, 1, 1, 1);
-		object:SetWidth(Enhancer.db.profile.framesize);
-		object:SetHeight(Enhancer.db.profile.framesize);
-		object:SetPoint("CENTER", globalname.."Frame", "CENTER");
-		object:SetJustifyH("CENTER");
-		object:SetJustifyV("MIDDLE");
-		object:SetText("");
-		object:SetAlpha(Enhancer.db.profile.oocinactiveAlpha);
-		object:SetShadowColor(0, 0, 0, 1)
-		object:SetShadowOffset(0.8, -0.8)
-		retVal["textcenter"] = object;
-		
-		retVal["anchor"]:Hide();
-		retVal["mainframe"]:Hide();
+	if (_G[globalname]) then
+		-- This'll give an error but it should never happen with good globalnames so giving an error is good :)
+		return nil, globalname; -- _G[globalname] = nil;
 	end
+	
+	--[[ Create an anchor ]]
+	object = CreateFrame("Button", globalname.."Anchor", UIParent);
+	object:Hide();
+	object:SetWidth(150);
+	object:SetHeight(30);
+	object:SetPoint("CENTER", UIParent, "CENTER",  0,  0);
+	object:SetMovable(true);
+	object:RegisterForDrag("LeftButton");
+	object:SetFrameStrata("HIGH");
+	object:SetClampedToScreen(true);
+	object:SetBackdrop({
+		bgFile = "Interface/Tooltips/UI-Tooltip-Background",
+		edgeFile = "Interface/Tooltips/UI-Tooltip-Border",
+		tile = false, tileSize = 16, edgeSize = 16,
+		insets = { left = 5, right = 5, top = 5, bottom = 5 }
+	});
+	retVal["anchor"] = object;
+	
+	--[[ Create a fontstring for the Anchor ]]
+	object = retVal["anchor"]:CreateFontString(globalname.."AnchorText", "OVERLAY");
+	object:SetFontObject(Enhancer.db.profile.belowFont);
+	object:ClearAllPoints();
+	object:SetTextColor(1, 1, 1, 1);
+	object:SetWidth(120);
+	object:SetHeight(25);
+	object:SetPoint("CENTER", globalname.."Anchor", "CENTER");
+	object:SetJustifyH("CENTER");
+	object:SetJustifyV("MIDDLE");
+	object:SetText(L["DragToMoveFrame"]);
+	retVal["anchortext"] = object;
+	
+	--[[ Create a frame ]]
+	object = CreateFrame("Frame", globalname.."Frame", UIParent);
+	object.bgFileDefault = bgFile;
+	object:SetWidth(Enhancer.db.profile.framesize);
+	object:SetHeight(Enhancer.db.profile.framesize);
+	object:SetFrameStrata(strataToUse);
+	object:SetPoint("TOP", globalname.."Anchor", "BOTTOM", 0, 0);
+	object:SetMovable(true);
+	object:SetBackdrop({
+		bgFile = "Interface/Icons/" .. object.bgFileDefault,
+		edgeFile = "Interface/Tooltips/UI-Tooltip-Border",
+		tile = false, tileSize = 16, edgeSize = 16,
+		insets = { left = 5, right = 5, top = 5, bottom = 5 }
+	});
+	object:SetBackdropColor( 1, 1, 1, Enhancer.db.profile.oocinactiveAlpha);
+	object:SetBackdropBorderColor( 1, 1, 1, 0);
+	retVal["mainframe"] = object;
+	
+	--[[ Create a Cooldown ]]
+	object = CreateFrame("Cooldown", globalname.."FrameCooldown", MainFrame, "CooldownFrameTemplate");
+	object:ClearAllPoints();
+	object:SetWidth(Enhancer.db.profile.framesize - (Enhancer.db.profile.framesize / 3));
+	object:SetHeight(Enhancer.db.profile.framesize - (Enhancer.db.profile.framesize / 3));
+	object:SetPoint("CENTER", globalname.."Frame", "CENTER", 0, 0);
+	retVal["cooldown"] = object;
+	
+	--[[ Create a fontstring below ]]
+	object = retVal["mainframe"]:CreateFontString(globalname.."FrameText1", "OVERLAY");
+	object:SetFontObject(Enhancer.db.profile.belowFont);
+	object:ClearAllPoints();
+	object:SetTextColor(1, 1, 1, 1);
+	object:SetWidth(Enhancer.db.profile.framesize);
+	object:SetHeight(Enhancer.db.profile.belowFontSize + 10);
+	object:SetPoint("TOP", globalname.."Frame", "BOTTOM");
+	object:SetJustifyH("CENTER");
+	object:SetJustifyV("MIDDLE");
+	object:SetText("");
+	object:SetAlpha(Enhancer.db.profile.oocinactiveAlpha);
+	retVal["textbelow"] = object;
+	
+	--[[ Create the 2nd fontstring ]]
+	object = retVal["mainframe"]:CreateFontString(globalname.."FrameText2", "OVERLAY");
+	object:SetFontObject(Enhancer.db.profile.centerFont);
+	object:ClearAllPoints();
+	object:SetTextColor(1, 1, 1, 1);
+	object:SetWidth(Enhancer.db.profile.framesize);
+	object:SetHeight(Enhancer.db.profile.framesize);
+	object:SetPoint("CENTER", globalname.."Frame", "CENTER");
+	object:SetJustifyH("CENTER");
+	object:SetJustifyV("MIDDLE");
+	object:SetText("");
+	object:SetAlpha(Enhancer.db.profile.oocinactiveAlpha);
+	object:SetShadowColor(0, 0, 0, 1)
+	object:SetShadowOffset(0.8, -0.8)
+	retVal["textcenter"] = object;
+	
+	retVal["anchor"]:Hide();
+	retVal["mainframe"]:Hide();
+	
+	retVal.xOffsetDefault = xOffset or 0;
+	retVal.yOffsetDefault = yOffset or 0;
 	
 	return retVal, globalname;
 end
@@ -127,67 +134,94 @@ function Enhancer:SavePos(framename, frame)
 	Enhancer.db.profile.framePositions[framename]["yOfs"] = yOfs;
 end
 
-function Enhancer:LoadPos()
-	if (not Enhancer.db.profile.framePositions) then return; end
+function Enhancer:LoadPos(framelist)
+	if (not framelist) then return; end
 	
-	for framename, _ in pairs(Enhancer.db.profile.framePositions) do
-		self[framename].anchor:ClearAllPoints();
-		self[framename].anchor:SetPoint(
-			Enhancer.db.profile.framePositions[framename]["point"],
-			Enhancer.db.profile.framePositions[framename]["relativeTo"],
-			Enhancer.db.profile.framePositions[framename]["relativePoint"],
-			Enhancer.db.profile.framePositions[framename]["xOfs"],
-			Enhancer.db.profile.framePositions[framename]["yOfs"]
-		)
+	if (type(framelist) == "table") then
+		for _, framename in pairs(framelist) do
+			self:LoadPos(framename);
+		end
+	else
+		local framename = framelist;
+		
+		if (Enhancer.db.profile.framePositions and Enhancer.db.profile.framePositions[framename] and self[framename]) then
+			self[framename].anchor:ClearAllPoints();
+			self[framename].anchor:SetPoint(
+				Enhancer.db.profile.framePositions[framename]["point"],
+				Enhancer.db.profile.framePositions[framename]["relativeTo"],
+				Enhancer.db.profile.framePositions[framename]["relativePoint"],
+				Enhancer.db.profile.framePositions[framename]["xOfs"],
+				Enhancer.db.profile.framePositions[framename]["yOfs"]
+			);
+		else
+			Enhancer:DefaultPos(framelist);
+		end
 	end
 end
 
-function Enhancer:ShowFrame(frame)
-	self[frame].mainframe:Show();
-	if (not self.db.profile.locked) then self[frame].anchor:Show(); end
-	self:UpdateAlphaBegin(frame);
+function Enhancer:ResetPos()
+	for _, framename in ipairs(Enhancer.aFrames) do
+		self:DefaultPos(framename);
+	end
 end
 
-function Enhancer:HideFrame(frame)
-	self[frame].active = false;
-	self[frame].textbelow:SetText("");
-	self[frame].textcenter:SetText("");
-	self[frame].mainframe:Hide();
-	self[frame].anchor:Hide();
-end
-
-function Enhancer:DefaultPos()
-	local negativeOut = -170;
-	local positiveOut = 170;
+function Enhancer:DefaultPos(framelist)
+	if (not framelist) then return; end
 	
-	self.earth.anchor:ClearAllPoints();
-	self.earth.anchor:SetPoint("CENTER", UIParent, "CENTER",  positiveOut,  (positiveOut + Enhancer.db.profile.framesize)) -- positiveOut = East, positiveOut = North
-	self.fire.anchor:ClearAllPoints();
-	self.fire.anchor:SetPoint("CENTER", UIParent, "CENTER",  negativeOut,  (positiveOut + Enhancer.db.profile.framesize)) -- negativeOut = West, positiveOut = North
-	self.water.anchor:ClearAllPoints();
-	self.water.anchor:SetPoint("CENTER", UIParent, "CENTER",  positiveOut,  (negativeOut + Enhancer.db.profile.framesize)) -- positiveOut = East, negativeOut = South
-	self.air.anchor:ClearAllPoints();
-	self.air.anchor:SetPoint("CENTER", UIParent, "CENTER",  negativeOut,  (negativeOut + Enhancer.db.profile.framesize)) -- negativeOut = West, negativeOut = South
-	
-	self.reincarnation.anchor:ClearAllPoints();
-	self.reincarnation.anchor:SetPoint("CENTER", UIParent, "CENTER",  0,  (negativeOut + Enhancer.db.profile.framesize)) -- 0 = Center, negativeOut = South
-	
-	self.windfury.anchor:ClearAllPoints();
-	self.windfury.anchor:SetPoint("CENTER", UIParent, "CENTER",  0,  (0 + Enhancer.db.profile.framesize)) -- 0 = Center, 0 = Center
-	
-	self.invigorated.anchor:ClearAllPoints();
-	self.invigorated.anchor:SetPoint("CENTER", UIParent, "CENTER",  0,  (positiveOut + Enhancer.db.profile.framesize)) -- 0 = Center, positiveOut = North
-end
-
-function Enhancer:UpdateAlphaBegin(frames)
-	if (not frames) then
-		self:UpdateAlphaBegin(self.allframes);
-	elseif (type(frames) == "table") then
-		for _, frame in pairs(frames) do
-			self:UpdateAlphaEnd(frame);
+	if (type(framelist) == "table") then
+		for _, framename in pairs(framelist) do
+			self:DefaultPos(framename);
 		end
 	else
-		self:UpdateAlphaEnd(frames);
+		local framename = framelist;
+		self[framename].anchor:ClearAllPoints();
+		self[framename].anchor:SetPoint("CENTER", UIParent, "CENTER",  self[framename].xOffsetDefault,  (self[framename].yOffsetDefault + Enhancer.db.profile.framesize))
+		-- positiveX = East, positiveY = North
+	end
+end
+
+function Enhancer:ShowFrame(framelist)
+	if (not framelist) then return; end
+	
+	if (type(framelist) == "table") then
+		for _, framename in pairs(framelist) do
+			self:ShowFrame(framename);
+		end
+	else
+		local framename = framelist;
+		self[framename].mainframe:Show();
+		if (not self.db.profile.locked) then self[framename].anchor:Show(); end
+		self:UpdateAlphaBegin(framename);
+	end
+end
+
+function Enhancer:HideFrame(framelist)
+	if (not framelist) then return; end
+	
+	if (type(framelist) == "table") then
+		for _, framename in pairs(framelist) do
+			self:HideFrame(framename);
+		end
+	else
+		local framename = framelist;
+		
+		self[framename].active = false;
+		self[framename].textbelow:SetText("");
+		self[framename].textcenter:SetText("");
+		self[framename].mainframe:Hide();
+		self[framename].anchor:Hide();
+	end
+end
+
+function Enhancer:UpdateAlphaBegin(framelist)
+	if (not framelist) then
+		self:UpdateAlphaBegin(Enhancer.aFrames);
+	elseif (type(framelist) == "table") then
+		for _, framename in pairs(framelist) do
+			self:UpdateAlphaEnd(framename);
+		end
+	else
+		self:UpdateAlphaEnd(framelist);
 	end
 end
 
@@ -279,7 +313,7 @@ function Enhancer:FrameDeathEnd(frame)
 	if (not self[frame]) then return; end
 	
 	self:ChangeIcon(frame, self[frame].mainframe.bgFileDefault);
-	self[frame].mainframe:SetBackdropBorderColor(self[frame].borderColor["r"] or 1, self[frame].borderColor["g"] or 1, self[frame].borderColor["b"] or 1, 0);
+	self[frame].mainframe:SetBackdropBorderColor((self[frame].borderColor and self[frame].borderColor["r"]) or 1, (self[frame].borderColor and self[frame].borderColor["g"]) or 1, (self[frame].borderColor and self[frame].borderColor["b"]) or 1, 0);
 	
 	for logName, logFrame in pairs(self.combatLog) do
 		if (logFrame == frame) then
@@ -323,10 +357,20 @@ function Enhancer:UpdateFrame(frame)
 	end
 end
 
-function Enhancer:ChangeIcon(frame, icon)
-	local backdrop = self[frame].mainframe:GetBackdrop();
+function Enhancer:ChangeIcon(framename, icon)
+	local backdrop = self[framename].mainframe:GetBackdrop();
 	backdrop.bgFile = "Interface/Icons/" .. icon;
-	self[frame].mainframe:SetBackdrop(backdrop);
+	self[framename].mainframe:SetBackdrop(backdrop);
+	self[framename].mainframe:SetBackdropBorderColor( 1, 1, 1, 0);
+	self:UpdateAlphaBegin(framename)
+end
+
+function Enhancer:ChangeIconFull(framename, icon)
+	local backdrop = self[framename].mainframe:GetBackdrop();
+	backdrop.bgFile = icon;
+	self[framename].mainframe:SetBackdrop(backdrop);
+	self[framename].mainframe:SetBackdropBorderColor( 1, 1, 1, 0);
+	self:UpdateAlphaBegin(framename)
 end
 
 function Enhancer:AddPulse(frame)
