@@ -35,6 +35,13 @@ function Enhancer:CreateTotem(totem, rank)
 		end
 	end
 	
+	if (Enhancer.Totems[totem][rank] and Enhancer.Totems[totem][rank].Level) then
+		if (totem == Enhancer.BS["Stoneclaw Totem"]) then
+			-- HitPoints increase by (Level - TotemMinLearnLevel) * 3
+			HitPoints = HitPoints + ((self.PlayerLevel - Enhancer.Totems[totem][rank].Level) * 3);
+		end
+	end
+	
 	self[frame].name = totem;
 	self[frame].element = Element;
 	self[frame].active = true;
