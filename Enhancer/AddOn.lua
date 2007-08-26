@@ -40,6 +40,8 @@ function Enhancer:OnEnable()
 	self:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED", "CastingTotem");
 	self:RegisterEvent("PLAYER_LEVEL_UP", "Ding");
 	
+	-- ShieldFrame? Water, Lightning on self - Earth on whoever :>
+	
 	self:RegisterParserEvent({
 		eventType = 'Damage',
 	}, "ParserDamage");

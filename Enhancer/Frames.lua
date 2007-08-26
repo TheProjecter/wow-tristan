@@ -235,6 +235,13 @@ function Enhancer:UpdateAlphaEnd(frame)
 		self[frame].textcenter:SetAlpha(1);
 		self[frame].textbelow:SetAlpha(1);
 		self[frame].mainframe:SetBackdropColor(r, g, b, 1);
+	elseif (self[frame].empty) then
+		
+		-- At the moment this frame can't hold any data (Main Hand/Off Hand enchants for example)
+		self[frame].textcenter:SetAlpha(0);
+		self[frame].textbelow:SetAlpha(0);
+		self[frame].mainframe:SetBackdropColor(r, g, b, 0);
+		
 	elseif ( (frame == "reincarnation"  or frame == "windfury") and self.db.profile.specialAlpha ) then
 		
 		-- Special Handling of these frames
@@ -313,6 +320,7 @@ function Enhancer:FrameDeathEnd(frame)
 	if (not self[frame]) then return; end
 	
 	self:ChangeIcon(frame, self[frame].mainframe.bgFileDefault);
+	
 	self[frame].mainframe:SetBackdropBorderColor((self[frame].borderColor and self[frame].borderColor["r"]) or 1, (self[frame].borderColor and self[frame].borderColor["g"]) or 1, (self[frame].borderColor and self[frame].borderColor["b"]) or 1, 0);
 	
 	for logName, logFrame in pairs(self.combatLog) do
@@ -359,15 +367,12 @@ end
 
 function Enhancer:ChangeIcon(framename, icon)
 	local backdrop = self[framename].mainframe:GetBackdrop();
-	backdrop.bgFile = "Interface/Icons/" .. icon;
-	self[framename].mainframe:SetBackdrop(backdrop);
-	self[framename].mainframe:SetBackdropBorderColor( 1, 1, 1, 0);
-	self:UpdateAlphaBegin(framename)
-end
-
-function Enhancer:ChangeIconFull(framename, icon)
-	local backdrop = self[framename].mainframe:GetBackdrop();
-	backdrop.bgFile = icon;
+	if (self[framename].fullicon) then
+		backdrop.bgFile = icon;
+	else
+		backdrop.bgFile = "Interface/Icons/" .. icon;
+	end
+	
 	self[framename].mainframe:SetBackdrop(backdrop);
 	self[framename].mainframe:SetBackdropBorderColor( 1, 1, 1, 0);
 	self:UpdateAlphaBegin(framename)
