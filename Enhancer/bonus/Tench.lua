@@ -8,11 +8,11 @@ local SEA = AceLibrary("SpecialEvents-Aura-2.0")
 
 function EnhancerTench:OnInitialize()
 	-- type(Enhancer.windfury)
-	Enhancer.mhtench = Enhancer:CreateButton("EnhancerFrameMHTench", "INV_Mace_39", -170, 0);
+	Enhancer.mhtench = Enhancer:CreateButton("EnhancerFrameMHTench", "INV_Mace_39", -120, 0);
 	Enhancer:AddFrameToList(FrameNameM, true, false, false) --[[ Enhancer:AddFrameToList(framename, all, totem, death) ]]--
 	_, Enhancer.mhtench.mainframe.bgFileDefault = GetInventorySlotInfo("MainHandSlot");
 	
-	Enhancer.ohtench = Enhancer:CreateButton("EnhancerFrameOHTench", "INV_Mace_39", 170, 0);
+	Enhancer.ohtench = Enhancer:CreateButton("EnhancerFrameOHTench", "INV_Mace_39", 120, 0);
 	Enhancer:AddFrameToList(FrameNameO, true, false, false) --[[ Enhancer:AddFrameToList(framename, all, totem, death) ]]--
 	_, Enhancer.ohtench.mainframe.bgFileDefault = GetInventorySlotInfo("SecondaryHandSlot");
 end
