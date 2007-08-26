@@ -115,7 +115,7 @@ L_Main:RegisterTranslations("enUS", function() return {
 	["TotemDeath"] = "%s (%s) has expired",
 	
 	--[[ Announcement ]]--
-	["Announcement"] = "Enhancer is currently being developed if you find a bug somewhere or something you think is wrong, feel free to email me at dennis.hafstrom@gmail.com or report on http://code.google.com/p/wow-tristan/issues/list",
+	["Announcement"] = "Enhancer is currently being developed if you find a bug somewhere or something you think is wrong, feel free to email me at dennis.hafstrom@gmail.com",
 	["Announcement_cmd"] = "Announcement",
 	["Announcement_desc"] = "Announcement (the spam at load ;) settings",
 	["a_show_cmd"] = "Show",
