@@ -1,0 +1,21 @@
+#summary Enhancer a Shaman AddOn for World of Warcraft.
+
+= Features: =
+ * Totem Timers
+  # Ability to turn each element's (earth, fire, water, air) timer on and off
+ * Reincarnation Timer
+ * Windfury _"hidden"_ cooldown
+ * Invigorated (still untested as I don't have the gear ;)
+ * Temporary Enchants
+ * Equivalence Points
+  # Attackpower
+  # Healing
+  # spellDamage
+  # Itemization Points (Enhancement)
+
+= Details =
+Each frame/button can be turned on and off including individual elements.
+
+= To do =
+ # Shield (Lightning/Water)
+ # Shield Earth
