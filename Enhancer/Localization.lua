@@ -23,10 +23,6 @@ L_Main:RegisterTranslations("enUS", function() return {
 	["windfury_desc"] = "Toggle frame for showing the \"hidden\" windfury cooldown",
 	["reincarnation_cmd"] = "Reincarnation",
 	["reincarnation_desc"] = "Toggle frame for showing Reincarnation cooldown",
-	["invigorated_cmd"] = "Invigorated",
-	["invigorated_desc"] = "Toggle frame for showing when Invigorated is up (Untested)",
-	["tench_cmd"] = "Enchants",
-	["tench_desc"] = "Toggle frames for showing temporary enchants",
 	
 	["ep_cmd"] = "EP",
 	["ep_desc"] = "Toggle showing Equivalence Points in Tooltips",
@@ -122,11 +118,8 @@ L_Main:RegisterTranslations("enUS", function() return {
 	["a_show_desc"] = "Show Announcement(s)",
 	["a_disable_cmd"] = "Disable",
 	["a_disable_desc"] = "Disable Announcement(s) at load",
-} end )
-
-local LRank = AceLibrary("AceLocale-2.2"):new("EnhancerRank")
-LRank:RegisterTranslations("enUS", function() return {
-	[""] = 0, -- No Rank spell
+	
+	["Rank 0"] = 0, -- Ugly hack for no-rank spells ;)
 	["Rank 1"] = 1,
 	["Rank 2"] = 2,
 	["Rank 3"] = 3,

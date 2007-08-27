@@ -255,9 +255,9 @@ function Enhancer:UpdateAlphaEnd(frame)
 			self[frame].mainframe:SetBackdropColor(r, g, b, Enhancer.db.profile.combatinactiveAlpha);
 		end
 	
-	elseif ( (frame == "invigorated") and self.db.profile.specialAlpha ) then
+	elseif ( Enhancer.oFrames[frame] and self.db.profile.specialAlpha ) then
 	
-		-- Special Handling of these frames
+		-- Special Handling of these frames (on or off)
 		if (self[frame].active) then
 			self[frame].textcenter:SetAlpha(Enhancer.db.profile.combatAlpha);
 			self[frame].textbelow:SetAlpha(Enhancer.db.profile.combatAlpha);
@@ -420,7 +420,7 @@ function Enhancer:Pulse()
 		else
 			
 			if (Enhancer.db.profile.borderPulse) then
-				self[frame].mainframe:SetBackdropBorderColor(self[frame].borderColor["r"] or 1, self[frame].borderColor["g"] or 1, self[frame].borderColor["b"] or 1, self[frame].borderColor["a"] or 1);
+				self[frame].mainframe:SetBackdropBorderColor((self[frame].borderColor and self[frame].borderColor["r"]) or 1, (self[frame].borderColor and self[frame].borderColor["g"]) or 1, (self[frame].borderColor and self[frame].borderColor["b"]) or 1, 0);
 			end
 			
 			if (Enhancer.db.profile.growingPulse) then
