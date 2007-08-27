@@ -4,20 +4,27 @@ local FrameNameM = "mhtench";
 local FrameNameO = "ohtench";
 local FrameList = { FrameNameO, FrameNameM };
 
-
 local SEA = AceLibrary("SpecialEvents-Aura-2.0")
 
+local L = AceLibrary("AceLocale-2.2"):new("EnhancerTench")
+L:RegisterTranslations("enUS", function() return {
+	["cmd"] = "Enchants",
+	["desc"] = "Toggle frames for showing temporary enchants",
+}; end );
+function EnhancerTench:GetConsoleOptions()
+	return L["cmd"], L["desc"];
+end
+
 function EnhancerTench:OnInitialize()
-	-- type(Enhancer.windfury)
-	Enhancer.mhtench = Enhancer:CreateButton("EnhancerFrameMHTench", "INV_Mace_39", -120, 0);
+	Enhancer[FrameNameM] = Enhancer:CreateButton("EnhancerFrame" .. FrameNameM, "INV_Mace_39", -120, 0);
 	Enhancer:AddFrameToList(FrameNameM, true, false, false) --[[ Enhancer:AddFrameToList(framename, all, totem, death) ]]--
-	Enhancer.mhtench.fullicon = true;
-	_, Enhancer.mhtench.mainframe.bgFileDefault = GetInventorySlotInfo("MainHandSlot");
+	Enhancer[FrameNameM].fullicon = true;
+	_, Enhancer[FrameNameM].mainframe.bgFileDefault = GetInventorySlotInfo("MainHandSlot");
 	
-	Enhancer.ohtench = Enhancer:CreateButton("EnhancerFrameOHTench", "INV_Mace_39", 120, 0);
+	Enhancer[FrameNameO] = Enhancer:CreateButton("EnhancerFrame" .. FrameNameO, "INV_Mace_39", 120, 0);
 	Enhancer:AddFrameToList(FrameNameO, true, false, false) --[[ Enhancer:AddFrameToList(framename, all, totem, death) ]]--
-	Enhancer.ohtench.fullicon = true;
-	_, Enhancer.ohtench.mainframe.bgFileDefault = GetInventorySlotInfo("SecondaryHandSlot");
+	Enhancer[FrameNameO].fullicon = true;
+	_, Enhancer[FrameNameO].mainframe.bgFileDefault = GetInventorySlotInfo("SecondaryHandSlot");
 end
 
 function EnhancerTench:OnEnable()
@@ -33,31 +40,33 @@ function EnhancerTench:OnEnable()
 end
 
 function EnhancerTench:OnDisable()
-	self:UnregisterAllEvents();
 	Enhancer:HideFrame(FrameList);
+	
+	self:UnregisterAllEvents();
+	self:CancelAllScheduledEvents();
 end
 
 function EnhancerTench:GearChange(unit)
 	if (unit ~= "player") then return; end
 	local MHID, OHID;
 	
-	MHID, Enhancer.mhtench.mainframe.bgFileDefault = GetInventorySlotInfo("MainHandSlot");
+	MHID, Enhancer[FrameNameM].mainframe.bgFileDefault = GetInventorySlotInfo("MainHandSlot");
 	if (GetInventoryItemLink(unit, MHID)) then
-		Enhancer.mhtench.mainframe.bgFileDefault = GetInventoryItemTexture(unit, MHID);
-		Enhancer.mhtench.empty = nil;
+		Enhancer[FrameNameM].mainframe.bgFileDefault = GetInventoryItemTexture(unit, MHID);
+		Enhancer[FrameNameM].empty = nil;
 	else
-		Enhancer.mhtench.empty = true;
+		Enhancer[FrameNameM].empty = true;
 	end
-	Enhancer:ChangeIcon(FrameNameM, Enhancer.mhtench.mainframe.bgFileDefault);
+	Enhancer:ChangeIcon(FrameNameM, Enhancer[FrameNameM].mainframe.bgFileDefault);
 	
-	OHID, Enhancer.ohtench.mainframe.bgFileDefault = GetInventorySlotInfo("SecondaryHandSlot");
+	OHID, Enhancer[FrameNameO].mainframe.bgFileDefault = GetInventorySlotInfo("SecondaryHandSlot");
 	if (GetInventoryItemLink(unit, OHID)) then
-		Enhancer.ohtench.mainframe.bgFileDefault = GetInventoryItemTexture(unit, OHID);
-		Enhancer.ohtench.empty = nil;
+		Enhancer[FrameNameO].mainframe.bgFileDefault = GetInventoryItemTexture(unit, OHID);
+		Enhancer[FrameNameO].empty = nil;
 	else
-		Enhancer.ohtench.empty = true;
+		Enhancer[FrameNameO].empty = true;
 	end
-	Enhancer:ChangeIcon(FrameNameO, Enhancer.ohtench.mainframe.bgFileDefault);
+	Enhancer:ChangeIcon(FrameNameO, Enhancer[FrameNameO].mainframe.bgFileDefault);
 	
 	self:AuraChanged();
 end
@@ -79,8 +88,8 @@ function EnhancerTench:AuraChanged()
 		if (not MHName) then self:ScheduleEvent("AuraChanged", self.AuraChanged, 1, self); return; end
 		local texture = Enhancer.BS:GetSpellIcon(MHName) or Enhancer.BS:GetSpellIcon(string.format("%s Weapon", MHName))
 		
-		Enhancer.mhtench.active = true;
-		Enhancer.mhtench.textcenter:SetText("MH");
+		Enhancer[FrameNameM].active = true;
+		Enhancer[FrameNameM].textcenter:SetText("MH");
 		Enhancer:ChangeIcon(FrameNameM, texture);
 		self:ScheduleRepeatingEvent("MHUpdate", self.MHUpdate, 1, self);
 	else
@@ -93,8 +102,8 @@ function EnhancerTench:AuraChanged()
 		if (not OHName) then self:ScheduleEvent("AuraChanged", self.AuraChanged, 1, self); return; end
 		local texture = Enhancer.BS:GetSpellIcon(OHName) or Enhancer.BS:GetSpellIcon(string.format("%s Weapon", OHName))
 		
-		Enhancer.ohtench.active = true;
-		Enhancer.ohtench.textcenter:SetText("OH");
+		Enhancer[FrameNameO].active = true;
+		Enhancer[FrameNameO].textcenter:SetText("OH");
 		Enhancer:ChangeIcon(FrameNameO, texture);
 		self:ScheduleRepeatingEvent("OHUpdate", self.OHUpdate, 1, self);
 	else
@@ -106,7 +115,7 @@ function EnhancerTench:MHUpdate()
 	local hasEnchant, Expiration, Charges = GetWeaponEnchantInfo();
 	
 	if (hasEnchant) then
-		Enhancer.mhtench.textbelow:SetText( Enhancer:FormatTime( (Expiration / 1000) ) );
+		Enhancer[FrameNameM].textbelow:SetText( Enhancer:FormatTime( (Expiration / 1000) ) );
 	else
 		self:CancelScheduledEvent("MHUpdate");
 		Enhancer:FrameDeathPreBegin(FrameNameM);
@@ -117,7 +126,7 @@ function EnhancerTench:OHUpdate()
 	local _, _, _, hasEnchant, Expiration, Charges = GetWeaponEnchantInfo()
 	
 	if (hasEnchant) then
-		Enhancer.ohtench.textbelow:SetText( Enhancer:FormatTime( (Expiration / 1000) ) );
+		Enhancer[FrameNameO].textbelow:SetText( Enhancer:FormatTime( (Expiration / 1000) ) );
 	else
 		self:CancelScheduledEvent("OHUpdate");
 		Enhancer:FrameDeathPreBegin(FrameNameO);

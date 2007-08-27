@@ -3,8 +3,8 @@ Enhancer:SetModuleDefaultState("Reincarnation", true);
 local FrameName = "reincarnation";
 
 function EnhancerReincarnation:OnInitialize()
-	Enhancer.reincarnation = Enhancer:CreateButton("EnhancerFrameReincarnation", "Spell_Nature_Reincarnation", 0, -150);
-	Enhancer.reincarnation.borderColor = { ["r"] = (139/255), ["g"] = (69/255), ["b"] = (19/255), ["a"] = 1, }
+	Enhancer[FrameName] = Enhancer:CreateButton("EnhancerFrame" .. FrameName, "Spell_Nature_Reincarnation", 0, -150);
+	Enhancer[FrameName].borderColor = { ["r"] = (139/255), ["g"] = (69/255), ["b"] = (19/255), ["a"] = 1, }
 	Enhancer:AddFrameToList(FrameName, true, false, false) --[[ Enhancer:AddFrameToList(framename, all, totem, death) ]]--
 end
 
@@ -23,11 +23,8 @@ end
 function EnhancerReincarnation:OnDisable()
 	Enhancer:HideFrame(FrameName);
 	
-	if (self:IsEventScheduled("ReincarnationUpdate")) then
-		self:CancelScheduledEvent("ReincarnationUpdate");
-	end
-	
 	self:UnregisterAllEvents();
+	self:CancelAllScheduledEvents();
 end
 
 function EnhancerReincarnation:PLAYER_ALIVE()
@@ -35,7 +32,7 @@ function EnhancerReincarnation:PLAYER_ALIVE()
 end
 
 function EnhancerReincarnation:BAG_UPDATE()
-	Enhancer.reincarnation.textcenter:SetText( GetItemCount(17030) );
+	Enhancer[FrameName].textcenter:SetText( GetItemCount(17030) );
 end
 
 function EnhancerReincarnation:GetReincarnationIDCached()
@@ -77,7 +74,7 @@ function EnhancerReincarnation:CheckReincarnation()
 	if (ReincarnationID) then
 		local start, duration = self:GetReincarnationCooldown();
 		if ( start > 0 and duration > 0) then
-			Enhancer.reincarnation.active = true;
+			Enhancer[FrameName].active = true;
 			Enhancer:UpdateAlphaBegin("reincarnation");
 			self:ScheduleRepeatingEvent("ReincarnationUpdate", self.ReincarnationUpdate, 1, self);
 		end
@@ -94,7 +91,7 @@ function EnhancerReincarnation:ReincarnationUpdate()
 		if ( start > 0 and duration > 0) then
 			local ReincarnationCD = duration - ( GetTime() - start);
 			
-			Enhancer.reincarnation.textbelow:SetText( Enhancer:FormatTime(ReincarnationCD) );
+			Enhancer[FrameName].textbelow:SetText( Enhancer:FormatTime(ReincarnationCD) );
 		else
 			Enhancer:FrameDeathBegin("reincarnation");
 			if (self:IsEventScheduled("ReincarnationUpdate")) then
