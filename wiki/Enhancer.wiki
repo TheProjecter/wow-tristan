@@ -19,3 +19,7 @@ Each frame/button can be turned on and off including individual elements.
 = To do: =
  # Shield (Lightning/Water)
  # Shield Earth
+
+= Downloads =
+ * Embedded externals [http://files.wowace.com/Enhancer/Enhancer.zip Enhancer]
+ * Without externals [http://files.wowace.com/Enhancer/no-ext/Enhancer.zip Enhancer]
