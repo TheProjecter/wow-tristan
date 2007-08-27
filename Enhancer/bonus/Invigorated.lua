@@ -2,10 +2,20 @@ EnhancerInvigorated = Enhancer:NewModule("Invigorated", "AceEvent-2.0");
 Enhancer:SetModuleDefaultState("Invigorated", false);
 local FrameName = "invigorated";
 
+local L = AceLibrary("AceLocale-2.2"):new("EnhancerInvigorated")
+L:RegisterTranslations("enUS", function() return {
+	["cmd"] = "Invigorated",
+	["desc"] = "Toggle frame for showing when Invigorated is up (Untested)",
+	["Invigorated"] = true,
+}; end );
+function EnhancerInvigorated:GetConsoleOptions()
+	return L["cmd"], L["desc"];
+end
+
 function EnhancerInvigorated:OnInitialize()
-	Enhancer.invigorated = Enhancer:CreateButton("EnhancerFrameInvigorated", "Spell_Nature_NatureResistanceTotem", 0, 170);
-	Enhancer.invigorated.borderColor = { ["r"] = (0/255), ["g"] = (245/255), ["b"] = (255/255), ["a"] = 1, }
+	Enhancer[FrameName] = Enhancer:CreateButton("EnhancerFrame" .. FrameName, "Spell_Nature_NatureResistanceTotem", 0, 230);
 	Enhancer:AddFrameToList(FrameName, true, false, true) --[[ Enhancer:AddFrameToList(framename, all, totem, death) ]]--
+	Enhancer:AddFrameToOnOffList(FrameName)
 end
 
 function EnhancerInvigorated:OnEnable()
@@ -23,15 +33,14 @@ function EnhancerInvigorated:OnDisable()
 end
 
 function EnhancerInvigorated:PlayerBuffGained(buffName, buffIndex, applications, texture, rank, index)
-	if (buffName == "Invigorated") then
-		Enhancer.invigorated.active = true;
-		Enhancer:UpdateAlphaBegin("invigorated");
+	if (buffName == L["Invigorated"]) then
+		Enhancer[FrameName].active = true;
+		Enhancer:UpdateAlphaBegin(FrameName);
 	end
 end
 
 function EnhancerInvigorated:PlayerBuffLost(buffName, applications, texture, rank)
-	if (buffName == "Invigorated") then
-		Enhancer.invigorated.active = false;
-		Enhancer:UpdateAlphaBegin("invigorated");
+	if (buffName == L["Invigorated"]) then
+		Enhancer:FrameDeathPreBegin(FrameName);
 	end
 end

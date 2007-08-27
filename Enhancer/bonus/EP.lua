@@ -36,14 +36,14 @@ function EnhancerEP:OnInitialize()
                 Chance to Restore Health on hit
                 Chance to Increase Melee/Ranged Attack Speed
 	]]--
-end
-
-function EnhancerEP:OnEnable()
-	TipHooker:Hook(self.ProcessTooltip, "item");
 	
 	--[[ For some reason I can't get TipHooker to work without enabling
 			 RatingBuster wich sux so I hacked a bit here ]]--
 	self:ScheduleEvent("Tooltip", self.Tooltip, 1, self);
+end
+
+function EnhancerEP:OnEnable()
+	TipHooker:Hook(self.ProcessTooltip, "item");
 end
 
 function EnhancerEP:OnDisable()
