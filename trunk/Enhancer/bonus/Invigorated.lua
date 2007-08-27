@@ -13,7 +13,7 @@ function EnhancerInvigorated:GetConsoleOptions()
 end
 
 function EnhancerInvigorated:OnInitialize()
-	Enhancer[FrameName] = Enhancer:CreateButton("EnhancerFrame" .. FrameName, "Spell_Nature_NatureResistanceTotem", 0, 230);
+	Enhancer[FrameName] = Enhancer:CreateButton("EnhancerFrame" .. FrameName, "Spell_Nature_NatureResistanceTotem", 0, 210);
 	Enhancer:AddFrameToList(FrameName, true, false, true) --[[ Enhancer:AddFrameToList(framename, all, totem, death) ]]--
 	Enhancer:AddFrameToOnOffList(FrameName)
 end
