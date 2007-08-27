@@ -13,9 +13,9 @@
   # spellDamage
   # Itemization Points (Enhancement)
 
-= Details =
+= Details: =
 Each frame/button can be turned on and off including individual elements.
 
-= To do =
+= To do: =
  # Shield (Lightning/Water)
  # Shield Earth
