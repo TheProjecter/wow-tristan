@@ -17,10 +17,13 @@ Enhancer.englishClass = englishClass;
 Enhancer.aFrames = {}; -- All Frames
 Enhancer.tFrames = {}; -- Totem Frames
 Enhancer.dFrames = {}; -- Death Frames
+Enhancer.oFrames = {}; -- On/Off Frames
 Enhancer.combatLog = {}; -- List of all "unit"s we are intressted in for the combatlog :)
 
 function Enhancer:OnInitialize()
 	if (self.englishClass ~= "SHAMAN") then return; end
+	
+	self:RegisterSlashCommands();
 	
 	self:InspectEPValues(); -- Check so not using old values
 	
@@ -40,8 +43,6 @@ function Enhancer:OnEnable()
 	self:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED", "CastingTotem");
 	self:RegisterEvent("PLAYER_LEVEL_UP", "Ding");
 	
-	-- ShieldFrame? Water, Lightning on self - Earth on whoever :>
-	
 	self:RegisterParserEvent({
 		eventType = 'Damage',
 	}, "ParserDamage");
@@ -56,6 +57,7 @@ function Enhancer:OnDisable()
 	
 	self:UnregisterAllEvents();
 	self:UnregisterAllParserEvents();
+	self:CancelAllScheduledEvents();
 end
 
 function Enhancer:DelayAnnounce()

@@ -68,7 +68,7 @@ function Enhancer:CreateTotem(totem, rank)
 	
 	self[frame].lived = 0;
 	self:ChangeIcon(frame, Icon);
-	self[frame].mainframe:SetBackdropBorderColor(self[frame].borderColor["r"] or 1, self[frame].borderColor["g"] or 1, self[frame].borderColor["b"] or 1, 0);
+	self[frame].mainframe:SetBackdropBorderColor((self[frame].borderColor and self[frame].borderColor["r"]) or 1, (self[frame].borderColor and self[frame].borderColor["g"]) or 1, (self[frame].borderColor and self[frame].borderColor["b"]) or 1, 0);
 	self:UpdateAlphaBegin(frame)
 	
 	self[frame].textcenter:SetText(Pulse);
@@ -97,6 +97,10 @@ function Enhancer:AddFrameToList(framename, all, totem, death)
 	
 	self:MakeMoveable(framename);
 	self:LoadPos(framename);
+end
+
+function Enhancer:AddFrameToOnOffList(framename)
+	Enhancer.oFrames[framename] = true;
 end
 
 function Enhancer:ToggleLock(framelist)
@@ -168,7 +172,7 @@ function Enhancer:Round(number, decimals)
 end
 
 function Enhancer:TestCastingTotem()
-	local L = AceLibrary("AceLocale-2.2"):new("EnhancerRank")
+	local L = AceLibrary("AceLocale-2.2"):new("Enhancer")
 	Enhancer:CastingTotem("player", Enhancer.BS["Strength of Earth Totem"], L:GetReverseTranslation(1));
 	Enhancer:CastingTotem("player", Enhancer.BS["Totem of Wrath"], L:GetReverseTranslation(1));
 	Enhancer:CastingTotem("player", Enhancer.BS["Mana Spring Totem"], L:GetReverseTranslation(0));

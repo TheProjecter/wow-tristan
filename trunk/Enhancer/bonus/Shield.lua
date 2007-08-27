@@ -67,7 +67,7 @@ end
 
 function EnhancerShield:PlayerBuffLost(buffName, applications, texture, rank)
 	if (buffName == Enhancer.BS["Lightning Shield"] or buffName == Enhancer.BS["Water Shield"]) then
-		if (not (SEA:UnitHasBuff("player", Enhancer.BS["Lightning Shield"]) and not (SEA:UnitHasBuff("player", Enhancer.BS["Water Shield"]) ) then
+		if (not (SEA:UnitHasBuff("player", Enhancer.BS["Lightning Shield"])) and not (SEA:UnitHasBuff("player", Enhancer.BS["Water Shield"])) ) then
 			Enhancer:FrameDeathPreBegin(FrameName);
 			self:CancelScheduledEvent("UpdateShield");
 		end

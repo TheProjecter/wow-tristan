@@ -54,9 +54,11 @@ element\Air.lua
 
 bonus\Windfury.lua
 bonus\Reincarnation.lua
-bonus\Invigorated.lua
 bonus\EP.lua
 bonus\EPGems.lua
+bonus\Shield.lua
+
+bonus\Invigorated.lua
 bonus\Tench.lua
 
 Debug.lua
