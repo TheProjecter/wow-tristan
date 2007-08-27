@@ -23,4 +23,4 @@ Each frame/button can be turned on and off including individual elements.
 = Download: =
  * Embedded externals [http://files.wowace.com/Enhancer/Enhancer.zip Enhancer]
  * Without externals [http://files.wowace.com/Enhancer/no-ext/Enhancer.zip Enhancer]
- * You can also download a copy from the repository BUT that's without externals and includes things not yet complete aswell as some debug stuff etc
+ * You can also download a copy from the repository BUT that's without externals and includes things not yet complete aswell as some debug stuff etc [http://wow-tristan.googlecode.com/svn/trunk/Enhancer/ SVN]
