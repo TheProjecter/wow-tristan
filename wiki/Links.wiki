@@ -1,0 +1,5 @@
+#summary Links
+
+= LINKS =
+
+ * http://code.google.com/p/support/wiki/WikiSyntax
