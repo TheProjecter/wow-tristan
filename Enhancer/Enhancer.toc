@@ -57,6 +57,7 @@ bonus\Reincarnation.lua
 bonus\EP.lua
 bonus\EPGems.lua
 bonus\Shield.lua
+bonus\EShield.lua
 
 bonus\Invigorated.lua
 bonus\Tench.lua
