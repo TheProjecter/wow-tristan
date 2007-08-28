@@ -47,7 +47,6 @@ function EnhancerShield:CheckOnEnable()
 		buffName = Enhancer.BS["Water Shield"];
 	end
 	
-	Enhancer:Print(buffIndex, applications, texture, rank, buffName);
 	if (buffIndex) then
 		self:PlayerBuffGained(buffName, buffIndex, applications, texture, rank)
 	end
