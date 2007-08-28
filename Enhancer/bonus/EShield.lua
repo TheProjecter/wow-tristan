@@ -2,7 +2,7 @@ EnhancerEShield = Enhancer:NewModule("EShield", "AceEvent-2.0");
 Enhancer:SetModuleDefaultState("EShield", false);
 local FrameName = "eshield";
 local SpellName = Enhancer.BS["Earth Shield"];
-SpellName = Enhancer.BS["Lightning Shield"] -- Testing
+-- SpellName = Enhancer.BS["Lightning Shield"] -- Testing
 
 local SEA = AceLibrary("SpecialEvents-Aura-2.0");
 
@@ -47,7 +47,7 @@ function EnhancerEShield:AuraChange(unit)
 end
 
 function EnhancerEShield:NameToUnit(name)
-	if (not name or name == "") then return "player"; end -- Testing
+	-- if (name == "") then name = UnitName("player"); end -- ?Testing
 	if (name == UnitName("player")) then
 		return "player";
 	elseif (UnitInRaid("player")) then
@@ -67,28 +67,24 @@ function EnhancerEShield:SpellCastSent(unit, spell, rank, target)
 	
 	if (spell == SpellName and self:NameToUnit(target)) then
 		self.EShieldUnit = self:NameToUnit(target);
-		self.EShieldName = (target == "" and UnitName("player")) or target;
+		self.EShieldName = target;
 	end
 end
 
 function EnhancerEShield:SpellCastSucceeded(unit, spell, rank)
 	if (spell == SpellName and self.EShieldUnit) then
-		local buffIndex = SEA:UnitHasBuff(self.EShieldUnit, SpellName);
-		local applications, timeLeft;
+		local buffIndex, applications, timeLeft = self:UnitHasBuff(self.EShieldUnit, SpellName);
+		Enhancer:Print(buffIndex, applications, timeLeft);
 		
-		if (buffIndex) then
-			_, _, _, applications, _, timeLeft =  UnitBuff(self.EShieldUnit, buffIndex);
-			Enhancer:Print("A", applications, timeLeft, buffIndex);
-		else
-			-- Just in case it hasn't appeared yet if it got insta-cancelled the update will kill it anyway
-			applications, timeLeft =  10, (10 * 60);
-		end
+		-- Just in case it hasn't appeared yet serverside or if it got insta-cancelled the update will kill it anyway laters
+		if (not applications) then applications = 10; end
+		if (not timeLeft) then timeLeft =  (10 * 60); end
 		
 		Enhancer[FrameName].active = true;
 		Enhancer[FrameName].unit = self.EShieldUnit;
 		Enhancer[FrameName].name = self.EShieldName;
-		Enhancer[FrameName].expires = GetTime() + timeLeft or 0;
-		Enhancer[FrameName].textbelow:SetText( Enhancer[FrameName].name .. "\r\n" .. Enhancer:FormatTime( timeLeft or 0 ) );
+		Enhancer[FrameName].expires = GetTime() + timeLeft;
+		Enhancer[FrameName].textbelow:SetText( Enhancer[FrameName].name .. Enhancer:FormatTime( timeLeft ) );
 		Enhancer[FrameName].textcenter:SetText( applications );
 		Enhancer:UpdateAlphaBegin(FrameName);
 		self:ScheduleRepeatingEvent("UpdateEShield", self.UpdateEShield, 1, self);
@@ -100,6 +96,33 @@ end
 function EnhancerEShield:SpellCastFailed()
 	self.EShieldUnit = nil;
 	self.EShieldName = nil;
+end
+
+function EnhancerEShield:UnitHasBuff(unit, name)
+	local applications, timeLeft;
+	
+	if (self.BuffIndexCache) then
+		if (name == UnitBuff(unit,self.BuffIndexCache)) then
+			_, _, _, applications, _, timeLeft = UnitBuff(unit,self.BuffIndexCache);
+		else
+			self.BuffIndexCache = nil;
+		end
+	end
+	
+	if (not self.BuffIndexCache) then
+		local buffIndex = 1;
+		Enhancer:Print(unit, buffIndex);
+		while (UnitBuff(unit, buffIndex) ~= nil) do
+			if ( name == UnitBuff(unit, buffIndex)) then
+				self.BuffIndexCache = buffIndex;
+				_, _, _, applications, _, timeLeft = UnitBuff(unit, buffIndex);
+				break;
+			end
+			buffIndex = buffIndex + 1;
+		end
+	end
+	
+	return self.BuffIndexCache, applications, timeLeft;
 end
 
 function EnhancerEShield:UpdateEShield()
@@ -122,8 +145,7 @@ function EnhancerEShield:UpdateEShield()
 		end
 	end
 	
-	local buffIndex = SEA:UnitHasBuff(Enhancer[FrameName].unit, SpellName);
-	local _, _, _, applications, _, timeLeft =  UnitBuff(self.EShieldUnit, buffIndex);
+	local buffIndex, applications, timeLeft = self:UnitHasBuff(Enhancer[FrameName].unit, SpellName);
 	if (buffIndex and not timeLeft) then
 		-- Not our buff possibly someone over-wrote it
 		Enhancer:ScreenMessage(L["Lost track of Earth Shield"]);
@@ -143,7 +165,7 @@ function EnhancerEShield:UpdateEShield()
 		Enhancer:ScreenMessage(L["Earth Shield is about to expire"]);
 	end
 	
-	Enhancer[FrameName].textbelow:SetText( Enhancer[FrameName].name .. "\r\n" .. Enhancer:FormatTime( timeLeft ) );
+	Enhancer[FrameName].textbelow:SetText( Enhancer[FrameName].name .. Enhancer:FormatTime( timeLeft ) );
 	Enhancer[FrameName].textcenter:SetText( applications );
 	
 	-- self.UpdateCount = nil;
