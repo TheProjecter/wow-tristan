@@ -2,7 +2,7 @@ EnhancerEShield = Enhancer:NewModule("EShield", "AceEvent-2.0");
 Enhancer:SetModuleDefaultState("EShield", false);
 local FrameName = "eshield";
 local SpellName = Enhancer.BS["Earth Shield"];
--- Enhancer.BS["Lightning Shield"] testing?
+SpellName = Enhancer.BS["Lightning Shield"] -- Testing
 
 local SEA = AceLibrary("SpecialEvents-Aura-2.0");
 
@@ -31,7 +31,7 @@ function EnhancerEShield:OnEnable()
 	
 	self:RegisterEvent("UNIT_SPELLCAST_SENT", "SpellCastSent");
 	self:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED", "SpellCastSucceeded");
-	self:RegisterEvent("UNIT_SPELLCAST_FAILED", "SpellCastFailed");
+	-- self:RegisterEvent("UNIT_SPELLCAST_FAILED", "SpellCastFailed");
 	-- self:RegisterEvent("UNIT_AURA", "AuraChange");
 end
 
@@ -47,7 +47,9 @@ function EnhancerEShield:AuraChange(unit)
 end
 
 function EnhancerEShield:NameToUnit(name)
-	if (name == UnitName("player")) then return "player"; end
+	if (not name or name == "") then return "player"; end -- Testing
+	if (name == UnitName("player")) then
+		return "player";
 	elseif (UnitInRaid("player")) then
 		for i = 1, 40 do
 			if (UnitName("raid"..i) == name) then return "raid"..i; end
@@ -65,7 +67,7 @@ function EnhancerEShield:SpellCastSent(unit, spell, rank, target)
 	
 	if (spell == SpellName and self:NameToUnit(target)) then
 		self.EShieldUnit = self:NameToUnit(target);
-		self.EShieldName = target;
+		self.EShieldName = (target == "" and UnitName("player")) or target;
 	end
 end
 
@@ -73,33 +75,20 @@ function EnhancerEShield:SpellCastSucceeded(unit, spell, rank)
 	if (spell == SpellName and self.EShieldUnit) then
 		local buffIndex = SEA:UnitHasBuff(self.EShieldUnit, SpellName);
 		local applications, timeLeft;
+		
 		if (buffIndex) then
 			_, _, _, applications, _, timeLeft =  UnitBuff(self.EShieldUnit, buffIndex);
+			Enhancer:Print("A", applications, timeLeft, buffIndex);
 		else
 			-- Just in case it hasn't appeared yet if it got insta-cancelled the update will kill it anyway
 			applications, timeLeft =  10, (10 * 60);
 		end
 		
-		--[[
-			name 
-				String - The name of the spell or effect of the buff. This is the name shown in yellow when you mouse over the icon. 
-			rank 
-				String - The rank of the spell or effect that caused the buff. Returns "" if there is no rank. 
-			iconTexture 
-				String - The identifier of (path and filename to) the indicated buff. 
-			applications 
-				String - The number of times the buff has been applied to the target. 
-			duration 
-				Number - Full duration of a buff you cast, in seconds; nil if you did not cast this buff. 
-			timeLeft 
-				Number - Time left before a buff expires, in seconds; nil if you did not cast this buff. 
-		]]--
-		
 		Enhancer[FrameName].active = true;
 		Enhancer[FrameName].unit = self.EShieldUnit;
 		Enhancer[FrameName].name = self.EShieldName;
-		Enhancer[FrameName].expires = GetTime() + timeLeft;
-		Enhancer[FrameName].textbelow:SetText( Enhancer[FrameName].name .. "\r\n" .. Enhancer:FormatTime( timeLeft ) );
+		Enhancer[FrameName].expires = GetTime() + timeLeft or 0;
+		Enhancer[FrameName].textbelow:SetText( Enhancer[FrameName].name .. "\r\n" .. Enhancer:FormatTime( timeLeft or 0 ) );
 		Enhancer[FrameName].textcenter:SetText( applications );
 		Enhancer:UpdateAlphaBegin(FrameName);
 		self:ScheduleRepeatingEvent("UpdateEShield", self.UpdateEShield, 1, self);
