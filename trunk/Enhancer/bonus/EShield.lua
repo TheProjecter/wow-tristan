@@ -2,7 +2,7 @@ EnhancerEShield = Enhancer:NewModule("EShield", "AceEvent-2.0");
 Enhancer:SetModuleDefaultState("EShield", false);
 local FrameName = "eshield";
 local SpellName = Enhancer.BS["Earth Shield"];
--- SpellName = Enhancer.BS["Lightning Shield"] -- Testing
+SpellName = Enhancer.BS["Water Breathing"] -- Testing
 
 local SEA = AceLibrary("SpecialEvents-Aura-2.0");
 
@@ -23,6 +23,9 @@ function EnhancerEShield:OnInitialize()
 	Enhancer[FrameName] = Enhancer:CreateButton("EnhancerFrame" .. FrameName, "Spell_Nature_SkinofEarth", 0, 210);
 	Enhancer[FrameName].borderColor = { ["r"] = (139/255), ["g"] = (69/255), ["b"] = (19/255), ["a"] = 1, };
 	Enhancer:AddFrameToList(FrameName, true, false, false) --[[ Enhancer:AddFrameToList(framename, all, totem, death) ]]--
+	
+	--[[ Change the height: ]]--
+	Enhancer[FrameName].textbelow:SetHeight((Enhancer.db.profile.belowFontSize * 2) + 20);
 end
 
 function EnhancerEShield:OnEnable()
@@ -74,7 +77,7 @@ end
 function EnhancerEShield:SpellCastSucceeded(unit, spell, rank)
 	if (spell == SpellName and self.EShieldUnit) then
 		local buffIndex, applications, timeLeft = self:UnitHasBuff(self.EShieldUnit, SpellName);
-		Enhancer:Print(buffIndex, applications, timeLeft);
+		-- Enhancer:Print(buffIndex, applications, timeLeft);
 		
 		-- Just in case it hasn't appeared yet serverside or if it got insta-cancelled the update will kill it anyway laters
 		if (not applications) then applications = 10; end
@@ -84,7 +87,7 @@ function EnhancerEShield:SpellCastSucceeded(unit, spell, rank)
 		Enhancer[FrameName].unit = self.EShieldUnit;
 		Enhancer[FrameName].name = self.EShieldName;
 		Enhancer[FrameName].expires = GetTime() + timeLeft;
-		Enhancer[FrameName].textbelow:SetText( Enhancer[FrameName].name .. Enhancer:FormatTime( timeLeft ) );
+		Enhancer[FrameName].textbelow:SetText( Enhancer[FrameName].name .. "\r" .. Enhancer:FormatTime( timeLeft ) );
 		Enhancer[FrameName].textcenter:SetText( applications );
 		Enhancer:UpdateAlphaBegin(FrameName);
 		self:ScheduleRepeatingEvent("UpdateEShield", self.UpdateEShield, 1, self);
@@ -111,7 +114,6 @@ function EnhancerEShield:UnitHasBuff(unit, name)
 	
 	if (not self.BuffIndexCache) then
 		local buffIndex = 1;
-		Enhancer:Print(unit, buffIndex);
 		while (UnitBuff(unit, buffIndex) ~= nil) do
 			if ( name == UnitBuff(unit, buffIndex)) then
 				self.BuffIndexCache = buffIndex;
@@ -165,7 +167,7 @@ function EnhancerEShield:UpdateEShield()
 		Enhancer:ScreenMessage(L["Earth Shield is about to expire"]);
 	end
 	
-	Enhancer[FrameName].textbelow:SetText( Enhancer[FrameName].name .. Enhancer:FormatTime( timeLeft ) );
+	Enhancer[FrameName].textbelow:SetText( Enhancer[FrameName].name .. "\r"  .. Enhancer:FormatTime( timeLeft ) );
 	Enhancer[FrameName].textcenter:SetText( applications );
 	
 	-- self.UpdateCount = nil;
