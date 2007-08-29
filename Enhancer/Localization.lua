@@ -1,5 +1,8 @@
 local L_Main = AceLibrary("AceLocale-2.2"):new("Enhancer")
 L_Main:RegisterTranslations("enUS", function() return {
+	["waterfall_cmd"] = "Waterfall",
+	["waterfall_desc"] = "Open Waterfall configuration",
+	
 	["lock_cmd"] = "Lock",
 	["lock_desc"] = "Locks or Unlocks the frames for positioning",
 	

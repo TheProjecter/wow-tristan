@@ -99,6 +99,14 @@ function Enhancer:RegisterSlashCommands()
 	local consoleoptions = {
 		type = "group",
 		args = {
+		  [L["waterfall_cmd"]] = {
+				name = L["waterfall_cmd"], type = "execute",
+				desc = L["waterfall_desc"],
+				func = function(v)
+					Enhancer:Waterfall();
+				end,
+				order = OrderNum(),
+			},
 			[L["lock_cmd"]] = {
 				name = L["lock_cmd"], type = "toggle",
 				desc = L["lock_desc"],
@@ -1055,5 +1063,21 @@ function Enhancer:RegisterSlashCommands()
 	end
 	
 	self:RegisterChatCommand( { "/Enhancer", "/enh", "/ShammySpy" }, consoleoptions );
+	
+	if (AceLibrary:HasInstance("Waterfall-1.0")) then
+		AceLibrary("Waterfall-1.0"):Register(
+			"Enhancer",
+			"aceOptions", consoleoptions,
+			"treeType","SECTIONS",
+			"colorR", (127/255), "colorG", (255/255), "colorB", (212/255)
+		)
+	end
 end
--- AceLibrary("AceConsole-2.0"):InjectAceOptionsTable(self, Bartender3.options.args.fubar)
+
+function Enhancer:Waterfall()
+	if (AceLibrary:HasInstance("Waterfall-1.0")) then
+		AceLibrary("Waterfall-1.0"):Open("Enhancer")
+	else
+		self:Print("Waterfall library not available!");
+	end
+end
