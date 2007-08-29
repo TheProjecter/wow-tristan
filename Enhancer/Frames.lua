@@ -305,6 +305,7 @@ function Enhancer:FrameDeathBegin(frame)
 	if (self[frame] and self[frame].active) then
 		self[frame].active = nil;
 		self[frame].textbelow:SetText("");
+		self[frame].temp = nil; -- A place to store special things ;)
 		
 		self:AddPulseDeath(frame);
 		self:AddPulse(frame);
