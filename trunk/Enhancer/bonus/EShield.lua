@@ -4,8 +4,6 @@ local FrameName = "eshield";
 EnhancerEShield.SpellName = Enhancer.BS["Earth Shield"];
 -- EnhancerEShield.SpellName = Enhancer.BS["Water Breathing"] -- Testing
 
-local SEA = AceLibrary("SpecialEvents-Aura-2.0");
-
 local L = AceLibrary("AceLocale-2.2"):new("EnhancerEShield")
 L:RegisterTranslations("enUS", function() return {
 	["cmd"] = "EarthShield",
@@ -55,6 +53,8 @@ function EnhancerEShield:AuraChange(unit)
 end
 
 function EnhancerEShield:NameToUnit(name)
+	if (not name) then return nil; end
+	
 	if (name == UnitName("player")) then
 		return "player";
 	elseif (UnitInRaid("player")) then
@@ -91,8 +91,6 @@ function EnhancerEShield:SpellCastSucceeded(unit, spell, rank)
 end
 
 function EnhancerEShield:ManualScan(announceLost)
-	if (Enhancer[FrameName].active) then return; end
-	
 	-- First we try to find a person with the buff! (Disconnects and/or leaving and rejoining group can cause this)
 	local unit, name = "player", UnitName("player");
 	local buffIndex, applications, timeLeft = self:UnitHasBuffNoCache(unit, EnhancerEShield.SpellName);
@@ -126,9 +124,9 @@ function EnhancerEShield:ManualScan(announceLost)
 	end
 	
 	if (announceLost) then
-		Enhancer:FrameDeathPreBegin(FrameName);
 		Enhancer:ScreenMessage(L["Lost track of Earth Shield"]);
 	end
+	Enhancer:FrameDeathPreBegin(FrameName);
 end
 
 function EnhancerEShield:Create(unit, name)
@@ -139,9 +137,10 @@ function EnhancerEShield:Create(unit, name)
 	if (not timeLeft) then timeLeft =  (10 * 60); end
 	
 	Enhancer[FrameName].active = true;
-	Enhancer[FrameName].unit = unit;
-	Enhancer[FrameName].name = name;
-	Enhancer[FrameName].expires = GetTime() + timeLeft;
+	Enhancer:SetFrameData(FrameName, "unit", unit)
+	Enhancer:SetFrameData(FrameName, "name", name)
+	Enhancer:SetFrameData(FrameName, "expires", (GetTime() + timeLeft))
+	
 	Enhancer[FrameName].textbelow:SetText( name .. "\r" .. Enhancer:FormatTime( timeLeft ) );
 	Enhancer[FrameName].textcenter:SetText( applications );
 	Enhancer:UpdateAlphaBegin(FrameName);
@@ -154,6 +153,8 @@ function EnhancerEShield:SpellCastFailed()
 end
 
 function EnhancerEShield:UnitHasBuff(unit, name)
+	if (not UnitExists(unit)) then return nil; end
+	
 	local applications, timeLeft;
 	
 	if (self.BuffIndexCache) then
@@ -180,6 +181,8 @@ function EnhancerEShield:UnitHasBuff(unit, name)
 end
 
 function EnhancerEShield:UnitHasBuffNoCache(unit, name)
+	if (not UnitExists(unit)) then return nil; end
+	
 	local applications, timeLeft, buffIndex;
 	
 	local buffIndex = 1;
@@ -195,7 +198,33 @@ function EnhancerEShield:UnitHasBuffNoCache(unit, name)
 end
 
 function EnhancerEShield:UpdateEShield()
-	if (GetTime() > Enhancer[FrameName].expires) then
+	local name = Enhancer:GetFrameData(FrameName, "name");
+	local unit = Enhancer:GetFrameData(FrameName, "unit");
+	local expires = Enhancer:GetFrameData(FrameName, "expires");
+	local warned = Enhancer:GetFrameData(FrameName, "warned");
+	
+	if (not name and not unit) then
+		-- How did this happen? :o
+		self:CancelAllScheduledEvents();
+		self:ManualScan(true);
+		return;
+	end
+	
+	if (not UnitExists(unit)) then
+		-- Here we have trouble the unit does not exist (Disconnect / Left Party / unit changed by many swaps in raid or w/e etc)
+		if (self:NameToUnit(Enhancer:GetFrameData(FrameName, "name"))) then
+			-- Ok, unit changed so all is now fine (hopefully)
+			unit = self:NameToUnit(Enhancer:GetFrameData(FrameName, "name"));
+			Enhancer:SetFrameData(FrameName, "unit", unit);
+		else
+			-- Can't find name nor unit so we lost track of our buff
+			self:CancelAllScheduledEvents();
+			self:ManualScan(true);
+			return;
+		end
+	end
+	
+	if (expires and GetTime() > expires) then
 		-- Time ran out
 		Enhancer:ScreenMessage(L["Earth Shield has expired"]);
 		Enhancer:FrameDeathPreBegin(FrameName);
@@ -203,39 +232,37 @@ function EnhancerEShield:UpdateEShield()
 		return;
 	end
 	
-	if (Enhancer[FrameName].name ~= UnitName(Enhancer[FrameName].unit)) then
-		-- Unit changed try to find it or rescan
-		Enhancer[FrameName].unit = self:NameToUnit(Enhancer[FrameName].name);
-		
-		if (not Enhancer[FrameName].unit) then
+	local buffIndex, applications, timeLeft = self:UnitHasBuff(unit, EnhancerEShield.SpellName);
+	if (buffIndex and timeLeft) then
+		Enhancer:SetFrameData(FrameName, "expires", (GetTime() + timeLeft))
+	elseif (buffIndex and not timeLeft) then
+		-- Problem is if he is out of range (HS:ed to shattrath to get his resistance gear or w/e)
+		if (CheckInteractDistance(unit, 4)) then
+			-- This guy is in definately in range so it's definately not our buff, possibly someone over-wrote it
 			self:CancelAllScheduledEvents();
 			self:ManualScan(true);
 			return;
+		else
+			-- Dunno if it is ours or not as there could be to much distance from the unit atm, assume it's ours and keep checking
+			timeLeft = Enhancer:GetFrameData(FrameName, "expires", 0) - GetTime();
 		end
 	end
 	
-	local buffIndex, applications, timeLeft = self:UnitHasBuff(Enhancer[FrameName].unit, EnhancerEShield.SpellName);
-	if (buffIndex and not timeLeft) then
-		-- Not our buff possibly someone over-wrote it
-		self:CancelAllScheduledEvents();
-		self:ManualScan(true);
-		return;
-	end
-	
 	if (not buffIndex) then
-		-- This one has used up it's charges probably
+		-- This one has probably used up it's charges
 		Enhancer:ScreenMessage(L["Earth Shield has expired"]);
 		Enhancer:FrameDeathPreBegin(FrameName);
 		self:CancelAllScheduledEvents();
 		return;
 	end
 	
-	if (GetTime() > (Enhancer[FrameName].expires - 10) and not Enhancer[FrameName].temp) then
+	if (timeLeft <= 10 and not warned) then
 		Enhancer:ScreenMessage(L["Earth Shield is about to expire"]);
-		Enhancer[FrameName].temp = true;
+		Enhancer:SetFrameData(FrameName, "warned", true)
+	elseif (timeLeft > 10 and warned) then
+		Enhancer:SetFrameData(FrameName, "warned", nil)
 	end
 	
-	Enhancer[FrameName].expires = GetTime() + timeLeft;
-	Enhancer[FrameName].textbelow:SetText( Enhancer[FrameName].name .. "\r"  .. Enhancer:FormatTime( timeLeft ) );
+	Enhancer[FrameName].textbelow:SetText( Enhancer:GetFrameData(FrameName, "name") .. "\r"  .. Enhancer:FormatTime( timeLeft ) );
 	Enhancer[FrameName].textcenter:SetText( applications );
 end

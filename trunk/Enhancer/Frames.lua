@@ -104,6 +104,8 @@ function Enhancer:CreateButton(globalname, bgFile, xOffset, yOffset)
 	retVal.xOffsetDefault = xOffset or 0;
 	retVal.yOffsetDefault = yOffset or 0;
 	
+	retVal.data = {}; --[[ Temp storage that clears on FrameDeathEnd ]]--
+	
 	return retVal, globalname;
 end
 
@@ -305,7 +307,6 @@ function Enhancer:FrameDeathBegin(frame)
 	if (self[frame] and self[frame].active) then
 		self[frame].active = nil;
 		self[frame].textbelow:SetText("");
-		self[frame].temp = nil; -- A place to store special things ;)
 		
 		self:AddPulseDeath(frame);
 		self:AddPulse(frame);
@@ -330,7 +331,21 @@ function Enhancer:FrameDeathEnd(frame)
 		end
 	end
 	
+	self[frame].data = nil; --[[ Temp storage that we clear entirely on FrameDeathEnd ]]--
+	self[frame].data = {};
+	
 	self:UpdateAlphaBegin(frame);
+end
+
+function Enhancer:SetFrameData(framename, key, value)
+	if (not self[framename]) then return; end
+	
+	if (not self[framename].data) then self[frame].data = {}; end
+	self[framename].data[key] = value;
+end
+
+function Enhancer:GetFrameData(framename, key, default)
+	return (self[framename] and self[framename].data and self[framename].data[key]) or default;
 end
 
 function Enhancer:UpdateFrame(frame)
