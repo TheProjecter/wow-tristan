@@ -38,7 +38,7 @@ function EnhancerEShield:OnEnable()
 	self:RegisterEvent("PARTY_LEADER_CHANGED", "ManualScan");
 	self:RegisterEvent("PARTY_MEMBERS_CHANGED", "ManualScan");
 	self:RegisterEvent("RAID_ROSTER_UPDATE", "ManualScan");
-	self:ManualScan();
+	self:ScheduleEvent("DelayManualScan", self.ManualScan, 5, self)
 end
 
 function EnhancerEShield:OnDisable()
