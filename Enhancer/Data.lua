@@ -230,7 +230,7 @@ Enhancer.Totems[Enhancer.BS["Enamored Water Spirit"]].Pulse = 2;
 
 --> Rank Roman Crap <--
 Enhancer.Ranks = {};
--- Enhancer.Ranks[1] = "I";
+-- Enhancer.Ranks[1] = "I"; --Rank one totems doesn't seem to get Roman Numbers applied to them in combat log
 Enhancer.Ranks[2] = "II";
 Enhancer.Ranks[3] = "III";
 Enhancer.Ranks[4] = "IV";
