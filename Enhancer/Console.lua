@@ -21,7 +21,7 @@ end
 
 local defaults = {
 	locked = true,
-	framesize = 46,
+	framesize = 35,
 	
 	combatinactiveAlpha = (3 / 10),
 	oocinactiveAlpha = 0,

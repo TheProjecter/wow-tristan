@@ -45,7 +45,6 @@ Functions.lua
 Events.lua
 Frames.lua
 Data.lua
-CombatParser.lua
 
 element\Earth.lua
 element\Fire.lua

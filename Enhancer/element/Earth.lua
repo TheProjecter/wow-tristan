@@ -1,11 +1,13 @@
 EnhancerEarth = Enhancer:NewModule("Earth");
-Enhancer:SetModuleDefaultState("Earth", true);
+EnhancerEarth.DefaultState = (Enhancer.englishClass == "SHAMAN");
+Enhancer:SetModuleDefaultState("Earth", EnhancerEarth.DefaultState);
 local FrameName = "earth";
 
 function EnhancerEarth:OnInitialize()
 	Enhancer[FrameName] = Enhancer:CreateButton("EnhancerFrame" .. FrameName, "Spell_Totem_WardOfDraining", 170, 170);
 	Enhancer[FrameName].borderColor = { ["r"] = (139/255), ["g"] = (69/255), ["b"] = (19/255), ["a"] = 1, }
 	Enhancer:AddFrameToList(FrameName, true, true, true) --[[ Enhancer:AddFrameToList(framename, all, totem, death) ]]--
+	Enhancer[FrameName].moveName = "Earth";
 end
 
 function EnhancerEarth:OnEnable()

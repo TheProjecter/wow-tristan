@@ -106,14 +106,14 @@ L_Main:RegisterTranslations("enUS", function() return {
 	["specialalpha_desc"] = "Enable special alpha settings for \"bonus\" frames",
 	
 	--[[ Strings used for frames ]]--
-	["DragToMoveFrame"] = "Click and drag to move frame",
+	["DragToMoveFrame"] = "Drag", --"Click and drag to move frame",
 	
 	--[[ Warnings ]]--
 	["TotemExpiring"] = "%s (%s) expires soon",
 	["TotemSlain"] = "%s (%s) was slain!!!",
 	["TotemDeath"] = "%s (%s) has expired",
 	
-	--[[ Announcement ]]--
+	--[[ Announcements ]]--
 	["Announcement"] = "Enhancer is currently being developed if you find a bug somewhere or something you think is wrong, feel free to email me at dennis.hafstrom@gmail.com",
 	["Announcement_cmd"] = "Announcement",
 	["Announcement_desc"] = "Announcement (the spam at load ;) settings",
@@ -121,6 +121,8 @@ L_Main:RegisterTranslations("enUS", function() return {
 	["a_show_desc"] = "Show Announcement(s)",
 	["a_disable_cmd"] = "Disable",
 	["a_disable_desc"] = "Disable Announcement(s) at load",
+	
+	--[[ Changes ]]--
 	
 	["Rank 0"] = 0, -- Ugly hack for no-rank spells ;)
 	["Rank 1"] = 1,

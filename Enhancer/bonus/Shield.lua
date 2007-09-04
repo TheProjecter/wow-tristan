@@ -1,5 +1,6 @@
 EnhancerShield = Enhancer:NewModule("Shield", "AceEvent-2.0");
-Enhancer:SetModuleDefaultState("Shield", false);
+EnhancerShield.DefaultState = false;
+Enhancer:SetModuleDefaultState("Shield", EnhancerShield.DefaultState);
 local FrameName = "shield";
 
 local SEA = AceLibrary("SpecialEvents-Aura-2.0");
@@ -19,6 +20,7 @@ function EnhancerShield:OnInitialize()
 	Enhancer[FrameName].fullicon = true;
 	Enhancer[FrameName].borderColor = { ["r"] = (0/255), ["g"] = (245/255), ["b"] = (255/255), ["a"] = 1, }
 	Enhancer:AddFrameToList(FrameName, true, false, true) --[[ Enhancer:AddFrameToList(framename, all, totem, death) ]]--
+	Enhancer[FrameName].moveName = "Shield";
 end
 
 function EnhancerShield:OnEnable()

@@ -6,7 +6,7 @@ Enhancer.Totems[Enhancer.BS["Earthbind Totem"]].Icon = "Spell_Nature_StrengthOfE
 Enhancer.Totems[Enhancer.BS["Earthbind Totem"]].Time = 45;
 Enhancer.Totems[Enhancer.BS["Earthbind Totem"]].Element = "Earth";
 Enhancer.Totems[Enhancer.BS["Earthbind Totem"]].Life = 5;
-Enhancer.Totems[Enhancer.BS["Earthbind Totem"]].Pulse = 3; --[[ Not sure about this ]]--
+-- Enhancer.Totems[Enhancer.BS["Earthbind Totem"]].Pulse = 3; --[[ Not sure about this ]]--
 
 Enhancer.Totems[Enhancer.BS["Stoneskin Totem"]] = {};
 Enhancer.Totems[Enhancer.BS["Stoneskin Totem"]].Icon = "Spell_Nature_StoneSkinTotem";
@@ -18,7 +18,7 @@ Enhancer.Totems[Enhancer.BS["Stoneclaw Totem"]] = {};
 Enhancer.Totems[Enhancer.BS["Stoneclaw Totem"]].Icon = "Spell_Nature_StoneClawTotem";
 Enhancer.Totems[Enhancer.BS["Stoneclaw Totem"]].Time = 15;
 Enhancer.Totems[Enhancer.BS["Stoneclaw Totem"]].Element = "Earth";
-Enhancer.Totems[Enhancer.BS["Stoneclaw Totem"]].Pulse = 2; --[[ Not sure about this ]]--
+-- Enhancer.Totems[Enhancer.BS["Stoneclaw Totem"]].Pulse = 2; --[[ Not sure about this ]]--
 Enhancer.Totems[Enhancer.BS["Stoneclaw Totem"]].Life = nil; -- Depends on rank *sigh*
 Enhancer.Totems[Enhancer.BS["Stoneclaw Totem"]][1] = { };
 Enhancer.Totems[Enhancer.BS["Stoneclaw Totem"]][1].Life = 50; -- 50->236

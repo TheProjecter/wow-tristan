@@ -1,11 +1,13 @@
 EnhancerWindfury = Enhancer:NewModule("Windfury", "AceEvent-2.0", "Parser-3.0");
-Enhancer:SetModuleDefaultState("Windfury", true);
+EnhancerWindfury.DefaultState = (Enhancer.englishClass == "SHAMAN");
+Enhancer:SetModuleDefaultState("Windfury", EnhancerWindfury.DefaultState);
 local FrameName = "windfury";
 
 function EnhancerWindfury:OnInitialize()
 	Enhancer[FrameName] = Enhancer:CreateButton("EnhancerFrame" .. FrameName, "Spell_Nature_Cyclone", 0, -25);
 	Enhancer[FrameName].borderColor = { ["r"] = (127/255), ["g"] = (255/255), ["b"] = (212/255), ["a"] = 1, }
 	Enhancer:AddFrameToList(FrameName, true, false, false) --[[ Enhancer:AddFrameToList(framename, all, totem, death) ]]--
+	Enhancer[FrameName].moveName = "WF CD";
 end
 
 function EnhancerWindfury:OnEnable()

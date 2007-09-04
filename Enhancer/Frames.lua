@@ -14,8 +14,8 @@ function Enhancer:CreateButton(globalname, bgFile, xOffset, yOffset)
 	--[[ Create an anchor ]]
 	object = CreateFrame("Button", globalname.."Anchor", UIParent);
 	object:Hide();
-	object:SetWidth(150);
-	object:SetHeight(30);
+	object:SetWidth(Enhancer.db.profile.framesize);
+	object:SetHeight(Enhancer.db.profile.framesize);
 	object:SetPoint("CENTER", UIParent, "CENTER",  0,  0);
 	object:SetMovable(true);
 	object:RegisterForDrag("LeftButton");
@@ -24,9 +24,11 @@ function Enhancer:CreateButton(globalname, bgFile, xOffset, yOffset)
 	object:SetBackdrop({
 		bgFile = "Interface/Tooltips/UI-Tooltip-Background",
 		edgeFile = "Interface/Tooltips/UI-Tooltip-Border",
-		tile = false, tileSize = 16, edgeSize = 16,
-		insets = { left = 5, right = 5, top = 5, bottom = 5 }
+		tile = false, tileSize = 0, edgeSize = 8,
+		insets = { left = 0, right = 0, top = 0, bottom = 0 }
 	});
+	object:SetBackdropColor( (1/10), (1/10), (1/10), (1/10));
+	object:SetBackdropBorderColor( 1, 1, 1, 0);
 	retVal["anchor"] = object;
 	
 	--[[ Create a fontstring for the Anchor ]]
@@ -34,8 +36,8 @@ function Enhancer:CreateButton(globalname, bgFile, xOffset, yOffset)
 	object:SetFontObject(Enhancer.db.profile.belowFont);
 	object:ClearAllPoints();
 	object:SetTextColor(1, 1, 1, 1);
-	object:SetWidth(120);
-	object:SetHeight(25);
+	object:SetWidth(Enhancer.db.profile.framesize);
+	object:SetHeight(Enhancer.db.profile.framesize);
 	object:SetPoint("CENTER", globalname.."Anchor", "CENTER");
 	object:SetJustifyH("CENTER");
 	object:SetJustifyV("MIDDLE");
@@ -48,14 +50,18 @@ function Enhancer:CreateButton(globalname, bgFile, xOffset, yOffset)
 	object:SetWidth(Enhancer.db.profile.framesize);
 	object:SetHeight(Enhancer.db.profile.framesize);
 	object:SetFrameStrata(strataToUse);
-	object:SetPoint("TOP", globalname.."Anchor", "BOTTOM", 0, 0);
+	object:SetPoint("CENTER", globalname.."Anchor", "CENTER", 0, 0);
 	object:SetMovable(true);
 	object:SetBackdrop({
 		bgFile = "Interface/Icons/" .. object.bgFileDefault,
 		edgeFile = "Interface/Tooltips/UI-Tooltip-Border",
-		tile = false, tileSize = 16, edgeSize = 16,
-		insets = { left = 5, right = 5, top = 5, bottom = 5 }
+		tile = false, tileSize = 0, edgeSize = 8,
+		insets = { left = 0, right = 0, top = 0, bottom = 0 }
 	});
+	local t = object:CreateTexture(nil,"BACKGROUND")
+	object.texture = t
+
+	-- Interface\\AddOns\\cyCircled\\textures\\Square
 	object:SetBackdropColor( 1, 1, 1, Enhancer.db.profile.oocinactiveAlpha);
 	object:SetBackdropBorderColor( 1, 1, 1, 0);
 	retVal["mainframe"] = object;
@@ -63,8 +69,9 @@ function Enhancer:CreateButton(globalname, bgFile, xOffset, yOffset)
 	--[[ Create a Cooldown ]]
 	object = CreateFrame("Cooldown", globalname.."FrameCooldown", MainFrame, "CooldownFrameTemplate");
 	object:ClearAllPoints();
-	object:SetWidth(Enhancer.db.profile.framesize - (Enhancer.db.profile.framesize / 3));
-	object:SetHeight(Enhancer.db.profile.framesize - (Enhancer.db.profile.framesize / 3));
+	object.divider = 10;
+	object:SetWidth(Enhancer.db.profile.framesize - (Enhancer.db.profile.framesize / object.divider));
+	object:SetHeight(Enhancer.db.profile.framesize - (Enhancer.db.profile.framesize / object.divider));
 	object:SetPoint("CENTER", globalname.."Frame", "CENTER", 0, 0);
 	retVal["cooldown"] = object;
 	
@@ -177,7 +184,8 @@ function Enhancer:DefaultPos(framelist)
 	else
 		local framename = framelist;
 		self[framename].anchor:ClearAllPoints();
-		self[framename].anchor:SetPoint("CENTER", UIParent, "CENTER",  self[framename].xOffsetDefault,  (self[framename].yOffsetDefault + Enhancer.db.profile.framesize))
+		self[framename].anchor:SetPoint("CENTER", UIParent, "CENTER",  self[framename].xOffsetDefault,  self[framename].yOffsetDefault);
+		-- self[framename].anchor:SetPoint("CENTER", UIParent, "CENTER",  self[framename].xOffsetDefault,  (self[framename].yOffsetDefault + Enhancer.db.profile.framesize));
 		-- positiveX = East, positiveY = North
 	end
 end
@@ -425,8 +433,8 @@ function Enhancer:Pulse()
 			self[frame].mainframe:SetHeight( Enhancer.db.profile.framesize );
 			self[frame].mainframe:SetWidth( Enhancer.db.profile.framesize );
 			self[frame].mainframe:SetBackdropBorderColor(1, 1, 1, 0);
-			self[frame].cooldown:SetWidth(Enhancer.db.profile.framesize - (Enhancer.db.profile.framesize / 3));
-			self[frame].cooldown:SetHeight(Enhancer.db.profile.framesize - (Enhancer.db.profile.framesize / 3));
+			self[frame].cooldown:SetWidth(Enhancer.db.profile.framesize - (Enhancer.db.profile.framesize / self[frame].cooldown.divider));
+			self[frame].cooldown:SetHeight(Enhancer.db.profile.framesize - (Enhancer.db.profile.framesize / self[frame].cooldown.divider));
 			
 			if (self.pulsingDeath and self.pulsingDeath[frame]) then
 				self.pulsingDeath[frame] = nil;
@@ -436,7 +444,7 @@ function Enhancer:Pulse()
 		else
 			
 			if (Enhancer.db.profile.borderPulse) then
-				self[frame].mainframe:SetBackdropBorderColor((self[frame].borderColor and self[frame].borderColor["r"]) or 1, (self[frame].borderColor and self[frame].borderColor["g"]) or 1, (self[frame].borderColor and self[frame].borderColor["b"]) or 1, 0);
+				self[frame].mainframe:SetBackdropBorderColor((self[frame].borderColor and self[frame].borderColor["r"]) or 1, (self[frame].borderColor and self[frame].borderColor["g"]) or 1, (self[frame].borderColor and self[frame].borderColor["b"]) or 1, 1);
 			end
 			
 			if (Enhancer.db.profile.growingPulse) then

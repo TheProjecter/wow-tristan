@@ -1,5 +1,6 @@
 EnhancerInvigorated = Enhancer:NewModule("Invigorated", "AceEvent-2.0");
-Enhancer:SetModuleDefaultState("Invigorated", false);
+EnhancerInvigorated.DefaultState = false;
+Enhancer:SetModuleDefaultState("Invigorated", EnhancerInvigorated.DefaultState);
 local FrameName = "invigorated";
 
 local L = AceLibrary("AceLocale-2.2"):new("EnhancerInvigorated")
@@ -16,6 +17,7 @@ function EnhancerInvigorated:OnInitialize()
 	Enhancer[FrameName] = Enhancer:CreateButton("EnhancerFrame" .. FrameName, "Spell_Nature_NatureResistanceTotem", 0, 210);
 	Enhancer:AddFrameToList(FrameName, true, false, true) --[[ Enhancer:AddFrameToList(framename, all, totem, death) ]]--
 	Enhancer:AddFrameToOnOffList(FrameName)
+	Enhancer[FrameName].moveName = "Invig";
 end
 
 function EnhancerInvigorated:OnEnable()
