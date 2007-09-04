@@ -116,10 +116,17 @@ function Enhancer:ToggleLock(framelist)
 		if (self.db.profile.locked) then
 			self[framename].anchor:Hide();
 			self[framename].unlocked = nil;
+			if (not self[framename].active) then
+				self[framename].textbelow:SetText("");
+			end
 		else
 			if (self[framename].mainframe:IsVisible()) then
 				self[framename].anchor:Show();
 				self[framename].unlocked = true;
+				
+				if (not self[framename].active) then
+					self[framename].textbelow:SetText(self[framename].moveName or "");
+				end
 			end
 		end
 		
@@ -132,8 +139,14 @@ function Enhancer:Resize()
 		self[frame].mainframe:SetWidth(Enhancer.db.profile.framesize);
 		self[frame].mainframe:SetHeight(Enhancer.db.profile.framesize);
 		
-		self[frame].cooldown:SetWidth(Enhancer.db.profile.framesize - (Enhancer.db.profile.framesize / 3));
-		self[frame].cooldown:SetHeight(Enhancer.db.profile.framesize - (Enhancer.db.profile.framesize / 3));
+		self[frame].anchor:SetWidth(Enhancer.db.profile.framesize);
+		self[frame].anchor:SetHeight(Enhancer.db.profile.framesize);
+		
+		self[frame].anchortext:SetWidth(Enhancer.db.profile.framesize);
+		self[frame].anchortext:SetHeight(Enhancer.db.profile.framesize);
+		
+		self[frame].cooldown:SetWidth(Enhancer.db.profile.framesize - (Enhancer.db.profile.framesize / self[frame].cooldown.divider));
+		self[frame].cooldown:SetHeight(Enhancer.db.profile.framesize - (Enhancer.db.profile.framesize / self[frame].cooldown.divider));
 		
 		self[frame].textbelow:SetWidth(Enhancer.db.profile.framesize);
 		

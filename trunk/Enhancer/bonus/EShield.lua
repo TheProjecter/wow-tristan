@@ -1,5 +1,6 @@
 EnhancerEShield = Enhancer:NewModule("EShield", "AceEvent-2.0");
-Enhancer:SetModuleDefaultState("EShield", false);
+EnhancerEShield.DefaultState = false;
+Enhancer:SetModuleDefaultState("EShield", EnhancerEShield.DefaultState);
 local FrameName = "eshield";
 EnhancerEShield.SpellName = Enhancer.BS["Earth Shield"];
 -- EnhancerEShield.SpellName = Enhancer.BS["Water Breathing"] -- Testing
@@ -21,6 +22,7 @@ function EnhancerEShield:OnInitialize()
 	Enhancer[FrameName] = Enhancer:CreateButton("EnhancerFrame" .. FrameName, "Spell_Nature_SkinofEarth", 0, 210);
 	Enhancer[FrameName].borderColor = { ["r"] = (139/255), ["g"] = (69/255), ["b"] = (19/255), ["a"] = 1, };
 	Enhancer:AddFrameToList(FrameName, true, false, false) --[[ Enhancer:AddFrameToList(framename, all, totem, death) ]]--
+	Enhancer[FrameName].moveName = "EShield";
 	
 	--[[ Change the height so we can fit two rows ]]--
 	Enhancer[FrameName].textbelow:SetHeight((Enhancer.db.profile.belowFontSize * 2) + 20);

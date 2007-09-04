@@ -3,16 +3,17 @@ Left to do:
 	Windfury calculation and display! (FontString midscreen that grows on crit?)
 ]]--
 --[[ http://www.wowace.com/wiki/Joker ]]--
+--[[ http://www.wowace.com/wiki/Rock ]]--
 Enhancer = AceLibrary("AceAddon-2.0"):new("AceEvent-2.0", "AceDB-2.0", "AceConsole-2.0", "AceModuleCore-2.0", "Parser-3.0");
-Enhancer:RegisterDB("EnhancerDB");
+Enhancer:RegisterDB("EnhancerDB", nil, "class");
+
 
 local L = AceLibrary("AceLocale-2.2"):new("Enhancer");
 Enhancer.deformat = AceLibrary("Deformat-2.0");
 Enhancer.BS = AceLibrary("Babble-Spell-2.2");
 --local Aura = AceLibrary("SpecialEvents-Aura-2.0")
 
-local _, englishClass = UnitClass("player");
-Enhancer.englishClass = englishClass;
+_, Enhancer.englishClass = UnitClass("player");
 
 Enhancer.aFrames = {}; -- All Frames
 Enhancer.tFrames = {}; -- Totem Frames
@@ -21,10 +22,7 @@ Enhancer.oFrames = {}; -- On/Off Frames
 Enhancer.combatLog = {}; -- List of all "unit"s we are intressted in for the combatlog :)
 
 function Enhancer:OnInitialize()
-	if (self.englishClass ~= "SHAMAN") then return; end
-	
 	self:RegisterSlashCommands();
-	
 	self:InspectEPValues(); -- Check so not using old values
 	
 	if (not self.db.profile.startAnnounceDisabled) then
@@ -33,31 +31,37 @@ function Enhancer:OnInitialize()
 end
 
 function Enhancer:OnEnable()
-	if (self.englishClass ~= "SHAMAN") then return; end
 	Enhancer.PlayerLevel = UnitLevel("player");
 	
 	-- Register our events :>
 	self:RegisterEvent("PLAYER_REGEN_ENABLED", "OutOfCombat");
 	self:RegisterEvent("PLAYER_REGEN_DISABLED", "EnterCombat");
-	self:RegisterEvent("PLAYER_DEAD", "PlayerDead");
-	self:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED", "CastingTotem");
 	self:RegisterEvent("PLAYER_LEVEL_UP", "Ding");
-	
-	self:RegisterParserEvent({
-		eventType = 'Damage',
-	}, "ParserDamage");
-	self:RegisterParserEvent({
-		eventType = 'Miss',
-		sourceID = "player",
-	}, "ParserMiss");
+	if (Enhancer.englishClass == "SHAMAN") then
+		self:RegisterEvent("PLAYER_DEAD", "PlayerDead");
+		self:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED", "CastingTotem");
+		
+		self:RegisterParserEvent({
+			eventType = 'Damage',
+		}, "ParserDamage");
+		self:RegisterParserEvent({
+			eventType = 'Miss',
+			sourceID = "player",
+		}, "ParserMiss");
+	end
 end
 
 function Enhancer:OnDisable()
-	if (self.englishClass ~= "SHAMAN") then return; end
-	
 	self:UnregisterAllEvents();
 	self:UnregisterAllParserEvents();
 	self:CancelAllScheduledEvents();
+end
+
+function Enhancer:OnProfileDisable()
+	
+end
+function Enhancer:OnProfileEnable(oldProfileName, oldProfileData)
+	self:InspectEPValues();
 end
 
 function Enhancer:DelayAnnounce()

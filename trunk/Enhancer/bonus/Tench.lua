@@ -1,5 +1,6 @@
 EnhancerTench = Enhancer:NewModule("Tench", "AceEvent-2.0");
-Enhancer:SetModuleDefaultState("Tench", false);
+EnhancerTench.DefaultState = false;
+Enhancer:SetModuleDefaultState("Tench", EnhancerTench.DefaultState);
 local FrameNameM = "mhtench";
 local FrameNameO = "ohtench";
 local FrameList = { FrameNameO, FrameNameM };
@@ -20,11 +21,13 @@ function EnhancerTench:OnInitialize()
 	Enhancer:AddFrameToList(FrameNameM, true, false, false) --[[ Enhancer:AddFrameToList(framename, all, totem, death) ]]--
 	Enhancer[FrameNameM].fullicon = true;
 	_, Enhancer[FrameNameM].mainframe.bgFileDefault = GetInventorySlotInfo("MainHandSlot");
+	Enhancer[FrameNameM].moveName = "MainH";
 	
 	Enhancer[FrameNameO] = Enhancer:CreateButton("EnhancerFrame" .. FrameNameO, "INV_Mace_39", 120, 0);
 	Enhancer:AddFrameToList(FrameNameO, true, false, false) --[[ Enhancer:AddFrameToList(framename, all, totem, death) ]]--
 	Enhancer[FrameNameO].fullicon = true;
 	_, Enhancer[FrameNameO].mainframe.bgFileDefault = GetInventorySlotInfo("SecondaryHandSlot");
+	Enhancer[FrameNameO].moveName = "OffH";
 end
 
 function EnhancerTench:OnEnable()

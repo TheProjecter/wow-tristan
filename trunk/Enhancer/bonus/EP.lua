@@ -1,6 +1,7 @@
 local L = AceLibrary("AceLocale-2.2"):new("EnhancerEP")
 EnhancerEP = Enhancer:NewModule("EP", "AceEvent-2.0");
-Enhancer:SetModuleDefaultState("EP", true);
+EnhancerEP.DefaultState = true;
+Enhancer:SetModuleDefaultState("EP", EnhancerEP.DefaultState);
 
 local ibl = AceLibrary("ItemBonusLib-1.0");
 local TipHooker = AceLibrary("TipHooker-1.0");
@@ -57,8 +58,8 @@ function EnhancerEP:Tooltip()
 	pcall( FunctionThatNeverExecutes );
 end
 
-EnhancerEP.ProcessTypes = { [L["Armor"]] = true, [L["Gem"]] = true, [L["Weapon"]] = true, [L["Recipe"]] = true, } -- [L["Projectile"]] = true, [L["Quiver"]] = true, 
-EnhancerEP.NotProcessSubTypes = { [L["Plate"]] = true, [L["Idols"]] = true, [L["Librams"]] = true, [L["Fishing Pole"]] = true, [L["One-Handed Swords"]] = true, [L["Polearms"]] = true, [L["Two-Handed Swords"]] = true, [L["Bows"]] = true, [L["Crossbows"]] = true, [L["Guns"]] = true, [L["Thrown"]] = true, [L["Wands"]] = true, }
+EnhancerEP.ProcessTypes = { [L["Armor"]] = true, [L["Gem"]] = true, [L["Weapon"]] = true, [L["Recipe"]] = true, [L["Projectile"]] = true, [L["Quiver"]] = true, }
+EnhancerEP.NotProcessSubTypes = {};-- [L["Plate"]] = true, [L["Idols"]] = true, [L["Librams"]] = true, [L["Fishing Pole"]] = true, [L["One-Handed Swords"]] = true, [L["Polearms"]] = true, [L["Two-Handed Swords"]] = true, [L["Bows"]] = true, [L["Crossbows"]] = true, [L["Guns"]] = true, [L["Thrown"]] = true, [L["Wands"]] = true, }
 EnhancerEP.AffectedByKings = { STR = true, AGI = true, STA = true, INT = true, SPI = true};
 function EnhancerEP.ProcessTooltip(tooltip, name, link)
 	if (link) then
