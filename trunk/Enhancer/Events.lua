@@ -21,18 +21,18 @@ end
 function Enhancer:CastingTotem(unit, totem, rank)
 	-- Gets called for all spellcasting so just check if it was a totem :)
 	if (unit ~= "player") then return; end
-	if (rank == "") then rank = "Rank 0"; end
+	if (rank == "") then rank = L[0]; end
 	
 	if (totem == Enhancer.BS["Totemic Call"]) then
 		for _, frame in ipairs(Enhancer.tFrames) do
 			self:FrameDeathPreBegin(frame);
 		end
 	elseif Enhancer.Totems[totem] then
-		if (totem == Enhancer.BS["Mana Spring Totem"] and L[rank] == 0) then
+		if (totem == Enhancer.BS["Mana Spring Totem"] and L:GetReverseTranslation(rank) == "0") then
 			totem = Enhancer.BS["Enamored Water Spirit"];
 		end
 		
-		self:CreateTotem(totem, L[rank]);
+		self:CreateTotem(totem, L:GetReverseTranslation(rank));
 	end
 end
 
@@ -57,4 +57,12 @@ end
 
 function Enhancer:ParserMiss(info)
 	-- if (info.sourceID == "player") then self:WFTest(info); end
+end
+
+function Enhancer:SomethingDied(info)
+	-- Fired when a friendly player dies - arg1 - chat message (format: "%s dies")
+	if (self.debug) then
+		self:Print(info); -- Stoneclaw Totem VII is destroyed
+											-- You die
+	end
 end

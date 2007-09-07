@@ -15,7 +15,7 @@ function Enhancer:CreateTotem(totem, rank)
 		if (tonumber(rank)) then
 			rank = tonumber(rank);
 		else
-			self:Print("Big Error: Rank was not a number nor could it be converted. Please mail dennis.hafstrom@gmail.com with info about what rank you cast");
+			self:Print("Big Error: Rank was not a number nor could it be converted. Please mail dennis.hafstrom@gmail.com with info about what did when the error occured and wheter you can recreate it or not");
 			return;
 		end
 	end

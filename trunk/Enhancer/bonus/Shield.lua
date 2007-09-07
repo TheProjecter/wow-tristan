@@ -5,13 +5,9 @@ local FrameName = "shield";
 
 local SEA = AceLibrary("SpecialEvents-Aura-2.0");
 
-local L = AceLibrary("AceLocale-2.2"):new("EnhancerShield")
-L:RegisterTranslations("enUS", function() return {
-	["cmd"] = "Shield",
-	["desc"] = "Toggle frame for showing when shields are up",
-}; end );
+local L = AceLibrary("AceLocale-2.2"):new("Enhancer")
 function EnhancerShield:GetConsoleOptions()
-	return L["cmd"], L["desc"];
+	return L["shield_cmd"], L["shield_desc"];
 end
 
 function EnhancerShield:OnInitialize()

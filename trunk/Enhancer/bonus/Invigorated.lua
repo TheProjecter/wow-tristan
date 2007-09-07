@@ -3,14 +3,9 @@ EnhancerInvigorated.DefaultState = false;
 Enhancer:SetModuleDefaultState("Invigorated", EnhancerInvigorated.DefaultState);
 local FrameName = "invigorated";
 
-local L = AceLibrary("AceLocale-2.2"):new("EnhancerInvigorated")
-L:RegisterTranslations("enUS", function() return {
-	["cmd"] = "Invigorated",
-	["desc"] = "Toggle frame for showing when Invigorated is up (Untested)",
-	["Invigorated"] = true,
-}; end );
+local L = AceLibrary("AceLocale-2.2"):new("Enhancer")
 function EnhancerInvigorated:GetConsoleOptions()
-	return L["cmd"], L["desc"];
+	return L["invigorated_cmd"], L["invigorated_desc"];
 end
 
 function EnhancerInvigorated:OnInitialize()

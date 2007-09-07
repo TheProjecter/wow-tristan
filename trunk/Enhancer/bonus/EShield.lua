@@ -5,17 +5,9 @@ local FrameName = "eshield";
 EnhancerEShield.SpellName = Enhancer.BS["Earth Shield"];
 -- EnhancerEShield.SpellName = Enhancer.BS["Water Breathing"] -- Testing
 
-local L = AceLibrary("AceLocale-2.2"):new("EnhancerEShield")
-L:RegisterTranslations("enUS", function() return {
-	["cmd"] = "EarthShield",
-	["desc"] = "Toggle frame for showing earth shield",
-	
-	["Lost track of Earth Shield"] = true,
-	["Earth Shield has expired"] = true,
-	["Earth Shield is about to expire"] = true,
-}; end );
+local L = AceLibrary("AceLocale-2.2"):new("Enhancer")
 function EnhancerEShield:GetConsoleOptions()
-	return L["cmd"], L["desc"];
+	return L["eshield_cmd"], L["eshield_desc"];
 end
 
 function EnhancerEShield:OnInitialize()
@@ -92,7 +84,7 @@ function EnhancerEShield:SpellCastSucceeded(unit, spell, rank)
 	end
 end
 
-function EnhancerEShield:ManualScan(announceLost)
+function EnhancerEShield:ManualScan(announceLost, origin)
 	-- First we try to find a person with the buff! (Disconnects and/or leaving and rejoining group can cause this)
 	local unit, name = "player", UnitName("player");
 	local buffIndex, applications, timeLeft = self:UnitHasBuffNoCache(unit, EnhancerEShield.SpellName);
@@ -127,6 +119,9 @@ function EnhancerEShield:ManualScan(announceLost)
 	
 	if (announceLost) then
 		Enhancer:ScreenMessage(L["Lost track of Earth Shield"]);
+		if (Enhancer.debug and origin) then
+			self:Print("DEBUG: Origin = %s", origin);
+		end
 	end
 	Enhancer:FrameDeathPreBegin(FrameName);
 end
@@ -208,7 +203,7 @@ function EnhancerEShield:UpdateEShield()
 	if (not name and not unit) then
 		-- How did this happen? :o
 		self:CancelAllScheduledEvents();
-		self:ManualScan(true);
+		self:ManualScan(true, "1");
 		return;
 	end
 	
@@ -221,7 +216,7 @@ function EnhancerEShield:UpdateEShield()
 		else
 			-- Can't find name nor unit so we lost track of our buff
 			self:CancelAllScheduledEvents();
-			self:ManualScan(true);
+			self:ManualScan(true, "2");
 			return;
 		end
 	end
@@ -242,7 +237,7 @@ function EnhancerEShield:UpdateEShield()
 		if (CheckInteractDistance(unit, 4)) then
 			-- This guy is in definately in range so it's definately not our buff, possibly someone over-wrote it
 			self:CancelAllScheduledEvents();
-			self:ManualScan(true);
+			self:ManualScan(true, "3");
 			return;
 		else
 			-- Dunno if it is ours or not as there could be to much distance from the unit atm, assume it's ours and keep checking

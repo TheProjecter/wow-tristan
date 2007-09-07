@@ -59,8 +59,8 @@ Enhancer.Totems[Enhancer.BS["Earth Elemental Totem"]] = {};
 Enhancer.Totems[Enhancer.BS["Earth Elemental Totem"]].Icon = "Spell_Nature_EarthElemental_Totem";
 Enhancer.Totems[Enhancer.BS["Earth Elemental Totem"]].Time = 120;
 Enhancer.Totems[Enhancer.BS["Earth Elemental Totem"]].Element = "Earth";
-Enhancer.Totems[Enhancer.BS["Earth Elemental Totem"]].Life = 3000; --Unknown atm
-Enhancer.Totems[Enhancer.BS["Earth Elemental Totem"]].CombatLog = { "Earth Elemental" }
+Enhancer.Totems[Enhancer.BS["Earth Elemental Totem"]].Life = 7200; -- Was hitting a totem today and mobHealth gave this number
+--Enhancer.Totems[Enhancer.BS["Earth Elemental Totem"]].CombatLog = { "Earth Elemental" }
 
 --> Fire Totems <--
 Enhancer.Totems[Enhancer.BS["Flametongue Totem"]] = {};
@@ -118,8 +118,8 @@ Enhancer.Totems[Enhancer.BS["Fire Elemental Totem"]] = {};
 Enhancer.Totems[Enhancer.BS["Fire Elemental Totem"]].Icon = "Spell_Fire_Elemental_Totem";
 Enhancer.Totems[Enhancer.BS["Fire Elemental Totem"]].Time = 120;
 Enhancer.Totems[Enhancer.BS["Fire Elemental Totem"]].Element = "Fire";
-Enhancer.Totems[Enhancer.BS["Fire Elemental Totem"]].Life = 3000; --Unknown atm
-Enhancer.Totems[Enhancer.BS["Fire Elemental Totem"]].CombatLog = { "Fire Elemental" }
+Enhancer.Totems[Enhancer.BS["Fire Elemental Totem"]].Life = 3600; -- Was hitting a totem today and mobHealth gave this number
+--Enhancer.Totems[Enhancer.BS["Fire Elemental Totem"]].CombatLog = { "Fire Elemental" }
 
 --> Water Totems <--
 Enhancer.Totems[Enhancer.BS["Disease Cleansing Totem"]] = {};
