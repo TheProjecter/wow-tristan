@@ -40,6 +40,7 @@ function Enhancer:OnEnable()
 	if (Enhancer.englishClass == "SHAMAN") then
 		self:RegisterEvent("PLAYER_DEAD", "PlayerDead");
 		self:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED", "CastingTotem");
+		self:RegisterEvent("CHAT_MSG_COMBAT_FRIENDLY_DEATH", "SomethingDied");
 		
 		self:RegisterParserEvent({
 			eventType = 'Damage',

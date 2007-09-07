@@ -901,6 +901,17 @@ function Enhancer:RegisterSlashCommands()
 						end,
 						order = OrderNum(),
 					},
+					
+					[SpacerName()] = SpacerTable(),
+					
+					[L["ep_info_cmd"]] = {
+						name = L["ep_info_cmd"], type = "execute",
+						desc = L["ep_info_desc"],
+						func = function()
+							Enhancer:Print(L["ep_info_exec"]);
+						end,
+						order = OrderNum(),
+					},
 				},
 			},
 			
@@ -1032,6 +1043,16 @@ function Enhancer:RegisterSlashCommands()
 						order = OrderNum(),
 					},
 				},
+			},
+			
+			[SpacerName()] = SpacerTable(),
+			
+			["Debug"] = {
+				name = "Debug", type = "toggle",
+				desc = "Currently trying to find a bug in EShield module where it lose track often",
+				get = function() return Enhancer.debug; end,
+				set = function() Enhancer.debug = not Enhancer.debug; end,
+				order = OrderNum(),
 			},
 		},
 	};

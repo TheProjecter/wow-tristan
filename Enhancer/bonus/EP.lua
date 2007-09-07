@@ -58,8 +58,7 @@ function EnhancerEP:Tooltip()
 	pcall( FunctionThatNeverExecutes );
 end
 
-EnhancerEP.ProcessTypes = { [L["Armor"]] = true, [L["Gem"]] = true, [L["Weapon"]] = true, [L["Recipe"]] = true, [L["Projectile"]] = true, [L["Quiver"]] = true, }
-EnhancerEP.NotProcessSubTypes = {};-- [L["Plate"]] = true, [L["Idols"]] = true, [L["Librams"]] = true, [L["Fishing Pole"]] = true, [L["One-Handed Swords"]] = true, [L["Polearms"]] = true, [L["Two-Handed Swords"]] = true, [L["Bows"]] = true, [L["Crossbows"]] = true, [L["Guns"]] = true, [L["Thrown"]] = true, [L["Wands"]] = true, }
+EnhancerEP.ProcessTypes = { [L["Armor"]] = true, [L["Gem"]] = true, [L["Weapon"]] = true, [L["Recipe"]] = true, }
 EnhancerEP.AffectedByKings = { STR = true, AGI = true, STA = true, INT = true, SPI = true};
 function EnhancerEP.ProcessTooltip(tooltip, name, link)
 	if (link) then
@@ -67,7 +66,6 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 		--[[ Check if we care about this item ]]--
 		local _, _, _, _, _, ItemType, ItemSubType = GetItemInfo(link)
 		if (not EnhancerEP.ProcessTypes[ItemType]) then return; end
-		if (EnhancerEP.NotProcessSubTypes[ItemSubType]) then return; end
 		
 		local numberFormat = L["ep_numbers2"];
 		

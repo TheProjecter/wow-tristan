@@ -7,13 +7,9 @@ local FrameList = { FrameNameO, FrameNameM };
 
 local SEA = AceLibrary("SpecialEvents-Aura-2.0")
 
-local L = AceLibrary("AceLocale-2.2"):new("EnhancerTench")
-L:RegisterTranslations("enUS", function() return {
-	["cmd"] = "Enchants",
-	["desc"] = "Toggle frames for showing temporary enchants",
-}; end );
+local L = AceLibrary("AceLocale-2.2"):new("Enhancer")
 function EnhancerTench:GetConsoleOptions()
-	return L["cmd"], L["desc"];
+	return L["tench_cmd"], L["tench_desc"];
 end
 
 function EnhancerTench:OnInitialize()

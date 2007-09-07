@@ -1,5 +1,26 @@
+--[[ Want to translate?
+
+	Make a copy of this file in the same folder and rename the end into the locale you want to translate for, also remove this header
+	
+	The following are allready referenced in the .toc file:
+	Localization_deDE.lua, Localization_frFR.lua, Localization_koKR.lua, Localization_zhCN.lua, Localization_zhTW.lua, Localization_esES.lua
+	if I missed yours you need to add it manually for testing
+	
+	Translate the right hand side of everything, German example:
+		["lock_cmd"] = "Sperren",
+		...
+		["eep_info"] = "Enhancer's Vergleichspunkte:",
+	
+	Anything ending with _cmd is used as a console commmand and I usually try to keep those as one word.
+	Things like: ["Gem"] = true should be translated as ["Gem"] = "Edelstein" since true can only be used in the enUS locale
+	
+	Once you are done mail it to me at dennis.hafstrom@gmail.com and I'll add it to the distributed file :)
+]]--
+
 local L_Main = AceLibrary("AceLocale-2.2"):new("Enhancer")
 L_Main:RegisterTranslations("enUS", function() return {
+	["translator"] = "Leion - Frostmane.eu",
+	
 	["waterfall_cmd"] = "Waterfall",
 	["waterfall_desc"] = "Open Waterfall configuration",
 	
@@ -35,6 +56,9 @@ L_Main:RegisterTranslations("enUS", function() return {
 	["ep_gemq_desc"] = "Set Max Quality for Gems (1 = None, 2 = Uncommon, 3 = Rare, 4 = Epic)",
 	["ep_gemm_cmd"] = "MetaGem",
 	["ep_gemm_desc"] = "Toggle including Meta gems in calculations",
+	["ep_info_cmd"] = "Info",
+	["ep_info_desc"] = "More information about Equivalence Points",
+	["ep_info_exec"] = "Some sources for finding \"your\" AEP:\rhttp://elitistjerks.com/f31/t13297-enhance_shaman_collected_works_theorycraft_vol_i/\rhttp://code.google.com/p/wowequipoptimizer\rhttp://www.discofiend.com/pater/\rhttp://elitbrus.tripod.com/",
 	["epz_cmd"] = "EPZero",
 	["epz_desc"] = "Show Equivalence Points even if summary is zero",
 	["aep_cmd"] = "AEP",
@@ -122,30 +146,46 @@ L_Main:RegisterTranslations("enUS", function() return {
 	["a_disable_cmd"] = "Disable",
 	["a_disable_desc"] = "Disable Announcement(s) at load",
 	
-	--[[ Changes ]]--
+	[0] = "Rank 0",
+	[1] = "Rank 1",
+	[2] = "Rank 2",
+	[3] = "Rank 3",
+	[4] = "Rank 4",
+	[5] = "Rank 5",
+	[6] = "Rank 6",
+	[7] = "Rank 7",
+	[8] = "Rank 8",
+	[9] = "Rank 9",
+	[10] = "Rank 10",
+	[11] = "Rank 11",
+	[12] = "Rank 12",
+	[13] = "Rank 13",
+	[14] = "Rank 14",
+	[15] = "Rank 15",
+	[16] = "Rank 16",
+	[17] = "Rank 17",
+	[18] = "Rank 18",
+	[19] = "Rank 19",
+	[20] = "Rank 20",
 	
-	["Rank 0"] = 0, -- Ugly hack for no-rank spells ;)
-	["Rank 1"] = 1,
-	["Rank 2"] = 2,
-	["Rank 3"] = 3,
-	["Rank 4"] = 4,
-	["Rank 5"] = 5,
-	["Rank 6"] = 6,
-	["Rank 7"] = 7,
-	["Rank 8"] = 8,
-	["Rank 9"] = 9,
-	["Rank 10"] = 10,
-	["Rank 11"] = 11,
-	["Rank 12"] = 12,
-	["Rank 13"] = 13,
-	["Rank 14"] = 14,
-	["Rank 15"] = 15,
-	["Rank 16"] = 16,
-	["Rank 17"] = 17,
-	["Rank 18"] = 18,
-	["Rank 19"] = 19,
-	["Rank 20"] = 20,
-} end )
+	--[[ Modules ]]--
+	["shield_cmd"] = "Shield",
+	["shield_desc"] = "Toggle frame for showing when shields are up",
+	
+	["eshield_cmd"] = "EarthShield",
+	["eshield_desc"] = "Toggle frame for showing earth shield",
+	["Lost track of Earth Shield"] = true,
+	["Earth Shield has expired"] = true,
+	["Earth Shield is about to expire"] = true,
+	
+	["tench_cmd"] = "Enchants",
+	["tench_desc"] = "Toggle frames for showing temporary enchants",
+	
+	["invigorated_cmd"] = "Invigorated",
+	["invigorated_desc"] = "Toggle frame for showing when Invigorated is up (Untested)",
+	["Invigorated"] = true,
+
+}; end );
 
 local L_EP = AceLibrary("AceLocale-2.2"):new("EnhancerEP")
 L_EP:RegisterTranslations("enUS", function() return {
@@ -158,21 +198,7 @@ L_EP:RegisterTranslations("enUS", function() return {
 	["Quiver"] = true,
 	["Recipe"] = true,
 	
-	--[[ ItemSubTypes (skip) ]]--
-	["Plate"] = true,
-	["Idols"] = true,
-	["Librams"] = true,
-	["Fishing Pole"] = true,
-	["One-Handed Swords"] = true,
-	["Polearms"] = true,
-	["Two-Handed Swords"] = true,
-	["Bows"] = true,
-	["Crossbows"] = true,
-	["Guns"] = true,
-	["Thrown"] = true,
-	["Wands"] = true,
-	
-	--[[ Sockets as they appear on the tooltip]]--
+	--[[ Sockets as they appear on the tooltip has to include Socket as it's used for matching and lots of matches are possible with only color ]]--
 	["Red Socket"] = true,
 	["Blue Socket"] = true,
 	["Yellow Socket"] = true,
@@ -186,17 +212,17 @@ L_EP:RegisterTranslations("enUS", function() return {
 	["aeph_tooltip"] = string.rep(" ", 3) .. "AttackpowerEP w/o hit (inc BoK):",
 	
 	["hep_tooltip"] = string.rep(" ", 3) .. "HealingEP (inc BoK):",
-	["hep_info"] = "Numbers from Leion (possibly very inaccurate and shouldn't be trusted at all)", -- Not used atm
+	["hep_info"] = "Numbers from Leion (possibly very inaccurate and shouldn't be taken as gospel)", -- Not used atm
 	
 	["dep_tooltip"] = string.rep(" ", 3) .. "DamageEP (inc BoK):",
-	["dep_info"] = "Numbers from Leion (possibly very inaccurate and shouldn't be trusted at all)", -- Not used atm
+	["dep_info"] = "Numbers from Leion (possibly very inaccurate and shouldn't be taken as gospel)", -- Not used atm
 	["deph_tooltip"] = string.rep(" ", 3) .. "DamageEP w/o hit (inc BoK):",
 	
 	["eip_tooltip"] = "Enhancement Itemization Points",
-	["eip_info"] = "Numbers from Leion (possibly very inaccurate and shouldn't be trusted at all)", -- Not used atm
+	["eip_info"] = "Numbers from Leion (possibly very inaccurate and shouldn't be taken as gospel)", -- Not used atm
 	
-	["ep_numbers1"] = "%d (%d)",
-	["ep_numbers2"] = "%.1f (%.1f)",
+	["ep_numbers1"] = "%d (%d)",  -- Lua string.format
+	["ep_numbers2"] = "%.1f (%.1f)",  -- Lua string.format
 	
 	["bestgem_link"] = "Best gem (color %s) with current values is: %s at %.1f and %s at %.1f with BoK",
 	["bestgem_nolink"] = "Best gem (color %s) with current values is: %s at %.1f and %s at %.1f with BoK",
@@ -205,4 +231,4 @@ L_EP:RegisterTranslations("enUS", function() return {
 	["Blue"] = "blue",
 	["Any"] = "any",
 	
-} end )
+}; end );
