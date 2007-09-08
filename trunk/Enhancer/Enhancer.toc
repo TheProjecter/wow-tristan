@@ -5,7 +5,7 @@
 ## X-AuthorRealm: Frostmane[EU]
 
 ## SavedVariables: EnhancerDB
-## OptionalDeps: Ace2, DeuceCommander, Niagara, ItemBonusLib, Babble-2.2, Babble-Spell-2.2, GratuityLib, SpecialEventsEmbed, Parser-3.0, TipHookerLib
+## OptionalDeps: Ace2, DeuceCommander, Niagara, ItemBonusLib, Babble-2.2, Babble-Spell-2.2, GratuityLib, SpecialEventsEmbed, Parser-3.0, TipHookerLib, Cartographer
 
 ## Version: 1.0.$Revision$
 ## X-LastUpdate: $Date$
