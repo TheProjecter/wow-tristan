@@ -23,6 +23,11 @@ function Enhancer:CastingTotem(unit, totem, rank)
 	if (unit ~= "player") then return; end
 	if (rank == "") then rank = L[0]; end
 	
+	local totemX, totemY, totemZone;
+	if (Cartographer) then
+		totemX, totemY, totemZone = Cartographer:GetCurrentPlayerPosition();
+	end
+	
 	if (totem == Enhancer.BS["Totemic Call"]) then
 		for _, frame in ipairs(Enhancer.tFrames) do
 			self:FrameDeathPreBegin(frame);
@@ -32,7 +37,7 @@ function Enhancer:CastingTotem(unit, totem, rank)
 			totem = Enhancer.BS["Enamored Water Spirit"];
 		end
 		
-		self:CreateTotem(totem, L:GetReverseTranslation(rank));
+		self:CreateTotem(totem, L:GetReverseTranslation(rank), totemX, totemY, totemZone);
 	end
 end
 
@@ -59,10 +64,35 @@ function Enhancer:ParserMiss(info)
 	-- if (info.sourceID == "player") then self:WFTest(info); end
 end
 
-function Enhancer:SomethingDied(info)
-	-- Fired when a friendly player dies - arg1 - chat message (format: "%s dies")
-	if (self.debug) then
-		self:Print(info); -- Stoneclaw Totem VII is destroyed
-											-- You die
+function Enhancer:TotemWasDestroyed(info)
+	-- Fired when a totem dies naturally if our timer is badly synced or w/e then this is what we want
+	-- Might want to use this to end a totem rather then the timer?
+	local what = self.deformat(info, UNITDESTROYEDOTHER);
+	if (what and self.combatLog[what]) then
+		
+		local framename = self.combatLog[what];
+		local message = string.format(L["TotemDeath"], self[framename].name, self[framename].element);
+		self:ScreenMessage(message, 1, (1/2), 0);
+		self:FrameDeathPreBegin(framename);
 	end
+end
+
+function Enhancer:Zoning()
+	local inInstance, instanceType = IsInInstance();
+	if (self.lastInstanceType ~= instanceType) then
+		-- Player zoned in our out of an instance
+		self.lastInstanceType = instanceType;
+		
+		for _, framename in ipairs(Enhancer.tFrames) do
+			self:FrameDeathPreBegin(framename)
+		end
+	end
+	
+	--[[
+		"none" when outside an instance
+		"pvp" when in a battleground
+		"arena" when in an arena
+		"party" when in a 5-man instance
+		"raid" when in a raid instance
+	]]--
 end

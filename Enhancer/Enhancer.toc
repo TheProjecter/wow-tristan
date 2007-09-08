@@ -38,13 +38,13 @@ libs\Parser-3.0\Parser-3.0.lua
 libs\SpecialEvents-Aura-2.0\SpecialEvents-Aura-2.0.lua
 libs\TipHooker-1.0\TipHooker-1.0.lua
 
-locale\Localization_enUS.lua
-locale\Localization_deDE.lua
-locale\Localization_frFR.lua
-locale\Localization_koKR.lua
-locale\Localization_zhCN.lua
-locale\Localization_zhTW.lua
-locale\Localization_esES.lua
+locale\Localization-enUS.lua
+locale\Localization-deDE.lua
+locale\Localization-frFR.lua
+locale\Localization-koKR.lua
+locale\Localization-zhCN.lua
+locale\Localization-zhTW.lua
+locale\Localization-esES.lua
 
 AddOn.lua
 Console.lua

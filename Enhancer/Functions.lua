@@ -10,7 +10,7 @@ function Enhancer:CheckRunningModules()
 	end
 end
 
-function Enhancer:CreateTotem(totem, rank)
+function Enhancer:CreateTotem(totem, rank, totemX, totemY, totemZone)
 	if (type(rank) ~= "number") then
 		if (tonumber(rank)) then
 			rank = tonumber(rank);
@@ -71,8 +71,13 @@ function Enhancer:CreateTotem(totem, rank)
 	self[frame].mainframe:SetBackdropBorderColor((self[frame].borderColor and self[frame].borderColor["r"]) or 1, (self[frame].borderColor and self[frame].borderColor["g"]) or 1, (self[frame].borderColor and self[frame].borderColor["b"]) or 1, 0);
 	self:UpdateAlphaBegin(frame)
 	
+	self:SetFrameData(frame, "ZoneX", totemX)
+	self:SetFrameData(frame, "ZoneY", totemY)
+	self:SetFrameData(frame, "Zone", totemZone)
+	
 	self[frame].textcenter:SetText(Pulse);
 	self[frame].textbelow:SetText( Enhancer:FormatTime(self[frame].death - GetTime()) );
+	self[frame].textabove:SetText( "~0" );
 	if ( not (self:IsEventScheduled(frame)) ) then
 		self:ScheduleRepeatingEvent(frame, self.UpdateFrame, (1 / 2), self, frame)
 	end
@@ -118,6 +123,7 @@ function Enhancer:ToggleLock(framelist)
 			self[framename].unlocked = nil;
 			if (not self[framename].active) then
 				self[framename].textbelow:SetText("");
+				self[framename].textabove:SetText("");
 			end
 		else
 			if (self[framename].mainframe:IsVisible()) then
@@ -149,6 +155,7 @@ function Enhancer:Resize()
 		self[frame].cooldown:SetHeight(Enhancer.db.profile.framesize - (Enhancer.db.profile.framesize / self[frame].cooldown.divider));
 		
 		self[frame].textbelow:SetWidth(Enhancer.db.profile.framesize);
+		self[frame].textabove:SetWidth(Enhancer.db.profile.framesize * (15/10));
 		
 		self[frame].textcenter:SetHeight(Enhancer.db.profile.framesize);
 		self[frame].textcenter:SetWidth(Enhancer.db.profile.framesize);
@@ -168,10 +175,13 @@ function Enhancer:UpdateFont()
 	
 	for _, frame in ipairs(Enhancer.aFrames) do
 		self[frame].textbelow:SetHeight(Enhancer.db.profile.belowFontSize + 10);
+		self[frame].textabove:SetHeight(Enhancer.db.profile.belowFontSize + 10);
 	end
 end
 
 function Enhancer:FormatTime(seconds)
+	if (seconds < 0) then seconds = 0; end
+	
 	seconds = seconds;
 	seconds = floor(seconds);
 	secs = mod(seconds, 60);
