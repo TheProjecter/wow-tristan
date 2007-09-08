@@ -75,21 +75,21 @@ function Enhancer:CreateButton(globalname, bgFile, xOffset, yOffset)
 	object:SetPoint("CENTER", globalname.."Frame", "CENTER", 0, 0);
 	retVal["cooldown"] = object;
 	
-	--[[ Create a fontstring below ]]
+	--[[ Create a fontstring above ]]
 	object = retVal["mainframe"]:CreateFontString(globalname.."FrameText1", "OVERLAY");
 	object:SetFontObject(Enhancer.db.profile.belowFont);
 	object:ClearAllPoints();
 	object:SetTextColor(1, 1, 1, 1);
-	object:SetWidth(Enhancer.db.profile.framesize);
+	object:SetWidth(Enhancer.db.profile.framesize * (15/10));
 	object:SetHeight(Enhancer.db.profile.belowFontSize + 10);
-	object:SetPoint("TOP", globalname.."Frame", "BOTTOM");
+	object:SetPoint("BOTTOM", globalname.."Frame", "TOP");
 	object:SetJustifyH("CENTER");
 	object:SetJustifyV("MIDDLE");
 	object:SetText("");
 	object:SetAlpha(Enhancer.db.profile.oocinactiveAlpha);
-	retVal["textbelow"] = object;
+	retVal["textabove"] = object;
 	
-	--[[ Create the 2nd fontstring ]]
+	--[[ Create a fontstring in center ]]
 	object = retVal["mainframe"]:CreateFontString(globalname.."FrameText2", "OVERLAY");
 	object:SetFontObject(Enhancer.db.profile.centerFont);
 	object:ClearAllPoints();
@@ -105,6 +105,20 @@ function Enhancer:CreateButton(globalname, bgFile, xOffset, yOffset)
 	object:SetShadowOffset(0.8, -0.8)
 	retVal["textcenter"] = object;
 	
+	--[[ Create a fontstring below ]]
+	object = retVal["mainframe"]:CreateFontString(globalname.."FrameText3", "OVERLAY");
+	object:SetFontObject(Enhancer.db.profile.belowFont);
+	object:ClearAllPoints();
+	object:SetTextColor(1, 1, 1, 1);
+	object:SetWidth(Enhancer.db.profile.framesize);
+	object:SetHeight(Enhancer.db.profile.belowFontSize + 10);
+	object:SetPoint("TOP", globalname.."Frame", "BOTTOM");
+	object:SetJustifyH("CENTER");
+	object:SetJustifyV("MIDDLE");
+	object:SetText("");
+	object:SetAlpha(Enhancer.db.profile.oocinactiveAlpha);
+	retVal["textbelow"] = object;
+	
 	retVal["anchor"]:Hide();
 	retVal["mainframe"]:Hide();
 	
@@ -116,16 +130,16 @@ function Enhancer:CreateButton(globalname, bgFile, xOffset, yOffset)
 	return retVal, globalname;
 end
 
-function Enhancer:MakeMoveable(frame)
-	self[frame].anchor:SetScript("OnDragStart",
+function Enhancer:MakeMoveable(framename)
+	self[framename].anchor:SetScript("OnDragStart",
     function()
-			self[frame].anchor:StartMoving();
+			self[framename].anchor:StartMoving();
 		end );
 	
-	self[frame].anchor:SetScript("OnDragStop",
+	self[framename].anchor:SetScript("OnDragStop",
 		function()
-			self[frame].anchor:StopMovingOrSizing();
-			Enhancer:SavePos(frame, self[frame].anchor);
+			self[framename].anchor:StopMovingOrSizing();
+			Enhancer:SavePos(framename, self[framename].anchor);
 		end );
 end
 
@@ -217,6 +231,7 @@ function Enhancer:HideFrame(framelist)
 		
 		self[framename].active = false;
 		self[framename].textbelow:SetText("");
+		self[framename].textabove:SetText("");
 		self[framename].textcenter:SetText("");
 		self[framename].mainframe:Hide();
 		self[framename].anchor:Hide();
@@ -235,114 +250,125 @@ function Enhancer:UpdateAlphaBegin(framelist)
 	end
 end
 
-function Enhancer:UpdateAlphaEnd(frame)
-	if (not self[frame]) then return; end
+function Enhancer:UpdateAlphaEnd(framename)
+	if (not self[framename]) then return; end
 	
-	local r, g, b, a = self[frame].mainframe:GetBackdropColor();
+	local r, g, b, a = self[framename].mainframe:GetBackdropColor();
 	
-	if (self[frame].unlocked) then
+	if (self[framename].unlocked) then
 		-- This frame has been unlocked for moving about so make everything visible for it :)
-		self[frame].textcenter:SetAlpha(1);
-		self[frame].textbelow:SetAlpha(1);
-		self[frame].mainframe:SetBackdropColor(r, g, b, 1);
-	elseif (self[frame].empty) then
+		self[framename].textcenter:SetAlpha(1);
+		self[framename].textbelow:SetAlpha(1);
+		self[framename].textabove:SetAlpha(1);
+		self[framename].mainframe:SetBackdropColor(r, g, b, 1);
+	elseif (self[framename].empty) then
 		
 		-- At the moment this frame can't hold any data (Main Hand/Off Hand enchants for example)
-		self[frame].textcenter:SetAlpha(0);
-		self[frame].textbelow:SetAlpha(0);
-		self[frame].mainframe:SetBackdropColor(r, g, b, 0);
+		self[framename].textcenter:SetAlpha(0);
+		self[framename].textbelow:SetAlpha(0);
+		self[framename].textabove:SetAlpha(0);
+		self[framename].mainframe:SetBackdropColor(r, g, b, 0);
 		
-	elseif ( (frame == "reincarnation"  or frame == "windfury") and self.db.profile.specialAlpha ) then
+	elseif ( (framename == "reincarnation"  or framename == "windfury") and self.db.profile.specialAlpha ) then
 		
 		-- Special Handling of these frames
-		if (self[frame].active) then
-			self[frame].textcenter:SetAlpha(Enhancer.db.profile.combatAlpha);
-			self[frame].textbelow:SetAlpha(Enhancer.db.profile.combatAlpha);
-			self[frame].mainframe:SetBackdropColor(r, g, b, Enhancer.db.profile.combatAlpha);
+		if (self[framename].active) then
+			self[framename].textcenter:SetAlpha(Enhancer.db.profile.combatAlpha);
+			self[framename].textbelow:SetAlpha(Enhancer.db.profile.combatAlpha);
+			self[framename].textabove:SetAlpha(Enhancer.db.profile.combatAlpha);
+			self[framename].mainframe:SetBackdropColor(r, g, b, Enhancer.db.profile.combatAlpha);
 		else
-			self[frame].textcenter:SetAlpha(Enhancer.db.profile.combatinactiveAlpha);
-			self[frame].textbelow:SetAlpha(Enhancer.db.profile.combatinactiveAlpha);
-			self[frame].mainframe:SetBackdropColor(r, g, b, Enhancer.db.profile.combatinactiveAlpha);
+			self[framename].textcenter:SetAlpha(Enhancer.db.profile.combatinactiveAlpha);
+			self[framename].textbelow:SetAlpha(Enhancer.db.profile.combatinactiveAlpha);
+			self[framename].textabove:SetAlpha(Enhancer.db.profile.combatinactiveAlpha);
+			self[framename].mainframe:SetBackdropColor(r, g, b, Enhancer.db.profile.combatinactiveAlpha);
 		end
 	
-	elseif ( Enhancer.oFrames[frame] and self.db.profile.specialAlpha ) then
+	elseif ( Enhancer.oFrames[framename] and self.db.profile.specialAlpha ) then
 	
 		-- Special Handling of these frames (on or off)
-		if (self[frame].active) then
-			self[frame].textcenter:SetAlpha(Enhancer.db.profile.combatAlpha);
-			self[frame].textbelow:SetAlpha(Enhancer.db.profile.combatAlpha);
-			self[frame].mainframe:SetBackdropColor(r, g, b, Enhancer.db.profile.combatAlpha);
+		if (self[framename].active) then
+			self[framename].textcenter:SetAlpha(Enhancer.db.profile.combatAlpha);
+			self[framename].textbelow:SetAlpha(Enhancer.db.profile.combatAlpha);
+			self[framename].textabove:SetAlpha(Enhancer.db.profile.combatAlpha);
+			self[framename].mainframe:SetBackdropColor(r, g, b, Enhancer.db.profile.combatAlpha);
 		else
-			self[frame].textcenter:SetAlpha(Enhancer.db.profile.oocinactiveAlpha);
-			self[frame].textbelow:SetAlpha(Enhancer.db.profile.oocinactiveAlpha);
-			self[frame].mainframe:SetBackdropColor(r, g, b, Enhancer.db.profile.oocinactiveAlpha);
+			self[framename].textcenter:SetAlpha(Enhancer.db.profile.oocinactiveAlpha);
+			self[framename].textbelow:SetAlpha(Enhancer.db.profile.oocinactiveAlpha);
+			self[framename].textabove:SetAlpha(Enhancer.db.profile.oocinactiveAlpha);
+			self[framename].mainframe:SetBackdropColor(r, g, b, Enhancer.db.profile.oocinactiveAlpha);
 		end
 	
-	elseif (self[frame].active) then
+	elseif (self[framename].active) then
 		
 		if (self.inCombat) then
-			self[frame].textcenter:SetAlpha(Enhancer.db.profile.combatAlpha);
-			self[frame].textbelow:SetAlpha(Enhancer.db.profile.combatAlpha);
-			self[frame].mainframe:SetBackdropColor(r, g, b, Enhancer.db.profile.combatAlpha);
+			self[framename].textcenter:SetAlpha(Enhancer.db.profile.combatAlpha);
+			self[framename].textbelow:SetAlpha(Enhancer.db.profile.combatAlpha);
+			self[framename].textabove:SetAlpha(Enhancer.db.profile.combatAlpha);
+			self[framename].mainframe:SetBackdropColor(r, g, b, Enhancer.db.profile.combatAlpha);
 		else
-			self[frame].textcenter:SetAlpha(Enhancer.db.profile.oocombatAlpha);
-			self[frame].textbelow:SetAlpha(Enhancer.db.profile.oocombatAlpha);
-			self[frame].mainframe:SetBackdropColor(r, g, b, Enhancer.db.profile.oocombatAlpha);
+			self[framename].textcenter:SetAlpha(Enhancer.db.profile.oocombatAlpha);
+			self[framename].textbelow:SetAlpha(Enhancer.db.profile.oocombatAlpha);
+			self[framename].textabove:SetAlpha(Enhancer.db.profile.oocombatAlpha);
+			self[framename].mainframe:SetBackdropColor(r, g, b, Enhancer.db.profile.oocombatAlpha);
 		end
 		
 	else
 		
 		if (self.inCombat) then
-			self[frame].textcenter:SetAlpha(Enhancer.db.profile.combatinactiveAlpha);
-			self[frame].textbelow:SetAlpha(Enhancer.db.profile.combatinactiveAlpha);
-			self[frame].mainframe:SetBackdropColor(r, g, b, Enhancer.db.profile.combatinactiveAlpha);
+			self[framename].textcenter:SetAlpha(Enhancer.db.profile.combatinactiveAlpha);
+			self[framename].textbelow:SetAlpha(Enhancer.db.profile.combatinactiveAlpha);
+			self[framename].textabove:SetAlpha(Enhancer.db.profile.combatinactiveAlpha);
+			self[framename].mainframe:SetBackdropColor(r, g, b, Enhancer.db.profile.combatinactiveAlpha);
 		else
-			self[frame].textcenter:SetAlpha(Enhancer.db.profile.oocinactiveAlpha);
-			self[frame].textbelow:SetAlpha(Enhancer.db.profile.oocinactiveAlpha);
-			self[frame].mainframe:SetBackdropColor(r, g, b, Enhancer.db.profile.oocinactiveAlpha);
+			self[framename].textcenter:SetAlpha(Enhancer.db.profile.oocinactiveAlpha);
+			self[framename].textbelow:SetAlpha(Enhancer.db.profile.oocinactiveAlpha);
+			self[framename].textabove:SetAlpha(Enhancer.db.profile.oocinactiveAlpha);
+			self[framename].mainframe:SetBackdropColor(r, g, b, Enhancer.db.profile.oocinactiveAlpha);
 		end
 		
 	end
 end
 
-function Enhancer:FrameDeathPreBegin(frame)
+function Enhancer:FrameDeathPreBegin(framename)
 	-- Stupid hack since all frames don't want the middle number erased (Reincarnation)
-	self[frame].textcenter:SetText("");
-	self:FrameDeathBegin(frame);
+	self[framename].textcenter:SetText("");
+	self:FrameDeathBegin(framename);
 end
 
-function Enhancer:FrameDeathBegin(frame)
-	if (self[frame] and self[frame].active) then
-		self[frame].active = nil;
-		self[frame].textbelow:SetText("");
+function Enhancer:FrameDeathBegin(framename)
+	if (self[framename] and self[framename].active) then
+		self[framename].active = nil;
+		self[framename].textbelow:SetText("");
+		self[framename].textabove:SetText("");
 		
-		self:AddPulseDeath(frame);
-		self:AddPulse(frame);
+		self:AddPulseDeath(framename);
+		self:AddPulse(framename);
 		if (self.db.profile.playSound) then
-			PlaySoundFile("Interface\\Addons\\Enhancer\\sounds\\" .. frame .. ".mp3");
+			PlaySoundFile("Interface\\Addons\\Enhancer\\sounds\\" .. framename .. ".mp3");
 		end
 	else
-		self:FrameDeathEnd(frame);
+		self:FrameDeathEnd(framename);
 	end
 end
 
-function Enhancer:FrameDeathEnd(frame)
-	if (not self[frame]) then return; end
+function Enhancer:FrameDeathEnd(framename)
+	if (not self[framename]) then return; end
 	
-	self:ChangeIcon(frame, self[frame].mainframe.bgFileDefault);
+	self:ChangeIcon(framename, self[framename].mainframe.bgFileDefault);
 	
-	self[frame].mainframe:SetBackdropBorderColor((self[frame].borderColor and self[frame].borderColor["r"]) or 1, (self[frame].borderColor and self[frame].borderColor["g"]) or 1, (self[frame].borderColor and self[frame].borderColor["b"]) or 1, 0);
+	self[framename].mainframe:SetBackdropBorderColor((self[framename].borderColor and self[framename].borderColor["r"]) or 1, (self[framename].borderColor and self[framename].borderColor["g"]) or 1, (self[framename].borderColor and self[framename].borderColor["b"]) or 1, 0);
 	
 	for logName, logFrame in pairs(self.combatLog) do
-		if (logFrame == frame) then
+		if (logFrame == framename) then
 			self.combatLog[logName] = nil;
 		end
 	end
 	
-	self[frame].data = nil; --[[ Temp storage that we clear entirely on FrameDeathEnd ]]--
-	self[frame].data = {};
+	self[framename].data = nil; --[[ Temp storage that we clear entirely on FrameDeathEnd ]]--
+	self[framename].data = {};
 	
-	self:UpdateAlphaBegin(frame);
+	self:UpdateAlphaBegin(framename);
 end
 
 function Enhancer:SetFrameData(framename, key, value)
@@ -356,36 +382,55 @@ function Enhancer:GetFrameData(framename, key, default)
 	return (self[framename] and self[framename].data and self[framename].data[key]) or default;
 end
 
-function Enhancer:UpdateFrame(frame)
-	if (not self[frame].active) then return; end
+function Enhancer:UpdateFrame(framename)
+	if (not self[framename].active) then return; end
 	
-	if (GetTime() >= self[frame].death) then
-		local message = string.format(L["TotemDeath"], self[frame].name, self[frame].element);
+	if (GetTime() >= (self[framename].death + 2)) then
+		-- This'll be caught in events but in case we are out of range then destroy it 3 seconds to late
+		local message = string.format(L["TotemDeath"], self[framename].name, self[framename].element);
 		self:ScreenMessage(message, 1, (1/2), 0);
 		
-		self:FrameDeathPreBegin(frame);
+		self:FrameDeathPreBegin(framename);
 		return;
 	end
 	
-	if (self[frame].warn and GetTime() >= self[frame].warn) then
-		self[frame].warn = nil;
-		local message = string.format(L["TotemExpiring"], self[frame].name, self[frame].element);
+	-- Do range if Cartographer is installed and active
+	if (Cartographer) then
+		local totemX = self:GetFrameData(framename, "ZoneX");
+		local totemY = self:GetFrameData(framename, "ZoneY");
+		local totemZone = self:GetFrameData(framename, "Zone");
+		
+		if (totemX and totemY and totemZone) then
+			local distance = Cartographer:GetDistanceToPoint(totemX, totemY, totemZone);
+			self[framename].textabove:SetText( "~" .. string.format("%.1f", distance) .. "~" );
+			
+			-- Destroy on too much distance? what range is ok?
+			if (distance > 400 and false) then
+				self:FrameDeathPreBegin(framename);
+				return;
+			end
+		end
+	end
+	
+	if (self[framename].warn and GetTime() >= self[framename].warn) then
+		self[framename].warn = nil;
+		local message = string.format(L["TotemExpiring"], self[framename].name, self[framename].element);
 		self:ScreenMessage(message, 1, 1, 0);
 	end
 	
-	self[frame].textbelow:SetText( Enhancer:FormatTime(self[frame].death - GetTime()) );
-	self[frame].lived = self[frame].lived + 1;
-	if (self[frame].pulse) then
-		if ( self[frame].pulse - GetTime() <= 0 ) then
-			self:AddPulse(frame);
-			self[frame].pulse = self[frame].pulse + self[frame].pulseAdd;
+	self[framename].textbelow:SetText( Enhancer:FormatTime(self[framename].death - GetTime()) );
+	self[framename].lived = self[framename].lived + 1;
+	if (self[framename].pulse) then
+		if ( self[framename].pulse - GetTime() <= 0 ) then
+			self:AddPulse(framename);
+			self[framename].pulse = self[framename].pulse + self[framename].pulseAdd;
 		end
 		
-		self[frame].textcenter:SetText( ceil(self[frame].pulse - GetTime()) );
+		self[framename].textcenter:SetText( ceil(self[framename].pulse - GetTime()) );
 	end
 	
-	if ( not (self:IsEventScheduled(frame)) ) then
-		self:ScheduleRepeatingEvent(frame, self.UpdateFrame, 1, self, frame)
+	if ( not (self:IsEventScheduled(framename)) ) then
+		self:ScheduleRepeatingEvent(framename, self.UpdateFrame, 1, self, framename)
 	end
 end
 
@@ -402,23 +447,23 @@ function Enhancer:ChangeIcon(framename, icon)
 	self:UpdateAlphaBegin(framename)
 end
 
-function Enhancer:AddPulse(frame)
+function Enhancer:AddPulse(framename)
 	if (not self.pulsing) then self.pulsing = {}; end
-	self.pulsing[frame] = 0;
+	self.pulsing[framename] = 0;
 	
 	EnhancerPulseFrame:SetScript("OnUpdate", function()
 		Enhancer:Pulse();
 	end)
 end
 
-function Enhancer:RemPulse(frame)
+function Enhancer:RemPulse(framename)
 	if (not self.pulsing) then self.pulsing = {}; end
-	self.pulsing[frame] = nil;
+	self.pulsing[framename] = nil;
 end
 
-function Enhancer:AddPulseDeath(frame)
+function Enhancer:AddPulseDeath(framename)
 	if (not self.pulsingDeath) then self.pulsingDeath = {}; end
-	self.pulsingDeath[frame] = true;
+	self.pulsingDeath[framename] = true;
 end
 
 Enhancer.onewayPulses = 5;
@@ -426,46 +471,46 @@ Enhancer.alterationPulse = (1 / 10);
 function Enhancer:Pulse()
 	local canStop = true;
 	
-	for frame, count in pairs(self.pulsing) do
+	for framename, count in pairs(self.pulsing) do
 		count = count + 1;
 		
 		if (count >= (Enhancer.onewayPulses * 2)) then
-			self[frame].mainframe:SetHeight( Enhancer.db.profile.framesize );
-			self[frame].mainframe:SetWidth( Enhancer.db.profile.framesize );
-			self[frame].mainframe:SetBackdropBorderColor(1, 1, 1, 0);
-			self[frame].cooldown:SetWidth(Enhancer.db.profile.framesize - (Enhancer.db.profile.framesize / self[frame].cooldown.divider));
-			self[frame].cooldown:SetHeight(Enhancer.db.profile.framesize - (Enhancer.db.profile.framesize / self[frame].cooldown.divider));
+			self[framename].mainframe:SetHeight( Enhancer.db.profile.framesize );
+			self[framename].mainframe:SetWidth( Enhancer.db.profile.framesize );
+			self[framename].mainframe:SetBackdropBorderColor(1, 1, 1, 0);
+			self[framename].cooldown:SetWidth(Enhancer.db.profile.framesize - (Enhancer.db.profile.framesize / self[framename].cooldown.divider));
+			self[framename].cooldown:SetHeight(Enhancer.db.profile.framesize - (Enhancer.db.profile.framesize / self[framename].cooldown.divider));
 			
-			if (self.pulsingDeath and self.pulsingDeath[frame]) then
-				self.pulsingDeath[frame] = nil;
-				self:FrameDeathEnd(frame);
+			if (self.pulsingDeath and self.pulsingDeath[framename]) then
+				self.pulsingDeath[framename] = nil;
+				self:FrameDeathEnd(framename);
 			end
-			self:RemPulse(frame);
+			self:RemPulse(framename);
 		else
 			
 			if (Enhancer.db.profile.borderPulse) then
-				self[frame].mainframe:SetBackdropBorderColor((self[frame].borderColor and self[frame].borderColor["r"]) or 1, (self[frame].borderColor and self[frame].borderColor["g"]) or 1, (self[frame].borderColor and self[frame].borderColor["b"]) or 1, 1);
+				self[framename].mainframe:SetBackdropBorderColor((self[framename].borderColor and self[framename].borderColor["r"]) or 1, (self[framename].borderColor and self[framename].borderColor["g"]) or 1, (self[framename].borderColor and self[framename].borderColor["b"]) or 1, 1);
 			end
 			
 			if (Enhancer.db.profile.growingPulse) then
-				local mainSize = self[frame].mainframe:GetHeight();
-				local cdSize = self[frame].cooldown:GetHeight();
+				local mainSize = self[framename].mainframe:GetHeight();
+				local cdSize = self[framename].cooldown:GetHeight();
 				if (count <= Enhancer.onewayPulses) then
 					-- Going Up
-					self[frame].mainframe:SetHeight( mainSize + (mainSize * Enhancer.alterationPulse) );
-					self[frame].mainframe:SetWidth( mainSize + (mainSize * Enhancer.alterationPulse) );
-					self[frame].cooldown:SetHeight( cdSize + (cdSize * Enhancer.alterationPulse) );
-					self[frame].cooldown:SetWidth( cdSize + (cdSize * Enhancer.alterationPulse) );
+					self[framename].mainframe:SetHeight( mainSize + (mainSize * Enhancer.alterationPulse) );
+					self[framename].mainframe:SetWidth( mainSize + (mainSize * Enhancer.alterationPulse) );
+					self[framename].cooldown:SetHeight( cdSize + (cdSize * Enhancer.alterationPulse) );
+					self[framename].cooldown:SetWidth( cdSize + (cdSize * Enhancer.alterationPulse) );
 				else
 					-- Going Down
-					self[frame].mainframe:SetHeight( mainSize - (mainSize * Enhancer.alterationPulse) );
-					self[frame].mainframe:SetWidth( mainSize - (mainSize * Enhancer.alterationPulse) );
-					self[frame].cooldown:SetHeight( cdSize - (cdSize * Enhancer.alterationPulse) );
-					self[frame].cooldown:SetWidth( cdSize - (cdSize * Enhancer.alterationPulse) );
+					self[framename].mainframe:SetHeight( mainSize - (mainSize * Enhancer.alterationPulse) );
+					self[framename].mainframe:SetWidth( mainSize - (mainSize * Enhancer.alterationPulse) );
+					self[framename].cooldown:SetHeight( cdSize - (cdSize * Enhancer.alterationPulse) );
+					self[framename].cooldown:SetWidth( cdSize - (cdSize * Enhancer.alterationPulse) );
 				end
 			end
 			
-			self.pulsing[frame] = count;
+			self.pulsing[framename] = count;
 			canStop = false;
 		end
 	end
