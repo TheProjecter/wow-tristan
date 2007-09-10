@@ -395,19 +395,25 @@ function Enhancer:UpdateFrame(framename)
 	end
 	
 	-- Do range if Cartographer is installed and active
-	if (Cartographer) then
+	if (not self.coords) then
+		self[framename].textabove:SetText("");
+	elseif (Cartographer) then
 		local totemX = self:GetFrameData(framename, "ZoneX");
 		local totemY = self:GetFrameData(framename, "ZoneY");
 		local totemZone = self:GetFrameData(framename, "Zone");
 		
 		if (totemX and totemY and totemZone) then
 			local distance = Cartographer:GetDistanceToPoint(totemX, totemY, totemZone);
-			self[framename].textabove:SetText( "~" .. string.format("%.1f", distance) .. "~" );
-			
-			-- Destroy on too much distance? what range is ok?
-			if (distance > 400 and false) then
-				self:FrameDeathPreBegin(framename);
-				return;
+			if (distance) then
+				self[framename].textabove:SetText( "~" .. string.format("%.1f", distance) .. "~" );
+				
+				-- Destroy on too much distance? what range is ok?
+				if (distance > 400 and false) then
+					self:FrameDeathPreBegin(framename);
+					return;
+				end
+			else
+				self[framename].textabove:SetText("-");
 			end
 		end
 	end
