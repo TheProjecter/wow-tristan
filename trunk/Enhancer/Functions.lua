@@ -77,7 +77,6 @@ function Enhancer:CreateTotem(totem, rank, totemX, totemY, totemZone)
 	
 	self[frame].textcenter:SetText(Pulse);
 	self[frame].textbelow:SetText( Enhancer:FormatTime(self[frame].death - GetTime()) );
-	self[frame].textabove:SetText( "~0" );
 	if ( not (self:IsEventScheduled(frame)) ) then
 		self:ScheduleRepeatingEvent(frame, self.UpdateFrame, (1 / 2), self, frame)
 	end

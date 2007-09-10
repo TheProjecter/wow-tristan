@@ -32,7 +32,7 @@ end
 
 function Enhancer:OnEnable()
 	self.PlayerLevel = UnitLevel("player");
-	_, self.lastInstanceType = IsInInstance();
+	self:Zoning();
 	
 	-- Register our events :>
 	self:RegisterEvent("PLAYER_REGEN_ENABLED", "OutOfCombat");
@@ -43,6 +43,7 @@ function Enhancer:OnEnable()
 		self:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED", "CastingTotem");
 		self:RegisterEvent("CHAT_MSG_COMBAT_FRIENDLY_DEATH", "TotemWasDestroyed");
 		self:RegisterEvent("ZONE_CHANGED", "Zoning"); -- PLAYER_LEAVING_WORLD
+		self:RegisterEvent("ZONE_CHANGED_NEW_AREA", "Zoning"); -- PLAYER_LEAVING_WORLD
 		
 		self:RegisterParserEvent({
 			eventType = 'Damage',

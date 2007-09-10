@@ -24,7 +24,7 @@ function Enhancer:CastingTotem(unit, totem, rank)
 	if (rank == "") then rank = L[0]; end
 	
 	local totemX, totemY, totemZone;
-	if (Cartographer) then
+	if (Cartographer and self.coords) then
 		totemX, totemY, totemZone = Cartographer:GetCurrentPlayerPosition();
 	end
 	
@@ -79,15 +79,20 @@ end
 
 function Enhancer:Zoning()
 	local inInstance, instanceType = IsInInstance();
-	if (self.lastInstanceType ~= instanceType) then
+	if (self.currentInstanceType ~= instanceType) then
 		-- Player zoned in our out of an instance
-		self.lastInstanceType = instanceType;
+		self.currentInstanceType = instanceType;
+		
+		if (instanceType == "none" or instanceType == "pvp") then
+			self.coords = true;
+		else
+			self.coords = nil;
+		end
 		
 		for _, framename in ipairs(Enhancer.tFrames) do
 			self:FrameDeathPreBegin(framename)
 		end
 	end
-	
 	--[[
 		"none" when outside an instance
 		"pvp" when in a battleground
