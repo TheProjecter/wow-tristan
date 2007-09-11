@@ -188,6 +188,7 @@ L_Main:RegisterTranslations("enUS", function() return {
 	["hway_cmd"] = "HealingWay",
 	["hway_desc"] = "Toggles CandyBars for Healing Way",
 	["hway_yougain"] = "You gain", -- as it appears in combat log when you gain a buff!
+	["hway_anchortext"] = "Alt-Click to move Anchor",
 
 }; end );
 
