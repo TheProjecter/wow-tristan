@@ -1,4 +1,4 @@
-EnhancerHWay = Enhancer:NewModule("HWay", "AceEvent-2.0", "CandyBar-2.0");
+EnhancerHWay = Enhancer:NewModule("HWay", "AceEvent-2.0", "CandyBar-2.0", "AceHook-2.1");
 EnhancerHWay.DefaultState = false;
 Enhancer:SetModuleDefaultState("HWay", EnhancerHWay.DefaultState);
 EnhancerHWay.SpellName = Enhancer.BS["Healing Way"];
@@ -25,7 +25,8 @@ function EnhancerHWay:OnEnable()
 	self:RegisterEvent("UNIT_AURA", "Aura1");
 	self:RegisterEvent("UNIT_AURASTATE", "Aura2");
 	
-	-- self:ScheduleEvent("DelayManualScan", self.ManualScan, 5, self)
+	-- self:ScheduleEvent("DelayManualScan", self.ManualScan, 5, self);
+	self:Hook(Enhancer, "ToggleLock", "LockHook");
 end
 
 function EnhancerHWay:Aura1(...)
@@ -122,8 +123,13 @@ function EnhancerHWay:RestorePosition()
 	f:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", x, y)
 end
 
+function EnhancerHWay:LockHook(...)
+	self.hooks[Enhancer]["ToggleLock"](...);
+	self:ToggleAnchorFrame();
+end
+
 function EnhancerHWay:ToggleAnchorFrame()
-	if Enhancer.db.profile.bonus.hway.anchorframehidden then
+	if Enhancer.db.profile.locked then
 		self.anchorframe:Hide()
 	else
 		self.anchorframe:Show()
@@ -139,23 +145,6 @@ function EnhancerHWay:ToggleView()
 		if not self.anchorframe then self:SetupFrames() end
 		self.anchorframe:Show()
 	end
-end
-
-function EnhancerHWay:NameToUnit(name)
-	if (not name) then return nil; end
-	
-	if (name == UnitName("player")) then
-		return "player";
-	elseif (UnitInRaid("player")) then
-		for i = 1, 40 do
-			if (UnitName("raid"..i) == name) then return "raid"..i; end
-		end
-	else
-		for i = 1, 5 do
-			if (UnitName("party"..i) == name) then return "party"..i; end
-		end
-	end
-	return nil;
 end
 
 function EnhancerHWay:PeriodicBuff(info)
@@ -176,7 +165,7 @@ function EnhancerHWay:PeriodicBuff(info)
 			count = 1;
 		end
 		
-		unit = self:NameToUnit(who);
+		unit = Enhancer:NameToUnit(who);
 	end
 	
 	if (unit and what and count) then

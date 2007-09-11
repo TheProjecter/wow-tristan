@@ -385,8 +385,7 @@ end
 function Enhancer:UpdateFrame(framename)
 	if (not self[framename].active) then return; end
 	
-	if (GetTime() >= (self[framename].death + 2)) then
-		-- This'll be caught in events but in case we are out of range then destroy it 3 seconds to late
+	if (GetTime() >= self[framename].death) then
 		local message = string.format(L["TotemDeath"], self[framename].name, self[framename].element);
 		self:ScreenMessage(message, 1, (1/2), 0);
 		

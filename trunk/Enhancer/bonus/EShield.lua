@@ -46,28 +46,11 @@ function EnhancerEShield:AuraChange(unit)
 	-- self.UpdateCount = true;
 end
 
-function EnhancerEShield:NameToUnit(name)
-	if (not name) then return nil; end
-	
-	if (name == UnitName("player")) then
-		return "player";
-	elseif (UnitInRaid("player")) then
-		for i = 1, 40 do
-			if (UnitName("raid"..i) == name) then return "raid"..i; end
-		end
-	else
-		for i = 1, 5 do
-			if (UnitName("party"..i) == name) then return "party"..i; end
-		end
-	end
-	return nil;
-end
-
 function EnhancerEShield:SpellCastSent(unit, spell, rank, target)
 	if (unit ~= "player") then return; end
 	
-	if (spell == EnhancerEShield.SpellName and self:NameToUnit(target)) then
-		self.EShieldUnit = self:NameToUnit(target);
+	if (spell == EnhancerEShield.SpellName and Enhancer:NameToUnit(target)) then
+		self.EShieldUnit = Enhancer:NameToUnit(target);
 		self.EShieldName = target;
 	end
 end
@@ -209,9 +192,9 @@ function EnhancerEShield:UpdateEShield()
 	
 	if (not UnitExists(unit)) then
 		-- Here we have trouble the unit does not exist (Disconnect / Left Party / unit changed by many swaps in raid or w/e etc)
-		if (self:NameToUnit(Enhancer:GetFrameData(FrameName, "name"))) then
+		if (Enhancer:NameToUnit(Enhancer:GetFrameData(FrameName, "name"))) then
 			-- Ok, unit changed so all is now fine (hopefully)
-			unit = self:NameToUnit(Enhancer:GetFrameData(FrameName, "name"));
+			unit = Enhancer:NameToUnit(Enhancer:GetFrameData(FrameName, "name"));
 			Enhancer:SetFrameData(FrameName, "unit", unit);
 		else
 			-- Can't find name nor unit so we lost track of our buff
