@@ -189,7 +189,11 @@ L_Main:RegisterTranslations("enUS", function() return {
 	["hway_desc"] = "Toggles CandyBars for Healing Way",
 	["hway_yougain"] = "You gain", -- as it appears in combat log when you gain a buff!
 	["hway_anchortext"] = "Alt-Click to move Anchor",
-
+	
+	["aep_import_crazyshaman_cmd"] = "CrazyShamanImport",
+	["aep_import_crazyshaman_desc"] = "Import value string from Crazy Shaman's DPS & AEP calculator ( http://theorycraft.narod.ru/ )",
+	["aep_import_warning"] = "Some AEP values was not included, please check the following AEP values (%s)",
+	
 }; end );
 
 local L_EP = AceLibrary("AceLocale-2.2"):new("EnhancerEP")

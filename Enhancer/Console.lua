@@ -19,6 +19,9 @@ local function SpacerTable()
 end
 --[[ End: I LOVE THESE ]]--
 
+local epMin = 0;
+local epMax = 5;
+local epStep = (1 / 10);
 local defaults = {
 	locked = true,
 	framesize = 35,
@@ -319,7 +322,7 @@ function Enhancer:RegisterSlashCommands()
 							[L["ATTACKPOWER"]] = {
 								name = L["ATTACKPOWER"], type = "range",
 								desc = L["ATTACKPOWER"],
-								min = 0, max = 5, step = (1 / 10),
+								min = epMin, max = epMax, step = epStep,
 								get = function() return Enhancer.db.profile.AEPNumbers.ATTACKPOWER; end,
 								set = function(v)
 									Enhancer.db.profile.AEPNumbers.ATTACKPOWER = v;
@@ -333,7 +336,7 @@ function Enhancer:RegisterSlashCommands()
 							[L["STR"]] = {
 								name = L["STR"], type = "range",
 								desc = L["STR"],
-								min = 0, max = 5, step = (1 / 10),
+								min = epMin, max = epMax, step = epStep,
 								get = function() return Enhancer.db.profile.AEPNumbers.STR; end,
 								set = function(v)
 									Enhancer.db.profile.AEPNumbers.STR = v;
@@ -344,7 +347,7 @@ function Enhancer:RegisterSlashCommands()
 							[L["AGI"]] = {
 								name = L["AGI"], type = "range",
 								desc = L["AGI"],
-								min = 0, max = 5, step = (1 / 10),
+								min = epMin, max = epMax, step = epStep,
 								get = function() return Enhancer.db.profile.AEPNumbers.AGI; end,
 								set = function(v)
 									Enhancer.db.profile.AEPNumbers.AGI = v;
@@ -355,7 +358,7 @@ function Enhancer:RegisterSlashCommands()
 							[L["STA"]] = {
 								name = L["STA"], type = "range",
 								desc = L["STA"],
-								min = 0, max = 5, step = (1 / 10),
+								min = epMin, max = epMax, step = epStep,
 								get = function() return Enhancer.db.profile.AEPNumbers.STA; end,
 								set = function(v)
 									Enhancer.db.profile.AEPNumbers.STA = v;
@@ -369,7 +372,7 @@ function Enhancer:RegisterSlashCommands()
 							[L["CR_CRIT"]] = {
 								name = L["CR_CRIT"], type = "range",
 								desc = L["CR_CRIT"],
-								min = 0, max = 5, step = (1 / 10),
+								min = epMin, max = epMax, step = epStep,
 								get = function() return Enhancer.db.profile.AEPNumbers.CR_CRIT; end,
 								set = function(v)
 									Enhancer.db.profile.AEPNumbers.CR_CRIT = v;
@@ -380,7 +383,7 @@ function Enhancer:RegisterSlashCommands()
 							[L["CR_HIT"]] = {
 								name = L["CR_HIT"], type = "range",
 								desc = L["CR_HIT"],
-								min = 0, max = 5, step = (1 / 10),
+								min = epMin, max = epMax, step = epStep,
 								get = function() return Enhancer.db.profile.AEPNumbers.CR_HIT; end,
 								set = function(v)
 									Enhancer.db.profile.AEPNumbers.CR_HIT = v;
@@ -391,7 +394,7 @@ function Enhancer:RegisterSlashCommands()
 							[L["CR_HASTE"]] = {
 								name = L["CR_HASTE"], type = "range",
 								desc = L["CR_HASTE"],
-								min = 0, max = 5, step = (1 / 10),
+								min = epMin, max = epMax, step = epStep,
 								get = function() return Enhancer.db.profile.AEPNumbers.CR_HASTE; end,
 								set = function(v)
 									Enhancer.db.profile.AEPNumbers.CR_HASTE = v;
@@ -402,7 +405,7 @@ function Enhancer:RegisterSlashCommands()
 							[L["CR_RESILIENCE"]] = {
 								name = L["CR_RESILIENCE"], type = "range",
 								desc = L["CR_RESILIENCE"],
-								min = 0, max = 5, step = (1 / 10),
+								min = epMin, max = epMax, step = epStep,
 								get = function() return Enhancer.db.profile.AEPNumbers.CR_RESILIENCE; end,
 								set = function(v)
 									Enhancer.db.profile.AEPNumbers.CR_RESILIENCE = v;
@@ -416,7 +419,7 @@ function Enhancer:RegisterSlashCommands()
 							[L["IGNOREARMOR"]] = {
 								name = L["IGNOREARMOR"], type = "range",
 								desc = L["IGNOREARMOR"],
-								min = 0, max = 5, step = (1 / 10),
+								min = epMin, max = epMax, step = epStep,
 								get = function() return Enhancer.db.profile.AEPNumbers.IGNOREARMOR; end,
 								set = function(v)
 									Enhancer.db.profile.AEPNumbers.IGNOREARMOR = v;
@@ -498,6 +501,18 @@ function Enhancer:RegisterSlashCommands()
 								end,
 								order = OrderNum(),
 							},
+							
+							[SpacerName()] = SpacerTable(),
+							
+							[L["aep_import_crazyshaman_cmd"]] = {
+								type = "execute",
+								name = L["aep_import_crazyshaman_cmd"],
+								desc = L["aep_import_crazyshaman_desc"],
+								func = function(data)
+									Enhancer:CrazyShamanImport(data);
+								end,
+								order = OrderNum(),
+							},
 						},
 					},
 					[L["hep_cmd"]] = {
@@ -509,7 +524,7 @@ function Enhancer:RegisterSlashCommands()
 							[L["HEAL"]] = {
 								name = L["HEAL"], type = "range",
 								desc = L["HEAL"],
-								min = 0, max = 5, step = (1 / 10),
+								min = epMin, max = epMax, step = epStep,
 								get = function() return Enhancer.db.profile.HEPNumbers.HEAL; end,
 								set = function(v)
 									Enhancer.db.profile.HEPNumbers.HEAL = v;
@@ -523,7 +538,7 @@ function Enhancer:RegisterSlashCommands()
 							[L["INT"]] = {
 								name = L["INT"], type = "range",
 								desc = L["INT"],
-								min = 0, max = 5, step = (1 / 10),
+								min = epMin, max = epMax, step = epStep,
 								get = function() return Enhancer.db.profile.HEPNumbers.INT; end,
 								set = function(v)
 									Enhancer.db.profile.HEPNumbers.INT = v;
@@ -534,7 +549,7 @@ function Enhancer:RegisterSlashCommands()
 							[L["SPI"]] = {
 								name = L["AGI"], type = "range",
 								desc = L["AGI"],
-								min = 0, max = 5, step = (1 / 10),
+								min = epMin, max = epMax, step = epStep,
 								get = function() return Enhancer.db.profile.HEPNumbers.SPI; end,
 								set = function(v)
 									Enhancer.db.profile.HEPNumbers.SPI = v;
@@ -545,7 +560,7 @@ function Enhancer:RegisterSlashCommands()
 							[L["STA"]] = {
 								name = L["STA"], type = "range",
 								desc = L["STA"],
-								min = 0, max = 5, step = (1 / 10),
+								min = epMin, max = epMax, step = epStep,
 								get = function() return Enhancer.db.profile.HEPNumbers.STA; end,
 								set = function(v)
 									Enhancer.db.profile.HEPNumbers.STA = v;
@@ -559,7 +574,7 @@ function Enhancer:RegisterSlashCommands()
 							[L["CR_SPELLCRIT"]] = {
 								name = L["CR_SPELLCRIT"], type = "range",
 								desc = L["CR_SPELLCRIT"],
-								min = 0, max = 5, step = (1 / 10),
+								min = epMin, max = epMax, step = epStep,
 								get = function() return Enhancer.db.profile.HEPNumbers.CR_SPELLCRIT; end,
 								set = function(v)
 									Enhancer.db.profile.HEPNumbers.CR_SPELLCRIT = v;
@@ -570,7 +585,7 @@ function Enhancer:RegisterSlashCommands()
 							[L["CR_SPELLHASTE"]] = {
 								name = L["CR_SPELLHASTE"], type = "range",
 								desc = L["CR_SPELLHASTE"],
-								min = 0, max = 5, step = (1 / 10),
+								min = epMin, max = epMax, step = epStep,
 								get = function() return Enhancer.db.profile.HEPNumbers.CR_SPELLHASTE; end,
 								set = function(v)
 									Enhancer.db.profile.HEPNumbers.CR_SPELLHASTE = v;
@@ -581,7 +596,7 @@ function Enhancer:RegisterSlashCommands()
 							[L["CR_RESILIENCE"]] = {
 								name = L["CR_RESILIENCE"], type = "range",
 								desc = L["CR_RESILIENCE"],
-								min = 0, max = 5, step = (1 / 10),
+								min = epMin, max = epMax, step = epStep,
 								get = function() return Enhancer.db.profile.HEPNumbers.CR_RESILIENCE; end,
 								set = function(v)
 									Enhancer.db.profile.HEPNumbers.CR_RESILIENCE = v;
@@ -595,7 +610,7 @@ function Enhancer:RegisterSlashCommands()
 							[L["MANAREG"]] = {
 								name = L["MANAREG"], type = "range",
 								desc = L["MANAREG"],
-								min = 0, max = 5, step = (1 / 10),
+								min = epMin, max = epMax, step = epStep,
 								get = function() return Enhancer.db.profile.HEPNumbers.MANAREG; end,
 								set = function(v)
 									Enhancer.db.profile.HEPNumbers.MANAREG = v;
@@ -688,7 +703,7 @@ function Enhancer:RegisterSlashCommands()
 							[L["DMG"]] = {
 								name = L["DMG"], type = "range",
 								desc = L["DMG"],
-								min = 0, max = 5, step = (1 / 10),
+								min = epMin, max = epMax, step = epStep,
 								get = function() return Enhancer.db.profile.DEPNumbers.DMG; end,
 								set = function(v)
 									Enhancer.db.profile.DEPNumbers.DMG = v;
@@ -702,7 +717,7 @@ function Enhancer:RegisterSlashCommands()
 							[L["INT"]] = {
 								name = L["INT"], type = "range",
 								desc = L["INT"],
-								min = 0, max = 5, step = (1 / 10),
+								min = epMin, max = epMax, step = epStep,
 								get = function() return Enhancer.db.profile.DEPNumbers.INT; end,
 								set = function(v)
 									Enhancer.db.profile.DEPNumbers.INT = v;
@@ -713,7 +728,7 @@ function Enhancer:RegisterSlashCommands()
 							[L["SPI"]] = {
 								name = L["SPI"], type = "range",
 								desc = L["SPI"],
-								min = 0, max = 5, step = (1 / 10),
+								min = epMin, max = epMax, step = epStep,
 								get = function() return Enhancer.db.profile.DEPNumbers.SPI; end,
 								set = function(v)
 									Enhancer.db.profile.DEPNumbers.SPI = v;
@@ -724,7 +739,7 @@ function Enhancer:RegisterSlashCommands()
 							[L["STA"]] = {
 								name = L["STA"], type = "range",
 								desc = L["STA"],
-								min = 0, max = 5, step = (1 / 10),
+								min = epMin, max = epMax, step = epStep,
 								get = function() return Enhancer.db.profile.DEPNumbers.STA; end,
 								set = function(v)
 									Enhancer.db.profile.DEPNumbers.STA = v;
@@ -738,7 +753,7 @@ function Enhancer:RegisterSlashCommands()
 							[L["CR_SPELLCRIT"]] = {
 								name = L["CR_SPELLCRIT"], type = "range",
 								desc = L["CR_SPELLCRIT"],
-								min = 0, max = 5, step = (1 / 10),
+								min = epMin, max = epMax, step = epStep,
 								get = function() return Enhancer.db.profile.DEPNumbers.CR_SPELLCRIT; end,
 								set = function(v)
 									Enhancer.db.profile.DEPNumbers.CR_SPELLCRIT = v;
@@ -749,7 +764,7 @@ function Enhancer:RegisterSlashCommands()
 							[L["CR_SPELLHIT"]] = {
 								name = L["CR_SPELLHIT"], type = "range",
 								desc = L["CR_SPELLHIT"],
-								min = 0, max = 5, step = (1 / 10),
+								min = epMin, max = epMax, step = epStep,
 								get = function() return Enhancer.db.profile.DEPNumbers.CR_SPELLHIT; end,
 								set = function(v)
 									Enhancer.db.profile.DEPNumbers.CR_SPELLHIT = v;
@@ -760,7 +775,7 @@ function Enhancer:RegisterSlashCommands()
 							[L["CR_SPELLHASTE"]] = {
 								name = L["CR_SPELLHASTE"], type = "range",
 								desc = L["CR_SPELLHASTE"],
-								min = 0, max = 5, step = (1 / 10),
+								min = epMin, max = epMax, step = epStep,
 								get = function() return Enhancer.db.profile.DEPNumbers.CR_SPELLHASTE; end,
 								set = function(v)
 									Enhancer.db.profile.DEPNumbers.CR_SPELLHASTE = v;
@@ -771,7 +786,7 @@ function Enhancer:RegisterSlashCommands()
 							[L["CR_RESILIENCE"]] = {
 								name = L["CR_RESILIENCE"], type = "range",
 								desc = L["CR_RESILIENCE"],
-								min = 0, max = 5, step = (1 / 10),
+								min = epMin, max = epMax, step = epStep,
 								get = function() return Enhancer.db.profile.DEPNumbers.CR_RESILIENCE; end,
 								set = function(v)
 									Enhancer.db.profile.DEPNumbers.CR_RESILIENCE = v;
@@ -785,7 +800,7 @@ function Enhancer:RegisterSlashCommands()
 							[L["MANAREG"]] = {
 								name = L["MANAREG"], type = "range",
 								desc = L["MANAREG"],
-								min = 0, max = 5, step = (1 / 10),
+								min = epMin, max = epMax, step = epStep,
 								get = function() return Enhancer.db.profile.DEPNumbers.MANAREG; end,
 								set = function(v)
 									Enhancer.db.profile.DEPNumbers.MANAREG = v;
