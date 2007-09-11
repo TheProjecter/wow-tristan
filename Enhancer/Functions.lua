@@ -108,6 +108,7 @@ function Enhancer:AddFrameToOnOffList(framename)
 end
 
 function Enhancer:ToggleLock(framelist)
+	self:Print("ToggleLock", tostring(framelist))
 	if (not framelist) then framelist = Enhancer.aFrames; end
 	
 	if (type(framelist) == "table") then
@@ -206,4 +207,21 @@ function Enhancer:EPValuesChanged()
 	if (not Enhancer:IsModule("EP")) then return; end
 	local EPModule = Enhancer:GetModule("EP");
 	EPModule:ResetGemCache();
+end
+
+function Enhancer:NameToUnit(name)
+	if (not name) then return nil; end
+	
+	if (name == UnitName("player")) then
+		return "player";
+	elseif (UnitInRaid("player")) then
+		for i = 1, 40 do
+			if (UnitName("raid"..i) == name) then return "raid"..i; end
+		end
+	else
+		for i = 1, 5 do
+			if (UnitName("party"..i) == name) then return "party"..i; end
+		end
+	end
+	return nil;
 end

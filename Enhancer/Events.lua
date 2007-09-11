@@ -65,8 +65,8 @@ function Enhancer:ParserMiss(info)
 end
 
 function Enhancer:TotemWasDestroyed(info)
-	-- Fired when a totem dies naturally if our timer is badly synced or w/e then this is what we want
-	-- Might want to use this to end a totem rather then the timer?
+	-- Fired when a totem dies naturally
+	-- but probably only safe to use when in an instance and not raid :S
 	local what = self.deformat(info, UNITDESTROYEDOTHER);
 	if (what and self.combatLog[what]) then
 		
