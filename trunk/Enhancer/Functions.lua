@@ -108,7 +108,6 @@ function Enhancer:AddFrameToOnOffList(framename)
 end
 
 function Enhancer:ToggleLock(framelist)
-	self:Print("ToggleLock", tostring(framelist))
 	if (not framelist) then framelist = Enhancer.aFrames; end
 	
 	if (type(framelist) == "table") then
@@ -138,6 +137,10 @@ function Enhancer:ToggleLock(framelist)
 		
 		self:UpdateAlphaBegin(framename);
 	end
+	
+	self:ToggleLockForHooks();
+end
+function Enhancer:ToggleLockForHooks()
 end
 
 function Enhancer:Resize()

@@ -18,15 +18,17 @@ function EnhancerHWay:OnEnable()
 	self:CreateBars();
 	self:CandyBarPosition();
 	
+	-- does this catch reapplies at max count?
 	self:RegisterEvent("CHAT_MSG_SPELL_PERIODIC_PARTY_BUFFS", "PeriodicBuff");
 	self:RegisterEvent("CHAT_MSG_SPELL_PERIODIC_SELF_BUFFS", "PeriodicBuff");
 	self:RegisterEvent("CHAT_MSG_SPELL_PERIODIC_FRIENDLYPLAYER_BUFFS", "PeriodicBuff");
 	
+	-- or do i need to scan at this?
 	self:RegisterEvent("UNIT_AURA", "Aura1");
 	self:RegisterEvent("UNIT_AURASTATE", "Aura2");
 	
 	-- self:ScheduleEvent("DelayManualScan", self.ManualScan, 5, self);
-	self:Hook(Enhancer, "ToggleLock", "LockHook");
+	self:Hook(Enhancer, "ToggleLockForHooks", "LockHook");
 end
 
 function EnhancerHWay:Aura1(...)
@@ -123,9 +125,9 @@ function EnhancerHWay:RestorePosition()
 	f:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", x, y)
 end
 
-function EnhancerHWay:LockHook(...)
-	self.hooks[Enhancer]["ToggleLock"](...);
+function EnhancerHWay:LockHook()
 	self:ToggleAnchorFrame();
+	self.hooks[Enhancer]["ToggleLockForHooks"]();
 end
 
 function EnhancerHWay:ToggleAnchorFrame()
@@ -200,6 +202,7 @@ function EnhancerHWay:UpdateCandyBar(unit, spell, count)
 end
 
 function EnhancerHWay:EndOfBar(unit, spell, count)
+	-- Want to clean something up or w/e
 end
 
 function EnhancerHWay:Debug(...)
