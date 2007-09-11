@@ -90,6 +90,8 @@ local defaults = {
 	},
 	
 	startAnnounceDisabled = false,
+	
+	bonus = {},
 };
 defaults.centerFont:SetFont(defaults.centerFontName, defaults.centerFontSize, defaults.centerFontFlags);
 defaults.belowFont:SetFont(defaults.belowFontName, defaults.belowFontSize, defaults.belowFontFlags);
