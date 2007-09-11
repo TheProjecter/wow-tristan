@@ -184,6 +184,10 @@ L_Main:RegisterTranslations("enUS", function() return {
 	["invigorated_cmd"] = "Invigorated",
 	["invigorated_desc"] = "Toggle frame for showing when Invigorated is up (Untested)",
 	["Invigorated"] = true,
+	
+	["hway_cmd"] = "HealingWay",
+	["hway_desc"] = "Toggles CandyBars for Healing Way",
+	["hway_yougain"] = "You gain", -- as it appears in combat log when you gain a buff!
 
 }; end );
 
