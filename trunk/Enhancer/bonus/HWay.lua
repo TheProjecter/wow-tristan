@@ -150,8 +150,10 @@ function EnhancerHWay:ToggleView()
 end
 
 function EnhancerHWay:PeriodicBuff(info)
+	if (not string.find(info, self.SpellName)) then return; end
+	
 	local unit, what, count;
-	if (string.find(info, L["hway_yougain"]) and string.find(info, self.SpellName)) then
+	if (string.find(info, L["hway_yougain"])) then
 		unit = "player";
 		
 	  what, count = Enhancer.deformat(info, AURAAPPLICATIONADDEDSELFHELPFUL);
@@ -159,7 +161,7 @@ function EnhancerHWay:PeriodicBuff(info)
 			what = Enhancer.deformat(info, AURAADDEDSELFHELPFUL);
 			count = 1;
 		end
-	elseif (string.find(info, self.SpellName)) then
+	else
 		local who;
 		who, what, count = Enhancer.deformat(info, AURAAPPLICATIONADDEDOTHERHELPFUL);
 		if (not who) then
