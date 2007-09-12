@@ -25,6 +25,8 @@ function EnhancerHWay:OnEnable()
 	self:RegisterEvent("SpecialEvents_UnitBuffRefreshed", "BuffRefreshed");
 	
 	self:Hook(Enhancer, "ToggleLockForHooks", "LockHook");
+	
+	Enhancer:Print("HealingWay Module is in early beta!");
 end
 
 function EnhancerHWay:OnDisable()
@@ -157,7 +159,7 @@ function EnhancerHWay:BuffRefreshed(unit, name, index, count, icon, rank, durati
 	if (not UnitExists(unit)) then return; end
 	if (name ~= self.SpellName) then return; end
 	
-	self:UpdateCandyBar(unit, count, duration or 15);
+	self:UpdateCandyBar(unit, count, (duration > 0 and duration) or 1);
 end
 
 function EnhancerHWay:UpdateCandyBar(unit, count, duration)
@@ -180,10 +182,6 @@ function EnhancerHWay:UpdateCandyBar(unit, count, duration)
 		self:SetCandyBarText(barName, barText);
 		self:StartCandyBar(barName);
 	end
-end
-
-function EnhancerHWay:EndOfBar(unit, spell, count)
-	-- Want to clean something up or w/e
 end
 
 function EnhancerHWay:Debug(...)
