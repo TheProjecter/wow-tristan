@@ -505,10 +505,12 @@ function Enhancer:RegisterSlashCommands()
 							[SpacerName()] = SpacerTable(),
 							
 							[L["aep_import_crazyshaman_cmd"]] = {
-								type = "execute",
+								type = "text",
 								name = L["aep_import_crazyshaman_cmd"],
 								desc = L["aep_import_crazyshaman_desc"],
-								func = function(data)
+								usage = "<string>",
+								get = function() return ""; end,
+								set = function(data)
 									Enhancer:CrazyShamanImport(data);
 								end,
 								order = OrderNum(),

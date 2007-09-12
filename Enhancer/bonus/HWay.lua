@@ -2,7 +2,8 @@ EnhancerHWay = Enhancer:NewModule("HWay", "AceEvent-2.0", "CandyBar-2.0", "AceHo
 EnhancerHWay.DefaultState = false;
 Enhancer:SetModuleDefaultState("HWay", EnhancerHWay.DefaultState);
 EnhancerHWay.SpellName = Enhancer.BS["Healing Way"];
--- EnhancerHWay.SpellName = Enhancer.BS["Lightning Shield"];
+EnhancerHWay.SpellIcon = Enhancer.BS:GetSpellIcon(Enhancer.BS["Healing Way"]);
+--EnhancerHWay.SpellName = Enhancer.BS["Strength of Earth"];
 
 local L = AceLibrary("AceLocale-2.2"):new("Enhancer")
 function EnhancerHWay:GetConsoleOptions()
@@ -18,26 +19,12 @@ function EnhancerHWay:OnEnable()
 	self:CreateBars();
 	self:CandyBarPosition();
 	
-	-- does this catch reapplies at max count?
-	self:RegisterEvent("CHAT_MSG_SPELL_PERIODIC_PARTY_BUFFS", "PeriodicBuff");
-	self:RegisterEvent("CHAT_MSG_SPELL_PERIODIC_SELF_BUFFS", "PeriodicBuff");
-	self:RegisterEvent("CHAT_MSG_SPELL_PERIODIC_FRIENDLYPLAYER_BUFFS", "PeriodicBuff");
+	self:RegisterEvent("SpecialEvents_UnitBuffGained", "BuffGained");
+	self:RegisterEvent("SpecialEvents_UnitBuffLost", "BuffLost");
+	self:RegisterEvent("SpecialEvents_UnitBuffCountChanged", "BuffRefreshed");
+	self:RegisterEvent("SpecialEvents_UnitBuffRefreshed", "BuffRefreshed");
 	
-	-- or do i need to scan at this?
-	self:RegisterEvent("UNIT_AURA", "Aura1");
-	self:RegisterEvent("UNIT_AURASTATE", "Aura2");
-	
-	-- self:ScheduleEvent("DelayManualScan", self.ManualScan, 5, self);
 	self:Hook(Enhancer, "ToggleLockForHooks", "LockHook");
-end
-
-function EnhancerHWay:Aura1(...)
-	self:Debug("UNIT_AURA", ...);
-	-- arg 1: party1 | arg 2: Mark of the Wild | arg 3: 1 | arg 4: 0 | arg 5: Interface\Icons\Spell_Nature_Regeneration | arg 6: Rank 8 
-end
-function EnhancerHWay:Aura2(...)
-	self:Debug("UNIT_AURASTATE", ...);
-	-- arg 1: party1 | arg 2: Mark of the Wild | arg 3: 1 | arg 4: 0 | arg 5: Interface\Icons\Spell_Nature_Regeneration | arg 6: Rank 8 
 end
 
 function EnhancerHWay:OnDisable()
@@ -149,57 +136,49 @@ function EnhancerHWay:ToggleView()
 	end
 end
 
-function EnhancerHWay:PeriodicBuff(info)
-	if (not string.find(info, self.SpellName)) then return; end
+function EnhancerHWay:BuffGained(unit, name, index, count, icon, rank, duration, timeLeft)
+	if (not UnitExists(unit)) then return; end
+	if (name ~= self.SpellName) then return; end
 	
-	local unit, what, count;
-	if (string.find(info, L["hway_yougain"])) then
-		unit = "player";
-		
-	  what, count = Enhancer.deformat(info, AURAAPPLICATIONADDEDSELFHELPFUL);
-	  if (not what) then
-			what = Enhancer.deformat(info, AURAADDEDSELFHELPFUL);
-			count = 1;
-		end
-	else
-		local who;
-		who, what, count = Enhancer.deformat(info, AURAAPPLICATIONADDEDOTHERHELPFUL);
-		if (not who) then
-			who, what = Enhancer.deformat(info, AURAADDEDOTHERHELPFUL);
-			count = 1;
-		end
-		
-		unit = Enhancer:NameToUnit(who);
-	end
-	
-	if (unit and what and count) then
-	  self:UpdateCandyBar(unit, self.SpellName, count)
-	end
+	self:UpdateCandyBar(unit, count, duration or 15);
 end
 
-function EnhancerHWay:UpdateCandyBar(unit, spell, count)
+function EnhancerHWay:BuffLost(unit, name, count, icon, rank, duration)
 	if (not UnitExists(unit)) then return; end
+	if (name ~= self.SpellName) then return; end
 	
-	local icon = Enhancer.BS:GetSpellIcon(spell);
 	local name, server = UnitName(unit);
-	local duration = 15; -- Healing Way duration is 15 sec
 	local barName = name;
-	local barText = string.format("%s - %s (%d)", name, spell, count);
+	
+	self:UnregisterCandyBar(barName);
+end
+
+function EnhancerHWay:BuffRefreshed(unit, name, index, count, icon, rank, duration, timeLeft)
+	if (not UnitExists(unit)) then return; end
+	if (name ~= self.SpellName) then return; end
+	
+	self:UpdateCandyBar(unit, count, duration or 15);
+end
+
+function EnhancerHWay:UpdateCandyBar(unit, count, duration)
+	local name, server = UnitName(unit);
+	local buffDuration = duration or 15;
+	local barName = name;
+	local barText = string.format("%s - %s (%d)", name, self.SpellName, count);
+	if (buffDuration == 0) then buffDuration = 15; end
 	
 	if (not self:IsCandyBarRegistered(barName)) then
-		self:RegisterCandyBar(barName, duration, barText, icon, "green", "yellow", "red");
+		self:RegisterCandyBar(barName, buffDuration, barText, self.SpellIcon, "green", "yellow", "red");
 		self:SetCandyBarTexture(barName, "Interface\\Addons\\Enhancer\\texture\\Smoothv2");
 		self:RegisterCandyBarWithGroup(barName, "EnhancerHWay");
+		self:SetCandyBarFade(barName, -1);
 		
-		self:StartCandyBar(barName, true);
-		self:SetCandyBarTimeLeft(barName, duration);
-		self:SetCandyBarCompletion(barName, function() EnhancerHWay:EndOfBar(unit, spell, count); end)
+		self:StartCandyBar(barName);
+		self:SetCandyBarTimeLeft(barName, buffDuration);
 	else
-		local _, _, _, running = self:CandyBarStatus(barName);
-		if (running) then
-			self:SetCandyBarTimeLeft(duration);
-			self:SetCandyBarText(barName, barText);
-		end
+		self:SetCandyBarTimeLeft(barName, buffDuration);
+		self:SetCandyBarText(barName, barText);
+		self:StartCandyBar(barName);
 	end
 end
 
