@@ -39,6 +39,7 @@ libs\Parser-3.0\Parser-3.0.lua
 libs\SpecialEvents-Aura-2.0\SpecialEvents-Aura-2.0.lua
 libs\TipHooker-1.0\TipHooker-1.0.lua
 
+locale\URL.lua
 locale\Localization-enUS.lua
 locale\Localization-deDE.lua
 locale\Localization-frFR.lua

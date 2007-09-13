@@ -64,7 +64,7 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 	if (link) then
 		
 		--[[ Check if we care about this item ]]--
-		local _, _, _, _, _, ItemType, ItemSubType = GetItemInfo(link)
+		local _, _, _, _, _, ItemType, ItemSubType, _, equipLocation = GetItemInfo(link)
 		if (not EnhancerEP.ProcessTypes[ItemType]) then return; end
 		
 		local numberFormat = L["ep_numbers2"];
@@ -111,7 +111,7 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 			
 			-- EnhancerEP:Calculate(values, bonuses, gemcount, metacount, gemcachekey)
 			-- return total, kingstotal, gemName, kingsgemName, metagemName, kingsmetagemName;
-			local EP, EPK, gem1, gem2, gem3, gem4 = EnhancerEP:Calculate(values, bonuses, nonMetaSockets, metaSockets, "AEP");
+			local EP, EPK, gem1, gem2, gem3, gem4 = EnhancerEP:Calculate(values, bonuses, nonMetaSockets, metaSockets, "AEP", equipLocation);
 			lastValue, lastKingsValue = EP, EPK;
 			
 			if ( EP > 0 or Enhancer.db.profile.EPZero ) then
@@ -140,7 +140,7 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 			
 			-- EnhancerEP:Calculate(values, bonuses, gemcount, metacount, gemcachekey)
 			-- return total, kingstotal, gemName, kingsgemName, metagemName, kingsmetagemName;
-			local EP, EPK, gem1, gem2, gem3, gem4 = EnhancerEP:Calculate(values, bonuses, nonMetaSockets, metaSockets, "AEPH");
+			local EP, EPK, gem1, gem2, gem3, gem4 = EnhancerEP:Calculate(values, bonuses, nonMetaSockets, metaSockets, "AEPH", equipLocation);
 			
 			local skipThis = ( lastValue and lastKingsValue and lastValue == EP and lastKingsValue == EPK );
 			if ( (EP > 0 or Enhancer.db.profile.EPZero) and (not skipThis) ) then
@@ -322,12 +322,13 @@ function EnhancerEP:ItemValue(values, bonuses, gemcount, metacount, link)
 end
 
 local kingsMultiplier = (110 / 100);
-function EnhancerEP:Calculate(values, bonuses, gemcount, metacount, gemcachekey)
+function EnhancerEP:Calculate(values, bonuses, gemcount, metacount, gemcachekey, equipLocation)
 	local total, kingstotal = 0, 0;
 	local gemTotal, gemName = 0, nil;
 	local kingsgemTotal, kingsgemName = 0, nil;
 	local metagemTotal, metagemName = 0, nil;
 	local kingsmetagemTotal, kingsmetagemName = 0, nil;
+	local flatBonus = 0;
 	
 	for statKey, statTable in pairs(values) do
 		total = total + ( (bonuses[statKey] or 0) * statTable.value );
@@ -433,10 +434,6 @@ function EnhancerEP:BestGem(inputValues, color, quiet)
 	end
 end
 
---function EnhancerEP:Round(number, decimals)
---  return Enhancer:Round(number, decimals);
---end
-
 --[[
 		Tornhoof/Pater from http://elitistjerks.com/f31/t13297-enhance_shaman_collected_works_theorycraft_vol_i/
 		Haste Rating = 2.2
@@ -445,6 +442,8 @@ end
 		Agility = 1.8 (2 w/Kings)
 		Hit Rating = 1.4
 		Attack Power = 1
+		
+		Used as default values
 ]]--
 
 --[[
