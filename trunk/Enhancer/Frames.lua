@@ -407,7 +407,7 @@ function Enhancer:UpdateFrame(framename)
 				self[framename].textabove:SetText( "~" .. string.format("%.1f", distance) .. "~" );
 				
 				-- Destroy on too much distance? what range is ok?
-				if (distance > 400 and false) then
+				if (distance > self.db.profile.killYards and self.db.profile.yardKill) then
 					self:FrameDeathPreBegin(framename);
 					return;
 				end

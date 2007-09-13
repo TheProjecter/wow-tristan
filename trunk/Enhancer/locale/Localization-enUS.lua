@@ -194,6 +194,13 @@ L_Main:RegisterTranslations("enUS", function() return {
 	["aep_import_crazyshaman_desc"] = "Import value string from Crazy Shaman's DPS & AEP calculator ( http://theorycraft.narod.ru/ )",
 	["aep_import_warning"] = "Some AEP values was not included, please check the following AEP values (%s)",
 	
+	["yard_group_cmd"] = "RangeSettings",
+	["yard_group_desc"] = "Totems dissapear when you go to far away from them settings for that is here",
+	["yard_range_cmd"] = "Range",
+	["yard_range_desc"] = "What range to assume the totem is gone (Default: 150, Quick in-game testing showed closer to 100)",
+	["yard_active_cmd"] = "Active",
+	["yard_active_desc"] = "Toggle destroying frame on range active or not",
+	
 }; end );
 
 local L_EP = AceLibrary("AceLocale-2.2"):new("EnhancerEP")

@@ -31,6 +31,8 @@ local defaults = {
 	combatAlpha = 1,
 	oocombatAlpha = (7 / 10),
 	specialAlpha = true,
+	killYards = 150,
+	yardKill = true,
 	
 	playSound = false,
 	growingPulse = true,
@@ -143,6 +145,36 @@ function Enhancer:RegisterSlashCommands()
 					Enhancer:Resize();
 				end,
 				order = OrderNum(),
+			},
+			
+			[SpacerName()] = SpacerTable(),
+			
+			[L["yard_group_cmd"]] = {
+				type = "group",
+				name = L["yard_group_cmd"],
+				desc = L["yard_group_desc"],
+				order = OrderNum(),
+				args = {
+					[L["yard_range_cmd"]] = {
+						name = L["yard_range_cmd"], type = "range",
+						desc = L["yard_range_desc"],
+						min = 90, max = 400, step = 1,
+						get = function() return Enhancer.db.profile.killYards; end,
+						set = function(v)
+							Enhancer.db.profile.killYards = v;
+						end,
+						order = OrderNum(),
+					},
+					[L["yard_active_cmd"]] = {
+						name = L["yard_active_cmd"], type = "toggle",
+						desc = L["yard_active_desc"],
+						get = function() return Enhancer.db.profile.yardKill; end,
+						set = function()
+							Enhancer.db.profile.yardKill = not Enhancer.db.profile.yardKill;
+						end,
+						order = OrderNum(),
+					},
+				},
 			},
 			
 			[SpacerName()] = SpacerTable(),
