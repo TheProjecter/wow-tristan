@@ -71,6 +71,8 @@ local defaults = {
 		CR_HASTE = (15 / 10), --(22 / 10),
 		CR_RESILIENCE = (0 / 10),
 		IGNOREARMOR = (0 / 10), -- 10-20
+		WEAPON_MIN = (0 / 10), -- 10-20
+		WEAPON_MAX = (0 / 10), -- 10-20
 	},
 	HEPNumbers = {
 		HEAL = (10 / 10),
@@ -353,7 +355,7 @@ function Enhancer:RegisterSlashCommands()
 						args = {
 							[L["ATTACKPOWER"]] = {
 								name = L["ATTACKPOWER"], type = "range",
-								desc = L["ATTACKPOWER"],
+								desc = L["ATTACKPOWER"] .. L["base_warn"],
 								min = epMin, max = epMax, step = epStep,
 								get = function() return Enhancer.db.profile.AEPNumbers.ATTACKPOWER; end,
 								set = function(v)
@@ -362,12 +364,9 @@ function Enhancer:RegisterSlashCommands()
 								end,
 								order = OrderNum(),
 							},
-							
-							[SpacerName()] = SpacerTable(),
-							
 							[L["STR"]] = {
 								name = L["STR"], type = "range",
-								desc = L["STR"],
+								desc = L["STR"] .. L["base_warn"],
 								min = epMin, max = epMax, step = epStep,
 								get = function() return Enhancer.db.profile.AEPNumbers.STR; end,
 								set = function(v)
@@ -376,6 +375,9 @@ function Enhancer:RegisterSlashCommands()
 								end,
 								order = OrderNum(),
 							},
+							
+							[SpacerName()] = SpacerTable(),
+							
 							[L["AGI"]] = {
 								name = L["AGI"], type = "range",
 								desc = L["AGI"],
@@ -455,6 +457,31 @@ function Enhancer:RegisterSlashCommands()
 								get = function() return Enhancer.db.profile.AEPNumbers.IGNOREARMOR; end,
 								set = function(v)
 									Enhancer.db.profile.AEPNumbers.IGNOREARMOR = v;
+									Enhancer:EPValuesChanged();
+								end,
+								order = OrderNum(),
+							},
+							
+							[SpacerName()] = SpacerTable(),
+							
+							[L["WEAPON_MIN"]] = {
+								name = L["WEAPON_MIN"], type = "range",
+								desc = L["WEAPON_MIN"],
+								min = epMin, max = epMax, step = epStep,
+								get = function() return Enhancer.db.profile.AEPNumbers.WEAPON_MIN; end,
+								set = function(v)
+									Enhancer.db.profile.AEPNumbers.WEAPON_MIN = v;
+									Enhancer:EPValuesChanged();
+								end,
+								order = OrderNum(),
+							},
+							[L["WEAPON_MAX"]] = {
+								name = L["WEAPON_MAX"], type = "range",
+								desc = L["WEAPON_MAX"],
+								min = epMin, max = epMax, step = epStep,
+								get = function() return Enhancer.db.profile.AEPNumbers.WEAPON_MAX; end,
+								set = function(v)
+									Enhancer.db.profile.AEPNumbers.WEAPON_MAX = v;
 									Enhancer:EPValuesChanged();
 								end,
 								order = OrderNum(),
@@ -557,7 +584,7 @@ function Enhancer:RegisterSlashCommands()
 						args = {
 							[L["HEAL"]] = {
 								name = L["HEAL"], type = "range",
-								desc = L["HEAL"],
+								desc = L["HEAL"] .. L["base_warn"],
 								min = epMin, max = epMax, step = epStep,
 								get = function() return Enhancer.db.profile.HEPNumbers.HEAL; end,
 								set = function(v)
@@ -736,7 +763,7 @@ function Enhancer:RegisterSlashCommands()
 						args = {
 							[L["DMG"]] = {
 								name = L["DMG"], type = "range",
-								desc = L["DMG"],
+								desc = L["DMG"] .. L["base_warn"],
 								min = epMin, max = epMax, step = epStep,
 								get = function() return Enhancer.db.profile.DEPNumbers.DMG; end,
 								set = function(v)

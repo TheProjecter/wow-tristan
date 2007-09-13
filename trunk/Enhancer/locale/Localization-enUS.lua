@@ -17,6 +17,8 @@
 	Once you are done mail it to me at dennis.hafstrom@gmail.com and I'll add it to the distributed file :)
 ]]--
 
+local U = Enhancer_URLs; -- Read up URLs, " .. U["EJ"] .. "
+
 local L_Main = AceLibrary("AceLocale-2.2"):new("Enhancer")
 L_Main:RegisterTranslations("enUS", function() return {
 	["translator"] = "Leion - Frostmane.eu",
@@ -58,7 +60,7 @@ L_Main:RegisterTranslations("enUS", function() return {
 	["ep_gemm_desc"] = "Toggle including Meta gems in calculations",
 	["ep_info_cmd"] = "Info",
 	["ep_info_desc"] = "More information about Equivalence Points",
-	["ep_info_exec"] = "Some sources for finding \"your\" AEP:\rhttp://elitistjerks.com/f31/t13297-enhance_shaman_collected_works_theorycraft_vol_i/\rhttp://code.google.com/p/wowequipoptimizer\rhttp://www.discofiend.com/pater/\rhttp://elitbrus.tripod.com/",
+	["ep_info_exec"] = "Some sources for finding \"your\" AEP:\r1) " .. U["CrazyShamanCalc"] .. "\r2) " .. U["EJ"] .. "\r3) " .. U["WoWEquipO"] .. "\r4) " .. U["Pater"] .. "\rDefault AEP are from Tornhoof/Pater",
 	["epz_cmd"] = "EPZero",
 	["epz_desc"] = "Show Equivalence Points even if summary is zero",
 	["aep_cmd"] = "AEP",
@@ -101,6 +103,8 @@ L_Main:RegisterTranslations("enUS", function() return {
 	["SPI"] = "Spirit",
 	["STR"] = "Strength",
 	["STA"] = "Stamina",
+	["WEAPON_MIN"] = "WeaponMin",
+	["WEAPON_MAX"] = "WeaponMax",
 		
 	["sound_cmd"] = "Sound",
 	["sound_desc"] = "Toggle playing sound when a totem expires",
@@ -191,7 +195,7 @@ L_Main:RegisterTranslations("enUS", function() return {
 	["hway_anchortext"] = "Alt-Click to move Anchor",
 	
 	["aep_import_crazyshaman_cmd"] = "CrazyShamanImport",
-	["aep_import_crazyshaman_desc"] = "Import value string from Crazy Shaman's DPS & AEP calculator ( http://theorycraft.narod.ru/ )",
+	["aep_import_crazyshaman_desc"] = "Import value string from Crazy Shaman's DPS & AEP calculator ( " .. U["CrazyShamanCalc"] .. " )",
 	["aep_import_warning"] = "Some AEP values was not included, please check the following AEP values (%s)",
 	
 	["yard_group_cmd"] = "RangeSettings",
@@ -201,6 +205,7 @@ L_Main:RegisterTranslations("enUS", function() return {
 	["yard_active_cmd"] = "Active",
 	["yard_active_desc"] = "Toggle destroying frame on range active or not",
 	
+	["base_warn"] = " (base value)",
 }; end );
 
 local L_EP = AceLibrary("AceLocale-2.2"):new("EnhancerEP")
