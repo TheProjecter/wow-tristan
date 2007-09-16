@@ -17,6 +17,8 @@ function EnhancerWindfury:OnEnable()
 	self:RegisterParserEvent({
 		eventType = 'Damage',
 	}, "ParserDamage");
+	
+	-- SPELL_UPDATE_COOLDOWN
 end
 
 function EnhancerWindfury:OnDisable()
@@ -27,10 +29,13 @@ function EnhancerWindfury:OnDisable()
 end
 
 function EnhancerWindfury:ParserDamage(info)
+	-- Doubt we want both tbh
 	if ( (info.abilityName == Enhancer.BS["Windfury"] or info.abilityName == Enhancer.BS["Windfury Attack"]) and info.sourceID == "player" ) then
 		self:WindfuryHit();
 	end
 end
+
+ -- GetSpellCooldown(spellID, BOOKTYPE_SPELL);
 
 function EnhancerWindfury:WindfuryHit()
 	if (Enhancer[FrameName].active) then return; end -- Second WF shouldn't reset the timer ;)

@@ -11,7 +11,7 @@ function EnhancerShield:GetConsoleOptions()
 end
 
 function EnhancerShield:OnInitialize()
-	Enhancer[FrameName] = Enhancer:CreateButton("EnhancerFrame" .. FrameName, "Ability_Mage_MoltenArmor", 0, 120);
+	Enhancer[FrameName] = Enhancer:CreateButton("EnhancerFrame" .. FrameName, "Ability_Mage_MoltenArmor", 0, -95);
 	Enhancer[FrameName].mainframe.bgFileDefault  = "Interface/Icons/Ability_Mage_MoltenArmor";
 	Enhancer[FrameName].fullicon = true;
 	Enhancer[FrameName].borderColor = { ["r"] = (0/255), ["g"] = (245/255), ["b"] = (255/255), ["a"] = 1, }

@@ -1084,6 +1084,8 @@ function Enhancer:RegisterSlashCommands()
 						order = OrderNum(),
 					},
 					
+					[SpacerName()] = SpacerTable(),
+					
 					[L["specialalpha_cmd"]] = {
 						name = L["specialalpha_cmd"], type = "toggle",
 						desc = L["specialalpha_desc"],

@@ -293,10 +293,16 @@ function Enhancer:UpdateAlphaEnd(framename)
 			self[framename].textabove:SetAlpha(Enhancer.db.profile.combatAlpha);
 			self[framename].mainframe:SetBackdropColor(r, g, b, Enhancer.db.profile.combatAlpha);
 		else
+			self[framename].textcenter:SetAlpha(0);
+			self[framename].textbelow:SetAlpha(0);
+			self[framename].textabove:SetAlpha(0);
+			self[framename].mainframe:SetBackdropColor(r, g, b, 0);
+			--[[
 			self[framename].textcenter:SetAlpha(Enhancer.db.profile.oocinactiveAlpha);
 			self[framename].textbelow:SetAlpha(Enhancer.db.profile.oocinactiveAlpha);
 			self[framename].textabove:SetAlpha(Enhancer.db.profile.oocinactiveAlpha);
 			self[framename].mainframe:SetBackdropColor(r, g, b, Enhancer.db.profile.oocinactiveAlpha);
+			]]
 		end
 	
 	elseif (self[framename].active) then
@@ -328,6 +334,7 @@ function Enhancer:UpdateAlphaEnd(framename)
 		end
 		
 	end
+	
 end
 
 function Enhancer:FrameDeathPreBegin(framename)

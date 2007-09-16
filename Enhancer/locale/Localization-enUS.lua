@@ -206,6 +206,10 @@ L_Main:RegisterTranslations("enUS", function() return {
 	["yard_active_desc"] = "Toggle destroying frame on range active or not",
 	
 	["base_warn"] = " (base value)",
+	
+	["windfurytotem_cmd"] = "WindfuryTotem",
+	["windfurytotem_desc"] = "Timer for twisting windfury totem",
+	
 }; end );
 
 local L_EP = AceLibrary("AceLocale-2.2"):new("EnhancerEP")
