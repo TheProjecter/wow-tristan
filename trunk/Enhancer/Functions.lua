@@ -64,6 +64,9 @@ function Enhancer:CreateTotem(totem, rank, totemX, totemY, totemZone)
 	self[frame].pulseAdd = Pulse;
 	if (Pulse) then
 		self[frame].pulse = GetTime() + self[frame].pulseAdd;
+		if (totem == Enhancer.BS["Tremor Totem"]) then
+			self[frame].pulse = GetTime();
+		end
 	else
 		self[frame].pulse = nil
 	end

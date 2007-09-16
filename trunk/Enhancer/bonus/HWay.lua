@@ -26,7 +26,7 @@ function EnhancerHWay:OnEnable()
 	
 	self:Hook(Enhancer, "ToggleLockForHooks", "LockHook");
 	
-	Enhancer:Print("HealingWay Module is in early beta!");
+	Enhancer:Print("HealingWay Module is in early beta or something ;)!");
 end
 
 function EnhancerHWay:OnDisable()

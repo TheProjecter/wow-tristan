@@ -13,13 +13,13 @@ function EnhancerTench:GetConsoleOptions()
 end
 
 function EnhancerTench:OnInitialize()
-	Enhancer[FrameNameM] = Enhancer:CreateButton("EnhancerFrame" .. FrameNameM, "INV_Mace_39", -120, 0);
+	Enhancer[FrameNameM] = Enhancer:CreateButton("EnhancerFrame" .. FrameNameM, "INV_Mace_39", -35, -60);
 	Enhancer:AddFrameToList(FrameNameM, true, false, false) --[[ Enhancer:AddFrameToList(framename, all, totem, death) ]]--
 	Enhancer[FrameNameM].fullicon = true;
 	_, Enhancer[FrameNameM].mainframe.bgFileDefault = GetInventorySlotInfo("MainHandSlot");
 	Enhancer[FrameNameM].moveName = "MainH";
 	
-	Enhancer[FrameNameO] = Enhancer:CreateButton("EnhancerFrame" .. FrameNameO, "INV_Mace_39", 120, 0);
+	Enhancer[FrameNameO] = Enhancer:CreateButton("EnhancerFrame" .. FrameNameO, "INV_Mace_39", 35, -60);
 	Enhancer:AddFrameToList(FrameNameO, true, false, false) --[[ Enhancer:AddFrameToList(framename, all, totem, death) ]]--
 	Enhancer[FrameNameO].fullicon = true;
 	_, Enhancer[FrameNameO].mainframe.bgFileDefault = GetInventorySlotInfo("SecondaryHandSlot");

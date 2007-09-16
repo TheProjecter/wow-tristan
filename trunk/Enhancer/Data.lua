@@ -206,6 +206,7 @@ Enhancer.Totems[Enhancer.BS["Windfury Totem"]].Icon = "Spell_Nature_Windfury";
 Enhancer.Totems[Enhancer.BS["Windfury Totem"]].Time = 120;
 Enhancer.Totems[Enhancer.BS["Windfury Totem"]].Element = "Air";
 Enhancer.Totems[Enhancer.BS["Windfury Totem"]].Life = 5;
+Enhancer.Totems[Enhancer.BS["Windfury Totem"]].Pulse = 5;
 
 Enhancer.Totems[Enhancer.BS["Windwall Totem"]] = {};
 Enhancer.Totems[Enhancer.BS["Windwall Totem"]].Icon = "Spell_Nature_EarthBind";
