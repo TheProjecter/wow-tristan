@@ -53,7 +53,7 @@ Enhancer.Totems[Enhancer.BS["Tremor Totem"]].Icon = "Spell_Nature_TremorTotem";
 Enhancer.Totems[Enhancer.BS["Tremor Totem"]].Time = 120;
 Enhancer.Totems[Enhancer.BS["Tremor Totem"]].Element = "Earth";
 Enhancer.Totems[Enhancer.BS["Tremor Totem"]].Life = 5;
-Enhancer.Totems[Enhancer.BS["Tremor Totem"]].Pulse = 5;
+Enhancer.Totems[Enhancer.BS["Tremor Totem"]].Pulse = 4; -- Dunno why I had it on 5 but according to wowwiki etc it's supposed to be 4!
 
 Enhancer.Totems[Enhancer.BS["Earth Elemental Totem"]] = {};
 Enhancer.Totems[Enhancer.BS["Earth Elemental Totem"]].Icon = "Spell_Nature_EarthElemental_Totem";
