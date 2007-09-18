@@ -94,7 +94,6 @@ function Enhancer:SnapPos()
 		local next = self:GetNext();
 		while (next) do
 			local framename = self:FindParent(next);
-			self:Print(framename);
 			self:LoadPos(framename);
 			Enhancer.process[framename] = nil;
 			next = self:GetNext();

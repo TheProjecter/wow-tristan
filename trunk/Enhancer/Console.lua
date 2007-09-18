@@ -37,6 +37,7 @@ local defaults = {
 	playSound = false,
 	growingPulse = true,
 	borderPulse = false,
+	snap = true,
 	
 	EPZero = true,
 	AEP = true,
@@ -1022,6 +1023,16 @@ function Enhancer:RegisterSlashCommands()
 				end,
 				order = OrderNum(),
 			},
+			[L["snap_cmd"]] = {
+				name = L["snap_cmd"], type = "toggle",
+				desc = L["snap_desc"],
+				get = function() return Enhancer.db.profile.snap; end,
+				set = function()
+					Enhancer.db.profile.snap = not Enhancer.db.profile.snap;
+				end,
+				order = OrderNum(),
+			},
+			
 			
 			[SpacerName()] = SpacerTable(),
 			
