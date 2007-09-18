@@ -24,7 +24,7 @@ function Enhancer:CastingTotem(unit, totem, rank)
 	if (rank == "") then rank = L[0]; end
 	
 	local totemX, totemY, totemZone;
-	if (Cartographer and Cartographer.GetCurrentPlayerPosition and self.coords) then
+	if (self.coords) then
 		totemX, totemY, totemZone = Cartographer:GetCurrentPlayerPosition();
 	end
 	
@@ -45,7 +45,7 @@ function Enhancer:Ding()
 	self.PlayerLevel = arg1;
 end
 
---[[ HEALS? ]]--
+-- Heals???
 function Enhancer:ParserDamage(info)
 	if (not self.combatLog[info.recipientName]) then return; end
 	
@@ -78,6 +78,12 @@ function Enhancer:TotemWasDestroyed(info)
 end
 
 function Enhancer:Zoning()
+	-- Make sure Cartographer and it's methods exists
+	if ((not Cartographer) or (not Cartographer.GetCurrentPlayerPosition)) then
+		self.coords = nil;
+		return;
+	end
+	
 	local inInstance, instanceType = IsInInstance();
 	if (self.currentInstanceType ~= instanceType) then
 		-- Player zoned in our out of an instance

@@ -105,7 +105,7 @@ function Enhancer:AddFrameToList(framename, all, totem, death)
 	end
 	
 	self:MakeMoveable(framename);
-	self:LoadPos(framename);
+	self:DefaultPos(framename);
 end
 
 function Enhancer:AddFrameToOnOffList(framename)

@@ -134,27 +134,107 @@ function Enhancer:MakeMoveable(framename)
 	self[framename].anchor:SetScript("OnDragStart",
     function()
 			self[framename].anchor:StartMoving();
+			
+			self[framename].anchor:SetScript("OnUpdate",
+		    function()
+					self:Moving(framename);
+				end );
 		end );
 	
 	self[framename].anchor:SetScript("OnDragStop",
 		function()
 			self[framename].anchor:StopMovingOrSizing();
+			
+			self:FinishedMoving(framename);
+			self[framename].anchor:SetScript("OnUpdate", nil);
+			
 			Enhancer:SavePos(framename, self[framename].anchor);
 		end );
+end
+
+function Enhancer:Near(v1, v2, v3)
+	if (v1 and v2 and math.abs(v1 - v2) < (v3 or (self.db.profile.framesize - 1))) then
+		return math.abs(v1 - v2);
+	end
+	return nil;
+end
+
+function Enhancer:Moving(framename)
+	local dockname, dockside = nil, nil;
+	local snap = 12;
+	
+	local lef = self[framename].anchor:GetLeft();
+	local rig = self[framename].anchor:GetRight();
+	local top = self[framename].anchor:GetTop();
+	local bot = self[framename].anchor:GetBottom();
+
+	for _, fname in ipairs(self.aFrames) do
+		if (fname ~= framename and self[fname].mainframe:IsVisible() and self[fname].DockN ~= framename) then
+			local rel = self[fname].anchor:GetLeft();
+			local rer = self[fname].anchor:GetRight();
+			local ret = self[fname].anchor:GetTop();
+			local reb = self[fname].anchor:GetBottom();
+			
+			if self:Near(lef, rer, snap) and (self:Near(top, ret) or self:Near(bot, reb)) then
+				dockname = fname;
+				dockside = "LEFT"
+			elseif self:Near(rig, rel, snap) and (self:Near(top, ret) or self:Near(bot, reb)) then
+				dockname = fname;
+				dockside = "RIGHT"
+			elseif self:Near(top, reb, snap) and (self:Near(lef, rel) or self:Near(rig, rer)) then
+				dockname = fname;
+				dockside = "TOP"
+			elseif self:Near(bot, ret, snap) and (self:Near(lef, rel) or self:Near(rig, rer)) then
+				dockname = fname;
+				dockside = "BOTTOM"
+			end
+			
+		end
+		
+		if (dockname and dockside) then break; end
+	end
+	
+	self[framename].DockN = dockname;
+	self[framename].DockS = dockside;
+end
+
+function Enhancer:FinishedMoving(framename)
+	local dockname, dockside = self[framename].DockN, self[framename].DockS;
+	
+	self[framename].anchor:ClearAllPoints();
+	if (dockname and dockside) then
+		if (dockside == "LEFT") then
+			self[framename].anchor:SetPoint("LEFT", self[dockname].anchor:GetName(), "RIGHT", 0, 0);
+		elseif (dockside == "RIGHT") then
+			self[framename].anchor:SetPoint("RIGHT", self[dockname].anchor:GetName(), "LEFT", 0, 0);
+		elseif (dockside == "TOP") then
+			self[framename].anchor:SetPoint("TOP", self[dockname].anchor:GetName(), "BOTTOM", 0, 0);
+		elseif (dockside == "BOTTOM") then
+			self[framename].anchor:SetPoint("BOTTOM", self[dockname].anchor:GetName(), "TOP", 0, 0);
+		end
+	else
+		self:Print(self[framename].anchor:GetLeft(), self[framename].anchor:GetTop());
+		self[framename].anchor:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", self[framename].anchor:GetLeft(), self[framename].anchor:GetTop());
+	end
+	
+	-- self[framename].anchor:ClearAllPoints();
+	-- self[framename].anchor:SetPoint("CENTER", WorldFrame, "CENTER",  self[framename].xOffsetDefault,  self[framename].yOffsetDefault);
+	-- CleanUp
 end
 
 function Enhancer:SavePos(framename, frame)
 	if (not Enhancer.db.profile.framePositions) then Enhancer.db.profile.framePositions = {}; end
 	if (not Enhancer.db.profile.framePositions[framename]) then Enhancer.db.profile.framePositions[framename] = {}; end
-	frame:GetCenter()
+	-- frame:GetCenter()
 	local point, relativeTo, relativePoint, xOfs, yOfs = frame:GetPoint();
-	-- self:Print( frame:GetPoint() );
+	self:Print( frame:GetPoint() );
 	
 	Enhancer.db.profile.framePositions[framename]["point"] = point;
-	Enhancer.db.profile.framePositions[framename]["relativeTo"] = relativeTo;
+	Enhancer.db.profile.framePositions[framename]["relativeTo"] = relativeTo:GetName();
 	Enhancer.db.profile.framePositions[framename]["relativePoint"] = relativePoint;
 	Enhancer.db.profile.framePositions[framename]["xOfs"] = xOfs;
 	Enhancer.db.profile.framePositions[framename]["yOfs"] = yOfs;
+	Enhancer.db.profile.framePositions[framename]["Parent"] = Enhancer[framename].DockN;
 end
 
 function Enhancer:LoadPos(framelist)
@@ -164,10 +244,11 @@ function Enhancer:LoadPos(framelist)
 		for _, framename in pairs(framelist) do
 			self:LoadPos(framename);
 		end
+		return;
 	else
 		local framename = framelist;
 		
-		if (Enhancer.db.profile.framePositions and Enhancer.db.profile.framePositions[framename] and self[framename]) then
+		if (Enhancer.db.profile.framePositions and Enhancer.db.profile.framePositions[framename] and self[framename] and getglobal(Enhancer.db.profile.framePositions[framename]["relativeTo"])) then
 			self[framename].anchor:ClearAllPoints();
 			self[framename].anchor:SetPoint(
 				Enhancer.db.profile.framePositions[framename]["point"],
@@ -176,6 +257,7 @@ function Enhancer:LoadPos(framelist)
 				Enhancer.db.profile.framePositions[framename]["xOfs"],
 				Enhancer.db.profile.framePositions[framename]["yOfs"]
 			);
+			self[framename].DockN = Enhancer.db.profile.framePositions[framename]["Parent"];
 		else
 			Enhancer:DefaultPos(framelist);
 		end
@@ -376,6 +458,10 @@ function Enhancer:FrameDeathEnd(framename)
 	self[framename].data = {};
 	
 	self:UpdateAlphaBegin(framename);
+	
+	if (self:IsEventScheduled(framename)) then
+		self:CancelScheduledEvent(framename)
+	end
 end
 
 function Enhancer:SetFrameData(framename, key, value)
