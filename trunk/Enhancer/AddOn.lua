@@ -25,9 +25,12 @@ function Enhancer:OnInitialize()
 	self:RegisterSlashCommands();
 	self:InspectEPValues(); -- Check so not using old values
 	
-	if (not self.db.profile.startAnnounceDisabled) then
-		self:ScheduleEvent("DelayAnnounce", self.DelayAnnounce, 10, self)
-	end
+	--if (not self.db.profile.startAnnounceDisabled) then
+	--	self:ScheduleEvent("DelayAnnounce", self.DelayAnnounce, 10, self)
+	--end
+	
+	self:ScheduleEvent("DelayAnnounce", self.DelayAnnounce, 10, self)
+	self:ScheduleEvent("SnapPos", self.SnapPos, 2, self)
 end
 
 function Enhancer:OnEnable()
@@ -66,6 +69,66 @@ function Enhancer:OnProfileDisable()
 end
 function Enhancer:OnProfileEnable(oldProfileName, oldProfileData)
 	self:InspectEPValues();
+end
+
+function Enhancer:SnapPos()
+	-- Must do it all in the right order so we position frames without parents first etc ;)
+	
+	if (Enhancer.db.profile.framePositions) then
+		-- We have some saved positions so let's get started;
+		
+		Enhancer.process = {};
+		for framename, _ in pairs(Enhancer.db.profile.framePositions) do
+			-- These frames need loading
+			local Parent = Enhancer.db.profile.framePositions[framename]["Parent"];
+			local ParentName = Enhancer.db.profile.framePositions[framename]["relativeTo"];
+			if (not getglobal(ParentName)) then Parent = nil; end
+			
+			if (Parent) then
+				Enhancer.process[framename] = { ["Parent"] = Parent, ["ParentGlobalName"] = ParentName };
+			else
+				Enhancer.process[framename] = { ["ParentGlobalName"] = ParentName };
+			end
+		end
+		
+		local next = self:GetNext();
+		while (next) do
+			local framename = self:FindParent(next);
+			self:Print(framename);
+			self:LoadPos(framename);
+			Enhancer.process[framename] = nil;
+			next = self:GetNext();
+		end
+		
+		Enhancer.process = nil;
+	end
+end
+
+function Enhancer:GetNext()
+	if (not Enhancer.process) then return nil; end
+	
+	for framename, frameinfo in pairs(Enhancer.process) do
+		return framename;
+	end
+	
+	return nil;
+end
+
+function Enhancer:FindParent(framename)
+	while (Enhancer.process[framename].Parent) do
+		if (not getglobal(Enhancer.process[framename].ParentGlobalName)) then
+			-- Could not find parent loaded so skip snapping this
+			return framename;
+		end
+		
+		local oldname = framename;
+		framename = Enhancer.process[framename].Parent;
+		if (not Enhancer.process[framename]) then
+			return oldname;
+		end
+	end
+	
+	return framename;
 end
 
 function Enhancer:DelayAnnounce()
