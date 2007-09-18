@@ -24,7 +24,7 @@ function Enhancer:CastingTotem(unit, totem, rank)
 	if (rank == "") then rank = L[0]; end
 	
 	local totemX, totemY, totemZone;
-	if (Cartographer and self.coords) then
+	if (Cartographer and Cartographer.GetCurrentPlayerPosition and self.coords) then
 		totemX, totemY, totemZone = Cartographer:GetCurrentPlayerPosition();
 	end
 	
