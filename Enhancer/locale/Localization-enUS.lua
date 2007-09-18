@@ -210,6 +210,9 @@ L_Main:RegisterTranslations("enUS", function() return {
 	["windfurytotem_cmd"] = "WindfuryTotem",
 	["windfurytotem_desc"] = "Timer for twisting windfury totem",
 	
+	["snap_cmd"] = "Snap",
+	["snap_desc"] = "Snap frames when in the vicinity of each other",
+	
 }; end );
 
 local L_EP = AceLibrary("AceLocale-2.2"):new("EnhancerEP")

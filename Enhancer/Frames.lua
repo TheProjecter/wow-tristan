@@ -199,10 +199,12 @@ function Enhancer:Moving(framename)
 end
 
 function Enhancer:FinishedMoving(framename)
+	if (not self.db.profile.snap) then return; end
+	
 	local dockname, dockside = self[framename].DockN, self[framename].DockS;
 	
 	self[framename].anchor:ClearAllPoints();
-	if (dockname and dockside) then
+	if (dockname and dockside and self.db.profile.snap) then
 		if (dockside == "LEFT") then
 			self[framename].anchor:SetPoint("LEFT", self[dockname].anchor:GetName(), "RIGHT", 0, 0);
 		elseif (dockside == "RIGHT") then
@@ -213,13 +215,10 @@ function Enhancer:FinishedMoving(framename)
 			self[framename].anchor:SetPoint("BOTTOM", self[dockname].anchor:GetName(), "TOP", 0, 0);
 		end
 	else
-		self:Print(self[framename].anchor:GetLeft(), self[framename].anchor:GetTop());
 		self[framename].anchor:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", self[framename].anchor:GetLeft(), self[framename].anchor:GetTop());
+		self[framename].DockN = nil;
+		self[framename].DockS = nil;
 	end
-	
-	-- self[framename].anchor:ClearAllPoints();
-	-- self[framename].anchor:SetPoint("CENTER", WorldFrame, "CENTER",  self[framename].xOffsetDefault,  self[framename].yOffsetDefault);
-	-- CleanUp
 end
 
 function Enhancer:SavePos(framename, frame)
@@ -227,10 +226,10 @@ function Enhancer:SavePos(framename, frame)
 	if (not Enhancer.db.profile.framePositions[framename]) then Enhancer.db.profile.framePositions[framename] = {}; end
 	-- frame:GetCenter()
 	local point, relativeTo, relativePoint, xOfs, yOfs = frame:GetPoint();
-	self:Print( frame:GetPoint() );
+	-- self:Print( frame:GetPoint() );
 	
 	Enhancer.db.profile.framePositions[framename]["point"] = point;
-	Enhancer.db.profile.framePositions[framename]["relativeTo"] = relativeTo:GetName();
+	Enhancer.db.profile.framePositions[framename]["relativeTo"] = (relativeTo and relativeTo:GetName()) or "UIParent";
 	Enhancer.db.profile.framePositions[framename]["relativePoint"] = relativePoint;
 	Enhancer.db.profile.framePositions[framename]["xOfs"] = xOfs;
 	Enhancer.db.profile.framePositions[framename]["yOfs"] = yOfs;
