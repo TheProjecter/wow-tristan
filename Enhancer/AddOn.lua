@@ -4,7 +4,7 @@ Left to do:
 ]]--
 --[[ http://www.wowace.com/wiki/Joker ]]--
 --[[ http://www.wowace.com/wiki/Rock ]]--
-Enhancer = AceLibrary("AceAddon-2.0"):new("AceEvent-2.0", "AceDB-2.0", "AceConsole-2.0", "AceModuleCore-2.0", "Parser-3.0");
+Enhancer = AceLibrary("AceAddon-2.0"):new("AceEvent-2.0", "AceDB-2.0", "AceConsole-2.0", "AceModuleCore-2.0", "Parser-3.0", "Sink-1.0");
 Enhancer:RegisterDB("EnhancerDB", nil, "class");
 
 

@@ -33,7 +33,7 @@ function Enhancer:CreateButton(globalname, bgFile, xOffset, yOffset)
 	
 	--[[ Create a fontstring for the Anchor ]]
 	object = retVal["anchor"]:CreateFontString(globalname.."AnchorText", "OVERLAY");
-	object:SetFontObject(Enhancer.db.profile.belowFont);
+	object:SetFontObject(GameFontHighlightSmall);
 	object:ClearAllPoints();
 	object:SetTextColor(1, 1, 1, 1);
 	object:SetWidth(Enhancer.db.profile.framesize);
@@ -77,21 +77,23 @@ function Enhancer:CreateButton(globalname, bgFile, xOffset, yOffset)
 	
 	--[[ Create a fontstring above ]]
 	object = retVal["mainframe"]:CreateFontString(globalname.."FrameText1", "OVERLAY");
-	object:SetFontObject(Enhancer.db.profile.belowFont);
+	object:SetFontObject(GameFontHighlightSmall)
+	object:SetFont(Enhancer.db.profile.aboveFontName, Enhancer.db.profile.aboveFontSize, Enhancer.db.profile.aboveFontFlags);
 	object:ClearAllPoints();
 	object:SetTextColor(1, 1, 1, 1);
 	object:SetWidth(Enhancer.db.profile.framesize * (15/10));
-	object:SetHeight(Enhancer.db.profile.belowFontSize + 10);
+	object:SetHeight(Enhancer.db.profile.aboveFontSize + 10);
 	object:SetPoint("BOTTOM", globalname.."Frame", "TOP");
 	object:SetJustifyH("CENTER");
-	object:SetJustifyV("MIDDLE");
+	object:SetJustifyV("BOTTOM");
 	object:SetText("");
 	object:SetAlpha(Enhancer.db.profile.oocinactiveAlpha);
 	retVal["textabove"] = object;
 	
 	--[[ Create a fontstring in center ]]
 	object = retVal["mainframe"]:CreateFontString(globalname.."FrameText2", "OVERLAY");
-	object:SetFontObject(Enhancer.db.profile.centerFont);
+	object:SetFontObject(GameFontHighlight)
+	object:SetFont(Enhancer.db.profile.centerFontName, Enhancer.db.profile.centerFontSize, Enhancer.db.profile.centerFontFlags);
 	object:ClearAllPoints();
 	object:SetTextColor(1, 1, 1, 1);
 	object:SetWidth(Enhancer.db.profile.framesize);
@@ -107,14 +109,15 @@ function Enhancer:CreateButton(globalname, bgFile, xOffset, yOffset)
 	
 	--[[ Create a fontstring below ]]
 	object = retVal["mainframe"]:CreateFontString(globalname.."FrameText3", "OVERLAY");
-	object:SetFontObject(Enhancer.db.profile.belowFont);
+	object:SetFontObject(GameFontHighlightSmall)
+	object:SetFont(Enhancer.db.profile.belowFontName, Enhancer.db.profile.belowFontSize, Enhancer.db.profile.belowFontFlags);
 	object:ClearAllPoints();
 	object:SetTextColor(1, 1, 1, 1);
-	object:SetWidth(Enhancer.db.profile.framesize);
+	object:SetWidth(Enhancer.db.profile.framesize * (15/10));
 	object:SetHeight(Enhancer.db.profile.belowFontSize + 10);
 	object:SetPoint("TOP", globalname.."Frame", "BOTTOM");
 	object:SetJustifyH("CENTER");
-	object:SetJustifyV("MIDDLE");
+	object:SetJustifyV("TOP");
 	object:SetText("");
 	object:SetAlpha(Enhancer.db.profile.oocinactiveAlpha);
 	retVal["textbelow"] = object;
@@ -479,7 +482,7 @@ function Enhancer:UpdateFrame(framename)
 	
 	if (GetTime() >= self[framename].death) then
 		local message = string.format(L["TotemDeath"], self[framename].name, self[framename].element);
-		self:ScreenMessage(message, 1, (1/2), 0);
+		self:Message(message, 1, (1/2), 0);
 		
 		self:FrameDeathPreBegin(framename);
 		return;
@@ -512,7 +515,7 @@ function Enhancer:UpdateFrame(framename)
 	if (self[framename].warn and GetTime() >= self[framename].warn) then
 		self[framename].warn = nil;
 		local message = string.format(L["TotemExpiring"], self[framename].name, self[framename].element);
-		self:ScreenMessage(message, 1, 1, 0);
+		self:Message(message, 1, 1, 0);
 	end
 	
 	self[framename].textbelow:SetText( Enhancer:FormatTime(self[framename].death - GetTime()) );

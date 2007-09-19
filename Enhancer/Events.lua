@@ -33,7 +33,7 @@ function Enhancer:CastingTotem(unit, totem, rank)
 			self:FrameDeathPreBegin(frame);
 		end
 	elseif Enhancer.Totems[totem] then
-		if (totem == Enhancer.BS["Mana Spring Totem"] and L:GetReverseTranslation(rank) == "0") then
+		if (totem == Enhancer.BS["Mana Spring Totem"] and (L:GetReverseTranslation(rank) == 0 or L:GetReverseTranslation(rank) == "0")) then
 			totem = Enhancer.BS["Enamored Water Spirit"];
 		end
 		
@@ -54,7 +54,7 @@ function Enhancer:ParserDamage(info)
 	
 	if (self[frame].hitPoints <= 0) then
 		local message = string.format(L["TotemSlain"], self[frame].name, self[frame].element);
-		self:ScreenMessage(message, 1, 0, 0);
+		self:Message(message, 1, 0, 0);
 		
 		self:FrameDeathPreBegin(frame)
 	end
@@ -72,7 +72,7 @@ function Enhancer:TotemWasDestroyed(info)
 		
 		local framename = self.combatLog[what];
 		local message = string.format(L["TotemDeath"], self[framename].name, self[framename].element);
-		self:ScreenMessage(message, 1, (1/2), 0);
+		self:Message(message, 1, (1/2), 0);
 		self:FrameDeathPreBegin(framename);
 	end
 end
