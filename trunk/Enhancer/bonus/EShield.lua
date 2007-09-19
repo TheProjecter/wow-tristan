@@ -101,7 +101,7 @@ function EnhancerEShield:ManualScan(announceLost, origin)
 	end
 	
 	if (announceLost) then
-		Enhancer:ScreenMessage(L["Lost track of Earth Shield"]);
+		Enhancer:Message(L["Lost track of Earth Shield"]);
 		if (Enhancer.debug and origin) then
 			self:Print("DEBUG: Origin = %s", origin);
 		end
@@ -206,7 +206,7 @@ function EnhancerEShield:UpdateEShield()
 	
 	if (expires and GetTime() > expires) then
 		-- Time ran out
-		Enhancer:ScreenMessage(L["Earth Shield has expired"]);
+		Enhancer:Message(L["Earth Shield has expired"]);
 		Enhancer:FrameDeathPreBegin(FrameName);
 		self:CancelAllScheduledEvents();
 		return;
@@ -230,14 +230,14 @@ function EnhancerEShield:UpdateEShield()
 	
 	if (not buffIndex) then
 		-- This one has probably used up it's charges
-		Enhancer:ScreenMessage(L["Earth Shield has expired"]);
+		Enhancer:Message(L["Earth Shield has expired"]);
 		Enhancer:FrameDeathPreBegin(FrameName);
 		self:CancelAllScheduledEvents();
 		return;
 	end
 	
 	if (timeLeft <= 10 and not warned) then
-		Enhancer:ScreenMessage(L["Earth Shield is about to expire"]);
+		Enhancer:Message(L["Earth Shield is about to expire"]);
 		Enhancer:SetFrameData(FrameName, "warned", true)
 	elseif (timeLeft > 10 and warned) then
 		Enhancer:SetFrameData(FrameName, "warned", nil)

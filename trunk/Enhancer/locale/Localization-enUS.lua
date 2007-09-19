@@ -213,6 +213,23 @@ L_Main:RegisterTranslations("enUS", function() return {
 	["snap_cmd"] = "Snap",
 	["snap_desc"] = "Snap frames when in the vicinity of each other",
 	
+	["font_cmd"] = "Font",
+	["font_desc"] = "Font settings",
+	["fontabove_cmd"] = "Above",
+	["fontabove_desc"] = "Font settings for text above the frame",
+	["fontcenter_cmd"] = "Center",
+	["fontcenter_desc"] = "Font settings for text in the center of the frame",
+	["fontbelow_cmd"] = "Below",
+	["fontbelow_desc"] = "Font settings for text below the frame",
+	["fontname_cmd"] = "Font",
+	["fontname_desc"] = "Font type",
+	["fontsize_cmd"] = "Size",
+	["fontsize_desc"] = "Font size",
+	["fontflag_cmd"] = "Outline",
+	["fontflag_desc"] = "Font outline (OUTLINE\|THICKOUTLINE\|NONE)",
+	["Messages_cmd"] = "Messages",
+	["Messages_desc"] = "Message settings",
+	
 }; end );
 
 local L_EP = AceLibrary("AceLocale-2.2"):new("EnhancerEP")

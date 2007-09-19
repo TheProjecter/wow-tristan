@@ -87,8 +87,8 @@ function Enhancer:CreateTotem(totem, rank, totemX, totemY, totemZone)
 	end
 end
 
-function Enhancer:ScreenMessage(message, r, g, b, a, h)
-	UIErrorsFrame:AddMessage(message, r or 1, g or 1, b or 1, a or 1, h or 3);
+function Enhancer:Message(message, r, g, b, a, h)
+	Enhancer:Pour(message, r or 1, g or 1, b or 1, a or 1, h or 3);
 end
 
 function Enhancer:AddFrameToList(framename, all, totem, death)
@@ -162,28 +162,23 @@ function Enhancer:Resize()
 		self[frame].cooldown:SetWidth(Enhancer.db.profile.framesize - (Enhancer.db.profile.framesize / self[frame].cooldown.divider));
 		self[frame].cooldown:SetHeight(Enhancer.db.profile.framesize - (Enhancer.db.profile.framesize / self[frame].cooldown.divider));
 		
-		self[frame].textbelow:SetWidth(Enhancer.db.profile.framesize);
 		self[frame].textabove:SetWidth(Enhancer.db.profile.framesize * (15/10));
-		
 		self[frame].textcenter:SetHeight(Enhancer.db.profile.framesize);
 		self[frame].textcenter:SetWidth(Enhancer.db.profile.framesize);
+		self[frame].textbelow:SetWidth(Enhancer.db.profile.framesize * (15/10));
 	end
-	
-	self:UpdateFont();
 end
 
 function Enhancer:UpdateFont()
-	Enhancer.db.profile.centerFontSize = (Enhancer.db.profile.framesize / 3);
-	Enhancer.db.profile.centerFont = CreateFont("EnhancerCenterFont");
-	Enhancer.db.profile.centerFont:SetFont(Enhancer.db.profile.centerFontName, Enhancer.db.profile.centerFontSize, Enhancer.db.profile.centerFontFlags);
-	
-	Enhancer.db.profile.belowFontSize = (Enhancer.db.profile.framesize / 4);
-	Enhancer.db.profile.belowFont = CreateFont("EnhancerBelowFont");
-	Enhancer.db.profile.belowFont:SetFont(Enhancer.db.profile.belowFontName, Enhancer.db.profile.belowFontSize, Enhancer.db.profile.belowFontFlags);
-	
 	for _, frame in ipairs(Enhancer.aFrames) do
+		-- Adjust frames that needs adjusting
+		self[frame].textabove:SetHeight(Enhancer.db.profile.aboveFontSize + 10);
 		self[frame].textbelow:SetHeight(Enhancer.db.profile.belowFontSize + 10);
-		self[frame].textabove:SetHeight(Enhancer.db.profile.belowFontSize + 10);
+		
+		-- Update fonts
+		self[frame].textabove:SetFont(Enhancer.db.profile.aboveFontName, Enhancer.db.profile.aboveFontSize, Enhancer.db.profile.aboveFontFlags);
+		self[frame].textcenter:SetFont(Enhancer.db.profile.centerFontName, Enhancer.db.profile.centerFontSize, Enhancer.db.profile.centerFontFlags);
+		self[frame].textbelow:SetFont(Enhancer.db.profile.belowFontName, Enhancer.db.profile.belowFontSize, Enhancer.db.profile.belowFontFlags);
 	end
 end
 
@@ -204,10 +199,10 @@ end
 
 function Enhancer:TestCastingTotem()
 	local L = AceLibrary("AceLocale-2.2"):new("Enhancer")
-	Enhancer:CastingTotem("player", Enhancer.BS["Strength of Earth Totem"], L:GetReverseTranslation(1));
-	Enhancer:CastingTotem("player", Enhancer.BS["Totem of Wrath"], L:GetReverseTranslation(1));
-	Enhancer:CastingTotem("player", Enhancer.BS["Mana Spring Totem"], L:GetReverseTranslation(0));
-	Enhancer:CastingTotem("player", Enhancer.BS["Windfury Totem"], L:GetReverseTranslation(1));
+	Enhancer:CastingTotem("player", Enhancer.BS["Strength of Earth Totem"], L[1]);
+	Enhancer:CastingTotem("player", Enhancer.BS["Totem of Wrath"], L[1]);
+	Enhancer:CastingTotem("player", Enhancer.BS["Mana Spring Totem"], L[0]);
+	Enhancer:CastingTotem("player", Enhancer.BS["Windfury Totem"], L[1]);
 end
 
 function Enhancer:EPValuesChanged()

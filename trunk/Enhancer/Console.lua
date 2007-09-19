@@ -1,6 +1,17 @@
 local L = AceLibrary("AceLocale-2.2"):new("Enhancer");
+local SML = AceLibrary("SharedMedia-1.0");
+SML:Register("font", "Adventure",	[[Interface\AddOns\Enhancer\fonts\Adventure.ttf]]);
+SML:Register("font", "The Godfather",	[[Interface\AddOns\Enhancer\fonts\Corleone.ttf]]);
+SML:Register("font", "Sopranos",	[[Interface\AddOns\Enhancer\fonts\Mobsters.ttf]]);
+SML:Register("font", "Friz Quadrata TT", [[Fonts\FRIZQT__.ttf]]);
+SML:Register("font", "Weltron Urban", [[Interface\AddOns\Enhancer\fonts\weltu.ttf]]);
+SML:Register("font", "Jokewood", [[Interface\AddOns\Enhancer\fonts\jokewood.ttf]]);
+SML:Register("font", "Freshbot", [[Interface\AddOns\Enhancer\fonts\freshbot.ttf]]);
+SML:Register("font", "Chick", [[Interface\AddOns\Enhancer\fonts\chick.ttf]]);
+SML:Register("font", "Alba Super", [[Interface\AddOns\Enhancer\fonts\albas.ttf]]);
+local SML_fonts = SML:List("font");
 
-Enhancer.Modules = {};
+
 
 --[[ Start: I LOVE THESE ]]--
 local orderNum = 0;
@@ -52,15 +63,20 @@ local defaults = {
 	},
 	EPGuesstimates = false,
 	
-	centerFontName = "Fonts\\FRIZQT__.TTF",
-	centerFontSize = (46 / 3),
+	aboveFontID = "Friz Quadrata TT",
+	aboveFontName = "Fonts\\FRIZQT__.ttf",
+	aboveFontSize = floor(46 / 4),
+	aboveFontFlags = "OUTLINE",
+	
+	centerFontID = "Friz Quadrata TT",
+	centerFontName = "Fonts\\FRIZQT__.ttf",
+	centerFontSize = floor(46 / 3),
 	centerFontFlags = "OUTLINE",
-	centerFont = CreateFont("EnhancerCenterFont"),
-
-	belowFontName = "Fonts\\FRIZQT__.TTF",
-	belowFontSize = (46 / 4),
+	
+	belowFontID = "Friz Quadrata TT",
+	belowFontName = "Fonts\\FRIZQT__.ttf",
+	belowFontSize = floor(46 / 4),
 	belowFontFlags = "OUTLINE",
-	belowFont = CreateFont("EnhancerBelowFont"),
 	
 	AEPNumbers = {
 		ATTACKPOWER = (10 / 10),
@@ -101,8 +117,6 @@ local defaults = {
 	
 	bonus = {},
 };
-defaults.centerFont:SetFont(defaults.centerFontName, defaults.centerFontSize, defaults.centerFontFlags);
-defaults.belowFont:SetFont(defaults.belowFontName, defaults.belowFontSize, defaults.belowFontFlags);
 Enhancer:RegisterDefaults('profile', defaults);
 
 function Enhancer:RegisterSlashCommands()
@@ -1033,7 +1047,6 @@ function Enhancer:RegisterSlashCommands()
 				order = OrderNum(),
 			},
 			
-			
 			[SpacerName()] = SpacerTable(),
 			
 			[L["alpha_cmd"]] = {
@@ -1109,6 +1122,151 @@ function Enhancer:RegisterSlashCommands()
 					},
 				},
 			},
+			[L["font_cmd"]] = {
+				type = "group",
+				name = L["font_cmd"],
+				desc = L["font_desc"],
+				order = OrderNum(),
+				args = {
+					[L["fontabove_cmd"]] = {
+						type = "group",
+						name = L["fontabove_cmd"],
+						desc = L["fontabove_desc"],
+						order = OrderNum(),
+						args = {
+							[L["fontname_cmd"]] = {
+								name = L["fontname_cmd"], type = "text",
+								desc = L["fontname_desc"],
+								get = function() return SML:IsValid("font", Enhancer.db.profile.aboveFontID) and Enhancer.db.profile.aboveFontID; end,
+								set = function(v)
+									Enhancer.db.profile.aboveFontID = v;
+									Enhancer.db.profile.aboveFontName = SML:Fetch("font", v);
+									Enhancer:UpdateFont();
+								end,
+								validate = SML_fonts,
+								usage = "<font name>",
+								order = OrderNum(),
+							},
+							[L["fontsize_cmd"]] = {
+								name = L["fontsize_cmd"], type = "range",
+								desc = L["fontsize_desc"],
+								min = 5, max = 16, step = 1, isPercent = false,
+								get = function() return Enhancer.db.profile.aboveFontSize; end,
+								set = function(v)
+									Enhancer.db.profile.aboveFontSize = v;
+									Enhancer:UpdateFont();
+								end,
+								order = OrderNum(),
+							},
+							[L["fontflag_cmd"]] = {
+								name = L["fontflag_cmd"], type = "text",
+								desc = L["fontflag_desc"],
+								get = function() return Enhancer.db.profile.aboveFontFlags; end,
+								set = function(v)
+									Enhancer.db.profile.aboveFontFlags = v;
+									Enhancer:UpdateFont();
+								end,
+								validate = { "OUTLINE", "THICKOUTLINE", "NONE" },
+								usage = "<OUTLINE\|THICKOUTLINE\|NONE>",
+								order = OrderNum(),
+							},
+						},
+					},
+					[L["fontcenter_cmd"]] = {
+						type = "group",
+						name = L["fontcenter_cmd"],
+						desc = L["fontcenter_desc"],
+						order = OrderNum(),
+						args = {
+							[L["fontname_cmd"]] = {
+								name = L["fontname_cmd"], type = "text",
+								desc = L["fontname_desc"],
+								get = function() return SML:IsValid("font", Enhancer.db.profile.centerFontID) and Enhancer.db.profile.centerFontID; end,
+								set = function(v)
+									Enhancer.db.profile.centerFontID = v;
+									Enhancer.db.profile.centerFontName = SML:Fetch("font", v);
+									Enhancer:UpdateFont();
+								end,
+								validate = SML_fonts,
+								usage = "<font name>",
+								order = OrderNum(),
+							},
+							[L["fontsize_cmd"]] = {
+								name = L["fontsize_cmd"], type = "range",
+								desc = L["fontsize_desc"],
+								min = 5, max = 25, step = 1, isPercent = false,
+								get = function() return Enhancer.db.profile.centerFontSize; end,
+								set = function(v)
+									Enhancer.db.profile.centerFontSize = v;
+									Enhancer:UpdateFont();
+								end,
+								order = OrderNum(),
+							},
+							[L["fontflag_cmd"]] = {
+								name = L["fontflag_cmd"], type = "text",
+								desc = L["fontflag_desc"],
+								get = function() return Enhancer.db.profile.centerFontFlags; end,
+								set = function(v)
+									Enhancer.db.profile.centerFontFlags = v;
+									Enhancer:UpdateFont();
+								end,
+								validate = { "OUTLINE", "THICKOUTLINE", "NONE" },
+								usage = "<OUTLINE\|THICKOUTLINE\|NONE>",
+								order = OrderNum(),
+							},
+						},
+					},
+					[L["fontbelow_cmd"]] = {
+						type = "group",
+						name = L["fontbelow_cmd"],
+						desc = L["fontbelow_desc"],
+						order = OrderNum(),
+						args = {
+							[L["fontname_cmd"]] = {
+								name = L["fontname_cmd"], type = "text",
+								desc = L["fontname_desc"],
+								get = function() return SML:IsValid("font", Enhancer.db.profile.belowFontID) and Enhancer.db.profile.belowFontID; end,
+								set = function(v)
+									Enhancer.db.profile.belowFontID = v;
+									Enhancer.db.profile.belowFontName = SML:Fetch("font", v);
+									Enhancer:UpdateFont();
+								end,
+								validate = SML_fonts,
+								usage = "<font name>",
+								order = OrderNum(),
+							},
+							[L["fontsize_cmd"]] = {
+								name = L["fontsize_cmd"], type = "range",
+								desc = L["fontsize_desc"],
+								min = 5, max = 16, step = 1, isPercent = false,
+								get = function() return Enhancer.db.profile.belowFontSize; end,
+								set = function(v)
+									Enhancer.db.profile.belowFontSize = v;
+									Enhancer:UpdateFont();
+								end,
+								order = OrderNum(),
+							},
+							[L["fontflag_cmd"]] = {
+								name = L["fontflag_cmd"], type = "text",
+								desc = L["fontflag_desc"],
+								get = function() return Enhancer.db.profile.belowFontFlags; end,
+								set = function(v)
+									Enhancer.db.profile.belowFontFlags = v;
+									Enhancer:UpdateFont();
+								end,
+								validate = { "OUTLINE", "THICKOUTLINE", "NONE" },
+								usage = "<OUTLINE\|THICKOUTLINE\|NONE>",
+								order = OrderNum(),
+							},
+						},
+					},
+				},
+			},
+			
+			["sinkorder"] = OrderNum(),
+			
+			[SpacerName()] = SpacerTable(),
+			
 			[L["Announcement_cmd"]] = {
 				type = "group",
 				name = L["Announcement_cmd"],
@@ -1173,6 +1331,9 @@ function Enhancer:RegisterSlashCommands()
 			
 		end
 	end
+	
+	local sinkorder = consoleoptions.args.sinkorder;
+	consoleoptions.args.sinkorder = nil;
 	
 	self:RegisterChatCommand( { "/Enhancer", "/enh", "/ShammySpy" }, consoleoptions );
 	
