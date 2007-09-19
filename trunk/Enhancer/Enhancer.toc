@@ -38,6 +38,8 @@ libs\Metrognome-2.0\Metrognome-2.0.lua
 libs\Parser-3.0\Parser-3.0.lua
 libs\SpecialEvents-Aura-2.0\SpecialEvents-Aura-2.0.lua
 libs\TipHooker-1.0\TipHooker-1.0.lua
+libs\SharedMedia-1.0\SharedMedia-1.0.lua
+libs\Sink-1.0\Sink-1.0.lua
 
 locale\URL.lua
 locale\Localization-enUS.lua

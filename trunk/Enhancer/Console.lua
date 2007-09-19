@@ -1139,9 +1139,11 @@ function Enhancer:RegisterSlashCommands()
 								desc = L["fontname_desc"],
 								get = function() return SML:IsValid("font", Enhancer.db.profile.aboveFontID) and Enhancer.db.profile.aboveFontID; end,
 								set = function(v)
-									Enhancer.db.profile.aboveFontID = v;
-									Enhancer.db.profile.aboveFontName = SML:Fetch("font", v);
-									Enhancer:UpdateFont();
+									if (v) then
+										Enhancer.db.profile.aboveFontID = v;
+										Enhancer.db.profile.aboveFontName = SML:Fetch("font", Enhancer.db.profile.aboveFontID);
+										Enhancer:UpdateFont();
+									end
 								end,
 								validate = SML_fonts,
 								usage = "<font name>",
@@ -1183,9 +1185,11 @@ function Enhancer:RegisterSlashCommands()
 								desc = L["fontname_desc"],
 								get = function() return SML:IsValid("font", Enhancer.db.profile.centerFontID) and Enhancer.db.profile.centerFontID; end,
 								set = function(v)
-									Enhancer.db.profile.centerFontID = v;
-									Enhancer.db.profile.centerFontName = SML:Fetch("font", v);
-									Enhancer:UpdateFont();
+									if (v) then
+										Enhancer.db.profile.centerFontID = v;
+										Enhancer.db.profile.centerFontName = SML:Fetch("font", Enhancer.db.profile.centerFontID);
+										Enhancer:UpdateFont();
+									end
 								end,
 								validate = SML_fonts,
 								usage = "<font name>",
@@ -1227,9 +1231,11 @@ function Enhancer:RegisterSlashCommands()
 								desc = L["fontname_desc"],
 								get = function() return SML:IsValid("font", Enhancer.db.profile.belowFontID) and Enhancer.db.profile.belowFontID; end,
 								set = function(v)
-									Enhancer.db.profile.belowFontID = v;
-									Enhancer.db.profile.belowFontName = SML:Fetch("font", v);
-									Enhancer:UpdateFont();
+									if (v) then
+										Enhancer.db.profile.belowFontID = v;
+										Enhancer.db.profile.belowFontName = SML:Fetch("font", Enhancer.db.profile.belowFontID);
+										Enhancer:UpdateFont();
+									end
 								end,
 								validate = SML_fonts,
 								usage = "<font name>",
