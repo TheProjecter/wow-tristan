@@ -1343,6 +1343,12 @@ function Enhancer:RegisterSlashCommands()
 	
 	self:RegisterChatCommand( { "/Enhancer", "/enh", "/ShammySpy" }, consoleoptions );
 	
+	--[[ Ugly thing to get the output from SinkLib where I want it to be ]]--
+	local console = AceLibrary("AceConsole-2.0").registry;
+	if (console and console.ENHANCER and console.ENHANCER.args and console.ENHANCER.args.output) then
+		console.ENHANCER.args.output.order = sinkorder;
+	end
+	
 	if (AceLibrary:HasInstance("Waterfall-1.0")) then
 		AceLibrary("Waterfall-1.0"):Register(
 			"Enhancer",
