@@ -1,7 +1,8 @@
 local L = AceLibrary("AceLocale-2.2"):new("Enhancer");
 local SML = AceLibrary("SharedMedia-1.0");
 SML:Register("font", "Adventure",	[[Interface\AddOns\Enhancer\fonts\Adventure.ttf]]);
-SML:Register("font", "The Godfather",	[[Interface\AddOns\Enhancer\fonts\Corleone.ttf]]);
+SML:Register("font", "The Godfather",	[[Interface\AddOns\Enhancer\fonts\CorleoneDue.ttf]]);
+SML:Register("font", "Corleone",	[[Interface\AddOns\Enhancer\fonts\Corleone.ttf]]);
 SML:Register("font", "Sopranos",	[[Interface\AddOns\Enhancer\fonts\Mobsters.ttf]]);
 SML:Register("font", "Friz Quadrata TT", [[Fonts\FRIZQT__.ttf]]);
 SML:Register("font", "Weltron Urban", [[Interface\AddOns\Enhancer\fonts\weltu.ttf]]);
@@ -9,6 +10,7 @@ SML:Register("font", "Jokewood", [[Interface\AddOns\Enhancer\fonts\jokewood.ttf]
 SML:Register("font", "Freshbot", [[Interface\AddOns\Enhancer\fonts\freshbot.ttf]]);
 SML:Register("font", "Chick", [[Interface\AddOns\Enhancer\fonts\chick.ttf]]);
 SML:Register("font", "Alba Super", [[Interface\AddOns\Enhancer\fonts\albas.ttf]]);
+SML:Register("font", "Wild Ride", [[Interface\AddOns\Enhancer\fonts\WildRide.ttf]]);
 local SML_fonts = SML:List("font");
 
 
