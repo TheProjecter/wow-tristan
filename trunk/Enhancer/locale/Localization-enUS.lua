@@ -230,6 +230,9 @@ L_Main:RegisterTranslations("enUS", function() return {
 	["Messages_cmd"] = "Messages",
 	["Messages_desc"] = "Message settings",
 	
+	["roman_cmd"] = "Roman",
+	["roman_desc"] = "Set Enhancer to use roman numbers on Shields etc",
+	
 }; end );
 
 local L_EP = AceLibrary("AceLocale-2.2"):new("EnhancerEP")

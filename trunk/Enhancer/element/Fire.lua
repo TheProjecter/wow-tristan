@@ -1,5 +1,5 @@
 EnhancerFire = Enhancer:NewModule("Fire");
-EnhancerFire.DefaultState = (Enhancer.englishClass == "SHAMAN");
+EnhancerFire.DefaultState = true;
 Enhancer:SetModuleDefaultState("Fire", EnhancerFire.DefaultState);
 local FrameName = "fire";
 

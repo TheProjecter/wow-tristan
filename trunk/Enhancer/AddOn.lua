@@ -12,6 +12,7 @@ local L = AceLibrary("AceLocale-2.2"):new("Enhancer");
 Enhancer.deformat = AceLibrary("Deformat-2.0");
 Enhancer.BS = AceLibrary("Babble-Spell-2.2");
 --local Aura = AceLibrary("SpecialEvents-Aura-2.0")
+Enhancer.LR = LibStub:GetLibrary("LibRoman-1.0");
 
 _, Enhancer.englishClass = UnitClass("player");
 
@@ -25,12 +26,12 @@ function Enhancer:OnInitialize()
 	self:RegisterSlashCommands();
 	self:InspectEPValues(); -- Check so not using old values
 	
-	--if (not self.db.profile.startAnnounceDisabled) then
-	--	self:ScheduleEvent("DelayAnnounce", self.DelayAnnounce, 10, self)
-	--end
-	
-	self:ScheduleEvent("DelayAnnounce", self.DelayAnnounce, 10, self)
+	if (not self.db.profile.startAnnounceDisabled) then
+		self:ScheduleEvent("DelayAnnounce", self.DelayAnnounce, 7, self)
+	end
 	self:ScheduleEvent("SnapPos", self.SnapPos, 2, self)
+	
+	self.totemRange = (self:TotemicMastery() and 30) or 20;
 end
 
 function Enhancer:OnEnable()
@@ -69,6 +70,17 @@ function Enhancer:OnProfileDisable()
 end
 function Enhancer:OnProfileEnable(oldProfileName, oldProfileData)
 	self:InspectEPValues();
+	self:Resize();
+	self:UpdateFont();
+	self:ToggleLock();
+	
+	for name, module in self:IterateModules() do
+		if (self:IsModuleActive(name) and module.OnEnable) then
+			module:OnEnable();
+		elseif (module.OnDisable) then
+			module:OnDisable();
+		end
+	end
 end
 
 function Enhancer:SnapPos()

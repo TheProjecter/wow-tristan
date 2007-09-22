@@ -498,8 +498,19 @@ function Enhancer:UpdateFrame(framename)
 		
 		if (totemX and totemY and totemZone) then
 			local distance = Cartographer:GetDistanceToPoint(totemX, totemY, totemZone);
-			if (distance) then
-				self[framename].textabove:SetText( "~" .. string.format("%.1f", distance) .. "~" );
+			local Range = self[framename].range;
+			if (distance and Range) then
+				local color = "|cff000000";
+				if (tonumber(distance) and tonumber(Range)) then
+					color = "|cff00ff00";
+					if (tonumber(distance) > tonumber(Range)) then
+						color = "|cffff0000";
+					elseif ((tonumber(Range) - tonumber(distance)) <= 5) then
+						color = "|cffffff00";
+					end
+				end
+				
+				self[framename].textabove:SetText( color .. "~" .. string.format("%.1f", distance) .. "~|r" );
 				
 				-- Destroy on too much distance? what range is ok?
 				if (distance > self.db.profile.killYards and self.db.profile.yardKill) then

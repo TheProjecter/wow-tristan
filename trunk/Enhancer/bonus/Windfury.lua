@@ -1,5 +1,5 @@
 EnhancerWindfury = Enhancer:NewModule("Windfury", "AceEvent-2.0", "Parser-3.0");
-EnhancerWindfury.DefaultState = (Enhancer.englishClass == "SHAMAN");
+EnhancerWindfury.DefaultState = true;
 Enhancer:SetModuleDefaultState("Windfury", EnhancerWindfury.DefaultState);
 local FrameName = "windfury";
 

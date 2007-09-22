@@ -27,6 +27,10 @@ function Enhancer:CreateTotem(totem, rank, totemX, totemY, totemZone)
 	local Element = Enhancer.Totems[totem].Element;
 	local HitPoints = Enhancer.Totems[totem].Life or (Enhancer.Totems[totem][rank] and Enhancer.Totems[totem][rank].Life);
 	local Pulse = Enhancer.Totems[totem].Pulse;
+	local Range = Enhancer.Totems[totem].Range;
+	if (Range and Enhancer.Totems[totem].TotemicMastery) then
+		Range = Range + 10;
+	end
 	
 	if (not Enhancer:IsModuleActive(Element)) then return; end
 	
@@ -36,7 +40,8 @@ function Enhancer:CreateTotem(totem, rank, totemX, totemY, totemZone)
 	end
 	
 	local combatLogName = totem;
-	if (rank > 1) then combatLogName = combatLogName .. " " .. self.Ranks[rank]; end
+	--[[ Rank 1 Totems doesn't seem to get Roman Numbers applied to them in the combat log ]]--
+	if (rank > 1) then combatLogName = combatLogName .. " " .. self.LR:R(rank); end
 	self.combatLog[combatLogName] = frame;
 	if (Enhancer.Totems[totem].CombatLog) then
 		for _, logName in ipairs(Enhancer.Totems[totem].CombatLog) do
@@ -70,8 +75,9 @@ function Enhancer:CreateTotem(totem, rank, totemX, totemY, totemZone)
 	else
 		self[frame].pulse = nil
 	end
-	
 	self[frame].lived = 0;
+	self[frame].range = Range;
+	
 	self:ChangeIcon(frame, Icon);
 	self[frame].mainframe:SetBackdropBorderColor((self[frame].borderColor and self[frame].borderColor["r"]) or 1, (self[frame].borderColor and self[frame].borderColor["g"]) or 1, (self[frame].borderColor and self[frame].borderColor["b"]) or 1, 0);
 	self:UpdateAlphaBegin(frame)
@@ -264,6 +270,49 @@ function Enhancer:CrazyShamanImport(data)
 	if (updateValid) then
 		self:StandardAEPImport(standardizedData)
 	end
+end
+
+function Enhancer:HasTalent(name)
+	for tabIndex = 1, GetNumTalentTabs() do
+		for talentIndex = 1, GetNumTalents(tabIndex) do
+			nameTalent, _, _, _, currentRank, maxRank, _, _ = GetTalentInfo(tabIndex, talentIndex);
+			
+			if (nameTalent == name) then
+				return (currentRank == maxRank), currentRank, maxRank;
+			end
+		end
+	end
+end
+
+function Enhancer:TotemicMastery()
+	local tabIndex = 3;
+	local talentIndex = 8;
+	local name;
+	
+	local findStr = "Restoration"; -- Make localized
+	name = GetTalentTabInfo(tabIndex); -- name, iconTexture, pointsSpent, background = GetTalentTabInfo( tabIndex );
+	if (name ~= findStr) then
+	    for ix = 1, GetNumTalentTabs() do
+	        name = GetTalentTabInfo(tabIndex);
+	        if (name == findStr) then tabIndex = ix; break; end
+					name = nil;
+	    end
+	    if (not name) then return; end
+	end
+	
+	findStr = "Totemic Mastery"; -- Make localized
+	name = GetTalentInfo(tabIndex, talentIndex);
+	if (name ~= findStr) then
+	    for ix = 1, GetNumTalents(tabIndex) do
+	        name = GetTalentInfo(tabIndex, talentIndex);
+	        if (name == findStr) then talentIndex = ix; break; end
+					name = nil;
+	    end
+	    if (not name) then return; end
+	end
+	
+	local tName, _, _, _, tRank, tMRank = GetTalentInfo(tabIndex, talentIndex); -- nameTalent, iconPath, tier, column, currentRank, maxRank, isExceptional, meetsPrereq = GetTalentInfo(tabIndex, talentIndex);
+	return (tRank == tMRank), tName;
 end
 
 function Enhancer:StandardAEPImport(standardizedData)

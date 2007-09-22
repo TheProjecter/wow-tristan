@@ -1,5 +1,5 @@
 EnhancerEarth = Enhancer:NewModule("Earth");
-EnhancerEarth.DefaultState = (Enhancer.englishClass == "SHAMAN");
+EnhancerEarth.DefaultState = true;
 Enhancer:SetModuleDefaultState("Earth", EnhancerEarth.DefaultState);
 local FrameName = "earth";
 
