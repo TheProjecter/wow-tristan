@@ -1,5 +1,5 @@
 EnhancerReincarnation = Enhancer:NewModule("Reincarnation", "AceEvent-2.0");
-EnhancerReincarnation.DefaultState = (Enhancer.englishClass == "SHAMAN");
+EnhancerReincarnation.DefaultState = true;
 Enhancer:SetModuleDefaultState("Reincarnation", EnhancerReincarnation.DefaultState);
 local FrameName = "reincarnation";
 

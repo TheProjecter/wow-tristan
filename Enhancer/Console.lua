@@ -51,6 +51,7 @@ local defaults = {
 	growingPulse = true,
 	borderPulse = false,
 	snap = true,
+	roman = true,
 	
 	EPZero = true,
 	AEP = true,
@@ -70,9 +71,9 @@ local defaults = {
 	aboveFontSize = floor(46 / 4),
 	aboveFontFlags = "OUTLINE",
 	
-	centerFontID = "Friz Quadrata TT",
-	centerFontName = "Fonts\\FRIZQT__.ttf",
-	centerFontSize = floor(46 / 3),
+	centerFontID = "Adventure",
+	centerFontName = [[Interface\AddOns\Enhancer\fonts\Adventure.ttf]],
+	centerFontSize = 16,
 	centerFontFlags = "OUTLINE",
 	
 	belowFontID = "Friz Quadrata TT",
@@ -1045,6 +1046,15 @@ function Enhancer:RegisterSlashCommands()
 				get = function() return Enhancer.db.profile.snap; end,
 				set = function()
 					Enhancer.db.profile.snap = not Enhancer.db.profile.snap;
+				end,
+				order = OrderNum(),
+			},
+			[L["roman_cmd"]] = {
+				name = L["roman_cmd"], type = "toggle",
+				desc = L["roman_desc"],
+				get = function() return Enhancer.db.profile.roman; end,
+				set = function()
+					Enhancer.db.profile.roman = not Enhancer.db.profile.roman;
 				end,
 				order = OrderNum(),
 			},

@@ -55,7 +55,7 @@ function EnhancerShield:PlayerBuffGained(buffName, buffIndex, applications, text
 		Enhancer[FrameName].active = true;
 		Enhancer[FrameName].current = buffName;
 		Enhancer[FrameName].textbelow:SetText( Enhancer:FormatTime( GetPlayerBuffTimeLeft(buffIndex) ) );
-		Enhancer[FrameName].textcenter:SetText( applications );
+		Enhancer[FrameName].textcenter:SetText( Enhancer.LR:R(applications) );
 		Enhancer:ChangeIcon(FrameName, texture);
 		Enhancer:UpdateAlphaBegin(FrameName);
 		self:ScheduleRepeatingEvent("UpdateShield", self.UpdateShield, 1, self);
@@ -83,7 +83,7 @@ function EnhancerShield:UpdateShield()
 	
 	if (buffIndex) then
 		Enhancer[FrameName].textbelow:SetText( Enhancer:FormatTime( GetPlayerBuffTimeLeft(buffIndex) ) );
-		Enhancer[FrameName].textcenter:SetText( applications );
+		Enhancer[FrameName].textcenter:SetText( Enhancer.LR:R(applications) );
 	end
 end
 

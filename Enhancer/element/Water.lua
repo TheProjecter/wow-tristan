@@ -1,5 +1,5 @@
 EnhancerWater = Enhancer:NewModule("Water");
-EnhancerWater.DefaultState = (Enhancer.englishClass == "SHAMAN");
+EnhancerWater.DefaultState = true;
 Enhancer:SetModuleDefaultState("Water", EnhancerWater.DefaultState);
 local FrameName = "water";
 

@@ -12,6 +12,7 @@ end
 
 function EnhancerHWay:OnInitialize()
 	if (not Enhancer.db.profile.bonus.hway) then Enhancer.db.profile.bonus.hway = {}; end
+	self:Hook(Enhancer, "ToggleLockForHooks", "LockHook");
 end
 
 function EnhancerHWay:OnEnable()
@@ -23,8 +24,6 @@ function EnhancerHWay:OnEnable()
 	self:RegisterEvent("SpecialEvents_UnitBuffLost", "BuffLost");
 	self:RegisterEvent("SpecialEvents_UnitBuffCountChanged", "BuffRefreshed");
 	self:RegisterEvent("SpecialEvents_UnitBuffRefreshed", "BuffRefreshed");
-	
-	self:Hook(Enhancer, "ToggleLockForHooks", "LockHook");
 	
 	Enhancer:Print("HealingWay Module is in early beta or something ;)!");
 end
@@ -120,10 +119,12 @@ function EnhancerHWay:LockHook()
 end
 
 function EnhancerHWay:ToggleAnchorFrame()
-	if Enhancer.db.profile.locked then
-		self.anchorframe:Hide()
-	else
+	if (not self.anchorframe) then return; end
+	
+	if ((not Enhancer.db.profile.locked) and Enhancer:IsModuleActive("EShield")) then
 		self.anchorframe:Show()
+	else
+		self.anchorframe:Hide()
 	end
 end
 

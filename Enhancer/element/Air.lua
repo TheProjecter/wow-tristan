@@ -1,5 +1,5 @@
 EnhancerAir = Enhancer:NewModule("Air");
-EnhancerAir.DefaultState = (Enhancer.englishClass == "SHAMAN");
+EnhancerAir.DefaultState = true;
 Enhancer:SetModuleDefaultState("Air", EnhancerAir.DefaultState);
 local FrameName = "air";
 
