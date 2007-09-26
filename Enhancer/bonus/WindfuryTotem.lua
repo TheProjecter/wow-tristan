@@ -1,6 +1,5 @@
 EnhancerWindfuryTotem = Enhancer:NewModule("WindfuryTotem", "AceEvent-2.0", "Parser-3.0");
-EnhancerWindfuryTotem.DefaultState = false;
-Enhancer:SetModuleDefaultState("WindfuryTotem", EnhancerWindfuryTotem.DefaultState);
+Enhancer:SetModuleDefaultState("WindfuryTotem", false);
 local FrameName = "windfurytotem";
 
 local L = AceLibrary("AceLocale-2.2"):new("Enhancer")
@@ -10,7 +9,7 @@ end
 
 function EnhancerWindfuryTotem:OnInitialize()
 	Enhancer[FrameName] = Enhancer:CreateButton("EnhancerFrame" .. FrameName, "Spell_Nature_Windfury", -205, -205);
-	Enhancer[FrameName].borderColor = { ["r"] = (127/255), ["g"] = (255/255), ["b"] = (212/255), ["a"] = 1, }
+	Enhancer[FrameName].borderColor = Enhancer.colors.air.dec;
 	Enhancer:AddFrameToList(FrameName, true, false, false) --[[ Enhancer:AddFrameToList(framename, all, totem, death) ]]--
 	Enhancer:AddFrameToOnOffList(FrameName);
 	Enhancer[FrameName].moveName = "Weave";

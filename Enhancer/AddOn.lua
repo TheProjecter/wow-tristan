@@ -22,22 +22,67 @@ Enhancer.dFrames = {}; -- Death Frames
 Enhancer.oFrames = {}; -- On/Off Frames
 Enhancer.combatLog = {}; -- List of all "unit"s we are intressted in for the combatlog :)
 
+Enhancer.colors = {
+	earth = {
+		hex = "7fffd4",
+		dec = {
+			r = 127,
+			g = 255,
+			b = 212,
+			a = 255,
+		},
+	},
+	fire = {
+		hex = "ff8c00",
+		dec = {
+			r = 255,
+			g = 140,
+			b = 0,
+			a = 255,
+		},
+	},
+	water = {
+		hex = "87ceeb",
+		dec = {
+			r = 135,
+			g = 206,
+			b = 235,
+			a = 255,
+		},
+	},
+	air = {
+		hex = "1e90ff",
+		dec = {
+			r = 30,
+			g = 144,
+			b = 255,
+			a = 255,
+		},
+	},
+};
+--[[
+aquamarine	aquamarine	#7FFFD4 127 255 212 13959039
+darkorange	darkorange	#FF8C00 255 140 0 36095
+skyblue		skyblue		#87CEEB 135 206 235 15453831
+dodgerblue	dodgerblue	#1E90FF 30 144 255 16748574
+]]--
+
 function Enhancer:OnInitialize()
 	self:RegisterSlashCommands();
 	self:InspectEPValues(); -- Check so not using old values
-	
+
 	if (not self.db.profile.startAnnounceDisabled) then
 		self:ScheduleEvent("DelayAnnounce", self.DelayAnnounce, 7, self)
 	end
 	self:ScheduleEvent("SnapPos", self.SnapPos, 2, self)
-	
+
 	self.totemRange = (self:TotemicMastery() and 30) or 20;
 end
 
 function Enhancer:OnEnable()
 	self.PlayerLevel = UnitLevel("player");
 	self:Zoning();
-	
+
 	-- Register our events :>
 	self:RegisterEvent("PLAYER_REGEN_ENABLED", "OutOfCombat");
 	self:RegisterEvent("PLAYER_REGEN_DISABLED", "EnterCombat");
@@ -48,7 +93,7 @@ function Enhancer:OnEnable()
 		-- self:RegisterEvent("CHAT_MSG_COMBAT_FRIENDLY_DEATH", "TotemWasDestroyed");
 		self:RegisterEvent("ZONE_CHANGED", "Zoning"); -- PLAYER_LEAVING_WORLD
 		self:RegisterEvent("ZONE_CHANGED_NEW_AREA", "Zoning"); -- PLAYER_LEAVING_WORLD
-		
+
 		self:RegisterParserEvent({
 			eventType = 'Damage',
 		}, "ParserDamage");
@@ -66,14 +111,14 @@ function Enhancer:OnDisable()
 end
 
 function Enhancer:OnProfileDisable()
-	
+
 end
 function Enhancer:OnProfileEnable(oldProfileName, oldProfileData)
 	self:InspectEPValues();
 	self:Resize();
 	self:UpdateFont();
 	self:ToggleLock();
-	
+
 	for name, module in self:IterateModules() do
 		if (self:IsModuleActive(name) and module.OnEnable) then
 			module:OnEnable();
@@ -85,24 +130,24 @@ end
 
 function Enhancer:SnapPos()
 	-- Must do it all in the right order so we position frames without parents first etc ;)
-	
+
 	if (Enhancer.db.profile.framePositions) then
 		-- We have some saved positions so let's get started;
-		
+
 		Enhancer.process = {};
 		for framename, _ in pairs(Enhancer.db.profile.framePositions) do
 			-- These frames need loading
 			local Parent = Enhancer.db.profile.framePositions[framename]["Parent"];
 			local ParentName = Enhancer.db.profile.framePositions[framename]["relativeTo"];
 			if (not getglobal(ParentName)) then Parent = nil; end
-			
+
 			if (Parent) then
 				Enhancer.process[framename] = { ["Parent"] = Parent, ["ParentGlobalName"] = ParentName };
 			else
 				Enhancer.process[framename] = { ["ParentGlobalName"] = ParentName };
 			end
 		end
-		
+
 		local next = self:GetNext();
 		while (next) do
 			local framename = self:FindParent(next);
@@ -110,18 +155,18 @@ function Enhancer:SnapPos()
 			Enhancer.process[framename] = nil;
 			next = self:GetNext();
 		end
-		
+
 		Enhancer.process = nil;
 	end
 end
 
 function Enhancer:GetNext()
 	if (not Enhancer.process) then return nil; end
-	
+
 	for framename, frameinfo in pairs(Enhancer.process) do
 		return framename;
 	end
-	
+
 	return nil;
 end
 
@@ -131,14 +176,14 @@ function Enhancer:FindParent(framename)
 			-- Could not find parent loaded so skip snapping this
 			return framename;
 		end
-		
+
 		local oldname = framename;
 		framename = Enhancer.process[framename].Parent;
 		if (not Enhancer.process[framename]) then
 			return oldname;
 		end
 	end
-	
+
 	return framename;
 end
 
@@ -148,7 +193,7 @@ end
 
 function Enhancer:InspectEPValues()
 	local resetNeeded = false;
-	
+
 	for _, value in pairs(Enhancer.db.profile.AEPNumbers) do
 		if (value > 5) then
 			resetNeeded = true;
@@ -164,7 +209,7 @@ function Enhancer:InspectEPValues()
 			resetNeeded = true;
 		end
 	end
-	
+
 	if (resetNeeded) then
 		for key, value in pairs(defaults.AEPNumbers) do
 			Enhancer.db.profile.AEPNumbers[key] = defaults.AEPNumbers[key];
@@ -175,7 +220,7 @@ function Enhancer:InspectEPValues()
 		for key, value in pairs(defaults.DEPNumbers) do
 			Enhancer.db.profile.DEPNumbers[key] = defaults.DEPNumbers[key];
 		end
-		
+
 		self:Print("Your AEP values have been reset due to a major change, there was sadly no alternative!");
 	end
 end

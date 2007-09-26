@@ -1,6 +1,5 @@
 EnhancerShield = Enhancer:NewModule("Shield", "AceEvent-2.0");
-EnhancerShield.DefaultState = false;
-Enhancer:SetModuleDefaultState("Shield", EnhancerShield.DefaultState);
+Enhancer:SetModuleDefaultState("Shield", false);
 local FrameName = "shield";
 
 local SEA = AceLibrary("SpecialEvents-Aura-2.0");
@@ -14,7 +13,7 @@ function EnhancerShield:OnInitialize()
 	Enhancer[FrameName] = Enhancer:CreateButton("EnhancerFrame" .. FrameName, "Ability_Mage_MoltenArmor", 0, -95);
 	Enhancer[FrameName].mainframe.bgFileDefault  = "Interface/Icons/Ability_Mage_MoltenArmor";
 	Enhancer[FrameName].fullicon = true;
-	Enhancer[FrameName].borderColor = { ["r"] = (0/255), ["g"] = (245/255), ["b"] = (255/255), ["a"] = 1, }
+	Enhancer[FrameName].borderColor = Enhancer.colors.water.dec;
 	Enhancer:AddFrameToList(FrameName, true, false, true) --[[ Enhancer:AddFrameToList(framename, all, totem, death) ]]--
 	Enhancer[FrameName].moveName = "Shield";
 end

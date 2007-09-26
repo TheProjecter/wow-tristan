@@ -1,15 +1,28 @@
---[[
-			Want to translate?
-			
-			Copy everything from Localization-enUSlua into this file: Search and replace enUS with frFR
-			
-			Then translate the right hand side of everything, (here's a German example):
-			["lock_cmd"] = "Sperren",
-			...
-			["eep_info"] = "Enhancer's Vergleichspunkte:",
-		
-			Anything ending with _cmd is used as a console commmand and I usually try to keep those as one word.
-			Things like: ["Gem"] = true should be translated as ["Gem"] = "Edelstein" since true can only be used in the enUS locale
-			
-			Once you are done mail it to me at dennis.hafstrom@gmail.com and I'll add it to the distributed files :)
-]]--
+local U = Enhancer_URLs; -- Read up URLs, " .. U["EJ"] .. "
+local locale = "frFR";
+
+local L_Main = AceLibrary("AceLocale-2.2"):new("Enhancer")
+L_Main:RegisterTranslations(locale, function() return {
+	[0] = "Rang 0",
+	[1] = "Rang 1",
+	[2] = "Rang 2",
+	[3] = "Rang 3",
+	[4] = "Rang 4",
+	[5] = "Rang 5",
+	[6] = "Rang 6",
+	[7] = "Rang 7",
+	[8] = "Rang 8",
+	[9] = "Rang 9",
+	[10] = "Rang 10",
+	[11] = "Rang 11",
+	[12] = "Rang 12",
+	[13] = "Rang 13",
+	[14] = "Rang 14",
+	[15] = "Rang 15",
+	[16] = "Rang 16",
+	[17] = "Rang 17",
+	[18] = "Rang 18",
+	[19] = "Rang 19",
+	[20] = "Rang 20",
+	
+}; end );

@@ -1,7 +1,6 @@
 local L = AceLibrary("AceLocale-2.2"):new("EnhancerEP")
 EnhancerEP = Enhancer:NewModule("EP", "AceEvent-2.0");
-EnhancerEP.DefaultState = true;
-Enhancer:SetModuleDefaultState("EP", EnhancerEP.DefaultState);
+Enhancer:SetModuleDefaultState("EP", true);
 
 local ibl = AceLibrary("ItemBonusLib-1.0");
 local TipHooker = AceLibrary("TipHooker-1.0");
