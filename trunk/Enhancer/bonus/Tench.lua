@@ -1,6 +1,5 @@
 EnhancerTench = Enhancer:NewModule("Tench", "AceEvent-2.0");
-EnhancerTench.DefaultState = false;
-Enhancer:SetModuleDefaultState("Tench", EnhancerTench.DefaultState);
+Enhancer:SetModuleDefaultState("Tench", false);
 local FrameNameM = "mhtench";
 local FrameNameO = "ohtench";
 local FrameList = { FrameNameO, FrameNameM };

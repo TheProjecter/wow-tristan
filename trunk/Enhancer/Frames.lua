@@ -24,7 +24,7 @@ function Enhancer:CreateButton(globalname, bgFile, xOffset, yOffset)
 	object:SetBackdrop({
 		bgFile = "Interface/Tooltips/UI-Tooltip-Background",
 		edgeFile = "Interface/Tooltips/UI-Tooltip-Border",
-		tile = false, tileSize = 0, edgeSize = 8,
+		tile = false, tileSize = 0, edgeSize = 16,
 		insets = { left = 0, right = 0, top = 0, bottom = 0 }
 	});
 	object:SetBackdropColor( (1/10), (1/10), (1/10), (1/10));
@@ -55,7 +55,7 @@ function Enhancer:CreateButton(globalname, bgFile, xOffset, yOffset)
 	object:SetBackdrop({
 		bgFile = "Interface/Icons/" .. object.bgFileDefault,
 		edgeFile = "Interface/Tooltips/UI-Tooltip-Border",
-		tile = false, tileSize = 0, edgeSize = 8,
+		tile = false, tileSize = 0, edgeSize = 16,
 		insets = { left = 0, right = 0, top = 0, bottom = 0 }
 	});
 	local t = object:CreateTexture(nil,"BACKGROUND")

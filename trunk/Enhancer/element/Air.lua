@@ -1,11 +1,10 @@
 EnhancerAir = Enhancer:NewModule("Air");
-EnhancerAir.DefaultState = true;
-Enhancer:SetModuleDefaultState("Air", EnhancerAir.DefaultState);
+Enhancer:SetModuleDefaultState("Air", true);
 local FrameName = "air";
 
 function EnhancerAir:OnInitialize()
 	Enhancer[FrameName] = Enhancer:CreateButton("EnhancerFrame" .. FrameName, "Spell_Totem_WardOfDraining", -170, -170);
-	Enhancer[FrameName].borderColor = { ["r"] = (127/255), ["g"] = (255/255), ["b"] = (212/255), ["a"] = 1, }
+	Enhancer[FrameName].borderColor = Enhancer.colors.air.dec;
 	Enhancer:AddFrameToList(FrameName, true, true, true) --[[ Enhancer:AddFrameToList(framename, all, totem, death) ]]--
 	Enhancer[FrameName].moveName = "Air";
 end

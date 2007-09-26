@@ -1,11 +1,10 @@
 EnhancerWindfury = Enhancer:NewModule("Windfury", "AceEvent-2.0", "Parser-3.0");
-EnhancerWindfury.DefaultState = true;
-Enhancer:SetModuleDefaultState("Windfury", EnhancerWindfury.DefaultState);
+Enhancer:SetModuleDefaultState("Windfury", true);
 local FrameName = "windfury";
 
 function EnhancerWindfury:OnInitialize()
 	Enhancer[FrameName] = Enhancer:CreateButton("EnhancerFrame" .. FrameName, "Spell_Nature_Cyclone", 0, -25);
-	Enhancer[FrameName].borderColor = { ["r"] = (127/255), ["g"] = (255/255), ["b"] = (212/255), ["a"] = 1, }
+	Enhancer[FrameName].borderColor = Enhancer.colors.air.dec;
 	Enhancer:AddFrameToList(FrameName, true, false, false) --[[ Enhancer:AddFrameToList(framename, all, totem, death) ]]--
 	Enhancer[FrameName].moveName = "WF CD";
 end
@@ -18,7 +17,21 @@ function EnhancerWindfury:OnEnable()
 		eventType = 'Damage',
 	}, "ParserDamage");
 	
-	-- SPELL_UPDATE_COOLDOWN
+	Enhancer[FrameName].mainframe:SetBackdropColor((5 / 10), 1, (5 / 10));
+	if ( not (self:IsEventScheduled("StormstrikeCheck")) ) then
+		self:ScheduleRepeatingEvent("StormstrikeCheck", self.StormstrikeCheck, (2 / 10), self)
+	end
+end
+
+function EnhancerWindfury:StormstrikeCheck()
+	local start, duration = GetSpellCooldown("Stormstrike");
+	if (not start) then return; end
+	
+	if ((start > 0 and duration > 2) or self:IsEventScheduled("WindfuryCooldownNumber")) then
+		Enhancer[FrameName].mainframe:SetBackdropColor(1, (5 / 10), (5 / 10));
+	else
+		Enhancer[FrameName].mainframe:SetBackdropColor((5 / 10), 1, (5 / 10));
+	end
 end
 
 function EnhancerWindfury:OnDisable()
@@ -31,11 +44,14 @@ end
 function EnhancerWindfury:ParserDamage(info)
 	-- Doubt we want both tbh
 	if ( (info.abilityName == Enhancer.BS["Windfury"] or info.abilityName == Enhancer.BS["Windfury Attack"]) and info.sourceID == "player" ) then
+		if (Enhancer.debug) then Enhancer:Print(info.abilityName); end
 		self:WindfuryHit();
 	end
 end
 
- -- GetSpellCooldown(spellID, BOOKTYPE_SPELL);
+-- GetSpellCooldown(spellID, BOOKTYPE_SPELL);
+-- usable, nomana = IsUsableSpell("Curse of Elements")
+-- GetSpellCooldown("Stormstrike")
 
 function EnhancerWindfury:WindfuryHit()
 	if (Enhancer[FrameName].active) then return; end -- Second WF shouldn't reset the timer ;)

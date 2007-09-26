@@ -1,6 +1,5 @@
 EnhancerHWay = Enhancer:NewModule("HWay", "AceEvent-2.0", "CandyBar-2.0", "AceHook-2.1");
-EnhancerHWay.DefaultState = false;
-Enhancer:SetModuleDefaultState("HWay", EnhancerHWay.DefaultState);
+Enhancer:SetModuleDefaultState("HWay", false);
 EnhancerHWay.SpellName = Enhancer.BS["Healing Way"];
 EnhancerHWay.SpellIcon = Enhancer.BS:GetSpellIcon(Enhancer.BS["Healing Way"]);
 --EnhancerHWay.SpellName = Enhancer.BS["Strength of Earth"];

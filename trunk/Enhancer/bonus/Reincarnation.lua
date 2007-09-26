@@ -1,11 +1,10 @@
 EnhancerReincarnation = Enhancer:NewModule("Reincarnation", "AceEvent-2.0");
-EnhancerReincarnation.DefaultState = true;
-Enhancer:SetModuleDefaultState("Reincarnation", EnhancerReincarnation.DefaultState);
+Enhancer:SetModuleDefaultState("Reincarnation", true);
 local FrameName = "reincarnation";
 
 function EnhancerReincarnation:OnInitialize()
 	Enhancer[FrameName] = Enhancer:CreateButton("EnhancerFrame" .. FrameName, "Spell_Nature_Reincarnation", 0, -150);
-	Enhancer[FrameName].borderColor = { ["r"] = (139/255), ["g"] = (69/255), ["b"] = (19/255), ["a"] = 1, }
+	Enhancer[FrameName].borderColor = Enhancer.colors.earth.dec;
 	Enhancer:AddFrameToList(FrameName, true, false, false) --[[ Enhancer:AddFrameToList(framename, all, totem, death) ]]--
 	Enhancer[FrameName].moveName = "Ankh";
 end

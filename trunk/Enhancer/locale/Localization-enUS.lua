@@ -3,8 +3,11 @@
 	Make a copy of this file in the same folder and rename the end into the locale you want to translate for, also remove this header
 	
 	The following are allready referenced in the .toc file:
-	Localization_deDE.lua, Localization_frFR.lua, Localization_koKR.lua, Localization_zhCN.lua, Localization_zhTW.lua, Localization_esES.lua
+	Localization-deDE.lua, Localization-frFR.lua, Localization-koKR.lua, Localization-zhCN.lua, Localization-zhTW.lua, Localization-esES.lua
 	if I missed yours you need to add it manually for testing
+	
+	Translate the row below that looks like this: local locale = "enUS";
+	Change enUS to whatever locale you are using
 	
 	Translate the right hand side of everything, German example:
 		["lock_cmd"] = "Sperren",
@@ -12,15 +15,15 @@
 		["eep_info"] = "Enhancer's Vergleichspunkte:",
 	
 	Anything ending with _cmd is used as a console commmand and I usually try to keep those as one word.
-	Things like: ["Gem"] = true should be translated as ["Gem"] = "Edelstein" since true can only be used in the enUS locale
 	
 	Once you are done mail it to me at dennis.hafstrom@gmail.com and I'll add it to the distributed file :)
 ]]--
 
 local U = Enhancer_URLs; -- Read up URLs, " .. U["EJ"] .. "
+local locale = "enUS";
 
 local L_Main = AceLibrary("AceLocale-2.2"):new("Enhancer")
-L_Main:RegisterTranslations("enUS", function() return {
+L_Main:RegisterTranslations(locale, function() return {
 	["translator"] = "Leion - Frostmane.eu",
 	
 	["waterfall_cmd"] = "Waterfall",
@@ -178,16 +181,16 @@ L_Main:RegisterTranslations("enUS", function() return {
 	
 	["eshield_cmd"] = "EarthShield",
 	["eshield_desc"] = "Toggle frame for showing earth shield",
-	["Lost track of Earth Shield"] = true,
-	["Earth Shield has expired"] = true,
-	["Earth Shield is about to expire"] = true,
+	["Lost track of Earth Shield"] = "Lost track of Earth Shield",
+	["Earth Shield has expired"] = "Earth Shield has expired",
+	["Earth Shield is about to expire"] = "Earth Shield is about to expire",
 	
 	["tench_cmd"] = "Enchants",
 	["tench_desc"] = "Toggle frames for showing temporary enchants",
 	
 	["invigorated_cmd"] = "Invigorated",
 	["invigorated_desc"] = "Toggle frame for showing when Invigorated is up (Untested)",
-	["Invigorated"] = true,
+	["Invigorated"] = "Invigorated",
 	
 	["hway_cmd"] = "HealingWay",
 	["hway_desc"] = "Toggles CandyBars for Healing Way",
@@ -236,21 +239,21 @@ L_Main:RegisterTranslations("enUS", function() return {
 }; end );
 
 local L_EP = AceLibrary("AceLocale-2.2"):new("EnhancerEP")
-L_EP:RegisterTranslations("enUS", function() return {
+L_EP:RegisterTranslations(locale, function() return {
 	
 	--[[ ItemTypes ]]--
-	["Armor"] = true,
-	["Gem"] = true,
-	["Weapon"] = true,
-	["Projectile"] = true,
-	["Quiver"] = true,
-	["Recipe"] = true,
+	["Armor"] = "Armor",
+	["Gem"] = "Gem",
+	["Weapon"] = "Weapon",
+	["Projectile"] = "Projectile",
+	["Quiver"] = "Quiver",
+	["Recipe"] = "Recipe",
 	
 	--[[ Sockets as they appear on the tooltip has to include Socket as it's used for matching and lots of matches are possible with only color ]]--
-	["Red Socket"] = true,
-	["Blue Socket"] = true,
-	["Yellow Socket"] = true,
-	["Meta Socket"] = true,
+	["Red Socket"] = "Red Socket",
+	["Blue Socket"] = "Blue Socket",
+	["Yellow Socket"] = "Yellow Socket",
+	["Meta Socket"] = "Meta Socket",
 	
 	--[[ Tooltip strings ]]--
 	["eep_info"] = "Enhancer's Equivalence Points:",
