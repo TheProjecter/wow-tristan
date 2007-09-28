@@ -67,8 +67,8 @@ local defaults = {
 	EPGuesstimates = false,
 	
 	aboveFontID = "Friz Quadrata TT",
-	aboveFontName = "Fonts\\FRIZQT__.ttf",
-	aboveFontSize = floor(46 / 4),
+	aboveFontName = [[Fonts\FRIZQT__.ttf]],
+	aboveFontSize = 12,
 	aboveFontFlags = "OUTLINE",
 	
 	centerFontID = "Adventure",
@@ -76,9 +76,9 @@ local defaults = {
 	centerFontSize = 16,
 	centerFontFlags = "OUTLINE",
 	
-	belowFontID = "Friz Quadrata TT",
-	belowFontName = "Fonts\\FRIZQT__.ttf",
-	belowFontSize = floor(46 / 4),
+	belowFontID = "Adventure",
+	belowFontName = [[Interface\AddOns\Enhancer\fonts\Adventure.ttf]],
+	belowFontSize = 12,
 	belowFontFlags = "OUTLINE",
 	
 	AEPNumbers = {
@@ -119,6 +119,10 @@ local defaults = {
 	startAnnounceDisabled = false,
 	
 	bonus = {},
+	
+	nagShit = {
+		WF3Sec = 0,
+	},
 };
 Enhancer:RegisterDefaults('profile', defaults);
 
