@@ -13,24 +13,8 @@ function EnhancerWindfury:OnEnable()
 	Enhancer:ShowFrame(FrameName);
 	Enhancer:ToggleLock(FrameName);
 	
-	self:RegisterParserEvent({
-		eventType = 'Damage',
-	}, "ParserDamage");
-	
-	Enhancer[FrameName].mainframe:SetBackdropColor((5 / 10), 1, (5 / 10));
-	if ( not (self:IsEventScheduled("StormstrikeCheck")) ) then
-		self:ScheduleRepeatingEvent("StormstrikeCheck", self.StormstrikeCheck, (2 / 10), self)
-	end
-end
-
-function EnhancerWindfury:StormstrikeCheck()
-	local start, duration = GetSpellCooldown("Stormstrike");
-	if (not start) then return; end
-	
-	if ((start > 0 and duration > 2) or self:IsEventScheduled("WindfuryCooldownNumber")) then
-		Enhancer[FrameName].mainframe:SetBackdropColor(1, (5 / 10), (5 / 10));
-	else
-		Enhancer[FrameName].mainframe:SetBackdropColor((5 / 10), 1, (5 / 10));
+	for _, event in ipairs({ "Damage", "Parry", "Dodge", "Resist", "Absorb", "Block", "Evade"}) do
+		self:RegisterParserEvent({eventType = event}, "ParserInfo");
 	end
 end
 
@@ -41,10 +25,17 @@ function EnhancerWindfury:OnDisable()
 	self:CancelAllScheduledEvents();
 end
 
-function EnhancerWindfury:ParserDamage(info)
+function EnhancerWindfury:ParserInfo(info)
 	-- Doubt we want both tbh
-	if ( (info.abilityName == Enhancer.BS["Windfury"] or info.abilityName == Enhancer.BS["Windfury Attack"]) and info.sourceID == "player" ) then
+	if ( (info.abilityName == Enhancer.BS["Windfury Attack"] or info.abilityName == Enhancer.BS["Windfury"]) and info.sourceID == "player" ) then
 		if (Enhancer.debug) then Enhancer:Print(info.abilityName); end
+		
+		if (info.eventType ~= "Damage" and info.eventType ~= "Block") then
+			Enhancer[FrameName].mainframe:SetBackdropColor(1, (5 / 10), (5 / 10));
+		else
+			Enhancer[FrameName].mainframe:SetBackdropColor((5 / 10), 1, (5 / 10));
+		end
+		
 		self:WindfuryHit();
 	end
 end
@@ -54,7 +45,13 @@ end
 -- GetSpellCooldown("Stormstrike")
 
 function EnhancerWindfury:WindfuryHit()
-	if (Enhancer[FrameName].active) then return; end -- Second WF shouldn't reset the timer ;)
+	local diff = Enhancer[FrameName].cooldownstart and (GetTime() - Enhancer[FrameName].cooldownstart);
+	if (diff and diff < 1) then return; end -- Second WF shouldn't reset the timer ;) But it's not always 2 since the mob can die by the first for example
+	
+	if (diff and diff < 3) then
+		Enhancer:Print("WF re-proc with only " .. diff .. " seconds in between, please screenshot combat log with both visible and send to dennis.hafstrom@gmail.com!");
+		Enhancer.db.profile.nagShit.WF3Sec = Enhancer.db.profile.nagShit.WF3Sec + 1;
+	end
 	
 	Enhancer[FrameName].active = true;
 	Enhancer[FrameName].cooldownstart = GetTime();
@@ -80,6 +77,7 @@ function EnhancerWindfury:WindfuryCooldownNumber()
 			self:CancelScheduledEvent("WindfuryCooldownNumber")
 		end
 		
+		Enhancer[FrameName].mainframe:SetBackdropColor(1, 1, 1);
 		Enhancer:FrameDeathPreBegin(FrameName);
 	else
 		Enhancer[FrameName].textcenter:SetText(cd);

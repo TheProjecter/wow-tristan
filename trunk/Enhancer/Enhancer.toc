@@ -1,4 +1,4 @@
-## Interface: 20100
+## Interface: 20200
 ## Title: Enhancer |cff7fff7f -Ace2-|r
 ## Notes: Totem timers and some other usefull things like WF Hidden cooldown tracking etc
 ## Author:  Leion/Tristan (Frostmane[EU])
@@ -41,6 +41,7 @@ libs\TipHooker-1.0\TipHooker-1.0.lua
 libs\SharedMedia-1.0\SharedMedia-1.0.lua
 libs\Sink-1.0\Sink-1.0.lua
 libs\LibRoman-1.0\LibRoman-1.0.lua
+libs\Candybar-2.0\CandyBar-2.0.lua
 
 locale\URL.lua
 locale\Localization-enUS.lua

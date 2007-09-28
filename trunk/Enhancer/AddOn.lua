@@ -75,8 +75,6 @@ function Enhancer:OnInitialize()
 		self:ScheduleEvent("DelayAnnounce", self.DelayAnnounce, 7, self)
 	end
 	self:ScheduleEvent("SnapPos", self.SnapPos, 2, self)
-
-	self.totemRange = (self:TotemicMastery() and 30) or 20;
 end
 
 function Enhancer:OnEnable()
