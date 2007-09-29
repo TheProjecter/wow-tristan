@@ -94,7 +94,8 @@ function Enhancer:CreateTotem(totem, rank, totemX, totemY, totemZone)
 end
 
 function Enhancer:Message(message, r, g, b, a, h)
-	Enhancer:Pour(message, r or 1, g or 1, b or 1, a or 1, h or 3);
+	self:Pour(message, r or 1, g or 1, b or 1);
+	--Enhancer:Pour(message, r or 1, g or 1, b or 1, a or 1, h or 3);
 end
 
 function Enhancer:AddFrameToList(framename, all, totem, death)
