@@ -32,6 +32,7 @@ end
 function EnhancerInvigorated:PlayerBuffGained(buffName, buffIndex, applications, texture, rank, index)
 	if (buffName == L["Invigorated"]) then
 		Enhancer[FrameName].active = true;
+		Enhancer[FrameName].cooldown:SetCooldown(GetTime(), 15);
 		Enhancer:UpdateAlphaBegin(FrameName);
 	end
 end
