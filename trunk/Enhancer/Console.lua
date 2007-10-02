@@ -52,6 +52,12 @@ local defaults = {
 	borderPulse = false,
 	snap = true,
 	roman = true,
+	blizzTime = false,
+	blizzSsec = true,
+	warnExpire = true,
+	warnDeath = true,
+	warnSlain = true,
+	warnTime = 7,
 	
 	EPZero = true,
 	AEP = true,
@@ -1026,23 +1032,104 @@ function Enhancer:RegisterSlashCommands()
 				end,
 				order = OrderNum(),
 			},
-			[L["growpulse_cmd"]] = {
-				name = L["growpulse_cmd"], type = "toggle",
-				desc = L["growpulse_desc"],
-				get = function() return Enhancer.db.profile.growingPulse; end,
-				set = function()
-					Enhancer.db.profile.growingPulse = not Enhancer.db.profile.growingPulse;
-				end,
+			[L["time_cmd"]] = {
+				type = "group",
+				name = L["time_cmd"],
+				desc = L["time_desc"],
 				order = OrderNum(),
+				args = {
+					[L["blizztime_cmd"]] = {
+						name = L["blizztime_cmd"], type = "toggle",
+						desc = L["blizztime_desc"],
+						get = function() return Enhancer.db.profile.blizzTime; end,
+						set = function()
+							Enhancer.db.profile.blizzTime = not Enhancer.db.profile.blizzTime;
+						end,
+						order = OrderNum(),
+					},
+					[L["blizzssec_cmd"]] = {
+						name = L["blizzssec_cmd"], type = "toggle",
+						desc = L["blizzssec_desc"],
+						get = function() return Enhancer.db.profile.blizzSsec; end,
+						set = function()
+							Enhancer.db.profile.blizzSsec = not Enhancer.db.profile.blizzSsec;
+						end,
+						order = OrderNum(),
+					},
+				},
 			},
-			[L["borderpulse_cmd"]] = {
-				name = L["borderpulse_cmd"], type = "toggle",
-				desc = L["borderpulse_desc"],
-				get = function() return Enhancer.db.profile.borderPulse; end,
-				set = function()
-					Enhancer.db.profile.borderPulse = not Enhancer.db.profile.borderPulse;
-				end,
+			[L["pulse_cmd"]] = {
+				type = "group",
+				name = L["pulse_cmd"],
+				desc = L["pulse_desc"],
 				order = OrderNum(),
+				args = {
+					[L["growpulse_cmd"]] = {
+						name = L["growpulse_cmd"], type = "toggle",
+						desc = L["growpulse_desc"],
+						get = function() return Enhancer.db.profile.growingPulse; end,
+						set = function()
+							Enhancer.db.profile.growingPulse = not Enhancer.db.profile.growingPulse;
+						end,
+						order = OrderNum(),
+					},
+					[L["borderpulse_cmd"]] = {
+						name = L["borderpulse_cmd"], type = "toggle",
+						desc = L["borderpulse_desc"],
+						get = function() return Enhancer.db.profile.borderPulse; end,
+						set = function()
+							Enhancer.db.profile.borderPulse = not Enhancer.db.profile.borderPulse;
+						end,
+						order = OrderNum(),
+					},
+				},
+			},
+			[L["warning_cmd"]] = {
+				type = "group",
+				name = L["warning_cmd"],
+				desc = L["warning_desc"],
+				order = OrderNum(),
+				args = {
+					[L["warnExpire_cmd"]] = {
+						name = L["warnExpire_cmd"], type = "toggle",
+						desc = L["warnExpire_desc"],
+						get = function() return Enhancer.db.profile.warnExpire; end,
+						set = function()
+							Enhancer.db.profile.warnExpire = not Enhancer.db.profile.warnExpire;
+						end,
+						order = OrderNum(),
+					},
+					[L["warnDeath_cmd"]] = {
+						name = L["warnDeath_cmd"], type = "toggle",
+						desc = L["warnDeath_desc"],
+						get = function() return Enhancer.db.profile.warnDeath; end,
+						set = function()
+							Enhancer.db.profile.warnDeath = not Enhancer.db.profile.warnDeath;
+						end,
+						order = OrderNum(),
+					},
+					[L["warnSlain_cmd"]] = {
+						name = L["warnSlain_cmd"], type = "toggle",
+						desc = L["warnSlain_desc"],
+						get = function() return Enhancer.db.profile.warnSlain; end,
+						set = function()
+							Enhancer.db.profile.warnSlain = not Enhancer.db.profile.warnSlain;
+						end,
+						order = OrderNum(),
+					},
+					[L["warnTime_cmd"]] = {
+						name = L["warnTime_cmd"], type = "range",
+						desc = L["warnTime_desc"],
+						min = 3,
+						max = 15,
+						step = 1,
+						get = function() return Enhancer.db.profile.warnTime; end,
+						set = function(v)
+							Enhancer.db.profile.warnTime = v;
+						end,
+						order = OrderNum(),
+					},
+				},
 			},
 			[L["snap_cmd"]] = {
 				name = L["snap_cmd"], type = "toggle",

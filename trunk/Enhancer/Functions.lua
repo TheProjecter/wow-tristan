@@ -61,17 +61,14 @@ function Enhancer:CreateTotem(totem, rank, totemX, totemY, totemZone)
 	self[frame].active = true;
 	self[frame].hitPoints = HitPoints;
 	self[frame].death = GetTime() + TimeToLive;
-	if (TimeToLive > 7) then
-		self[frame].warn = GetTime() + TimeToLive - 7;
+	if (TimeToLive > self.db.profile.warnTime) then
+		self[frame].warn = GetTime() + (TimeToLive - self.db.profile.warnTime);
 	else
 		self[frame].warn = nil;
 	end
 	self[frame].pulseAdd = Pulse;
 	if (Pulse) then
 		self[frame].pulse = GetTime() + self[frame].pulseAdd;
-		--if (totem == Enhancer.BS["Tremor Totem"]) then
-		--	self[frame].pulse = GetTime();
-		--end
 	else
 		self[frame].pulse = nil
 	end
@@ -93,9 +90,10 @@ function Enhancer:CreateTotem(totem, rank, totemX, totemY, totemZone)
 	end
 end
 
-function Enhancer:Message(message, r, g, b, a, h)
-	self:Pour(message, r or 1, g or 1, b or 1);
-	--Enhancer:Pour(message, r or 1, g or 1, b or 1, a or 1, h or 3);
+function Enhancer:Message(real, message, r, g, b, a, h)
+	if (real) then
+		self:Pour(message, r or 1, g or 1, b or 1); -- , a or 1, h or 3
+	end
 end
 
 function Enhancer:AddFrameToList(framename, all, totem, death)
@@ -196,7 +194,16 @@ function Enhancer:FormatTime(seconds)
 	seconds = floor(seconds);
 	secs = mod(seconds, 60);
 	mins = (seconds - secs) / 60;
-	return mins..":"..string.sub("00"..secs, -2);
+	
+	if (Enhancer.db.profile.blizzTime) then
+		if (seconds > 60) then
+			return string.sub("00"..(mins + 1), -2).." m";
+		else
+			return seconds..(Enhancer.db.profile.blizzSsec and " s" or "");
+		end
+	else
+		return mins..":"..string.sub("00"..secs, -2);
+	end
 end
 
 function Enhancer:Round(number, decimals)
@@ -206,10 +213,10 @@ end
 
 function Enhancer:TestCastingTotem()
 	local L = AceLibrary("AceLocale-2.2"):new("Enhancer")
-	Enhancer:CastingTotem("player", Enhancer.BS["Strength of Earth Totem"], L[1]);
-	Enhancer:CastingTotem("player", Enhancer.BS["Totem of Wrath"], L[1]);
-	Enhancer:CastingTotem("player", Enhancer.BS["Mana Spring Totem"], L[0]);
-	Enhancer:CastingTotem("player", Enhancer.BS["Windfury Totem"], L[1]);
+	Enhancer:CastingTotem("player", Enhancer.BS["Strength of Earth Totem"], L[1]); -- Earth
+	Enhancer:CastingTotem("player", Enhancer.BS["Fire Nova Totem"], L[1]); -- Fire Totem of Wrath
+	Enhancer:CastingTotem("player", Enhancer.BS["Mana Spring Totem"], L[0]); -- Water
+	Enhancer:CastingTotem("player", Enhancer.BS["Windfury Totem"], L[1]); -- Air
 end
 
 function Enhancer:EPValuesChanged()

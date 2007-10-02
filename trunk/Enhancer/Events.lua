@@ -54,7 +54,7 @@ function Enhancer:ParserDamage(info)
 	
 	if (self[frame].hitPoints <= 0) then
 		local message = string.format(L["TotemSlain"], self[frame].name, self[frame].element);
-		self:Message(message, 1, 0, 0);
+		self:Message(self.db.profile.warnSlain, message, 1, 0, 0);
 		
 		self:FrameDeathPreBegin(frame)
 	end
@@ -72,7 +72,7 @@ function Enhancer:TotemWasDestroyed(info)
 		
 		local framename = self.combatLog[what];
 		local message = string.format(L["TotemDeath"], self[framename].name, self[framename].element);
-		self:Message(message, 1, (1/2), 0);
+		self:Message(self.db.profile.warnDeath, message, 1, (1/2), 0);
 		self:FrameDeathPreBegin(framename);
 	end
 end

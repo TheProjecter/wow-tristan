@@ -482,7 +482,7 @@ function Enhancer:UpdateFrame(framename)
 	
 	if (GetTime() >= self[framename].death) then
 		local message = string.format(L["TotemDeath"], self[framename].name, self[framename].element);
-		self:Message(message, 1, (1/2), 0);
+		self:Message(self.db.profile.warnDeath, message, 1, (1/2), 0);
 		
 		self:FrameDeathPreBegin(framename);
 		return;
@@ -526,7 +526,7 @@ function Enhancer:UpdateFrame(framename)
 	if (self[framename].warn and GetTime() >= self[framename].warn) then
 		self[framename].warn = nil;
 		local message = string.format(L["TotemExpiring"], self[framename].name, self[framename].element);
-		self:Message(message, 1, 1, 0);
+		self:Message(self.db.profile.warnExpire, message, 1, 1, 0);
 	end
 	
 	self[framename].textbelow:SetText( Enhancer:FormatTime(self[framename].death - GetTime()) );

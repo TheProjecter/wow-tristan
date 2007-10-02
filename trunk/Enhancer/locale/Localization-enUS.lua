@@ -236,6 +236,26 @@ L_Main:RegisterTranslations(locale, function() return {
 	["roman_cmd"] = "Roman",
 	["roman_desc"] = "Set Enhancer to use roman numbers on Shields etc",
 	
+	["time_cmd"] = "Time",
+	["time_desc"] = "Settings regarding time",
+	["pulse_cmd"] = "Pulse",
+	["pulse_desc"] = "Settings regarding death pulse",
+	["warning_cmd"] = "Warnings",
+	["warning_desc"] = "Settings regarding warnings",
+	
+	["blizztime_cmd"] = "Blizzard",
+	["blizztime_desc"] = "Set Enhancer to use Blizzard's time format",
+	["blizzssec_cmd"] = "UseS",
+	["blizzssec_desc"] = "Here you can enable/disable appending a 's' to seconds",
+	["warnExpire_cmd"] = "Expiring",
+	["warnExpire_desc"] = "Warn before expiring",
+	["warnDeath_cmd"] = "Expired",
+	["warnDeath_desc"] = "Warn when exipired",
+	["warnSlain_cmd"] = "Killed",
+	["warnSlain_desc"] = "Warn when a totem is killed",
+	["warnTime_cmd"] = "Time",
+	["warnTime_desc"] = "When expiring warn this amount of seconds before (changing this won't affect existing totems)",
+	
 }; end );
 
 local L_EP = AceLibrary("AceLocale-2.2"):new("EnhancerEP")
