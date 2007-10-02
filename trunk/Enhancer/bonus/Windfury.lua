@@ -28,7 +28,7 @@ function EnhancerWindfury:OnDisable()
 end
 
 function EnhancerWindfury:Stormstrike(unit, spell, rank)
-	if (totem == Enhancer.BS["Stormstrike"]) then
+	if (spell == Enhancer.BS["Stormstrike"]) then
 		if (not (self:IsEventScheduled("StormstrikeCheck"))) then
 			self:ScheduleRepeatingEvent("StormstrikeCheck", self.StormstrikeCheck, (2 / 10), self);
 		end
