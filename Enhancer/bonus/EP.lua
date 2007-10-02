@@ -250,7 +250,7 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 		
 		-- http://www.wowwiki.com/Formulas:Item_Values Calculate ItemLevel based on stats you care about ;)
 		--[[ Do Enhancement ItemLevel ]]--
-		if (Enhancer.db.profile.EIP or true) then
+		if (Enhancer.db.profile.EIP) then
 			--[[ Set point values here so it's easy to change ]]--
 			values = {
 				["ATTACKPOWER"] = { ["value"] = (5 / 10), ["kings"] = nil },

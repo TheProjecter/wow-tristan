@@ -6,6 +6,7 @@ Example (most used) commands:
 	/enh lock
 	/enh elementframes
 	/enh bonusframes
+	/enh snap
 
 AddOns that enable extra features in Enhancer are:
 	Most scrolling combat text AddOns can take totem warnings through SinkLib
