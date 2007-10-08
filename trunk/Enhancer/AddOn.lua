@@ -60,11 +60,11 @@ Enhancer.colors = {
 		},
 	},
 };
---[[
-aquamarine	aquamarine	#7FFFD4 127 255 212 13959039
-darkorange	darkorange	#FF8C00 255 140 0 36095
-skyblue		skyblue		#87CEEB 135 206 235 15453831
-dodgerblue	dodgerblue	#1E90FF 30 144 255 16748574
+--[[ Totem Colors
+	aquamarine	aquamarine	#7FFFD4	127	255	212
+	darkorange	darkorange	#FF8C00	255	140	  0
+	skyblue			skyblue			#87CEEB	135	206	235
+	dodgerblue	dodgerblue	#1E90FF	 30	144	255
 ]]--
 
 function Enhancer:OnInitialize()

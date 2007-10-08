@@ -50,6 +50,7 @@ local defaults = {
 	playSound = false,
 	growingPulse = true,
 	borderPulse = false,
+	buffIndicator = "noindication",
 	snap = true,
 	roman = true,
 	blizzTime = false,
@@ -1083,6 +1084,31 @@ function Enhancer:RegisterSlashCommands()
 						order = OrderNum(),
 					},
 				},
+			},
+			[L["buffIndicator_cmd"]] = {
+				type = "text",
+			  name = L["buffIndicator_cmd"],
+				desc = L["buffIndicator_desc"],
+				get = function()
+					return self.db.profile.buffIndicator
+				end,
+				set = function(v)
+					for _, framename in pairs(Enhancer.aFrames) do
+						self[framename].topleft:SetTexture(1, 1, 1, 0);
+						self[framename].topright:SetTexture(1, 1, 1, 0);
+						self[framename].bottomleft:SetTexture(1, 1, 1, 0);
+						self[framename].bottomright:SetTexture(1, 1, 1, 0);
+					end
+					self.db.profile.buffIndicator = v;
+				end,
+				validate = {
+					["noindication"] = L["noindication"],
+					["topleft"] = L["topleft"],
+					["topright"] = L["topright"],
+					["bottomleft"] = L["bottomleft"],
+					["bottomright"] = L["bottomright"],
+				},
+	      order = OrderNum(),
 			},
 			[L["warning_cmd"]] = {
 				type = "group",

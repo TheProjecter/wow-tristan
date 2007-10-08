@@ -7,17 +7,59 @@ function EnhancerWindfury:OnInitialize()
 	Enhancer[FrameName].borderColor = Enhancer.colors.air.dec;
 	Enhancer:AddFrameToList(FrameName, true, false, false) --[[ Enhancer:AddFrameToList(framename, all, totem, death) ]]--
 	Enhancer[FrameName].moveName = "WF CD";
+	Enhancer:SetBackdropColor(FrameName, (5 / 10), 1, (5 / 10));
 end
 
 function EnhancerWindfury:OnEnable()
 	Enhancer:ShowFrame(FrameName);
 	Enhancer:ToggleLock(FrameName);
 	
-	for _, event in ipairs({ "Damage", "Parry", "Dodge", "Resist", "Absorb", "Block", "Evade"}) do
-		self:RegisterParserEvent({eventType = event}, "ParserInfo");
+	-- {"Damage", "Miss", "Parry", "Dodge", "Resist", "Absorb", "Block", "Evade", "Immune"}
+	for _, event in ipairs({"Damage", "Miss"}) do
+		self:RegisterParserEvent({eventType = event, sourceID = "player"}, "ParserInfo");
 	end
 	
+--[[
+local EVENTTYPE_DAMAGE = "Damage"
+local EVENTTYPE_HEAL = "Heal"
+local EVENTTYPE_ENVIRONMENTAL = "Environmental"
+local EVENTTYPE_MISS = "Miss"
+local EVENTTYPE_DEATH = "Death"
+local EVENTTYPE_CAST = "Cast"
+local EVENTTYPE_DRAIN = "Drain"
+local EVENTTYPE_DURABILITY = "Durability"
+local EVENTTYPE_EXTRAATTACK = "Extra Attack"
+local EVENTTYPE_INTERRUPT = "Interrupt"
+local EVENTTYPE_DISPEL = "Dispel"
+local EVENTTYPE_LEECH = "Leech"
+local EVENTTYPE_FAIL = "Fail"
+local EVENTTYPE_ENCHANT = "Enchant"
+local EVENTTYPE_REPUTATION = "Reputation"
+local EVENTTYPE_HONOR = "Honor"
+local EVENTTYPE_EXPERIENCE = "Experience"
+local EVENTTYPE_FADE = "Fade"
+local EVENTTYPE_GAIN = "Gain"
+local EVENTTYPE_AURA = "Aura"
+local EVENTTYPE_FEEDPET = "Feed Pet"
+local EVENTTYPE_CREATE = "Create"
+local EVENTTYPE_SKILL = "Skill"
+local EVENTTYPE_UNKNOWN = "Unknown"
+
+local MISSTYPE_MISS = "Miss"
+local MISSTYPE_PARRY = "Parry"
+local MISSTYPE_DODGE = "Dodge"
+local MISSTYPE_REFLECT = "Reflect"
+local MISSTYPE_DEFLECT = "Deflect"
+local MISSTYPE_RESIST = "Resist"
+local MISSTYPE_ABSORB = "Absorb"
+local MISSTYPE_BLOCK = "Block"
+local MISSTYPE_EVADE = "Evade"
+local MISSTYPE_IMMUNE = "Immune"
+
+]]--
+	
 	self:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED", "Stormstrike");
+	self:StormstrikeCheck();
 end
 
 function EnhancerWindfury:OnDisable()
@@ -40,9 +82,11 @@ function EnhancerWindfury:StormstrikeCheck()
 	if (not start) then return; end
 	
 	if ((start > 0 and duration > 2) or self:IsEventScheduled("WindfuryCooldownNumber")) then
-		Enhancer[FrameName].mainframe:SetBackdropColor(1, (5 / 10), (5 / 10));
+		Enhancer:SetBackdropColor(FrameName, 1, (5 / 10), (5 / 10));
+		Enhancer:UpdateAlphaBegin(FrameName);
 	else
-		Enhancer[FrameName].mainframe:SetBackdropColor((5 / 10), 1, (5 / 10));
+		Enhancer:SetBackdropColor(FrameName, (5 / 10), 1, (5 / 10));
+		Enhancer:UpdateAlphaBegin(FrameName);
 		if (self:IsEventScheduled("StormstrikeCheck")) then
 			self:CancelScheduledEvent("StormstrikeCheck");
 		end
@@ -50,26 +94,10 @@ function EnhancerWindfury:StormstrikeCheck()
 end
 
 function EnhancerWindfury:ParserInfo(info)
-	-- Doubt we want both tbh
-	-- if ( (info.abilityName == Enhancer.BS["Windfury Attack"] or info.abilityName == Enhancer.BS["Windfury"]) and info.sourceID == "player" ) then
 	if ( info.abilityName == Enhancer.BS["Windfury Attack"] and info.sourceID == "player" ) then
-		if (Enhancer.debug) then Enhancer:Print(info.abilityName); end
-		
-		--[[
-		if (info.eventType ~= "Damage" and info.eventType ~= "Block") then
-			Enhancer[FrameName].mainframe:SetBackdropColor(1, (5 / 10), (5 / 10));
-		else
-			Enhancer[FrameName].mainframe:SetBackdropColor((5 / 10), 1, (5 / 10));
-		end
-		--]]
-		
 		self:WindfuryHit();
 	end
 end
-
--- GetSpellCooldown(spellID, BOOKTYPE_SPELL);
--- usable, nomana = IsUsableSpell("Curse of Elements")
--- GetSpellCooldown("Stormstrike")
 
 function EnhancerWindfury:WindfuryHit()
 	local diff = Enhancer[FrameName].cooldownstart and (GetTime() - Enhancer[FrameName].cooldownstart);
@@ -103,7 +131,6 @@ function EnhancerWindfury:WindfuryCooldownNumber()
 			self:CancelScheduledEvent("WindfuryCooldownNumber")
 		end
 		
-		Enhancer[FrameName].mainframe:SetBackdropColor(1, 1, 1); -- Back to normal
 		Enhancer:FrameDeathPreBegin(FrameName);
 	else
 		Enhancer[FrameName].textcenter:SetText(cd);

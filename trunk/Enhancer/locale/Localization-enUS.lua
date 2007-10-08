@@ -255,6 +255,13 @@ L_Main:RegisterTranslations(locale, function() return {
 	["warnSlain_desc"] = "Warn when a totem is killed",
 	["warnTime_cmd"] = "Time",
 	["warnTime_desc"] = "When expiring warn this amount of seconds before (changing this won't affect existing totems)",
+	["buffIndicator_cmd"] = "Buff Indicator",
+	["buffIndicator_desc"] = "Set wich corner to indicate if a buff is on you",
+	["topleft"] = "Top Left",
+	["topright"] = "Top Right",
+	["bottomleft"] = "Bottom Left",
+	["bottomright"] = "Bottom Right",
+	["noindication"] = "None",
 	
 }; end );
 
