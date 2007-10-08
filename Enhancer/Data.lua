@@ -17,6 +17,7 @@ Enhancer.Totems[Enhancer.BS["Stoneskin Totem"]].Element = "Earth";
 Enhancer.Totems[Enhancer.BS["Stoneskin Totem"]].Life = 5;
 Enhancer.Totems[Enhancer.BS["Stoneskin Totem"]].Range = 20;
 Enhancer.Totems[Enhancer.BS["Stoneskin Totem"]].TotemicMastery = true;
+Enhancer.Totems[Enhancer.BS["Stoneskin Totem"]].Buff = Enhancer.BS["Stoneskin"];
 
 Enhancer.Totems[Enhancer.BS["Stoneclaw Totem"]] = {};
 Enhancer.Totems[Enhancer.BS["Stoneclaw Totem"]].Icon = "Spell_Nature_StoneClawTotem";
@@ -55,6 +56,7 @@ Enhancer.Totems[Enhancer.BS["Strength of Earth Totem"]].Element = "Earth";
 Enhancer.Totems[Enhancer.BS["Strength of Earth Totem"]].Life = 5;
 Enhancer.Totems[Enhancer.BS["Strength of Earth Totem"]].Range = 20;
 Enhancer.Totems[Enhancer.BS["Strength of Earth Totem"]].TotemicMastery = true;
+Enhancer.Totems[Enhancer.BS["Strength of Earth Totem"]].Buff = Enhancer.BS["Strength of Earth"];
 
 Enhancer.Totems[Enhancer.BS["Tremor Totem"]] = {};
 Enhancer.Totems[Enhancer.BS["Tremor Totem"]].Icon = "Spell_Nature_TremorTotem";
@@ -121,6 +123,7 @@ Enhancer.Totems[Enhancer.BS["Frost Resistance Totem"]].Element = "Fire";
 Enhancer.Totems[Enhancer.BS["Frost Resistance Totem"]].Life = 5;
 Enhancer.Totems[Enhancer.BS["Frost Resistance Totem"]].Range = 20;
 Enhancer.Totems[Enhancer.BS["Frost Resistance Totem"]].TotemicMastery = true;
+Enhancer.Totems[Enhancer.BS["Frost Resistance Totem"]].Buff = Enhancer.BS["Frost Resistance"];
 
 Enhancer.Totems[Enhancer.BS["Flametongue Totem"]] = {};
 Enhancer.Totems[Enhancer.BS["Flametongue Totem"]].Icon = "Spell_Nature_GuardianWard";
@@ -156,6 +159,7 @@ Enhancer.Totems[Enhancer.BS["Healing Stream Totem"]].Life = 5;
 Enhancer.Totems[Enhancer.BS["Healing Stream Totem"]].Pulse = 2;
 Enhancer.Totems[Enhancer.BS["Healing Stream Totem"]].Range = 20;
 Enhancer.Totems[Enhancer.BS["Healing Stream Totem"]].TotemicMastery = true;
+Enhancer.Totems[Enhancer.BS["Healing Stream Totem"]].Buff = Enhancer.BS["Healing Stream"];
 
 Enhancer.Totems[Enhancer.BS["Mana Spring Totem"]] = {};
 Enhancer.Totems[Enhancer.BS["Mana Spring Totem"]].Icon = "Spell_Nature_ManaRegenTotem";
@@ -165,6 +169,7 @@ Enhancer.Totems[Enhancer.BS["Mana Spring Totem"]].Life = 5;
 Enhancer.Totems[Enhancer.BS["Mana Spring Totem"]].Pulse = 2;
 Enhancer.Totems[Enhancer.BS["Mana Spring Totem"]].Range = 20;
 Enhancer.Totems[Enhancer.BS["Mana Spring Totem"]].TotemicMastery = true;
+Enhancer.Totems[Enhancer.BS["Mana Spring Totem"]].Buff = Enhancer.BS["Mana Spring"];
 
 Enhancer.Totems[Enhancer.BS["Poison Cleansing Totem"]] = {};
 Enhancer.Totems[Enhancer.BS["Poison Cleansing Totem"]].Icon = "Spell_Nature_PoisonCleansingTotem";
@@ -192,6 +197,7 @@ Enhancer.Totems[Enhancer.BS["Mana Tide Totem"]].Life = 5;
 Enhancer.Totems[Enhancer.BS["Mana Tide Totem"]].Pulse = 3;
 Enhancer.Totems[Enhancer.BS["Mana Tide Totem"]].Range = 20;
 Enhancer.Totems[Enhancer.BS["Mana Tide Totem"]].TotemicMastery = true;
+Enhancer.Totems[Enhancer.BS["Mana Tide Totem"]].Buff = Enhancer.BS["Mana Tide"];
 
 Enhancer.Totems[Enhancer.BS["Fire Resistance Totem"]] = {};
 Enhancer.Totems[Enhancer.BS["Fire Resistance Totem"]].Icon = "Spell_FireResistanceTotem_01"; 
@@ -200,6 +206,7 @@ Enhancer.Totems[Enhancer.BS["Fire Resistance Totem"]].Element = "Water";
 Enhancer.Totems[Enhancer.BS["Fire Resistance Totem"]].Life = 5;
 Enhancer.Totems[Enhancer.BS["Fire Resistance Totem"]].Range = 20;
 Enhancer.Totems[Enhancer.BS["Fire Resistance Totem"]].TotemicMastery = true;
+Enhancer.Totems[Enhancer.BS["Fire Resistance Totem"]].Buff = Enhancer.BS["Fire Resistance"];
 
 --> Air Totems <--
 Enhancer.Totems[Enhancer.BS["Grace of Air Totem"]] = {};
@@ -209,6 +216,7 @@ Enhancer.Totems[Enhancer.BS["Grace of Air Totem"]].Element = "Air";
 Enhancer.Totems[Enhancer.BS["Grace of Air Totem"]].Life = 5;
 Enhancer.Totems[Enhancer.BS["Grace of Air Totem"]].Range = 20;
 Enhancer.Totems[Enhancer.BS["Grace of Air Totem"]].TotemicMastery = true;
+Enhancer.Totems[Enhancer.BS["Grace of Air Totem"]].Buff = Enhancer.BS["Grace of Air"];
 
 Enhancer.Totems[Enhancer.BS["Windfury Totem"]] = {};
 Enhancer.Totems[Enhancer.BS["Windfury Totem"]].Icon = "Spell_Nature_Windfury";
@@ -226,6 +234,7 @@ Enhancer.Totems[Enhancer.BS["Grounding Totem"]].Element = "Air";
 Enhancer.Totems[Enhancer.BS["Grounding Totem"]].Life = 5;
 Enhancer.Totems[Enhancer.BS["Grounding Totem"]].Range = 20;
 Enhancer.Totems[Enhancer.BS["Grounding Totem"]].TotemicMastery = true;
+Enhancer.Totems[Enhancer.BS["Grounding Totem"]].Buff = Enhancer.BS["Grounding Totem Effect"];
 
 Enhancer.Totems[Enhancer.BS["Windwall Totem"]] = {};
 Enhancer.Totems[Enhancer.BS["Windwall Totem"]].Icon = "Spell_Nature_EarthBind";
@@ -234,6 +243,7 @@ Enhancer.Totems[Enhancer.BS["Windwall Totem"]].Element = "Air";
 Enhancer.Totems[Enhancer.BS["Windwall Totem"]].Life = 5;
 Enhancer.Totems[Enhancer.BS["Windwall Totem"]].Range = 20;
 Enhancer.Totems[Enhancer.BS["Windwall Totem"]].TotemicMastery = true;
+Enhancer.Totems[Enhancer.BS["Windwall Totem"]].Buff = Enhancer.BS["Windwall"];
 
 Enhancer.Totems[Enhancer.BS["Sentry Totem"]] = {};
 Enhancer.Totems[Enhancer.BS["Sentry Totem"]].Icon = "Spell_Nature_RemoveCurse";
@@ -242,6 +252,7 @@ Enhancer.Totems[Enhancer.BS["Sentry Totem"]].Element = "Air";
 Enhancer.Totems[Enhancer.BS["Sentry Totem"]].Life = 5;
 Enhancer.Totems[Enhancer.BS["Sentry Totem"]].Range = nil;
 Enhancer.Totems[Enhancer.BS["Sentry Totem"]].TotemicMastery = nil;
+Enhancer.Totems[Enhancer.BS["Sentry Totem"]].Buff = Enhancer.BS["Sentry Totem"];
 
 Enhancer.Totems[Enhancer.BS["Nature Resistance Totem"]] = {};
 Enhancer.Totems[Enhancer.BS["Nature Resistance Totem"]].Icon = "Spell_Nature_NatureResistanceTotem";
@@ -250,6 +261,7 @@ Enhancer.Totems[Enhancer.BS["Nature Resistance Totem"]].Element = "Air";
 Enhancer.Totems[Enhancer.BS["Nature Resistance Totem"]].Life = 5;
 Enhancer.Totems[Enhancer.BS["Nature Resistance Totem"]].Range = 20;
 Enhancer.Totems[Enhancer.BS["Nature Resistance Totem"]].TotemicMastery = true;
+Enhancer.Totems[Enhancer.BS["Nature Resistance Totem"]].Buff = Enhancer.BS["Nature Resistance"];
 
 Enhancer.Totems[Enhancer.BS["Tranquil Air Totem"]] = {};
 Enhancer.Totems[Enhancer.BS["Tranquil Air Totem"]].Icon = "Spell_Nature_Brilliance";
@@ -258,6 +270,7 @@ Enhancer.Totems[Enhancer.BS["Tranquil Air Totem"]].Element = "Air";
 Enhancer.Totems[Enhancer.BS["Tranquil Air Totem"]].Life = 5;
 Enhancer.Totems[Enhancer.BS["Tranquil Air Totem"]].Range = 20;
 Enhancer.Totems[Enhancer.BS["Tranquil Air Totem"]].TotemicMastery = true;
+Enhancer.Totems[Enhancer.BS["Tranquil Air Totem"]].Buff = Enhancer.BS["Tranquil Air"];
 
 Enhancer.Totems[Enhancer.BS["Wrath of Air Totem"]] = {};
 Enhancer.Totems[Enhancer.BS["Wrath of Air Totem"]].Icon = "Spell_Nature_SlowingTotem";
@@ -266,9 +279,10 @@ Enhancer.Totems[Enhancer.BS["Wrath of Air Totem"]].Element = "Air";
 Enhancer.Totems[Enhancer.BS["Wrath of Air Totem"]].Life = 5;
 Enhancer.Totems[Enhancer.BS["Wrath of Air Totem"]].Range = 20;
 Enhancer.Totems[Enhancer.BS["Wrath of Air Totem"]].TotemicMastery = true;
+Enhancer.Totems[Enhancer.BS["Wrath of Air Totem"]].Buff = Enhancer.BS["Wrath of Air Totem"];
 
 --> Special <--
--- Enamored Water Spirit
+-- Enamored Water Spirit, Trinket from Shaman Quest
 Enhancer.Totems[Enhancer.BS["Enamored Water Spirit"]] = {};
 Enhancer.Totems[Enhancer.BS["Enamored Water Spirit"]].Icon = "INV_Wand_01"; -- Trinket totem from Sunken Temple
 Enhancer.Totems[Enhancer.BS["Enamored Water Spirit"]].Time = 24;
@@ -277,3 +291,4 @@ Enhancer.Totems[Enhancer.BS["Enamored Water Spirit"]].Life = 5;
 Enhancer.Totems[Enhancer.BS["Enamored Water Spirit"]].Pulse = 2;
 Enhancer.Totems[Enhancer.BS["Enamored Water Spirit"]].Range = 20;
 Enhancer.Totems[Enhancer.BS["Enamored Water Spirit"]].TotemicMastery = nil;
+--Enhancer.Totems[Enhancer.BS["Enamored Water Spirit"]].Buff = Enhancer.BS[""];

@@ -1,6 +1,7 @@
 local L = AceLibrary("AceLocale-2.2"):new("Enhancer");
 local _G = getfenv();
 local strataToUse = "BACKGROUND"; --TOOLTIP
+local SEA = AceLibrary("SpecialEvents-Aura-2.0");
 
 function Enhancer:CreateButton(globalname, bgFile, xOffset, yOffset)
 	local retVal = {};
@@ -58,10 +59,7 @@ function Enhancer:CreateButton(globalname, bgFile, xOffset, yOffset)
 		tile = false, tileSize = 0, edgeSize = 16,
 		insets = { left = 0, right = 0, top = 0, bottom = 0 }
 	});
-	local t = object:CreateTexture(nil,"BACKGROUND")
-	object.texture = t
-
-	-- Interface\\AddOns\\cyCircled\\textures\\Square
+	object.texture = object:CreateTexture(nil,"BACKGROUND")
 	object:SetBackdropColor( 1, 1, 1, Enhancer.db.profile.oocinactiveAlpha);
 	object:SetBackdropBorderColor( 1, 1, 1, 0);
 	retVal["mainframe"] = object;
@@ -121,6 +119,32 @@ function Enhancer:CreateButton(globalname, bgFile, xOffset, yOffset)
 	object:SetText("");
 	object:SetAlpha(Enhancer.db.profile.oocinactiveAlpha);
 	retVal["textbelow"] = object;
+	
+	--[[ Create indicators ]]
+	object = retVal["mainframe"]:CreateTexture(globalname.."TopLeftIcon", "OVERLAY")
+	object:SetWidth(ceil(Enhancer.db.profile.framesize / 4));
+	object:SetHeight(ceil(Enhancer.db.profile.framesize / 4));
+	object:SetPoint("TOPLEFT", globalname.."Frame", "TOPLEFT", 0, 0);
+	object:SetTexture(1, 1, 1, 0);
+	retVal["topleft"] = object;
+	object = retVal["mainframe"]:CreateTexture(globalname.."TopRightIcon", "OVERLAY")
+	object:SetWidth(ceil(Enhancer.db.profile.framesize / 4));
+	object:SetHeight(ceil(Enhancer.db.profile.framesize / 4));
+	object:SetPoint("TOPRIGHT", globalname.."Frame", "TOPRIGHT", 0, 0);
+	object:SetTexture(1, 1, 1, 0);
+	retVal["topright"] = object;
+	object = retVal["mainframe"]:CreateTexture(globalname.."BottomLeftIcon", "OVERLAY")
+	object:SetWidth(ceil(Enhancer.db.profile.framesize / 4));
+	object:SetHeight(ceil(Enhancer.db.profile.framesize / 4));
+	object:SetPoint("BOTTOMLEFT", globalname.."Frame", "BOTTOMLEFT", 0, 0);
+	object:SetTexture(1, 1, 1, 0);
+	retVal["bottomleft"] = object;
+	object = retVal["mainframe"]:CreateTexture(globalname.."BottomRightIcon", "OVERLAY")
+	object:SetWidth(ceil(Enhancer.db.profile.framesize / 4));
+	object:SetHeight(ceil(Enhancer.db.profile.framesize / 4));
+	object:SetPoint("BOTTOMRIGHT", globalname.."Frame", "BOTTOMRIGHT", 0, 0);
+	object:SetTexture(1, 1, 1, 0);
+	retVal["bottomright"] = object;
 	
 	retVal["anchor"]:Hide();
 	retVal["mainframe"]:Hide();
@@ -322,6 +346,12 @@ function Enhancer:HideFrame(framelist)
 	end
 end
 
+function Enhancer:SetBackdropColor(framename, r, g, b)
+	self[framename].BackdropR = r or 1;
+	self[framename].BackdropG = g or 1;
+	self[framename].BackdropB = b or 1;
+end
+
 function Enhancer:UpdateAlphaBegin(framelist)
 	if (not framelist) then
 		self:UpdateAlphaBegin(Enhancer.aFrames);
@@ -337,7 +367,8 @@ end
 function Enhancer:UpdateAlphaEnd(framename)
 	if (not self[framename]) then return; end
 	
-	local r, g, b, a = self[framename].mainframe:GetBackdropColor();
+	local _, _, _, a = self[framename].mainframe:GetBackdropColor();
+	local r, g, b = self[framename].BackdropR or 1, self[framename].BackdropG or 1, self[framename].BackdropB or 1;
 	
 	if (self[framename].unlocked) then
 		-- This frame has been unlocked for moving about so make everything visible for it :)
@@ -424,6 +455,13 @@ end
 function Enhancer:FrameDeathPreBegin(framename)
 	-- Stupid hack since all frames don't want the middle number erased (Reincarnation)
 	self[framename].textcenter:SetText("");
+	self[framename].topleft:SetTexture(1, 1, 1, 0);
+	self[framename].topright:SetTexture(1, 1, 1, 0);
+	self[framename].bottomleft:SetTexture(1, 1, 1, 0);
+	self[framename].bottomright:SetTexture(1, 1, 1, 0);
+	if (self[framename].active) then
+		self[framename].cooldown:SetCooldown(0, 0);
+	end
 	self:FrameDeathBegin(framename);
 end
 
@@ -456,9 +494,7 @@ function Enhancer:FrameDeathEnd(framename)
 		end
 	end
 	
-	self[framename].data = nil; --[[ Temp storage that we clear entirely on FrameDeathEnd ]]--
-	self[framename].data = {};
-	
+	self:ClearFrameData(framename);
 	self:UpdateAlphaBegin(framename);
 	
 	if (self:IsEventScheduled(framename)) then
@@ -475,6 +511,13 @@ end
 
 function Enhancer:GetFrameData(framename, key, default)
 	return (self[framename] and self[framename].data and self[framename].data[key]) or default;
+end
+
+function Enhancer:ClearFrameData(framename)
+	if (self[framename].active) then return; end
+	
+	self[framename].data = nil; --[[ Temp storage that we clear entirely on FrameDeathEnd and CreateTotem ]]--
+	self[framename].data = {};
 end
 
 function Enhancer:UpdateFrame(framename)
@@ -503,7 +546,7 @@ function Enhancer:UpdateFrame(framename)
 				local color = "|cff000000";
 				if (tonumber(distance) and tonumber(Range)) then
 					color = "|cff00ff00";
-					if (tonumber(distance) > tonumber(Range)) then
+					if (tonumber(distance) > (tonumber(Range) + 3)) then
 						color = "|cffff0000";
 					elseif ((tonumber(Range) - tonumber(distance)) <= 5) then
 						color = "|cffffff00";
@@ -538,6 +581,16 @@ function Enhancer:UpdateFrame(framename)
 		end
 		
 		self[framename].textcenter:SetText( ceil(self[framename].pulse - GetTime()) );
+	end
+	
+	-- Check Buff
+	if (self.db.profile.buffIndicator ~= "noindication") then
+		local Buff = self:GetFrameData(framename, "Buff");
+		if (Buff and SEA:UnitHasBuff("player", Buff)) then
+			self[framename][self.db.profile.buffIndicator]:SetTexture("Interface\\AddOns\\Enhancer\\texture\\on");
+		elseif (Buff) then
+			self[framename][self.db.profile.buffIndicator]:SetTexture("Interface\\AddOns\\Enhancer\\texture\\off");
+		end
 	end
 	
 	if ( not (self:IsEventScheduled(framename)) ) then

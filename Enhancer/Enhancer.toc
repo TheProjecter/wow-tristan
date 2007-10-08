@@ -55,6 +55,7 @@ locale\Localization-esES.lua
 AddOn.lua
 Console.lua
 Functions.lua
+Emport.lua
 Events.lua
 Frames.lua
 Data.lua
@@ -77,4 +78,4 @@ bonus\HWay.lua
 bonus\Invigorated.lua
 bonus\Tench.lua
 
-Debug.lua
+debug.lua

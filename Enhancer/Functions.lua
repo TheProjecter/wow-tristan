@@ -13,13 +13,11 @@ function Enhancer:CheckRunningModules()
 end
 
 function Enhancer:CreateTotem(totem, rank, totemX, totemY, totemZone)
-	if (type(rank) ~= "number") then
-		if (tonumber(rank)) then
-			rank = tonumber(rank);
-		else
-			self:Print("Big Error: Rank was not a number nor could it be converted. Please mail dennis.hafstrom@gmail.com with info about what did when the error occured and wheter you can recreate it or not");
-			return;
-		end
+	rank = tonumber(rank);
+	
+	if (not rank) then
+		self:Print("Big Error: Rank was not a number nor could it be converted. Please mail dennis.hafstrom@gmail.com with info about what did when the error occured and wheter you can recreate it or not");
+		return;
 	end
 	
 	local Icon = Enhancer.Totems[totem].Icon;
@@ -28,7 +26,8 @@ function Enhancer:CreateTotem(totem, rank, totemX, totemY, totemZone)
 	local HitPoints = Enhancer.Totems[totem].Life or (Enhancer.Totems[totem][rank] and Enhancer.Totems[totem][rank].Life);
 	local Pulse = Enhancer.Totems[totem].Pulse;
 	local Range = Enhancer.Totems[totem].Range;
-	if (Range and Enhancer.Totems[totem].TotemicMastery) then
+	local Buff = Enhancer.Totems[totem].Buff;
+	if (Range and Enhancer.Totems[totem].TotemicMastery and self:TotemicMastery()) then
 		Range = Range + 10;
 	end
 	
@@ -56,9 +55,10 @@ function Enhancer:CreateTotem(totem, rank, totemX, totemY, totemZone)
 		end
 	end
 	
+	self:ClearFrameData(frame);
+	self[frame].active = true;
 	self[frame].name = totem;
 	self[frame].element = Element;
-	self[frame].active = true;
 	self[frame].hitPoints = HitPoints;
 	self[frame].death = GetTime() + TimeToLive;
 	if (TimeToLive > self.db.profile.warnTime) then
@@ -74,6 +74,7 @@ function Enhancer:CreateTotem(totem, rank, totemX, totemY, totemZone)
 	end
 	self[frame].lived = 0;
 	self[frame].range = Range;
+	self:SetFrameData(frame, "Buff", Buff);
 	
 	self:ChangeIcon(frame, Icon);
 	self[frame].mainframe:SetBackdropBorderColor((self[frame].borderColor and self[frame].borderColor["r"]) or 1, (self[frame].borderColor and self[frame].borderColor["g"]) or 1, (self[frame].borderColor and self[frame].borderColor["b"]) or 1, 0);
@@ -243,43 +244,6 @@ function Enhancer:NameToUnit(name)
 	return nil;
 end
 
-function Enhancer:CrazyShamanImport(data)
-	-- Assume the data will look like this (to avoid locale errors with fraction separators):
-	-- AP:10;STR:20;AGI:18;STA:0;CR:20;HR:14;HsR:15;RS:0;IA:10;
-	
-	local CrazyShamanLookup = {
-		["AP"] = "ATTACKPOWER",
-		["STR"] = "STR",
-		["AGI"] = "AGI",
-		["STA"] = "STA",
-		["CR"] = "CR_CRIT",
-		["HR"] = "CR_HIT",
-		["HsR"] = "CR_HASTE",
-		["RS"] = "CR_RESILIENCE",
-		["IA"] = "IGNOREARMOR",
-	};
-	
-	local standardizedData = {}
-	local updateValid = false;
-	for _, dataPart in ipairs( { strsplit(";", data) } ) do
-		if (dataPart and dataPart ~= "") then
-			local identifier, number = strsplit(":", dataPart);
-			
-			local value = number / 10;
-			local key = CrazyShamanLookup[identifier];
-			
-			if (key) then
-				standardizedData[key] = value;
-				updateValid = true;
-			end
-		end
-	end
-	
-	if (updateValid) then
-		self:StandardAEPImport(standardizedData)
-	end
-end
-
 function Enhancer:HasTalent(name)
 	for tabIndex = 1, GetNumTalentTabs() do
 		for talentIndex = 1, GetNumTalents(tabIndex) do
@@ -321,39 +285,4 @@ function Enhancer:TotemicMastery()
 	
 	local tName, _, _, _, tRank, tMRank = GetTalentInfo(tabIndex, talentIndex); -- nameTalent, iconPath, tier, column, currentRank, maxRank, isExceptional, meetsPrereq = GetTalentInfo(tabIndex, talentIndex);
 	return (tRank == tMRank), tName;
-end
-
-function Enhancer:StandardAEPImport(standardizedData)
-	local unused, changed = {}, {};
-	
-	for key, value in pairs(standardizedData) do
-		if (self.db.profile.AEPNumbers[key]) then
-			changed[key] = true;
-			self.db.profile.AEPNumbers[key] = value;
-		else
-			tinsert(unused, key);
-			--[[
-			Not used for anything atm but this function should be very seldomly called so figure saving them
-			for future eventuall use is of little to none harm.
-			]]
-		end
-	end
-	
-	local userShouldCheck = nil;
-	for key, _ in pairs(self.db.profile.AEPNumbers) do
-		if (not changed[key]) then
-			-- self.db.profile.AEPNumbers[key] = 0;
-			
-			if (userShouldCheck) then
-				userShouldCheck = strjoin(", ", userShouldCheck, L[key]);
-			else
-				userShouldCheck = L[key];
-			end
-			
-		end
-	end
-	
-	if (userShouldCheck) then
-		self:Print(string.format(L["aep_import_warning"], userShouldCheck));
-	end
 end
