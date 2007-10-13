@@ -8,14 +8,8 @@ local Gratuity = AceLibrary("Gratuity-2.0")
 
 function EnhancerEP:OnInitialize()
 	-- Give guesstimate bonus to special gems/items
-	EnhancerEP.gems["Relentless Earthstorm Diamond"]["AEP"] = 75; -- 3% Increased Critical Damage
-	EnhancerEP.gems["Relentless Earthstorm Diamond"]["AEPH"] = 75; -- 3% Increased Critical Damage
-	
-	EnhancerEP.ItemBonus = {};
-	EnhancerEP.ItemBonus[28437] = 199.7; -- Drakefist Hammer, Chance on hit: Increases your haste rating by 212 for 10 sec.
-	EnhancerEP.ItemBonus[28438] = 199.7; -- Dragonmaw, Chance on hit: Increases your haste rating by 212 for 10 sec.
-	EnhancerEP.ItemBonus[28439] = 199.7; -- Dragonstrike, Chance on hit: Increases your haste rating by 212 for 10 sec.
-	
+	self.gems["Relentless Earthstorm Diamond"]["AEP"] = 75; -- 3% Increased Critical Damage
+	self.gems["Relentless Earthstorm Diamond"]["AEPH"] = 75; -- 3% Increased Critical Damage
 	--[[
                 3% Increased Critical Damage -- is given 75 for Enhancement EP above
                 +4 Resist All
@@ -37,6 +31,23 @@ function EnhancerEP:OnInitialize()
                 Chance to Increase Melee/Ranged Attack Speed
 	]]--
 	
+	self.ProcsAndUse = {};
+	self.ProcsAndUse[28437] = { ["CR_HASTE"] = (212 * 10 * 2 / 60) }; -- Drakefist Hammer, Chance on hit: Increases your haste rating by 212 for 10 sec. 2PPM
+	self.ProcsAndUse[28438] = { ["CR_HASTE"] = (212 * 10 * 2 / 60) }; -- Dragonmaw, Chance on hit: Increases your haste rating by 212 for 10 sec. 2PPM
+	self.ProcsAndUse[28439] = { ["CR_HASTE"] = (212 * 10 * 2 / 60) }; -- Dragonstrike, Chance on hit: Increases your haste rating by 212 for 10 sec. 2PPM
+	--[[ Explanation in case I need to do it again Rating * Duration * PPM / 60-(1 minute) = 212 * 10 * 2 / 60 ]]--
+	
+	self.ProcsAndUse[33507] = { ["ATTACKPOWER"] = 55 }; -- Stonebreaker's Totem]
+	self.ProcsAndUse[28830] = { ["CR_HASTE"] = (325 * 10 * 1.5 / 60) }; -- Dragonspine Trophy
+	self.ProcsAndUse[32505] = { ["IGNOREARMOR"] = (2.4 * 10 / 60 * 300) }; -- Madness of the Betrayer
+	self.ProcsAndUse[30627] = { ["ATTACKPOWER"] = (340 * 10 * 0.9 / 60) }; -- Tsunami Talisman
+	self.ProcsAndUse[32491] = { ["ATTACKPOWER"] = (275 * 10 * 0.5 / 10) }; -- Ashtongue Talisman of Vision (only AP part)
+	self.ProcsAndUse[31856] = { ["ATTACKPOWER"] = 120 }; -- Darkmoon Card: Crusade
+	self.ProcsAndUse[29383] = { ["ATTACKPOWER"] = (278 * 20 / 120) }; -- Bloodlust Brooch
+	self.ProcsAndUse[28034] = { ["ATTACKPOWER"] = (300 * 10 * 0.9 / 60) }; -- Hourglass of the Unraveller
+	self.ProcsAndUse[28034] = { ["CR_HASTE"] = (260 * 10 / 120) }; -- Abacus of Violent Odds
+	self.ProcsAndUse[22954] = { ["CR_HASTE"] = (200 * 15 / 120) }; -- Kiss of the Spider
+	
 	--[[ For some reason I can't get TipHooker to work without enabling
 			 RatingBuster wich sux so I hacked a bit here ]]--
 	self:ScheduleEvent("Tooltip", self.Tooltip, 1, self);
@@ -57,23 +68,55 @@ function EnhancerEP:Tooltip()
 	pcall( FunctionThatNeverExecutes );
 end
 
+local TypeSufixString = "|cffff0000*|r";
+local TopSufixString = "|cffff0000^|r";
+function EnhancerEP:TypeSufix(values, itemid, careProcsOrUse)
+	itemid = tonumber(itemid);
+	if (not itemid) then return "", careProcsOrUse; end
+	if (not self.ProcsAndUse[itemid]) then return "", careProcsOrUse; end
+	if (not Enhancer.db.profile.EPGems.EPGuesstimates) then return "", careProcsOrUse; end
+	
+	for k, _ in pairs(values) do
+		if (self.ProcsAndUse[itemid][k]) then
+			return TypeSufixString, true;
+		end
+	end
+	
+	return "", careProcsOrUse;
+end
+
 EnhancerEP.ProcessTypes = { [L["Armor"]] = true, [L["Gem"]] = true, [L["Weapon"]] = true, [L["Recipe"]] = true, }
 EnhancerEP.AffectedByKings = { STR = true, AGI = true, STA = true, INT = true, SPI = true};
 function EnhancerEP.ProcessTooltip(tooltip, name, link)
 	if (link) then
+		local self = EnhancerEP;
 		
 		--[[ Check if we care about this item ]]--
 		local _, _, _, _, _, ItemType, ItemSubType, _, equipLocation = GetItemInfo(link)
-		if (not EnhancerEP.ProcessTypes[ItemType]) then return; end
+		if (not self.ProcessTypes[ItemType]) then return; end
 		
 		local numberFormat = L["ep_numbers2"];
 		
 		--[[ ItemBonusLib doesn't count empty sockets wich we prefer since
 				 inspected gear can have shit gems in them ;) ]]--
-		link = EnhancerEP:StripGemsAndEnchants(link);
-		bonuses = ibl:ScanItem(link, true, false);
+		local itemid;
+		
+		link, itemid = EnhancerEP:StripGemsAndEnchants(link);
+		local bonuses = ibl:ScanItem(link, true, false);
+		local PaUwarn = false;
+		
+		--[[ Should add proc / use bonuses here ]]--
+		if (tonumber(itemid) and self.ProcsAndUse[tonumber(itemid)] and Enhancer.db.profile.EPGems.EPGuesstimates and bonuses and not bonuses["Procs Added"]) then
+			for k,v in pairs(self.ProcsAndUse[tonumber(itemid)]) do
+				bonuses[k] = (bonuses[k] or 0) + v;
+				bonuses["Procs Added"] = true;
+			end
+		end
+		local hasProcsOrUse = bonuses["Procs Added"];
+		local unknownProcs = false;
+		local sufix, careProcsOrUse = "", false;
+		
 		local lineAdded = nil;
-		local infos = {};
 		local kingsMultiplier = (110 / 100);
 		
 		--[[ Count sockets ]]--
@@ -93,10 +136,16 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 			elseif (line == L["Meta Socket"]) then
 				metaSockets = metaSockets + 1;
 			end
+			
+			if ((string.find(line, L["Chance on hit:"]) and (not hasProcsOrUse)) or itemid == "32491") then
+				unknownProcs = true;
+			end
 		end
 		-- nonMetaSockets, metaSockets
 		
 		local lastValue, lastKingsValue;
+		local _, eClass = UnitClass("player");
+		local ttR, ttG, ttB = RAID_CLASS_COLORS[eClass]["r"], RAID_CLASS_COLORS[eClass]["g"], RAID_CLASS_COLORS[eClass]["b"];
 		
 		lastValue, lastKingsValue = nil, nil; -- Reset these between different types of EP (used for compairing a main set with a subset, such as all values but hit)
 		--[[ Do Attackpower Equivalence Points ]]--
@@ -110,19 +159,18 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 			
 			-- EnhancerEP:Calculate(values, bonuses, gemcount, metacount, gemcachekey)
 			-- return total, kingstotal, gemName, kingsgemName, metagemName, kingsmetagemName;
-			local EP, EPK, gem1, gem2, gem3, gem4 = EnhancerEP:Calculate(values, bonuses, nonMetaSockets, metaSockets, "AEP", equipLocation);
+			local EP, EPK, gem1, gem2, gem3, gem4 = EnhancerEP:Calculate(values, bonuses, nonMetaSockets, metaSockets, "AEP");
+			sufix, careProcsOrUse = self:TypeSufix(values, itemid, careProcsOrUse);
 			lastValue, lastKingsValue = EP, EPK;
 			
 			if ( EP > 0 or Enhancer.db.profile.EPZero ) then
 				if (not lineAdded) then
 					tooltip:AddLine(" ");
-					tooltip:AddLine(L["eep_info"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
+					tooltip:AddLine(string.format(L["eep_info"], ((unknownProcs and TopSufixString) or "")), ttR, ttG, ttB);
 					lineAdded = true;
 				end
 				
-				tooltip:AddDoubleLine(L["aep_tooltip"], string.format( numberFormat, EP, EPK ), RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
-				
-				-- tinsert(infos, L["aep_info"]);
+				tooltip:AddDoubleLine(string.format(L["aep_tooltip"], sufix), string.format( numberFormat, EP, EPK ), ttR, ttG, ttB, ttR, ttG, ttB);
 			end
 		end
 		
@@ -139,21 +187,18 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 			
 			-- EnhancerEP:Calculate(values, bonuses, gemcount, metacount, gemcachekey)
 			-- return total, kingstotal, gemName, kingsgemName, metagemName, kingsmetagemName;
-			local EP, EPK, gem1, gem2, gem3, gem4 = EnhancerEP:Calculate(values, bonuses, nonMetaSockets, metaSockets, "AEPH", equipLocation);
+			local EP, EPK, gem1, gem2, gem3, gem4 = EnhancerEP:Calculate(values, bonuses, nonMetaSockets, metaSockets, "AEPH");
+			sufix, careProcsOrUse = self:TypeSufix(values, itemid, careProcsOrUse);
 			
 			local skipThis = ( lastValue and lastKingsValue and lastValue == EP and lastKingsValue == EPK );
 			if ( (EP > 0 or Enhancer.db.profile.EPZero) and (not skipThis) ) then
 				if (not lineAdded) then
 					tooltip:AddLine(" ");
-					tooltip:AddLine(L["eep_info"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
+					tooltip:AddLine(string.format(L["eep_info"], ((unknownProcs and TopSufixString) or "")), ttR, ttG, ttB);
 					lineAdded = true;
 				end
 				
-				tooltip:AddDoubleLine(L["aeph_tooltip"], string.format( numberFormat, EP, EPK ), RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
-				
-				if (not Enhancer.db.profile.AEP) then
-					-- tinsert(infos, L["aep_info"]);
-				end
+				tooltip:AddDoubleLine(string.format(L["aeph_tooltip"], sufix), string.format( numberFormat, EP, EPK ), ttR, ttG, ttB, ttR, ttG, ttB);
 			end
 		end
 		
@@ -170,17 +215,16 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 			-- EnhancerEP:Calculate(values, bonuses, gemcount, metacount, gemcachekey)
 			-- return total, kingstotal, gemName, kingsgemName, metagemName, kingsmetagemName;
 			local EP, EPK, gem1, gem2, gem3, gem4 = EnhancerEP:Calculate(values, bonuses, nonMetaSockets, metaSockets, "HEP");
+			sufix, careProcsOrUse = self:TypeSufix(values, itemid, careProcsOrUse);
 			
 			if ( EP > 0 or Enhancer.db.profile.EPZero) then
 				if (not lineAdded) then
 					tooltip:AddLine(" ");
-					tooltip:AddLine(L["eep_info"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
+					tooltip:AddLine(string.format(L["eep_info"], ((unknownProcs and TopSufixString) or "")), ttR, ttG, ttB);
 					lineAdded = true;
 				end
 				
-				tooltip:AddDoubleLine(L["hep_tooltip"], string.format( numberFormat, EP, EPK ), RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
-				
-				-- tinsert(infos, L["hep_info"]);
+				tooltip:AddDoubleLine(string.format(L["hep_tooltip"], sufix), string.format( numberFormat, EP, EPK ), ttR, ttG, ttB, ttR, ttG, ttB);
 			end
 		end
 		
@@ -197,18 +241,17 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 			-- EnhancerEP:Calculate(values, bonuses, gemcount, metacount, gemcachekey)
 			-- return total, kingstotal, gemName, kingsgemName, metagemName, kingsmetagemName;
 			local EP, EPK, gem1, gem2, gem3, gem4 = EnhancerEP:Calculate(values, bonuses, nonMetaSockets, metaSockets, "DEP");
+			sufix, careProcsOrUse = self:TypeSufix(values, itemid, careProcsOrUse);
 			lastValue, lastKingsValue = EP, EPK;
 			
 			if ( EP > 0 or Enhancer.db.profile.EPZero) then
 				if (not lineAdded) then
 					tooltip:AddLine(" ");
-					tooltip:AddLine(L["eep_info"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
+					tooltip:AddLine(string.format(L["eep_info"], ((unknownProcs and TopSufixString) or "")), ttR, ttG, ttB);
 					lineAdded = true;
 				end
 				
-				tooltip:AddDoubleLine(L["dep_tooltip"], string.format( numberFormat, EP, EPK ), RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
-				
-				-- tinsert(infos, L["dep_info"]);
+				tooltip:AddDoubleLine(string.format(L["dep_tooltip"], sufix), string.format( numberFormat, EP, EPK ), ttR, ttG, ttB, ttR, ttG, ttB);
 			end
 		end
 		
@@ -226,26 +269,18 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 			-- EnhancerEP:Calculate(values, bonuses, gemcount, metacount, gemcachekey)
 			-- return total, kingstotal, gemName, kingsgemName, metagemName, kingsmetagemName;
 			local EP, EPK, gem1, gem2, gem3, gem4 = EnhancerEP:Calculate(values, bonuses, nonMetaSockets, metaSockets, "DEP");
+			sufix, careProcsOrUse = self:TypeSufix(values, itemid, careProcsOrUse);
 			
 			local skipThis = ( lastValue and lastKingsValue and lastValue == EP and lastKingsValue == EPK );
 			if ( (EP > 0 or Enhancer.db.profile.EPZero) and (not skipThis) ) then
 				if (not lineAdded) then
 					tooltip:AddLine(" ");
-					tooltip:AddLine(L["eep_info"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
+					tooltip:AddLine(string.format(L["eep_info"], ((unknownProcs and TopSufixString) or "")), ttR, ttG, ttB);
 					lineAdded = true;
 				end
 				
-				tooltip:AddDoubleLine(L["deph_tooltip"], string.format( numberFormat, EP, EPK ), RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
-				
-				-- tinsert(infos, L["dep_info"]);
+				tooltip:AddDoubleLine(string.format(L["deph_tooltip"], sufix), string.format( numberFormat, EP, EPK ), ttR, ttG, ttB, ttR, ttG, ttB);
 			end
-		end
-		
-		if (lineAdded) then
-			for _, infoLine in ipairs(infos) do
-				tooltip:AddLine( infoLine, RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"] );
-			end
-			-- Add a warning about using Equivalence Points at skew values
 		end
 		
 		-- http://www.wowwiki.com/Formulas:Item_Values Calculate ItemLevel based on stats you care about ;)
@@ -267,12 +302,20 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 			-- return total, kingstotal, gemName, kingsgemName, metagemName, kingsmetagemName;
 			-- local IP = EnhancerEP:Calculate(values, bonuses, nonMetaSockets, metaSockets, "EIP");
 			local IP = EnhancerEP:ItemValue(values, bonuses, gemcount, metacount, link);
+			sufix, careProcsOrUse = self:TypeSufix(values, itemid, careProcsOrUse);
 			
 			if ( IP > 0 or Enhancer.db.profile.EPZero) then
-				tooltip:AddDoubleLine(L["eip_tooltip"], string.format("%.1f", IP), RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"]);
+				tooltip:AddDoubleLine(string.format(L["eip_tooltip"], sufix), string.format("%.1f", IP), ttR, ttG, ttB, ttR, ttG, ttB);
 				lineAdded = true;
-				-- tooltip:AddLine( L["eip_info"], RAID_CLASS_COLORS["SHAMAN"]["r"], RAID_CLASS_COLORS["SHAMAN"]["g"], RAID_CLASS_COLORS["SHAMAN"]["b"] );
 			end
+		end
+		
+		-- GOTO
+		if (lineAdded and careProcsOrUse) then --hasProcsOrUse) then
+			tooltip:AddLine( L["ep_procsanduse"], 1, 0, 0 );
+		end
+		if (lineAdded and unknownProcs) then
+			tooltip:AddLine( L["ep_procsandusemissing"], 1, 0, 0 );
 		end
 		
 		if (lineAdded) then
@@ -293,7 +336,7 @@ function EnhancerEP:StripGemsAndEnchants(itemlink)
 	jewelId4 = "0";
 	local newItemString = strjoin(":", linkType, itemId, enchantId, jewelId1, jewelId2, jewelId3, jewelId4, suffixId, uniqueId);
 	local _, newLink = GetItemInfo(newItemString);
-	return newLink;
+	return newLink, itemId;
 end
 
 function EnhancerEP:ItemValue(values, bonuses, gemcount, metacount, link)
@@ -307,27 +350,16 @@ function EnhancerEP:ItemValue(values, bonuses, gemcount, metacount, link)
 		ItemValue = ItemValue + math.pow( ((bonuses[statKey] or 0) * statTable.value), 1.5 );
 	end
 	
-	if (Enhancer.db.profile.EPGems.EPGuesstimates) then
-		local found, _, itemstring = string.find(link, "^|c%x+|H(.+)|h%[.+%]");
-		if (found) then
-			local _, itemid = strsplit(":", itemstring)
-			if (itemid and tonumber(itemid) and EnhancerEP.ItemBonus[tonumber(itemid)] and tonumber(EnhancerEP.ItemBonus[tonumber(itemid)])) then
-			ItemValue = ItemValue + tonumber(EnhancerEP.ItemBonus[tonumber(itemid)]);
-			end
-		end
-	end
-	
 	return math.pow(ItemValue, (2/3));
 end
 
 local kingsMultiplier = (110 / 100);
-function EnhancerEP:Calculate(values, bonuses, gemcount, metacount, gemcachekey, equipLocation)
+function EnhancerEP:Calculate(values, bonuses, gemcount, metacount, gemcachekey)
 	local total, kingstotal = 0, 0;
 	local gemTotal, gemName = 0, nil;
 	local kingsgemTotal, kingsgemName = 0, nil;
 	local metagemTotal, metagemName = 0, nil;
 	local kingsmetagemTotal, kingsmetagemName = 0, nil;
-	local flatBonus = 0;
 	
 	for statKey, statTable in pairs(values) do
 		total = total + ( (bonuses[statKey] or 0) * statTable.value );
@@ -384,7 +416,7 @@ function EnhancerEP:GemPicker(cachekey, values, meta, blessingofkings, color)
 				for statKey, statTable in pairs(values) do
 					total = total + ( ((gemBonusTable[statKey] or 0) * statTable.value) * (((blessingofkings and statTable.kings) and kingsMultiplier) or 1) );
 				end
-				if (Enhancer.db.profile.EPGems.EPGuesstimates) then
+				if (Enhancer.db.profile.EPGems.EPGemGuesstimates) then
 					total = total + (EnhancerEP.gems[gemName][cachekey] or 0);
 				end
 				
