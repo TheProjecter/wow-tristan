@@ -71,7 +71,8 @@ local defaults = {
 		maxQuality = 3,
 		metaGems = true,
 	},
-	EPGuesstimates = false,
+	EPGuesstimates = true,
+	EPGemGuesstimates = false,
 	
 	aboveFontID = "Friz Quadrata TT",
 	aboveFontName = [[Fonts\FRIZQT__.ttf]],
@@ -1005,6 +1006,15 @@ function Enhancer:RegisterSlashCommands()
 						get = function() return Enhancer.db.profile.EPGems.EPGuesstimates; end,
 						set = function()
 							Enhancer.db.profile.EPGems.EPGuesstimates = not Enhancer.db.profile.EPGems.EPGuesstimates;
+						end,
+						order = OrderNum(),
+					},
+					[L["ep_gguess_cmd"]] = {
+						name = L["ep_gguess_cmd"], type = "toggle",
+						desc = L["ep_gguess_desc"],
+						get = function() return Enhancer.db.profile.EPGems.EPGemGuesstimates; end,
+						set = function()
+							Enhancer.db.profile.EPGems.EPGemGuesstimates = not Enhancer.db.profile.EPGems.EPGemGuesstimates;
 						end,
 						order = OrderNum(),
 					},

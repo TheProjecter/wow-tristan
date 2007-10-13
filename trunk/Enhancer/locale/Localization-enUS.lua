@@ -82,6 +82,8 @@ L_Main:RegisterTranslations(locale, function() return {
 	["ep_numbers_desc"] = "Here you can change weights for the EP numbers (0 disables that stat)",
 	["ep_guess_cmd"] = "EPEstimates",
 	["ep_guess_desc"] = "Include guesstimates of non static bonuses on weapons (procs/use) for EP",
+	["ep_gguess_cmd"] = "EPGemEstimates",
+	["ep_gguess_desc"] = "Include guesstimates of non static bonuses on gems for EP",
 	["bestgem_cmd"] = "BestGem",
 	["bestgem_desc"] = "Calculates the best gem based on your settings",
 	["blue"] = "Blue",
@@ -276,28 +278,33 @@ L_EP:RegisterTranslations(locale, function() return {
 	["Quiver"] = "Quiver",
 	["Recipe"] = "Recipe",
 	
-	--[[ Sockets as they appear on the tooltip has to include Socket as it's used for matching and lots of matches are possible with only color ]]--
+	--[[ This is used for matching so need all of it and exactly as it is on the tooltip you can't translate "Blue Socket" to only "Blau" for example ]]--
+	--[[ Sockets has to include the word Socket as it's used for matching and lots of matches are possible if you only list a color ]]--
 	["Red Socket"] = "Red Socket",
 	["Blue Socket"] = "Blue Socket",
 	["Yellow Socket"] = "Yellow Socket",
 	["Meta Socket"] = "Meta Socket",
+	["Chance on hit:"] = "Chance on hit:",
 	
 	--[[ Tooltip strings ]]--
-	["eep_info"] = "Enhancer's Equivalence Points:",
+	["eep_info"] = "Enhancer's Equivalence Points%s:",
 	
-	["aep_tooltip"] = string.rep(" ", 3) .. "AttackpowerEP (inc BoK):",
+	["aep_tooltip"] = string.rep(" ", 3) .. "AttackpowerEP (inc BoK)%s:",
 	["aep_info"] = "AEP model from Tornhoof/Pater", -- Not used atm
 	["aeph_tooltip"] = string.rep(" ", 3) .. "AttackpowerEP w/o hit (inc BoK):",
 	
-	["hep_tooltip"] = string.rep(" ", 3) .. "HealingEP (inc BoK):",
+	["hep_tooltip"] = string.rep(" ", 3) .. "HealingEP (inc BoK)%s:",
 	["hep_info"] = "Numbers from Leion (possibly very inaccurate and shouldn't be taken as gospel)", -- Not used atm
 	
-	["dep_tooltip"] = string.rep(" ", 3) .. "DamageEP (inc BoK):",
+	["dep_tooltip"] = string.rep(" ", 3) .. "DamageEP (inc BoK)%s:",
 	["dep_info"] = "Numbers from Leion (possibly very inaccurate and shouldn't be taken as gospel)", -- Not used atm
 	["deph_tooltip"] = string.rep(" ", 3) .. "DamageEP w/o hit (inc BoK):",
 	
-	["eip_tooltip"] = "Enhancement Itemization Points",
-	["eip_info"] = "Numbers from Leion (possibly very inaccurate and shouldn't be taken as gospel)", -- Not used atm
+	["ep_procsanduse"] = string.rep(" ", 3) .. "*) Procs/Use basis is average/expected bonus!",
+	["ep_procsandusemissing"] = string.rep(" ", 3) .. "^) Not all Procs/Use/Chance are calculated!",
+	
+	["eip_tooltip"] = "Enhancement Itemization Points%s:",
+	["eip_info"] = "Numbers calculated by Leion", -- Not used atm
 	
 	["ep_numbers1"] = "%d (%d)",  -- Lua string.format
 	["ep_numbers2"] = "%.1f (%.1f)",  -- Lua string.format
