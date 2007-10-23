@@ -75,6 +75,10 @@ function Enhancer:OnInitialize()
 		self:ScheduleEvent("DelayAnnounce", self.DelayAnnounce, 7, self)
 	end
 	self:ScheduleEvent("SnapPos", self.SnapPos, 2, self)
+	
+	if ((EnhancerNews or 0) < Enhancer.news) then
+		self:News();
+	end
 end
 
 function Enhancer:OnEnable()
@@ -186,6 +190,7 @@ function Enhancer:FindParent(framename)
 end
 
 function Enhancer:DelayAnnounce()
+	if (self.noannounce) then return; end
 	self:Print(L["Announcement"]);
 end
 

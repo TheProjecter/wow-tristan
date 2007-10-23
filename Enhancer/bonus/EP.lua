@@ -31,15 +31,26 @@ function EnhancerEP:OnInitialize()
                 Chance to Increase Melee/Ranged Attack Speed
 	]]--
 	
+	--[[
+				Explanation to the calculations below:
+				Bloodlust Brooch (Use: Increases attack power by 278 for 20 sec.) forumla:
+					GAIN * DURATION / COOLDOWN
+					 278 *    20    / 120
+				Dragonspine Trophy (Equip: Your melee and ranged attacks have a chance to increase your haste rating by 325 for 10 sec.) formula:
+					GAIN * DURATION * PPM / MINUTE
+					 325 *    10    * 1.5 / 60
+				Ashtongue Talisman of Vision (Equip: Stormstrike has a 50% chance to grant up to 275 attack power for 10 sec.) formula:
+					GAIN * DURATION * Chance / CD  -- Chance is 50 from each Stormstrike (that can be cast every 10 sec)
+					 275 *    10    *   0.5  / 10
+	]]--
 	self.ProcsAndUse = {};
 	self.ProcsAndUse[28437] = { ["CR_HASTE"] = (212 * 10 * 2 / 60) }; -- Drakefist Hammer, Chance on hit: Increases your haste rating by 212 for 10 sec. 2PPM
 	self.ProcsAndUse[28438] = { ["CR_HASTE"] = (212 * 10 * 2 / 60) }; -- Dragonmaw, Chance on hit: Increases your haste rating by 212 for 10 sec. 2PPM
 	self.ProcsAndUse[28439] = { ["CR_HASTE"] = (212 * 10 * 2 / 60) }; -- Dragonstrike, Chance on hit: Increases your haste rating by 212 for 10 sec. 2PPM
-	--[[ Explanation in case I need to do it again Rating * Duration * PPM / 60-(1 minute) = 212 * 10 * 2 / 60 ]]--
 	
-	self.ProcsAndUse[33507] = { ["ATTACKPOWER"] = 55 }; -- Stonebreaker's Totem]
+	self.ProcsAndUse[33507] = { ["ATTACKPOWER"] = (110 * 10 * 0.5 / 6) }; -- Stonebreaker's Totem (Had it at 55 dunno why)
 	self.ProcsAndUse[28830] = { ["CR_HASTE"] = (325 * 10 * 1.5 / 60) }; -- Dragonspine Trophy
-	self.ProcsAndUse[32505] = { ["IGNOREARMOR"] = (2.4 * 10 / 60 * 300) }; -- Madness of the Betrayer
+	self.ProcsAndUse[32505] = { ["IGNOREARMOR"] = (300 * 10 * 2.4 / 60) }; -- Madness of the Betrayer
 	self.ProcsAndUse[30627] = { ["ATTACKPOWER"] = (340 * 10 * 0.9 / 60) }; -- Tsunami Talisman
 	self.ProcsAndUse[32491] = { ["ATTACKPOWER"] = (275 * 10 * 0.5 / 10) }; -- Ashtongue Talisman of Vision (only AP part)
 	self.ProcsAndUse[31856] = { ["ATTACKPOWER"] = 120 }; -- Darkmoon Card: Crusade
@@ -47,6 +58,16 @@ function EnhancerEP:OnInitialize()
 	self.ProcsAndUse[28034] = { ["ATTACKPOWER"] = (300 * 10 * 0.9 / 60) }; -- Hourglass of the Unraveller
 	self.ProcsAndUse[28034] = { ["CR_HASTE"] = (260 * 10 / 120) }; -- Abacus of Violent Odds
 	self.ProcsAndUse[22954] = { ["CR_HASTE"] = (200 * 15 / 120) }; -- Kiss of the Spider
+	
+	self.ProcsAndUse[33831] = { ["ATTACKPOWER"] = (360 * 20 / 120) }; -- Berserker's Call
+	self.ProcsAndUse[28041] = { ["ATTACKPOWER"] = (200 * 15 / 90) }; -- Bladefist's Breadth
+	-- self.ProcsAndUse[32770] = { ["ATTACKPOWER"] = (140 * 30 * 2 / 60) }; -- Skyguard Silver Cross
+	self.ProcsAndUse[21180] = { ["ATTACKPOWER"] = (280 * 20 / 120) }; -- Earthstrike
+	self.ProcsAndUse[23041] = { ["ATTACKPOWER"] = (260 * 20 / 120) }; -- Slayer's Crest
+	self.ProcsAndUse[23570] = { ["ATTACKPOWER"] = (357.5 * 10 / 120) }; -- Jom Gabbar
+	self.ProcsAndUse[28528] = { ["CR_DODGE"] = (300 * 10 / 120) }; -- Moroes' Lucky Pocket Watch
+	
+	self.ProcsAndUse[29301] = { ["ATTACKPOWER"] = (160 * 10 / 60) }; -- Band of the Eternal Champion
 	
 	--[[ For some reason I can't get TipHooker to work without enabling
 			 RatingBuster wich sux so I hacked a bit here ]]--
@@ -92,7 +113,7 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 		local self = EnhancerEP;
 		
 		--[[ Check if we care about this item ]]--
-		local _, _, _, _, _, ItemType, ItemSubType, _, equipLocation = GetItemInfo(link)
+		local _, _, itemRarity, _, _, ItemType, ItemSubType, _, equipLocation = GetItemInfo(link)
 		if (not self.ProcessTypes[ItemType]) then return; end
 		
 		local numberFormat = L["ep_numbers2"];
@@ -103,7 +124,7 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 		
 		link, itemid = EnhancerEP:StripGemsAndEnchants(link);
 		local bonuses = ibl:ScanItem(link, true, false);
-		local PaUwarn = false;
+		local knownUnvaluedProcs = { [32491] = true, [32770] = true, }
 		
 		--[[ Should add proc / use bonuses here ]]--
 		if (tonumber(itemid) and self.ProcsAndUse[tonumber(itemid)] and Enhancer.db.profile.EPGems.EPGuesstimates and bonuses and not bonuses["Procs Added"]) then
@@ -120,28 +141,22 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 		local kingsMultiplier = (110 / 100);
 		
 		--[[ Count sockets ]]--
-		local redSockets, blueSockets, yellowSockets, metaSockets, nonMetaSockets = 0, 0, 0, 0, 0;
+		local redSockets = bonuses["EMPTY_SOCKET_RED"] or 0;
+		local blueSockets = bonuses["EMPTY_SOCKET_BLUE"] or 0;
+		local yellowSockets = bonuses["EMPTY_SOCKET_YELLOW"] or 0;
+		local metaSockets = bonuses["EMPTY_SOCKET_META"] or 0;
+		local nonMetaSockets = redSockets + blueSockets + yellowSockets;
+		
+		if (Enhancer.debug) then Enhancer:Print("metaSockets", metaSockets, "-", "nonMetaSockets", nonMetaSockets) end
+		
+		--[[ Check Procs ]]--
 		Gratuity:SetHyperlink(link)
 		for i = 2, Gratuity:NumLines() do
 			local line = Gratuity:GetLine(i)
-			if (line == L["Red Socket"]) then
-				redSockets = redSockets + 1;
-				nonMetaSockets = nonMetaSockets + 1;
-			elseif (line == L["Blue Socket"]) then
-				blueSockets = blueSockets + 1;
-				nonMetaSockets = nonMetaSockets + 1;
-			elseif (line == L["Yellow Socket"]) then
-				yellowSockets = yellowSockets + 1;
-				nonMetaSockets = nonMetaSockets + 1;
-			elseif (line == L["Meta Socket"]) then
-				metaSockets = metaSockets + 1;
-			end
-			
-			if ((string.find(line, L["Chance on hit:"]) and (not hasProcsOrUse)) or itemid == "32491") then
+			if ((string.find(line, L["Chance on hit:"]) and (not hasProcsOrUse)) or knownUnvaluedProcs[tonumber(itemid) or "0"]) then
 				unknownProcs = true;
 			end
 		end
-		-- nonMetaSockets, metaSockets
 		
 		local lastValue, lastKingsValue;
 		local _, eClass = UnitClass("player");
@@ -157,9 +172,9 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 				values[stat]["kings"] = EnhancerEP.AffectedByKings[stat];
 			end
 			
-			-- EnhancerEP:Calculate(values, bonuses, gemcount, metacount, gemcachekey)
+			-- EnhancerEP:Calculate(values, bonuses, gemcount, metacount, gemcachekey, itemrarity)
 			-- return total, kingstotal, gemName, kingsgemName, metagemName, kingsmetagemName;
-			local EP, EPK, gem1, gem2, gem3, gem4 = EnhancerEP:Calculate(values, bonuses, nonMetaSockets, metaSockets, "AEP");
+			local EP, EPK, gem1, gem2, gem3, gem4 = EnhancerEP:Calculate(values, bonuses, nonMetaSockets, metaSockets, "AEP", itemRarity);
 			sufix, careProcsOrUse = self:TypeSufix(values, itemid, careProcsOrUse);
 			lastValue, lastKingsValue = EP, EPK;
 			
@@ -178,16 +193,14 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 		if (Enhancer.db.profile.AEPH) then
 			local values = {};
 			for stat,value in pairs(Enhancer.db.profile.AEPNumbers) do
-				if (stat ~= "CR_HIT") then
+				if (stat ~= "CR_HIT") then -- WITHOUT HIT!
 					values[stat] = {};
 					values[stat]["value"] = Enhancer.db.profile.AEPNumbers[stat];
 					values[stat]["kings"] = EnhancerEP.AffectedByKings[stat];
 				end
 			end
 			
-			-- EnhancerEP:Calculate(values, bonuses, gemcount, metacount, gemcachekey)
-			-- return total, kingstotal, gemName, kingsgemName, metagemName, kingsmetagemName;
-			local EP, EPK, gem1, gem2, gem3, gem4 = EnhancerEP:Calculate(values, bonuses, nonMetaSockets, metaSockets, "AEPH");
+			local EP, EPK, gem1, gem2, gem3, gem4 = EnhancerEP:Calculate(values, bonuses, nonMetaSockets, metaSockets, "AEPH", itemRarity);
 			sufix, careProcsOrUse = self:TypeSufix(values, itemid, careProcsOrUse);
 			
 			local skipThis = ( lastValue and lastKingsValue and lastValue == EP and lastKingsValue == EPK );
@@ -212,9 +225,7 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 				values[stat]["kings"] = EnhancerEP.AffectedByKings[stat];
 			end
 			
-			-- EnhancerEP:Calculate(values, bonuses, gemcount, metacount, gemcachekey)
-			-- return total, kingstotal, gemName, kingsgemName, metagemName, kingsmetagemName;
-			local EP, EPK, gem1, gem2, gem3, gem4 = EnhancerEP:Calculate(values, bonuses, nonMetaSockets, metaSockets, "HEP");
+			local EP, EPK, gem1, gem2, gem3, gem4 = EnhancerEP:Calculate(values, bonuses, nonMetaSockets, metaSockets, "HEP", itemRarity);
 			sufix, careProcsOrUse = self:TypeSufix(values, itemid, careProcsOrUse);
 			
 			if ( EP > 0 or Enhancer.db.profile.EPZero) then
@@ -238,9 +249,7 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 				values[stat]["kings"] = EnhancerEP.AffectedByKings[stat];
 			end
 			
-			-- EnhancerEP:Calculate(values, bonuses, gemcount, metacount, gemcachekey)
-			-- return total, kingstotal, gemName, kingsgemName, metagemName, kingsmetagemName;
-			local EP, EPK, gem1, gem2, gem3, gem4 = EnhancerEP:Calculate(values, bonuses, nonMetaSockets, metaSockets, "DEP");
+			local EP, EPK, gem1, gem2, gem3, gem4 = EnhancerEP:Calculate(values, bonuses, nonMetaSockets, metaSockets, "DEP", itemRarity);
 			sufix, careProcsOrUse = self:TypeSufix(values, itemid, careProcsOrUse);
 			lastValue, lastKingsValue = EP, EPK;
 			
@@ -259,16 +268,14 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 		if (Enhancer.db.profile.DEP) then
 			local values = {};
 			for stat,value in pairs(Enhancer.db.profile.DEPNumbers) do
-				if (stat ~= "CR_SPELLHIT") then
+				if (stat ~= "CR_SPELLHIT") then -- WITHOUT HIT!
 					values[stat] = {};
 					values[stat]["value"] = Enhancer.db.profile.DEPNumbers[stat];
 					values[stat]["kings"] = EnhancerEP.AffectedByKings[stat];
 				end
 			end
 			
-			-- EnhancerEP:Calculate(values, bonuses, gemcount, metacount, gemcachekey)
-			-- return total, kingstotal, gemName, kingsgemName, metagemName, kingsmetagemName;
-			local EP, EPK, gem1, gem2, gem3, gem4 = EnhancerEP:Calculate(values, bonuses, nonMetaSockets, metaSockets, "DEP");
+			local EP, EPK, gem1, gem2, gem3, gem4 = EnhancerEP:Calculate(values, bonuses, nonMetaSockets, metaSockets, "DEP", itemRarity);
 			sufix, careProcsOrUse = self:TypeSufix(values, itemid, careProcsOrUse);
 			
 			local skipThis = ( lastValue and lastKingsValue and lastValue == EP and lastKingsValue == EPK );
@@ -298,9 +305,6 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 				["CR_HASTE"] = { ["value"] = 1, ["kings"] = nil },
 			};
 			
-			-- EnhancerEP:Calculate(values, bonuses, gemcount, metacount, gemcachekey)
-			-- return total, kingstotal, gemName, kingsgemName, metagemName, kingsmetagemName;
-			-- local IP = EnhancerEP:Calculate(values, bonuses, nonMetaSockets, metaSockets, "EIP");
 			local IP = EnhancerEP:ItemValue(values, bonuses, gemcount, metacount, link);
 			sufix, careProcsOrUse = self:TypeSufix(values, itemid, careProcsOrUse);
 			
@@ -354,7 +358,7 @@ function EnhancerEP:ItemValue(values, bonuses, gemcount, metacount, link)
 end
 
 local kingsMultiplier = (110 / 100);
-function EnhancerEP:Calculate(values, bonuses, gemcount, metacount, gemcachekey)
+function EnhancerEP:Calculate(values, bonuses, gemcount, metacount, gemcachekey, itemrarity)
 	local total, kingstotal = 0, 0;
 	local gemTotal, gemName = 0, nil;
 	local kingsgemTotal, kingsgemName = 0, nil;
@@ -367,16 +371,16 @@ function EnhancerEP:Calculate(values, bonuses, gemcount, metacount, gemcachekey)
 	end
 	
 	if (gemcount and tonumber(gemcount) and tonumber(gemcount) > 0) then
-		gemTotal, gemName = EnhancerEP:GemPicker(gemcachekey, values, false, false, false);
-		kingsgemTotal, kingsgemName = EnhancerEP:GemPicker(gemcachekey, values, false, true, false);
+		gemTotal, gemName = EnhancerEP:GemPicker(gemcachekey, values, false, false, false, itemrarity);
+		kingsgemTotal, kingsgemName = EnhancerEP:GemPicker(gemcachekey, values, false, true, false, itemrarity);
 		
 		total = total + ( gemTotal * gemcount );
 		kingstotal = kingstotal + ( kingsgemTotal * gemcount );
 	end
 	
 	if (metacount and tonumber(metacount) and tonumber(metacount) > 0 and Enhancer.db.profile.EPGems.metaGems) then
-		metagemTotal, metagemName = EnhancerEP:GemPicker(gemcachekey, values, true, false, false);
-		kingsmetagemTotal, kingsmetagemName = EnhancerEP:GemPicker(gemcachekey, values, true, true, false)
+		metagemTotal, metagemName = EnhancerEP:GemPicker(gemcachekey, values, true, false, false, itemrarity);
+		kingsmetagemTotal, kingsmetagemName = EnhancerEP:GemPicker(gemcachekey, values, true, true, false, itemrarity)
 		
 		total = total + ( metagemTotal * metacount );
 		kingstotal = kingstotal + ( kingsmetagemTotal * metacount );
@@ -391,9 +395,16 @@ function EnhancerEP:ResetGemCache()
 	EnhancerEP.gemCache = {};
 end
 
-function EnhancerEP:GemPicker(cachekey, values, meta, blessingofkings, color)
+function EnhancerEP:GemPicker(cachekey, values, meta, blessingofkings, color, itemrarity)
 	local bestGem = { name = "None", value = 0 };
-	local totalCacheKey = tostring(cachekey) .. "|" .. tostring(meta) .. "|" .. tostring(blessingofkings) .. "|" .. tostring(Enhancer.db.profile.EPGems.maxQuality);
+	local maxQuality = Enhancer.db.profile.EPGems.maxQuality;
+	if (Enhancer.db.profile.EPGems.maxQualityNonEpic ~= 0 and itemrarity) then
+		if (itemrarity < 4) then
+			maxQuality = Enhancer.db.profile.EPGems.maxQualityNonEpic;
+			-- 0 = Poor, 1 = Common, 2 = Uncommon, 3 = Rare, 4 = Epic, 5 = Legendary, 6 = Artifact
+		end
+	end
+	local totalCacheKey = tostring(cachekey) .. "|" .. tostring(meta) .. "|" .. tostring(blessingofkings) .. "|" .. tostring(maxQuality);
 	
 	if (not cachekey or not EnhancerEP.gemCache[totalCacheKey]) then
 		for gemName, gemBonusTable in pairs(EnhancerEP.gems) do
@@ -404,9 +415,9 @@ function EnhancerEP:GemPicker(cachekey, values, meta, blessingofkings, color)
 			else
 				if (not gemBonusTable["Meta Gem"]) then
 					if (color) then
-						valid = gemBonusTable[color] and (tonumber(gemBonusTable["Gem Quality"]) <= Enhancer.db.profile.EPGems.maxQuality);
+						valid = gemBonusTable[color] and (tonumber(gemBonusTable["Gem Quality"]) <= maxQuality);
 					else
-						valid = (tonumber(gemBonusTable["Gem Quality"]) <= Enhancer.db.profile.EPGems.maxQuality);
+						valid = (tonumber(gemBonusTable["Gem Quality"]) <= maxQuality);
 					end
 				end
 			end
@@ -450,8 +461,8 @@ function EnhancerEP:BestGem(inputValues, color, quiet)
 		values[stat]["kings"] = EnhancerEP.AffectedByKings[stat];
 	end
 	
-	local value, name = EnhancerEP:GemPicker(nil, values, false, false, color);
-	local kingsValue, kingsName = EnhancerEP:GemPicker(nil, values, false, true, color);
+	local value, name = EnhancerEP:GemPicker(nil, values, false, false, color, false);
+	local kingsValue, kingsName = EnhancerEP:GemPicker(nil, values, false, true, color, false);
 	
 	local link, kingsLink = nil, nil;
 	_, link = GetItemInfo( EnhancerEP.gems[name]["ItemID"] );

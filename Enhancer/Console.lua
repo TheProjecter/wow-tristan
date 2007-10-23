@@ -69,6 +69,7 @@ local defaults = {
 	EIP = true,
 	EPGems = {
 		maxQuality = 3,
+		maxQualityNonEpic = 0,
 		metaGems = true,
 	},
 	EPGuesstimates = true,
@@ -97,6 +98,7 @@ local defaults = {
 		CR_CRIT = (20 / 10),
 		CR_HIT = (14 / 10),
 		CR_HASTE = (15 / 10), --(22 / 10),
+		CR_EXPERTISE = (21 / 10),  -- Multiply hit rating AEP by 1.8 if you assume that the mob will never cast and never parry.
 		CR_RESILIENCE = (0 / 10),
 		IGNOREARMOR = (0 / 10), -- 10-20
 		WEAPON_MIN = (0 / 10), -- 10-20
@@ -451,6 +453,17 @@ function Enhancer:RegisterSlashCommands()
 								get = function() return Enhancer.db.profile.AEPNumbers.CR_HIT; end,
 								set = function(v)
 									Enhancer.db.profile.AEPNumbers.CR_HIT = v;
+									Enhancer:EPValuesChanged();
+								end,
+								order = OrderNum(),
+							},
+							[L["CR_EXPERTISE"]] = {
+								name = L["CR_EXPERTISE"], type = "range",
+								desc = L["CR_EXPERTISE"],
+								min = epMin, max = epMax, step = epStep,
+								get = function() return Enhancer.db.profile.AEPNumbers.CR_EXPERTISE; end,
+								set = function(v)
+									Enhancer.db.profile.AEPNumbers.CR_EXPERTISE = v;
 									Enhancer:EPValuesChanged();
 								end,
 								order = OrderNum(),
@@ -987,7 +1000,20 @@ function Enhancer:RegisterSlashCommands()
 						get = function() return Enhancer.db.profile.EPGems.maxQuality; end,
 						set = function(v)
 							Enhancer.db.profile.EPGems.maxQuality = v;
-							Enhancer:EPValuesChanged();
+							--Enhancer:EPValuesChanged();
+						end,
+						order = OrderNum(),
+					},
+					[L["ep_gemqn_cmd"]] = {
+						name = L["ep_gemqn_cmd"], type = "range",
+						desc = L["ep_gemqn_desc"],
+						min = 0,
+						max = 4,
+						step = 1,
+						get = function() return Enhancer.db.profile.EPGems.maxQualityNonEpic; end,
+						set = function(v)
+							Enhancer.db.profile.EPGems.maxQualityNonEpic = v;
+							--Enhancer:EPValuesChanged();
 						end,
 						order = OrderNum(),
 					},
@@ -1433,6 +1459,18 @@ function Enhancer:RegisterSlashCommands()
 						get = function() return Enhancer.db.profile.startAnnounceDisabled; end,
 						set = function()
 							Enhancer.db.profile.startAnnounceDisabled = not Enhancer.db.profile.startAnnounceDisabled;
+						end,
+						order = OrderNum(),
+					},
+					
+					[SpacerName()] = SpacerTable(),
+					
+					[L["news_cmd"]] = {
+						type = "execute",
+						name = L["news_cmd"],
+						desc = L["news_desc"],
+						func = function()
+							Enhancer:News();
 						end,
 						order = OrderNum(),
 					},

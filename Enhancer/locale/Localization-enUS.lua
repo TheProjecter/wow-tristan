@@ -59,6 +59,8 @@ L_Main:RegisterTranslations(locale, function() return {
 	["ep_group_desc"] = "Set wich Equivalence Points to show",
 	["ep_gemq_cmd"] = "GemQuality",
 	["ep_gemq_desc"] = "Set Max Quality for Gems (1 = None, 2 = Uncommon, 3 = Rare, 4 = Epic)",
+	["ep_gemqn_cmd"] = "GemQualityNonEpic",
+	["ep_gemqn_desc"] = "Set Max Quality for Gems (0 = same as Epic, 1 = None, 2 = Uncommon, 3 = Rare, 4 = Epic) to use in non-epic gear",
 	["ep_gemm_cmd"] = "MetaGem",
 	["ep_gemm_desc"] = "Toggle including Meta gems in calculations",
 	["ep_info_cmd"] = "Info",
@@ -96,6 +98,7 @@ L_Main:RegisterTranslations(locale, function() return {
 	["CR_CRIT"] = "MeleeCrit",
 	["CR_HASTE"] = "MeleeHaste",
 	["CR_HIT"] = "MeleeHit",
+	["CR_EXPERTISE"] = "WeaponExpertise",
 	["CR_SPELLCRIT"] = "SpellCrit",
 	["CR_SPELLHASTE"] = "SpellHaste",
 	["CR_SPELLHIT"] = "SpellHit",
@@ -265,6 +268,15 @@ L_Main:RegisterTranslations(locale, function() return {
 	["bottomright"] = "Bottom Right",
 	["noindication"] = "None",
 	
+	["news_cmd"] = "News",
+	["news_desc"] = "Show latest News",
+	["news_1"] = "Enhancer News!",
+	["news_2"] = "News popup will only be shown ONCE when there are new news!",
+	["news_3"] = "Disabling news for a distant future, thank you for reading!",
+	["news_4"] = "Contact",
+	["news_5"] = "Bugs",
+	["news_6"] = "Anomalies",
+	["news_7"] = "E-mail to dennis.hafstrom@gmail.com",
 }; end );
 
 local L_EP = AceLibrary("AceLocale-2.2"):new("EnhancerEP")
@@ -278,12 +290,7 @@ L_EP:RegisterTranslations(locale, function() return {
 	["Quiver"] = "Quiver",
 	["Recipe"] = "Recipe",
 	
-	--[[ This is used for matching so need all of it and exactly as it is on the tooltip you can't translate "Blue Socket" to only "Blau" for example ]]--
-	--[[ Sockets has to include the word Socket as it's used for matching and lots of matches are possible if you only list a color ]]--
-	["Red Socket"] = "Red Socket",
-	["Blue Socket"] = "Blue Socket",
-	["Yellow Socket"] = "Yellow Socket",
-	["Meta Socket"] = "Meta Socket",
+	--[[ This is used for matching so need all of it and exactly as it is on the tooltip ]]--
 	["Chance on hit:"] = "Chance on hit:",
 	
 	--[[ Tooltip strings ]]--
