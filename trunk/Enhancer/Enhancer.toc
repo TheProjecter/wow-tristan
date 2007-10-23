@@ -4,7 +4,8 @@
 ## Author:  Leion/Tristan (Frostmane[EU])
 ## X-AuthorRealm: Frostmane[EU]
 
-## SavedVariables: EnhancerDB
+## SavedVariables: EnhancerDB, EnhancerNews
+## X-SavedVariablesPerCharacter: EnhancerNews
 ## OptionalDeps: Ace2, DeuceCommander, Niagara, ItemBonusLib, Babble-2.2, Babble-Spell-2.2, GratuityLib, SpecialEventsEmbed, Parser-3.0, TipHookerLib, CandyBar, Cartographer, SharedMediaLib, LibRoman-1.0
 
 ## Version: 1.0.$Revision$
@@ -15,6 +16,7 @@
 ## X-AlternativeNameIdeas: Shamanistic Control
 ## X-Category: Shaman
 ## X-Embeds: Ace2
+## X-WowaceForumPost1: http://www.wowace.com/forums/index.php?topic=8971.0
 
 ## LoadManagers: AddonLoader
 ## X-LoadOn-Class: Shaman
@@ -59,6 +61,7 @@ Emport.lua
 Events.lua
 Frames.lua
 Data.lua
+News.lua
 
 element\Earth.lua
 element\Fire.lua

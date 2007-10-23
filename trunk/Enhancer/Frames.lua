@@ -1,3 +1,4 @@
+--[[ CyCircled on wowace according to Nakanishi Azjol-Nerub ]]--
 local L = AceLibrary("AceLocale-2.2"):new("Enhancer");
 local _G = getfenv();
 local strataToUse = "BACKGROUND"; --TOOLTIP
@@ -305,10 +306,12 @@ function Enhancer:DefaultPos(framelist)
 		end
 	else
 		local framename = framelist;
-		self[framename].anchor:ClearAllPoints();
-		self[framename].anchor:SetPoint("CENTER", UIParent, "CENTER",  self[framename].xOffsetDefault,  self[framename].yOffsetDefault);
-		-- self[framename].anchor:SetPoint("CENTER", UIParent, "CENTER",  self[framename].xOffsetDefault,  (self[framename].yOffsetDefault + Enhancer.db.profile.framesize));
-		-- positiveX = East, positiveY = North
+		if (self[framename]) then
+			self[framename].anchor:ClearAllPoints();
+			self[framename].anchor:SetPoint("CENTER", UIParent, "CENTER",  self[framename].xOffsetDefault,  self[framename].yOffsetDefault);
+			-- self[framename].anchor:SetPoint("CENTER", UIParent, "CENTER",  self[framename].xOffsetDefault,  (self[framename].yOffsetDefault + Enhancer.db.profile.framesize));
+			-- positiveX = East, positiveY = North
+		end
 	end
 end
 

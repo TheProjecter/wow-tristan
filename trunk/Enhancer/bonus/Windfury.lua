@@ -78,10 +78,9 @@ function EnhancerWindfury:Stormstrike(unit, spell, rank)
 end
 
 function EnhancerWindfury:StormstrikeCheck()
-	local start, duration = GetSpellCooldown("Stormstrike");
-	if (not start) then return; end
+	local start, duration = GetSpellCooldown(Enhancer.BS["Stormstrike"]);
 	
-	if ((start > 0 and duration > 2) or self:IsEventScheduled("WindfuryCooldownNumber")) then
+	if (start and ((start > 0 and duration > 2) or self:IsEventScheduled("WindfuryCooldownNumber"))) then
 		Enhancer:SetBackdropColor(FrameName, 1, (5 / 10), (5 / 10));
 		Enhancer:UpdateAlphaBegin(FrameName);
 	else
