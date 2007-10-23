@@ -6,22 +6,26 @@ function Enhancer:News()
 	
 	self:CreateNewsFrame();
 	
+	self.newsFrame:Clear();
 	self.newsFrame.title:SetText(L["news_1"]);
 	self.newsFrame.disclaimer:SetText(L["news_2"]);
-	Enhancer.newsFrame:Clear();
 	
 	self.newsFrame:AddLine("Equivalence", "You can now set a separate gem-quality");
 	self.newsFrame:AddLine("", "for items that are below epic rarity.");
+	self.newsFrame:AddLine("", "Weapon Expertise that comes in patch 2.3");
+	self.newsFrame:AddLine("", "has been added to AEP");
 	self.newsFrame:AddLine("", "");
 	
 	self.newsFrame:AddLine("Procs", "Known procs have been calculated to stats.");
 	self.newsFrame:AddLine("", "f.e. Dragonspine Trophy");
 	self.newsFrame:AddLine("", "Equip: Your melee and ranged attacks have a chance");
 	self.newsFrame:AddLine("", "to increase your haste rating by 325 for 10 sec.");
-	self.newsFrame:AddLine("", "325 * 10 * 1.5 / 60 Haste Rating (assuming 1.5 PPM)");
+	self.newsFrame:AddLine("", "[325 * 10 * 1.5 / 60], assuming 1.5 PPM");
+	self.newsFrame:AddLine("", "= 81.25 Haste Rating added as if it was on the item");
 	self.newsFrame:AddLine("", "Turned on/off with: /enh " .. L["ep_numbers_cmd"] .. " " .. L["ep_guess_cmd"]);
 	self.newsFrame:AddLine("", "");
-	self.newsFrame:AddLine("", "If you want more procs added please send a");
+	self.newsFrame:AddLine("", "I've added the important ones (I think) but");
+	self.newsFrame:AddLine("", "if you want more procs added please send a");
 	self.newsFrame:AddLine("", "wowhead link and calculation to my e-mail");
 	
 	self.newsFrame:AddLine("", "");
@@ -59,6 +63,7 @@ function Enhancer:CreateNewsFrame()
 	Enhancer.newsFrame.textRights = {}
 	function Enhancer.newsFrame:Clear()
 		self.title:SetText("")
+		self.disclaimer:SetText("")
 		for i = 1, #self.lefts do
 			self.lefts[i] = nil
 			self.rights[i] = nil

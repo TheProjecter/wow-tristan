@@ -270,7 +270,7 @@ L_Main:RegisterTranslations(locale, function() return {
 	
 	["news_cmd"] = "News",
 	["news_desc"] = "Show latest News",
-	["news_1"] = "Enhancer News!",
+	["news_1"] = "Enhancer News & Changes!",
 	["news_2"] = "News popup will only be shown ONCE when there are new news!",
 	["news_3"] = "Disabling news for a distant future, thank you for reading!",
 	["news_4"] = "Contact",

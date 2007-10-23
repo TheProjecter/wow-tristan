@@ -101,8 +101,8 @@ local defaults = {
 		CR_EXPERTISE = (21 / 10),  -- Multiply hit rating AEP by 1.8 if you assume that the mob will never cast and never parry.
 		CR_RESILIENCE = (0 / 10),
 		IGNOREARMOR = (0 / 10), -- 10-20
-		WEAPON_MIN = (0 / 10), -- 10-20
-		WEAPON_MAX = (0 / 10), -- 10-20
+		WEAPON_MIN = (0 / 10),
+		WEAPON_MAX = (0 / 10),
 	},
 	HEPNumbers = {
 		HEAL = (10 / 10),
