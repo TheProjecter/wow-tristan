@@ -180,7 +180,9 @@ L_Main:RegisterTranslations(locale, function() return {
 	[19] = "Rank 19",
 	[20] = "Rank 20",
 	
-	--[[ Modules ]]--
+	["stormstrike_cmd"] = "Stormstrike",
+	["stormstrike_desc"] = "Toggle frame for Stormstrike",
+	
 	["shield_cmd"] = "Shield",
 	["shield_desc"] = "Toggle frame for showing when shields are up",
 	

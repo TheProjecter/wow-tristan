@@ -4,7 +4,7 @@ Enhancer:SetModuleDefaultState("EP", true);
 
 local ibl = AceLibrary("ItemBonusLib-1.0");
 local TipHooker = AceLibrary("TipHooker-1.0");
-local Gratuity = AceLibrary("Gratuity-2.0")
+--local Gratuity = AceLibrary("Gratuity-2.0")
 
 function EnhancerEP:OnInitialize()
 	-- Give guesstimate bonus to special gems/items
@@ -69,8 +69,6 @@ function EnhancerEP:OnInitialize()
 	
 	self.ProcsAndUse[29301] = { ["ATTACKPOWER"] = (160 * 10 / 60) }; -- Band of the Eternal Champion
 	
-	--[[ For some reason I can't get TipHooker to work without enabling
-			 RatingBuster wich sux so I hacked a bit here ]]--
 	self:ScheduleEvent("Tooltip", self.Tooltip, 1, self);
 end
 
@@ -120,11 +118,16 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 		
 		--[[ ItemBonusLib doesn't count empty sockets wich we prefer since
 				 inspected gear can have shit gems in them ;) ]]--
-		local itemid;
-		
+		local itemid, bonuses = nil, {};
 		link, itemid = EnhancerEP:StripGemsAndEnchants(link);
-		local bonuses = ibl:ScanItem(link, true, false);
+		if (not itemid) then return; end -- If nil then stop
+		
+		local iblBonuses = ibl:ScanItem(link, true, false);
 		local knownUnvaluedProcs = { [32491] = true, [32770] = true, }
+		
+		for k,v in pairs(iblBonuses) do
+			bonuses[k] = v;
+		end
 		
 		--[[ Should add proc / use bonuses here ]]--
 		if (tonumber(itemid) and self.ProcsAndUse[tonumber(itemid)] and Enhancer.db.profile.EPGems.EPGuesstimates and bonuses and not bonuses["Procs Added"]) then
@@ -134,7 +137,7 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 			end
 		end
 		local hasProcsOrUse = bonuses["Procs Added"];
-		local unknownProcs = false;
+		local unknownProcs = knownUnvaluedProcs[(tonumber(itemid))];
 		local sufix, careProcsOrUse = "", false;
 		
 		local lineAdded = nil;
@@ -147,20 +150,9 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 		local metaSockets = bonuses["EMPTY_SOCKET_META"] or 0;
 		local nonMetaSockets = redSockets + blueSockets + yellowSockets;
 		
-		if (Enhancer.debug) then Enhancer:Print("metaSockets", metaSockets, "-", "nonMetaSockets", nonMetaSockets) end
-		
-		--[[ Check Procs ]]--
-		Gratuity:SetHyperlink(link)
-		for i = 2, Gratuity:NumLines() do
-			local line = Gratuity:GetLine(i)
-			if ((string.find(line, L["Chance on hit:"]) and (not hasProcsOrUse)) or knownUnvaluedProcs[tonumber(itemid) or "0"]) then
-				unknownProcs = true;
-			end
-		end
-		
 		local lastValue, lastKingsValue;
 		local _, eClass = UnitClass("player");
-		local ttR, ttG, ttB = RAID_CLASS_COLORS[eClass]["r"], RAID_CLASS_COLORS[eClass]["g"], RAID_CLASS_COLORS[eClass]["b"];
+		local ttR, ttG, ttB = RAID_CLASS_COLORS["SHAMAN"]["r"] or RAID_CLASS_COLORS[eClass]["r"] or (127 / 255), RAID_CLASS_COLORS["SHAMAN"]["g"] or RAID_CLASS_COLORS[eClass]["g"] or (255 / 255), RAID_CLASS_COLORS["SHAMAN"]["b"] or RAID_CLASS_COLORS[eClass]["b"] or (212 / 255);
 		
 		lastValue, lastKingsValue = nil, nil; -- Reset these between different types of EP (used for compairing a main set with a subset, such as all values but hit)
 		--[[ Do Attackpower Equivalence Points ]]--
