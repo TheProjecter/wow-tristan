@@ -69,6 +69,7 @@ element\Water.lua
 element\Air.lua
 
 bonus\Windfury.lua
+bonus\Stormstrike.lua
 bonus\WindfuryTotem.lua
 bonus\Reincarnation.lua
 bonus\EP.lua

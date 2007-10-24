@@ -14,6 +14,7 @@ function EnhancerWindfury:OnEnable()
 	Enhancer:ShowFrame(FrameName);
 	Enhancer:ToggleLock(FrameName);
 	
+	-- Same as Stormstrike module!
 	-- {"Damage", "Miss", "Parry", "Dodge", "Resist", "Absorb", "Block", "Evade", "Immune"}
 	for _, event in ipairs({"Damage", "Miss"}) do
 		self:RegisterParserEvent({eventType = event, sourceID = "player"}, "ParserInfo");
