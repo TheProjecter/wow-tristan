@@ -279,6 +279,9 @@ L_Main:RegisterTranslations(locale, function() return {
 	["news_5"] = "Bugs",
 	["news_6"] = "Anomalies",
 	["news_7"] = "E-mail to dennis.hafstrom@gmail.com",
+	
+	["Wizard Oil"] = "Wizard Oil",
+	["Mana Oil"] = "Mana Oil",
 }; end );
 
 local L_EP = AceLibrary("AceLocale-2.2"):new("EnhancerEP")

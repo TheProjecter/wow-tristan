@@ -13,7 +13,6 @@
 
 ## X-Website: http://www.wowace.com/files
 ## X-Email: dennis.hafstrom@gmail.com
-## X-AlternativeNameIdeas: Shamanistic Control
 ## X-Category: Shaman
 ## X-Embeds: Ace2
 ## X-WowaceForumPost1: http://www.wowace.com/forums/index.php?topic=8971.0
@@ -63,23 +62,21 @@ Frames.lua
 Data.lua
 News.lua
 
-element\Earth.lua
-element\Fire.lua
-element\Water.lua
-element\Air.lua
+Enhancer_Totems\Earth.lua
+Enhancer_Totems\Fire.lua
+Enhancer_Totems\Water.lua
+Enhancer_Totems\Air.lua
 
-bonus\Windfury.lua
-bonus\Stormstrike.lua
-bonus\WindfuryTotem.lua
-bonus\Reincarnation.lua
-bonus\EP.lua
-bonus\EPGems.lua
-bonus\Shield.lua
-
-bonus\EShield.lua
-bonus\HWay.lua
-
-bonus\Invigorated.lua
-bonus\Tench.lua
+Enhancer_Windfury\Windfury.lua
+Enhancer_Stormstrike\Stormstrike.lua
+Enhancer_WindfuryTotem\WindfuryTotem.lua
+Enhancer_Reincarnation\Reincarnation.lua
+Enhancer_EquivalencePoints\EP.lua
+Enhancer_EquivalencePoints\EPGems.lua
+Enhancer_Shield\Shield.lua
+Enhancer_EarthShield\EShield.lua
+Enhancer_HealingWay\HWay.lua
+Enhancer_Invigorated\Invigorated.lua
+Enhancer_TemporaryEnchants\Tench.lua
 
 debug.lua

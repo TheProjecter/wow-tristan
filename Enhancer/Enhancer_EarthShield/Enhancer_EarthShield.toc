@@ -1,0 +1,8 @@
+## Interface: 20200
+## Title: Enhancer |cffe77916[|r|cffd028d5Earth Shield|r|cffe77916]|r
+## Notes: Earth Shield Module
+## LoadOnDemand: 1
+## X-Category: Shaman
+## Dependencies: Enhancer
+
+EShield.lua

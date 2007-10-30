@@ -1,0 +1,11 @@
+## Interface: 20200
+## Title: Enhancer |cffe77916[|r|cffd028d5Totems|r|cffe77916]|r
+## Notes: Totems Module
+## LoadOnDemand: 1
+## X-Category: Shaman
+## Dependencies: Enhancer
+
+Earth.lua
+Fire.lua
+Water.lua
+Air.lua

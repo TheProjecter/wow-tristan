@@ -222,36 +222,44 @@ function Enhancer:RegisterSlashCommands()
 					[L["earth_cmd"]] = {
 						name = L["earth_cmd"], type = "toggle",
 						desc = string.format(L["element_desc"], L["earth_cmd"]),
-						get = function() return Enhancer:IsModuleActive("Earth"); end,
+						get = function() return (Enhancer:HasModule("Earth") and Enhancer:IsModuleActive("Earth")); end,
 						set = function()
-							Enhancer:ToggleModuleActive("Earth");
+							if (Enhancer:HasModule("Earth")) then
+								Enhancer:ToggleModuleActive("Earth");
+							end
 						end,
 						order = OrderNum(),
 					},
 					[L["fire_cmd"]] = {
 						name = L["fire_cmd"], type = "toggle",
 						desc = string.format(L["element_desc"], L["fire_cmd"]),
-						get = function() return Enhancer:IsModuleActive("Fire"); end,
+						get = function() return (Enhancer:HasModule("Fire") and Enhancer:IsModuleActive("Fire")); end,
 						set = function()
-							Enhancer:ToggleModuleActive("Fire");
+							if (Enhancer:HasModule("Fire")) then
+								Enhancer:ToggleModuleActive("Fire");
+							end
 						end,
 						order = OrderNum(),
 					},
 					[L["water_cmd"]] = {
 						name = L["water_cmd"], type = "toggle",
 						desc = string.format(L["element_desc"], L["water_cmd"]),
-						get = function() return Enhancer:IsModuleActive("Water"); end,
+						get = function() return (Enhancer:HasModule("Water") and Enhancer:IsModuleActive("Water")); end,
 						set = function()
-							Enhancer:ToggleModuleActive("Water");
+							if (Enhancer:HasModule("Water")) then
+								Enhancer:ToggleModuleActive("Water");
+							end
 						end,
 						order = OrderNum(),
 					},
 					[L["air_cmd"]] = {
 						name = L["air_cmd"], type = "toggle",
 						desc = string.format(L["element_desc"], L["air_cmd"]),
-						get = function() return Enhancer:IsModuleActive("Air"); end,
+						get = function() return (Enhancer:HasModule("Air") and Enhancer:IsModuleActive("Air")); end,
 						set = function()
-							Enhancer:ToggleModuleActive("Air");
+							if (Enhancer:HasModule("Air")) then
+								Enhancer:ToggleModuleActive("Air");
+							end
 						end,
 						order = OrderNum(),
 					},
@@ -266,18 +274,22 @@ function Enhancer:RegisterSlashCommands()
 					[L["windfury_cmd"]] = {
 						name = L["windfury_cmd"], type = "toggle",
 						desc = L["windfury_desc"],
-						get = function() return Enhancer:IsModuleActive("Windfury"); end,
+						get = function() return (Enhancer:HasModule("Windfury") and Enhancer:IsModuleActive("Windfury")); end,
 						set = function()
-							Enhancer:ToggleModuleActive("Windfury");
+							if (Enhancer:HasModule("Windfury")) then
+								Enhancer:ToggleModuleActive("Windfury");
+							end
 						end,
 						order = OrderNum(),
 					},
 					[L["reincarnation_cmd"]] = {
 						name = L["reincarnation_cmd"], type = "toggle",
 						desc = L["reincarnation_desc"],
-						get = function() return Enhancer:IsModuleActive("Reincarnation"); end,
+						get = function() return (Enhancer:HasModule("Reincarnation") and Enhancer:IsModuleActive("Reincarnation")); end,
 						set = function()
-							Enhancer:ToggleModuleActive("Reincarnation");
+							if (Enhancer:HasModule("Reincarnation")) then
+								Enhancer:ToggleModuleActive("Reincarnation");
+							end
 						end,
 						order = OrderNum(),
 					},
