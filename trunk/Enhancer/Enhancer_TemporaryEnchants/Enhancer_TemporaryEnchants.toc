@@ -1,5 +1,5 @@
 ## Interface: 20200
-## Title: Enhancer |cffe77916[|r|cffd028d5Temporary Enchants|r|cffe77916]|r
+## Title: Enhancer |cffd028d5[|r|cff7fffd4Temporary Enchants|r|cffd028d5]|r
 ## Notes: Temporary Enchants Module
 ## LoadOnDemand: 1
 ## X-Category: Shaman

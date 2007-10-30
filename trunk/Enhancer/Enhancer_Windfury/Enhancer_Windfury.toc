@@ -1,5 +1,5 @@
 ## Interface: 20200
-## Title: Enhancer |cffe77916[|r|cffd028d5Windfury|r|cffe77916]|r
+## Title: Enhancer |cffd028d5[|r|cff7fffd4Windfury|r|cffd028d5]|r
 ## Notes: Windfury Module
 ## LoadOnDemand: 1
 ## X-Category: Shaman

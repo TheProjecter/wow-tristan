@@ -1,5 +1,5 @@
 ## Interface: 20200
-## Title: Enhancer |cffe77916[|r|cffd028d5Shield|r|cffe77916]|r
+## Title: Enhancer |cffd028d5[|r|cff7fffd4Shield|r|cffd028d5]|r
 ## Notes: Shield Module
 ## LoadOnDemand: 1
 ## X-Category: Shaman

@@ -2,6 +2,13 @@ EnhancerWindfury = Enhancer:NewModule("Windfury", "AceEvent-2.0", "Parser-3.0");
 Enhancer:SetModuleDefaultState("Windfury", true);
 local FrameName = "windfury";
 
+--[[
+local L = AceLibrary("AceLocale-2.2"):new("Enhancer")
+function EnhancerStormstrike:GetConsoleOptions()
+	return L["reincarnation_cmd"], L["reincarnation_desc"];
+end
+]]--
+
 function EnhancerWindfury:OnInitialize()
 	Enhancer[FrameName] = Enhancer:CreateButton("EnhancerFrame" .. FrameName, "Spell_Nature_Cyclone", 0, -25);
 	Enhancer[FrameName].borderColor = Enhancer.colors.air.dec;
