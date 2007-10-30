@@ -2,8 +2,6 @@
 Left to do:
 	Windfury calculation and display! (FontString midscreen that grows on crit?)
 ]]--
---[[ http://www.wowace.com/wiki/Joker ]]--
---[[ http://www.wowace.com/wiki/Rock ]]--
 Enhancer = AceLibrary("AceAddon-2.0"):new("AceEvent-2.0", "AceDB-2.0", "AceConsole-2.0", "AceModuleCore-2.0", "Parser-3.0", "Sink-1.0");
 Enhancer:RegisterDB("EnhancerDB", nil, "class");
 
@@ -68,6 +66,7 @@ Enhancer.colors = {
 ]]--
 
 function Enhancer:OnInitialize()
+	self:LoadModules();
 	self:RegisterSlashCommands();
 	self:InspectEPValues(); -- Check so not using old values
 
@@ -103,6 +102,48 @@ function Enhancer:OnEnable()
 			eventType = 'Miss',
 			sourceID = "player",
 		}, "ParserMiss");
+	end
+end
+
+--[[ Stolen from AuldLangSyne ]]--
+local del, newSet
+do
+	local list = setmetatable({}, {__mode='k'})
+	function del(t)
+		for k in pairs(t) do
+			t[k] = nil
+		end
+		t[''] = true
+		t[''] = nil
+		list[t] = true
+		return nil
+	end
+	function newSet(...)
+		local t = next(list)
+		if t then
+			list[t] = nil
+		else
+			t = {}
+		end
+		for i = 1, select('#', ...) do
+			t[select(i, ...)] = true
+		end
+		return t
+	end
+end
+function Enhancer:LoadModules()
+	for i = 1, GetNumAddOns() do
+		local deps = newSet(GetAddOnDependencies(i))
+		if deps["Enhancer"] and IsAddOnLoadOnDemand(i) and not IsAddOnLoaded(i) then
+			local name = GetAddOnInfo(i)
+			if name:find("^Enhancer_") then
+				local _,_,_,_,loadable = GetAddOnInfo(i)
+				if loadable then
+					LoadAddOn(i)
+				end
+			end
+		end
+		deps = del(deps)
 	end
 end
 

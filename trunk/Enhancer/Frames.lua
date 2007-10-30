@@ -387,7 +387,7 @@ function Enhancer:UpdateAlphaEnd(framename)
 		self[framename].textabove:SetAlpha(0);
 		self[framename].mainframe:SetBackdropColor(r, g, b, 0);
 		
-	elseif ( (framename == "reincarnation"  or framename == "windfury") and self.db.profile.specialAlpha ) then
+	elseif ( (framename == "reincarnation" or framename == "windfury" or framename == "stormstrike") and self.db.profile.specialAlpha ) then
 		
 		-- Special Handling of these frames
 		if (self[framename].active) then

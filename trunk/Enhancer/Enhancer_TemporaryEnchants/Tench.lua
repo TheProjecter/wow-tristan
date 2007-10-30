@@ -77,6 +77,18 @@ function EnhancerTench:SpellCast(unit, spell, rank)
 	if (spell == Enhancer.BS["Frostbrand Weapon"]) then self:AuraChanged(); end
 end
 
+function EnhancerTench:OilCheck(enchant, texture)
+	if (Enhancer.debug) then Enhancer:Print(texture) end
+	
+	if (string.find(enchant, L["Wizard Oil"])) then
+		return [[Interface/Icons/INV_Potion_105]];
+	elseif (string.find(enchant, L["Mana Oil"])) then
+		return [[Interface/Icons/INV_Potion_101]];
+	else
+		return texture;
+	end
+end
+
 function EnhancerTench:AuraChanged()
 	local hasMainHandEnchant, _, _, hasOffHandEnchant, _, _ = GetWeaponEnchantInfo()
 	
@@ -85,6 +97,7 @@ function EnhancerTench:AuraChanged()
 		local MHName = SEA:GetPlayerMainHandItemBuff();
 		if (not MHName) then self:ScheduleEvent("AuraChanged", self.AuraChanged, 1, self); return; end
 		local texture = Enhancer.BS:GetSpellIcon(MHName) or Enhancer.BS:GetSpellIcon(string.format("%s Weapon", MHName))
+		texture = self:OilCheck(MHName, texture);
 		
 		Enhancer[FrameNameM].active = true;
 		Enhancer[FrameNameM].textcenter:SetText("MH");
@@ -99,6 +112,7 @@ function EnhancerTench:AuraChanged()
 		local OHName = SEA:GetPlayerOffHandItemBuff();
 		if (not OHName) then self:ScheduleEvent("AuraChanged", self.AuraChanged, 1, self); return; end
 		local texture = Enhancer.BS:GetSpellIcon(OHName) or Enhancer.BS:GetSpellIcon(string.format("%s Weapon", OHName))
+		texture = self:OilCheck(OHName, texture);
 		
 		Enhancer[FrameNameO].active = true;
 		Enhancer[FrameNameO].textcenter:SetText("OH");

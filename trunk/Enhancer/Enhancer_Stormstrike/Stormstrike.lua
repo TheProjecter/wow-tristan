@@ -15,8 +15,9 @@ function EnhancerStormstrike:OnInitialize()
 	Enhancer:AddFrameToList(FrameName, true, false, false) --[[ Enhancer:AddFrameToList(framename, all, totem, death) ]]--
 	Enhancer[FrameName].moveName = "SS CD";
 	Enhancer:SetBackdropColor(FrameName, (5 / 10), 1, (5 / 10));
+	Enhancer:UpdateAlphaBegin(FrameName);
 	Enhancer:ChangeIcon(FrameName, [[Interface\AddOns\Enhancer\texture\EnhancerSSWF]]);
-	-- 
+	Enhancer:AddFrameToOnOffList(FrameName)
 end
 
 function EnhancerStormstrike:OnEnable()
@@ -30,7 +31,7 @@ function EnhancerStormstrike:OnEnable()
 	end
 	
 	self:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED", "Stormstrike");
-	self:StormstrikeCheck();
+	self:StormstrikeCooldown();
 end
 
 function EnhancerStormstrike:OnDisable()
@@ -40,22 +41,35 @@ function EnhancerStormstrike:OnDisable()
 	self:CancelAllScheduledEvents();
 end
 
+function EnhancerStormstrike:FrameActive(key, state)
+	if (key) then
+		Enhancer:SetFrameData(FrameName, key, state);
+	end
+	
+	if (Enhancer:GetFrameData(FrameName, "SS Active") or Enhancer:GetFrameData(FrameName, "WF Active")) then
+		Enhancer[FrameName].active = true;
+	elseif (Enhancer[FrameName].active) then
+		Enhancer:FrameDeathPreBegin(FrameName);
+		return;
+	end
+	
+	Enhancer:UpdateAlphaBegin(FrameName);
+end
+
 function EnhancerStormstrike:Stormstrike(unit, spell, rank)
 	if (spell == Enhancer.BS["Stormstrike"]) then
 		
-		-- Stormstrike cast
-		local start, duration = GetSpellCooldown(Enhancer.BS["Stormstrike"]);
-		Enhancer[FrameName].cooldown:SetCooldown(start, duration);
-		Enhancer[FrameName].active = true;
-		Enhancer:UpdateAlphaBegin(FrameName);
+		Enhancer:ClearFrameData(FrameName);
+		Enhancer:SetFrameData(FrameName, "Do Cooldown", true);
+		self:FrameActive("SS Active", true);
 		
-		if (not (self:IsEventScheduled("StormstrikeCheck"))) then
-			self:ScheduleRepeatingEvent("StormstrikeCheck", self.StormstrikeCheck, (2 / 10), self);
+		if (not (self:IsEventScheduled("StormstrikeCooldown"))) then
+			self:ScheduleRepeatingEvent("StormstrikeCooldown", self.StormstrikeCooldown, (2 / 10), self);
 		end
 	end
 end
 
-function EnhancerStormstrike:StormstrikeCheck()
+function EnhancerStormstrike:StormstrikeCooldown()
 	local start, duration = GetSpellCooldown(Enhancer.BS["Stormstrike"]);
 	if (not tonumber(start)) then return; end
 	if (not tonumber(duration)) then return; end
@@ -63,45 +77,57 @@ function EnhancerStormstrike:StormstrikeCheck()
 	
 	if (cd > 0) then
 		Enhancer[FrameName].textcenter:SetText(cd);
+		
+		if (Enhancer:GetFrameData(FrameName, "Do Cooldown")) then
+			Enhancer[FrameName].cooldown:SetCooldown(GetTime(), cd);
+			Enhancer:SetFrameData(FrameName, "Do Cooldown", nil);
+		end
 	else
-		Enhancer:FrameDeathPreBegin(FrameName);
-		Enhancer:UpdateAlphaBegin(FrameName);
-		if (self:IsEventScheduled("StormstrikeCheck")) then
-			self:CancelScheduledEvent("StormstrikeCheck");
+		self:FrameActive("SS Active", nil);
+		if (self:IsEventScheduled("StormstrikeCooldown")) then
+			self:CancelScheduledEvent("StormstrikeCooldown");
 		end
 	end
 end
 
 function EnhancerStormstrike:ParserInfo(info)
 	if ( info.abilityName == Enhancer.BS["Windfury Attack"] and info.sourceID == "player" ) then
-		self:WindfuryHit();
+		self:WindfuryStart();
 	end
 end
 
-function EnhancerStormstrike:WindfuryHit()
+function EnhancerStormstrike:WindfuryStart()
 	local diff = Enhancer[FrameName].cooldownstart and (GetTime() - Enhancer[FrameName].cooldownstart);
 	if (diff and diff < 1) then return; end -- Second WF shouldn't reset the timer
 	
-	Enhancer:SetBackdropColor(FrameName, 1, (5 / 10), (5 / 10));
 	Enhancer[FrameName].cooldownstart = GetTime();
 	Enhancer[FrameName].cooldownend = GetTime() + 3;
-	Enhancer:UpdateAlphaBegin(FrameName);
+	self:FrameActive("WF Active", true);
 	
-	if ( not (self:IsEventScheduled("WindfuryCooldownNumber")) ) then
-		self:ScheduleRepeatingEvent("WindfuryCooldownNumber", self.WindfuryCooldownNumber, (1 / 2), self)
+	if ( not (self:IsEventScheduled("WindfuryCooldown")) ) then
+		self:ScheduleRepeatingEvent("WindfuryCooldown", self.WindfuryCooldown, (1 / 2), self)
 	end
+	
+	EnhancerStormstrike:WindfuryCooldown()
 end
 
-function EnhancerStormstrike:WindfuryCooldownNumber()
+function EnhancerStormstrike:WindfuryCooldown()
 	local cdstart = Enhancer[FrameName].cooldownstart;
 	local cdend = Enhancer[FrameName].cooldownend;
 	local cd = ceil(cdend - GetTime())
 	
 	if (cd <= 0) then
 		Enhancer[FrameName].cooldownstart = nil;
-		Enhancer:SetBackdropColor(FrameName, (5 / 10), 1, (5 / 10));
-		if (self:IsEventScheduled("WindfuryCooldownNumber")) then
-			self:CancelScheduledEvent("WindfuryCooldownNumber")
+		self:FrameActive("WF Active", nil);
+		if (self:IsEventScheduled("WindfuryCooldown")) then
+			self:CancelScheduledEvent("WindfuryCooldown")
 		end
 	end
+	
+	if ((cd <= 0) or (cd > 2)) then
+		Enhancer:SetBackdropColor(FrameName, (5 / 10), 1, (5 / 10));
+	elseif (cd) then
+		Enhancer:SetBackdropColor(FrameName, 1, (5 / 10), (5 / 10));
+	end
+	Enhancer:UpdateAlphaBegin(FrameName);
 end

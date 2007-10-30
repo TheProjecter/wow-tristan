@@ -1,0 +1,9 @@
+## Interface: 20200
+## Title: Enhancer |cffe77916[|r|cffd028d5Equivalence Points|r|cffe77916]|r
+## Notes: Equivalence Points Module
+## LoadOnDemand: 1
+## X-Category: Shaman
+## Dependencies: Enhancer
+
+EP.lua
+EPGems.lua
