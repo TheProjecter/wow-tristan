@@ -1,5 +1,5 @@
 ## Interface: 20200
-## Title: Enhancer |cffe77916[|r|cffd028d5Invigorated|r|cffe77916]|r
+## Title: Enhancer |cffd028d5[|r|cff7fffd4Invigorated|r|cffd028d5]|r
 ## Notes: Invigorated Module
 ## LoadOnDemand: 1
 ## X-Category: Shaman

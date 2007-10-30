@@ -1,5 +1,5 @@
 ## Interface: 20200
-## Title: Enhancer |cffe77916[|r|cffd028d5Totems|r|cffe77916]|r
+## Title: Enhancer |cffd028d5[|r|cff7fffd4Totems|r|cffd028d5]|r
 ## Notes: Totems Module
 ## LoadOnDemand: 1
 ## X-Category: Shaman
