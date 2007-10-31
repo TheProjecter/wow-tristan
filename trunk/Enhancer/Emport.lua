@@ -1,5 +1,4 @@
 --[[ Emport is just a mix of Import and Export ]]--
-
 local L = AceLibrary("AceLocale-2.2"):new("Enhancer");
 
 function Enhancer:StandardAEPImport(standardizedData)
@@ -13,7 +12,7 @@ function Enhancer:StandardAEPImport(standardizedData)
 			tinsert(unused, key);
 			--[[
 			Not used for anything atm but this function should be very seldomly called so figure saving them
-			for future eventuall use is of little to none harm.
+			for future eventual use is of little to none harm.
 			]]
 		end
 	end
@@ -34,6 +33,8 @@ function Enhancer:StandardAEPImport(standardizedData)
 	
 	if (userShouldCheck) then
 		self:Print(string.format(L["aep_import_warning"], userShouldCheck));
+	else
+		self:Print(L["Import_complete"]);
 	end
 end
 
@@ -72,4 +73,30 @@ function Enhancer:CrazyShamanImport(data)
 	if (updateValid) then
 		self:StandardAEPImport(standardizedData)
 	end
+end
+
+function Enhancer:StandardEPSets(name)
+	local standardizedData;
+	
+	if (name == "high") then
+		standardizedData = {
+			ATTACKPOWER = 1,
+			STR = 2,
+			AGI = 2,
+			CR_CRIT = 2,
+			CR_HIT = (19/10),
+			CR_HASTE = 2,
+			IGNOREARMOR = (3/10), --0.37
+			
+			CR_EXPERTISE = (38 / 10),  -- Multiply hit rating AEP by 1.8 if you assume that the mob will never cast and never parry.
+			
+			STA = (0 / 10),
+			CR_RESILIENCE = (0 / 10),
+			WEAPON_MIN = (0 / 10),
+			WEAPON_MAX = (0 / 10),
+		};
+		self:StandardAEPImport(standardizedData);
+		return;
+	end
+	
 end

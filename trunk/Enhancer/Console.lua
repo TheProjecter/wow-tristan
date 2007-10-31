@@ -98,9 +98,9 @@ local defaults = {
 		CR_CRIT = (20 / 10),
 		CR_HIT = (14 / 10),
 		CR_HASTE = (15 / 10), --(22 / 10),
-		CR_EXPERTISE = (21 / 10),  -- Multiply hit rating AEP by 1.8 if you assume that the mob will never cast and never parry.
+		CR_EXPERTISE = (24 / 10),  -- Multiply hit rating AEP by 1.8 if you assume that the mob will never cast and never parry.
 		CR_RESILIENCE = (0 / 10),
-		IGNOREARMOR = (0 / 10), -- 10-20
+		IGNOREARMOR = (3 / 10),
 		WEAPON_MIN = (0 / 10),
 		WEAPON_MAX = (0 / 10),
 	},
@@ -271,28 +271,7 @@ function Enhancer:RegisterSlashCommands()
 				desc = L["bonus_group_desc"],
 				order = OrderNum(),
 				args = {
-					[L["windfury_cmd"]] = {
-						name = L["windfury_cmd"], type = "toggle",
-						desc = L["windfury_desc"],
-						get = function() return (Enhancer:HasModule("Windfury") and Enhancer:IsModuleActive("Windfury")); end,
-						set = function()
-							if (Enhancer:HasModule("Windfury")) then
-								Enhancer:ToggleModuleActive("Windfury");
-							end
-						end,
-						order = OrderNum(),
-					},
-					[L["reincarnation_cmd"]] = {
-						name = L["reincarnation_cmd"], type = "toggle",
-						desc = L["reincarnation_desc"],
-						get = function() return (Enhancer:HasModule("Reincarnation") and Enhancer:IsModuleActive("Reincarnation")); end,
-						set = function()
-							if (Enhancer:HasModule("Reincarnation")) then
-								Enhancer:ToggleModuleActive("Reincarnation");
-							end
-						end,
-						order = OrderNum(),
-					},
+				--[[ Creating default place ]]--
 				},
 			},
 			[L["ep_cmd"]] = {
@@ -604,17 +583,17 @@ function Enhancer:RegisterSlashCommands()
 									},
 								},
 							},
-							[L["reset_cmd"]] = {
-								type = "execute",
-								name = L["reset_cmd"],
-								desc = L["reset_cmd"],
-								func = function()
-									for key, value in pairs(defaults.AEPNumbers) do
-										Enhancer.db.profile.AEPNumbers[key] = defaults.AEPNumbers[key];
-									end
-								end,
-								order = OrderNum(),
-							},
+							--[L["reset_cmd"]] = {
+								--type = "execute",
+								--name = L["reset_cmd"],
+								--desc = L["reset_cmd"],
+								--func = function()
+									--for key, value in pairs(defaults.AEPNumbers) do
+										--Enhancer.db.profile.AEPNumbers[key] = defaults.AEPNumbers[key];
+									--end
+								--end,
+								--order = OrderNum(),
+							--},
 							
 							[SpacerName()] = SpacerTable(),
 							
@@ -626,6 +605,26 @@ function Enhancer:RegisterSlashCommands()
 								get = function() return ""; end,
 								set = function(data)
 									Enhancer:CrazyShamanImport(data);
+								end,
+								order = OrderNum(),
+							},
+							[L["low_cmd"]] = { -- Default
+								type = "execute",
+								name = L["low_cmd"],
+								desc = L["low_desc"],
+								func = function(data)
+									for key, value in pairs(defaults.AEPNumbers) do
+										Enhancer.db.profile.AEPNumbers[key] = defaults.AEPNumbers[key];
+									end
+								end,
+								order = OrderNum(),
+							},
+							[L["high_cmd"]] = {
+								type = "execute",
+								name = L["high_cmd"],
+								desc = L["high_desc"],
+								func = function(data)
+									Enhancer:StandardEPSets("high");
 								end,
 								order = OrderNum(),
 							},
@@ -1502,15 +1501,10 @@ function Enhancer:RegisterSlashCommands()
 	};
 	
 	--[[ Add Modules to slashcommands ]]--
-	local doSeparator = true;
+	local removeCat = true;
 	for name, module in Enhancer:IterateModules() do
 		if (module.GetConsoleOptions) then
-			
-			if (doSeparator) then
-				--Add a separator for external modules
-				consoleoptions.args[L["bonus_group_cmd"]].args[SpacerName()] = SpacerTable();
-				doSeparator = false;
-			end
+			removeCat = false;
 			
 			local cmd, desc, ordernum = module:GetConsoleOptions();
 			
@@ -1526,6 +1520,7 @@ function Enhancer:RegisterSlashCommands()
 			
 		end
 	end
+	if (removeCat) then consoleoptions.args[L["bonus_group_cmd"]] = nil; end
 	
 	local sinkorder = consoleoptions.args.sinkorder;
 	consoleoptions.args.sinkorder = nil;
