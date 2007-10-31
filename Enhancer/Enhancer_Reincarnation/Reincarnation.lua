@@ -2,12 +2,10 @@ EnhancerReincarnation = Enhancer:NewModule("Reincarnation", "AceEvent-2.0");
 Enhancer:SetModuleDefaultState("Reincarnation", true);
 local FrameName = "reincarnation";
 
---[[
 local L = AceLibrary("AceLocale-2.2"):new("Enhancer")
-function EnhancerStormstrike:GetConsoleOptions()
+function EnhancerReincarnation:GetConsoleOptions()
 	return L["reincarnation_cmd"], L["reincarnation_desc"];
 end
-]]--
 
 function EnhancerReincarnation:OnInitialize()
 	Enhancer[FrameName] = Enhancer:CreateButton("EnhancerFrame" .. FrameName, "Spell_Nature_Reincarnation", 0, -150);

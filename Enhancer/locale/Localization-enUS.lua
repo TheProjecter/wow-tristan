@@ -282,6 +282,14 @@ L_Main:RegisterTranslations(locale, function() return {
 	
 	["Wizard Oil"] = "Wizard Oil",
 	["Mana Oil"] = "Mana Oil",
+	
+	["Import_complete"] = "Import completed successfully",
+	["low_cmd"] = "LowSettings",
+	["low_desc"] = "Import settings tuned for Kara/Heroic gear",
+	["medium_cmd"] = "MediumSettings",
+	["medium_desc"] = "Import settings tuned for gear between Kara/Heroic gear and end game",
+	["high_cmd"] = "HighSettings",
+	["high_desc"] = "Import settings tuned for end game gear",
 }; end );
 
 local L_EP = AceLibrary("AceLocale-2.2"):new("EnhancerEP")
