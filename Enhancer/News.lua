@@ -1,6 +1,6 @@
 local L = AceLibrary("AceLocale-2.2"):new("Enhancer");
 
-Enhancer.news = 1; -- Can only ever increase
+Enhancer.news = 2; -- Can only ever increase
 function Enhancer:News()
 	Enhancer.noannounce = true;
 	
@@ -10,23 +10,19 @@ function Enhancer:News()
 	self.newsFrame.title:SetText(L["news_1"]);
 	self.newsFrame.disclaimer:SetText(L["news_2"]);
 	
-	self.newsFrame:AddLine("Equivalence", "You can now set a separate gem-quality");
-	self.newsFrame:AddLine("", "for items that are below epic rarity.");
-	self.newsFrame:AddLine("", "Weapon Expertise that comes in patch 2.3");
-	self.newsFrame:AddLine("", "has been added to AEP");
+	self.newsFrame:AddLine("Modules", "Broke everything out to modules if you are");
+	self.newsFrame:AddLine("", "using WAU it should unpack itself otherwise");
+	self.newsFrame:AddLine("", "you can just drag all folders starting with");
+	self.newsFrame:AddLine("", "Enhancer_* out of the Enhancer folder an into");
+	self.newsFrame:AddLine("", "the main AddOns folder of wow. This means any")
+	self.newsFrame:AddLine("", "modules you don't want wont even be loaded!");
+	self.newsFrame:AddLine("", "Happy enabling/disabling");
 	self.newsFrame:AddLine("", "");
 	
-	self.newsFrame:AddLine("Procs", "Known procs have been calculated to stats.");
-	self.newsFrame:AddLine("", "f.e. Dragonspine Trophy");
-	self.newsFrame:AddLine("", "Equip: Your melee and ranged attacks have a chance");
-	self.newsFrame:AddLine("", "to increase your haste rating by 325 for 10 sec.");
-	self.newsFrame:AddLine("", "[325 * 10 * 1.5 / 60], assuming 1.5 PPM");
-	self.newsFrame:AddLine("", "= 81.25 Haste Rating added as if it was on the item");
-	self.newsFrame:AddLine("", "Turned on/off with: /enh " .. L["ep_numbers_cmd"] .. " " .. L["ep_guess_cmd"]);
-	self.newsFrame:AddLine("", "");
-	self.newsFrame:AddLine("", "I've added the important ones (I think) but");
-	self.newsFrame:AddLine("", "if you want more procs added please send a");
-	self.newsFrame:AddLine("", "wowhead link and calculation to my e-mail");
+	self.newsFrame:AddLine("", "It's entirely possible this has brought on some new bugs.");
+	self.newsFrame:AddLine("", "If it scares you revert to previous versions for a while.");
+	self.newsFrame:AddLine("", "If it doesn't then try ahead and remember to email me");
+	self.newsFrame:AddLine("", "should you encounter bugs or oddities!");
 	
 	self.newsFrame:AddLine("", "");
 	self.newsFrame:AddLine("", "");
