@@ -19,50 +19,9 @@ function EnhancerWindfury:OnEnable()
 	Enhancer:ShowFrame(FrameName);
 	Enhancer:ToggleLock(FrameName);
 	
-	-- Same as Stormstrike module!
-	-- {"Damage", "Miss", "Parry", "Dodge", "Resist", "Absorb", "Block", "Evade", "Immune"}
-	for _, event in ipairs({"Damage", "Miss"}) do
+	for _, event in ipairs(Enhancer.wfParserTypes) do
 		self:RegisterParserEvent({eventType = event, sourceID = "player"}, "ParserInfo");
 	end
-	
---[[
-local EVENTTYPE_DAMAGE = "Damage"
-local EVENTTYPE_HEAL = "Heal"
-local EVENTTYPE_ENVIRONMENTAL = "Environmental"
-local EVENTTYPE_MISS = "Miss"
-local EVENTTYPE_DEATH = "Death"
-local EVENTTYPE_CAST = "Cast"
-local EVENTTYPE_DRAIN = "Drain"
-local EVENTTYPE_DURABILITY = "Durability"
-local EVENTTYPE_EXTRAATTACK = "Extra Attack"
-local EVENTTYPE_INTERRUPT = "Interrupt"
-local EVENTTYPE_DISPEL = "Dispel"
-local EVENTTYPE_LEECH = "Leech"
-local EVENTTYPE_FAIL = "Fail"
-local EVENTTYPE_ENCHANT = "Enchant"
-local EVENTTYPE_REPUTATION = "Reputation"
-local EVENTTYPE_HONOR = "Honor"
-local EVENTTYPE_EXPERIENCE = "Experience"
-local EVENTTYPE_FADE = "Fade"
-local EVENTTYPE_GAIN = "Gain"
-local EVENTTYPE_AURA = "Aura"
-local EVENTTYPE_FEEDPET = "Feed Pet"
-local EVENTTYPE_CREATE = "Create"
-local EVENTTYPE_SKILL = "Skill"
-local EVENTTYPE_UNKNOWN = "Unknown"
-
-local MISSTYPE_MISS = "Miss"
-local MISSTYPE_PARRY = "Parry"
-local MISSTYPE_DODGE = "Dodge"
-local MISSTYPE_REFLECT = "Reflect"
-local MISSTYPE_DEFLECT = "Deflect"
-local MISSTYPE_RESIST = "Resist"
-local MISSTYPE_ABSORB = "Absorb"
-local MISSTYPE_BLOCK = "Block"
-local MISSTYPE_EVADE = "Evade"
-local MISSTYPE_IMMUNE = "Immune"
-
-]]--
 	
 	self:RegisterEvent("UNIT_SPELLCAST_SUCCEEDED", "Stormstrike");
 	self:StormstrikeCheck();

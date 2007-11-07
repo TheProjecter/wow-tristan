@@ -74,6 +74,7 @@ local defaults = {
 	},
 	EPGuesstimates = true,
 	EPGemGuesstimates = false,
+	EPExpertiseHack = false,
 	
 	aboveFontID = "Friz Quadrata TT",
 	aboveFontName = [[Fonts\FRIZQT__.ttf]],
@@ -1052,6 +1053,15 @@ function Enhancer:RegisterSlashCommands()
 						get = function() return Enhancer.db.profile.EPGems.EPGemGuesstimates; end,
 						set = function()
 							Enhancer.db.profile.EPGems.EPGemGuesstimates = not Enhancer.db.profile.EPGems.EPGemGuesstimates;
+						end,
+						order = OrderNum(),
+					},
+					[L["ep_expertisehack_cmd"]] = {
+						name = L["ep_expertisehack_cmd"], type = "toggle",
+						desc = L["ep_expertisehack_desc"],
+						get = function() return Enhancer.db.profile.EPGems.EPExpertiseHack; end,
+						set = function()
+							Enhancer.db.profile.EPGems.EPExpertiseHack = not Enhancer.db.profile.EPGems.EPExpertiseHack;
 						end,
 						order = OrderNum(),
 					},
