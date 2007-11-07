@@ -86,6 +86,8 @@ L_Main:RegisterTranslations(locale, function() return {
 	["ep_guess_desc"] = "Include guesstimates of non static bonuses on weapons (procs/use) for EP",
 	["ep_gguess_cmd"] = "EPGemEstimates",
 	["ep_gguess_desc"] = "Include guesstimates of non static bonuses on gems for EP",
+	["ep_expertisehack_cmd"] = "ExpertiseHack",
+	["ep_expertisehack_desc"] = "Toggle using Math.Floor(Expertise Rating / 15.8) * 15.8 for Expertise rating before calc",
 	["bestgem_cmd"] = "BestGem",
 	["bestgem_desc"] = "Calculates the best gem based on your settings",
 	["blue"] = "Blue",

@@ -69,6 +69,8 @@ function EnhancerEP:OnInitialize()
 	
 	self.ProcsAndUse[29301] = { ["ATTACKPOWER"] = (160 * 10 / 60) }; -- Band of the Eternal Champion
 	
+	self.ProcsAndUse[32658] = { ["AGI"] = (150 * 20 / 120) }; -- Badge of Tenacity
+	
 	self:ScheduleEvent("Tooltip", self.Tooltip, 1, self);
 end
 
@@ -134,6 +136,10 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 			for k,v in pairs(self.ProcsAndUse[tonumber(itemid)]) do
 				bonuses[k] = (bonuses[k] or 0) + v;
 				bonuses["Procs Added"] = true;
+			end
+			
+			if (Enhancer.db.profile.EPGems.EPExpertiseHack and bonuses["CR_EXPERTISE"]) then
+				bonuses["CR_EXPERTISE"] = floor(bonuses["CR_EXPERTISE"] / (158 / 10)) * (158 / 10);
 			end
 		end
 		local hasProcsOrUse = bonuses["Procs Added"];
