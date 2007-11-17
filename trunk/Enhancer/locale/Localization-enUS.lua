@@ -329,7 +329,7 @@ L_EP:RegisterTranslations(locale, function() return {
 	["eip_info"] = "Numbers calculated by Leion", -- Not used atm
 	
 	["ep_numbers1"] = "%d (%d)",  -- Lua string.format
-	["ep_numbers2"] = "%.1f (%.1f)",  -- Lua string.format
+	["ep_numbers2"] = "%.2f (%.2f)",  -- Lua string.format
 	
 	["bestgem_link"] = "Best gem (color %s) with current values is: %s at %.1f and %s at %.1f with BoK",
 	["bestgem_nolink"] = "Best gem (color %s) with current values is: %s at %.1f and %s at %.1f with BoK",

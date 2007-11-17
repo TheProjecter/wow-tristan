@@ -78,6 +78,27 @@ end
 function Enhancer:StandardEPSets(name)
 	local standardizedData;
 	
+	if (name == "medium") then
+		standardizedData = {
+			ATTACKPOWER = 1,
+			STR = 2,
+			AGI = (18/10),
+			CR_CRIT = 2,
+			CR_HIT = (14/10),
+			CR_HASTE = (148/100),
+			IGNOREARMOR = (28/100),
+			
+			CR_EXPERTISE = (252/100),  -- Multiply hit rating AEP by 1.8 if you assume that the mob will never cast and never parry.
+			
+			STA = 0,
+			CR_RESILIENCE = 0,
+			WEAPON_MIN = 0,
+			WEAPON_MAX = 0,
+		};
+		self:StandardAEPImport(standardizedData);
+		return;
+	end
+	
 	if (name == "high") then
 		standardizedData = {
 			ATTACKPOWER = 1,
@@ -86,14 +107,14 @@ function Enhancer:StandardEPSets(name)
 			CR_CRIT = 2,
 			CR_HIT = (19/10),
 			CR_HASTE = 2,
-			IGNOREARMOR = (3/10), --0.37
+			IGNOREARMOR = (37/100),
 			
-			CR_EXPERTISE = (38 / 10),  -- Multiply hit rating AEP by 1.8 if you assume that the mob will never cast and never parry.
+			CR_EXPERTISE = (342/100),  -- Multiply hit rating AEP by 1.8 if you assume that the mob will never cast and never parry.
 			
-			STA = (0 / 10),
-			CR_RESILIENCE = (0 / 10),
-			WEAPON_MIN = (0 / 10),
-			WEAPON_MAX = (0 / 10),
+			STA = 0,
+			CR_RESILIENCE = 0,
+			WEAPON_MIN = 0,
+			WEAPON_MAX = 0,
 		};
 		self:StandardAEPImport(standardizedData);
 		return;

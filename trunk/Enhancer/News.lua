@@ -1,6 +1,6 @@
 local L = AceLibrary("AceLocale-2.2"):new("Enhancer");
 
-Enhancer.news = 2; -- Can only ever increase
+Enhancer.news = 3; -- Can only ever increase
 function Enhancer:News()
 	Enhancer.noannounce = true;
 	
@@ -10,19 +10,11 @@ function Enhancer:News()
 	self.newsFrame.title:SetText(L["news_1"]);
 	self.newsFrame.disclaimer:SetText(L["news_2"]);
 	
-	self.newsFrame:AddLine("Modules", "Broke everything out to modules if you are");
-	self.newsFrame:AddLine("", "using WAU it should unpack itself otherwise");
-	self.newsFrame:AddLine("", "you can just drag all folders starting with");
-	self.newsFrame:AddLine("", "Enhancer_* out of the Enhancer folder an into");
-	self.newsFrame:AddLine("", "the main AddOns folder of wow. This means any")
-	self.newsFrame:AddLine("", "modules you don't want wont even be loaded!");
-	self.newsFrame:AddLine("", "Happy enabling/disabling");
+	self.newsFrame:AddLine("Procs", "Added Badge of Tenacity proc");
 	self.newsFrame:AddLine("", "");
 	
-	self.newsFrame:AddLine("", "It's entirely possible this has brought on some new bugs.");
-	self.newsFrame:AddLine("", "If it scares you revert to previous versions for a while.");
-	self.newsFrame:AddLine("", "If it doesn't then try ahead and remember to email me");
-	self.newsFrame:AddLine("", "should you encounter bugs or oddities!");
+	self.newsFrame:AddLine("Expertise", "Added a partial hack for expertise");
+	self.newsFrame:AddLine("", "Don't enable, it's not complete yet");
 	
 	self.newsFrame:AddLine("", "");
 	self.newsFrame:AddLine("", "");
