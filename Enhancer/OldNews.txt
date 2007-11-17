@@ -16,3 +16,18 @@
 	self.newsFrame:AddLine("", "I've added the important ones (I think) but");
 	self.newsFrame:AddLine("", "if you want more procs added please send a");
 	self.newsFrame:AddLine("", "wowhead link and calculation to my e-mail");
+
+2)
+	self.newsFrame:AddLine("Modules", "Broke everything out to modules if you are");
+	self.newsFrame:AddLine("", "using WAU it should unpack itself otherwise");
+	self.newsFrame:AddLine("", "you can just drag all folders starting with");
+	self.newsFrame:AddLine("", "Enhancer_* out of the Enhancer folder an into");
+	self.newsFrame:AddLine("", "the main AddOns folder of wow. This means any")
+	self.newsFrame:AddLine("", "modules you don't want wont even be loaded!");
+	self.newsFrame:AddLine("", "Happy enabling/disabling");
+	self.newsFrame:AddLine("", "");
+	
+	self.newsFrame:AddLine("", "It's entirely possible this has brought on some new bugs.");
+	self.newsFrame:AddLine("", "If it scares you revert to previous versions for a while.");
+	self.newsFrame:AddLine("", "If it doesn't then try ahead and remember to email me");
+	self.newsFrame:AddLine("", "should you encounter bugs or oddities!");

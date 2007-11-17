@@ -139,6 +139,9 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 			end
 			
 			if (Enhancer.db.profile.EPGems.EPExpertiseHack and bonuses["CR_EXPERTISE"]) then
+				-- Get full Expertise bonus
+				-- Get new Expertise rating with this equipped
+				-- Take the diff and use that
 				bonuses["CR_EXPERTISE"] = floor(bonuses["CR_EXPERTISE"] / (158 / 10)) * (158 / 10);
 			end
 		end

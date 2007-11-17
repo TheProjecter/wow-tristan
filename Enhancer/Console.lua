@@ -92,18 +92,18 @@ local defaults = {
 	belowFontFlags = "OUTLINE",
 	
 	AEPNumbers = {
-		ATTACKPOWER = (10 / 10),
-		STR = (20 / 10),
-		AGI = (18 / 10),
-		STA = (0 / 10),
-		CR_CRIT = (20 / 10),
-		CR_HIT = (14 / 10),
-		CR_HASTE = (15 / 10), --(22 / 10),
-		CR_EXPERTISE = (24 / 10),  -- Multiply hit rating AEP by 1.8 if you assume that the mob will never cast and never parry.
-		CR_RESILIENCE = (0 / 10),
-		IGNOREARMOR = (3 / 10),
-		WEAPON_MIN = (0 / 10),
-		WEAPON_MAX = (0 / 10),
+		ATTACKPOWER = 1,
+		STR = 2,
+		AGI = (174 / 100),
+		STA = 0,
+		CR_CRIT = (197 / 100),
+		CR_HIT = (134 / 100),
+		CR_HASTE = (128 / 100),
+		CR_EXPERTISE = (248 / 100),  -- Multiply hit rating AEP by 1.8 if you assume that the mob will never cast and never parry.
+		CR_RESILIENCE = 0,
+		IGNOREARMOR = (22 / 100),
+		WEAPON_MIN = 0,
+		WEAPON_MAX = 0,
 	},
 	HEPNumbers = {
 		HEAL = (10 / 10),
@@ -617,6 +617,15 @@ function Enhancer:RegisterSlashCommands()
 									for key, value in pairs(defaults.AEPNumbers) do
 										Enhancer.db.profile.AEPNumbers[key] = defaults.AEPNumbers[key];
 									end
+								end,
+								order = OrderNum(),
+							},
+							[L["medium_cmd"]] = {
+								type = "execute",
+								name = L["medium_cmd"],
+								desc = L["medium_desc"],
+								func = function(data)
+									Enhancer:StandardEPSets("medium");
 								end,
 								order = OrderNum(),
 							},
