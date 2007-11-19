@@ -10,11 +10,13 @@ function Enhancer:News()
 	self.newsFrame.title:SetText(L["news_1"]);
 	self.newsFrame.disclaimer:SetText(L["news_2"]);
 	
+	-- Full max length of line below including ");" at the end ------------------------------------
 	self.newsFrame:AddLine("Equivalence", "Now using 2 decimal places for all equivalence points");
-	self.newsFrame:AddLine("           ", "and removed WEAPON_MIN aswell as WEAPON_MAX");
+	self.newsFrame:AddLine("           ", "and removed WEAPON_MIN aswell as WEAPON_MAX from AEP");
 	self.newsFrame:AddLine("", "");
 	self.newsFrame:AddLine("Expertise", "Partialy completed the hack. Items only get bonus from");
-	self.newsFrame:AddLine("         ", "the expertise that gives a Expertise Point");
+	self.newsFrame:AddLine("         ", "the expertise that gives a Expertise Point, should be");
+	self.newsFrame:AddLine("         ", "safe to enable the hack atleast now!");
 	
 	self.newsFrame:AddLine("", "");
 	self.newsFrame:AddLine("", "");
@@ -81,7 +83,7 @@ function Enhancer:CreateNewsFrame()
 				end
 				right:SetPoint("LEFT", left, "RIGHT", 5, 0)
 			end
-			self.textLefts[i]:SetText(self.lefts[i] .. ((string.len(self.lefts[i]) > 0 and ":") or " "))
+			self.textLefts[i]:SetText(self.lefts[i] .. ((string.len(self.lefts[i]) > 0 and string.len(strtrim(self.lefts[i])) > 0 and ":") or " "))
 			self.textRights[i]:SetText(self.rights[i])
 			local leftWidth = self.textLefts[i]:GetWidth()
 			local rightWidth = self.textRights[i]:GetWidth()
