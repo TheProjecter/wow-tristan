@@ -10,11 +10,11 @@ function Enhancer:News()
 	self.newsFrame.title:SetText(L["news_1"]);
 	self.newsFrame.disclaimer:SetText(L["news_2"]);
 	
-	self.newsFrame:AddLine("Procs", "Added Badge of Tenacity proc");
+	self.newsFrame:AddLine("Equivalence", "Now using 2 decimal places for all equivalence points");
+	self.newsFrame:AddLine("           ", "and removed WEAPON_MIN aswell as WEAPON_MAX");
 	self.newsFrame:AddLine("", "");
-	
-	self.newsFrame:AddLine("Expertise", "Added a partial hack for expertise");
-	self.newsFrame:AddLine("", "Don't enable, it's not complete yet");
+	self.newsFrame:AddLine("Expertise", "Partialy completed the hack. Items only get bonus from");
+	self.newsFrame:AddLine("         ", "the expertise that gives a Expertise Point");
 	
 	self.newsFrame:AddLine("", "");
 	self.newsFrame:AddLine("", "");

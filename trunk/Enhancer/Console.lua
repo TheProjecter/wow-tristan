@@ -34,7 +34,7 @@ end
 
 local epMin = 0;
 local epMax = 5;
-local epStep = (1 / 10);
+local epStep = (1 / 100);
 local defaults = {
 	locked = true,
 	framesize = 35,
@@ -63,6 +63,7 @@ local defaults = {
 	EPZero = true,
 	AEP = true,
 	AEPH = true,
+	WAEP = true,
 	HEP = false,
 	DEP = false,
 	DEPH = false,
@@ -102,8 +103,10 @@ local defaults = {
 		CR_EXPERTISE = (248 / 100),  -- Multiply hit rating AEP by 1.8 if you assume that the mob will never cast and never parry.
 		CR_RESILIENCE = 0,
 		IGNOREARMOR = (22 / 100),
-		WEAPON_MIN = 0,
-		WEAPON_MAX = 0,
+		--WEAPON_MIN = 0,
+		--WEAPON_MAX = 0,
+		MH_DPS = (903 / 100),
+		OH_DPS = (37 / 10),
 	},
 	HEPNumbers = {
 		HEAL = (10 / 10),
@@ -311,6 +314,15 @@ function Enhancer:RegisterSlashCommands()
 						end,
 						order = OrderNum(),
 					},
+					[L["waep_cmd"]] = {
+						name = L["waep_cmd"], type = "toggle",
+						desc = L["waep_desc"],
+						get = function() return Enhancer.db.profile.WAEP; end,
+						set = function()
+							Enhancer.db.profile.WAEP = not Enhancer.db.profile.WAEP;
+						end,
+						order = OrderNum(),
+					},
 					[L["hep_cmd"]] = {
 						name = L["hep_cmd"], type = "toggle",
 						desc = L["hep_desc"],
@@ -497,30 +509,30 @@ function Enhancer:RegisterSlashCommands()
 								order = OrderNum(),
 							},
 							
-							[SpacerName()] = SpacerTable(),
+							--[SpacerName()] = SpacerTable(),
 							
-							[L["WEAPON_MIN"]] = {
-								name = L["WEAPON_MIN"], type = "range",
-								desc = L["WEAPON_MIN"],
-								min = epMin, max = epMax, step = epStep,
-								get = function() return Enhancer.db.profile.AEPNumbers.WEAPON_MIN; end,
-								set = function(v)
-									Enhancer.db.profile.AEPNumbers.WEAPON_MIN = v;
-									Enhancer:EPValuesChanged();
-								end,
-								order = OrderNum(),
-							},
-							[L["WEAPON_MAX"]] = {
-								name = L["WEAPON_MAX"], type = "range",
-								desc = L["WEAPON_MAX"],
-								min = epMin, max = epMax, step = epStep,
-								get = function() return Enhancer.db.profile.AEPNumbers.WEAPON_MAX; end,
-								set = function(v)
-									Enhancer.db.profile.AEPNumbers.WEAPON_MAX = v;
-									Enhancer:EPValuesChanged();
-								end,
-								order = OrderNum(),
-							},
+							--[L["WEAPON_MIN"]] = {
+								--name = L["WEAPON_MIN"], type = "range",
+								--desc = L["WEAPON_MIN"],
+								--min = epMin, max = epMax, step = epStep,
+								--get = function() return Enhancer.db.profile.AEPNumbers.WEAPON_MIN; end,
+								--set = function(v)
+									--Enhancer.db.profile.AEPNumbers.WEAPON_MIN = v;
+									--Enhancer:EPValuesChanged();
+								--end,
+								--order = OrderNum(),
+							--},
+							--[L["WEAPON_MAX"]] = {
+								--name = L["WEAPON_MAX"], type = "range",
+								--desc = L["WEAPON_MAX"],
+								--min = epMin, max = epMax, step = epStep,
+								--get = function() return Enhancer.db.profile.AEPNumbers.WEAPON_MAX; end,
+								--set = function(v)
+									--Enhancer.db.profile.AEPNumbers.WEAPON_MAX = v;
+									--Enhancer:EPValuesChanged();
+								--end,
+								--order = OrderNum(),
+							--},
 							
 							[SpacerName()] = SpacerTable(),
 							

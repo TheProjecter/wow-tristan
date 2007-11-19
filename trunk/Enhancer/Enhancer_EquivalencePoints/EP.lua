@@ -139,10 +139,12 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 			end
 			
 			if (Enhancer.db.profile.EPGems.EPExpertiseHack and bonuses["CR_EXPERTISE"]) then
+				-- Todo:
 				-- Get full Expertise bonus
 				-- Get new Expertise rating with this equipped
 				-- Take the diff and use that
-				bonuses["CR_EXPERTISE"] = floor(bonuses["CR_EXPERTISE"] / (158 / 10)) * (158 / 10);
+				-- Expertise Hack Quick: floor(15/3.95)*3.95
+				bonuses["CR_EXPERTISE"] = floor(bonuses["CR_EXPERTISE"] / (395 / 100)) * (395 / 100);
 			end
 		end
 		local hasProcsOrUse = bonuses["Procs Added"];
@@ -213,6 +215,35 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 				end
 				
 				tooltip:AddDoubleLine(string.format(L["aeph_tooltip"], sufix), string.format( numberFormat, EP, EPK ), ttR, ttG, ttB, ttR, ttG, ttB);
+			end
+		end
+		
+		lastValue, lastKingsValue = nil, nil; -- Reset these between different types of EP (used for compairing a main set with a subset, such as all values but hit)
+		--[[ Do Weapon Equivalence Points ]]--
+		if (Enhancer.db.profile.WAEP and bonuses["WEAPON_SPEED"] and bonuses["WEAPON_MAX"] and bonuses["WEAPON_MIN"]) then
+			local values = {};
+			for stat,value in pairs(Enhancer.db.profile.HEPNumbers) do
+				values[stat] = {};
+				values[stat]["value"] = Enhancer.db.profile.HEPNumbers[stat];
+				values[stat]["kings"] = EnhancerEP.AffectedByKings[stat];
+			end
+			local dps = Enhancer:Round(((bonuses["WEAPON_MAX"] + bonuses["WEAPON_MIN"] ) / 2) / bonuses["WEAPON_SPEED"]);
+			local multiplier = bonuses["WEAPON_SPEED"] / (26 / 10);
+			local mhaep = dps * Enhancer.db.profile.AEPNumbers["MH_DPS"] * multiplier;
+			local ohaep = dps * Enhancer.db.profile.AEPNumbers["OH_DPS"] * multiplier;
+			
+			local EP, EPK, gem1, gem2, gem3, gem4 = EnhancerEP:Calculate(values, bonuses, nonMetaSockets, metaSockets, "HEP", itemRarity);
+			sufix, careProcsOrUse = self:TypeSufix(values, itemid, careProcsOrUse);
+			
+			if ( (EP + mhaep + ohaep) > 0 or Enhancer.db.profile.EPZero) then
+				if (not lineAdded) then
+					tooltip:AddLine(" ");
+					tooltip:AddLine(string.format(L["eep_info"], ((unknownProcs and TopSufixString) or "")), ttR, ttG, ttB);
+					lineAdded = true;
+				end
+				
+				tooltip:AddDoubleLine(string.format(L["waep_tooltip1"], sufix), string.format( numberFormat, EP+mhaep, EPK+mhaep ), ttR, ttG, ttB, ttR, ttG, ttB);
+				tooltip:AddDoubleLine(string.format(L["waep_tooltip2"], sufix), string.format( numberFormat, EP+ohaep, EPK+ohaep ), ttR, ttG, ttB, ttR, ttG, ttB);
 			end
 		end
 		
@@ -310,7 +341,7 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 			sufix, careProcsOrUse = self:TypeSufix(values, itemid, careProcsOrUse);
 			
 			if ( IP > 0 or Enhancer.db.profile.EPZero) then
-				tooltip:AddDoubleLine(string.format(L["eip_tooltip"], sufix), string.format("%.1f", IP), ttR, ttG, ttB, ttR, ttG, ttB);
+				tooltip:AddDoubleLine(string.format(L["eip_tooltip"], sufix), string.format("%.2f", IP), ttR, ttG, ttB, ttR, ttG, ttB);
 				lineAdded = true;
 			end
 		end
@@ -387,7 +418,7 @@ function EnhancerEP:Calculate(values, bonuses, gemcount, metacount, gemcachekey,
 		kingstotal = kingstotal + ( kingsmetagemTotal * metacount );
 	end
 	
-	return Enhancer:Round(total, 1), Enhancer:Round(kingstotal, 1), gemName, kingsgemName, metagemName, kingsmetagemName;
+	return Enhancer:Round(total, 2), Enhancer:Round(kingstotal, 2), gemName, kingsgemName, metagemName, kingsmetagemName;
 end
 
 EnhancerEP.gemCache = {};
@@ -432,7 +463,7 @@ function EnhancerEP:GemPicker(cachekey, values, meta, blessingofkings, color, it
 					total = total + (EnhancerEP.gems[gemName][cachekey] or 0);
 				end
 				
-				if (Enhancer:Round(total, 1) > bestGem.value) then
+				if (Enhancer:Round(total, 2) > bestGem.value) then
 					bestGem.value = total;
 					bestGem.name = gemName;
 				end
