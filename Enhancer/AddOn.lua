@@ -109,7 +109,6 @@ Enhancer.colors = {
 function Enhancer:OnInitialize()
 	self:LoadModules();
 	self:RegisterSlashCommands();
-	self:InspectEPValues(); -- Check so not using old values
 
 	if (not self.db.profile.startAnnounceDisabled) then
 		self:ScheduleEvent("DelayAnnounce", self.DelayAnnounce, 7, self)
@@ -122,6 +121,8 @@ function Enhancer:OnInitialize()
 end
 
 function Enhancer:OnEnable()
+	self:CleanUp();
+	
 	self.PlayerLevel = UnitLevel("player");
 	self:Zoning();
 
@@ -198,7 +199,6 @@ function Enhancer:OnProfileDisable()
 
 end
 function Enhancer:OnProfileEnable(oldProfileName, oldProfileData)
-	self:InspectEPValues();
 	self:Resize();
 	self:UpdateFont();
 	self:ToggleLock();
@@ -276,36 +276,10 @@ function Enhancer:DelayAnnounce()
 	self:Print(L["Announcement"]);
 end
 
-function Enhancer:InspectEPValues()
-	local resetNeeded = false;
-
-	for _, value in pairs(Enhancer.db.profile.AEPNumbers) do
-		if (value > 5) then
-			resetNeeded = true;
-		end
-	end
-	for _, value in pairs(Enhancer.db.profile.HEPNumbers) do
-		if (value > 5) then
-			resetNeeded = true;
-		end
-	end
-	for _, value in pairs(Enhancer.db.profile.DEPNumbers) do
-		if (value > 5) then
-			resetNeeded = true;
-		end
-	end
-
-	if (resetNeeded) then
-		for key, value in pairs(defaults.AEPNumbers) do
-			Enhancer.db.profile.AEPNumbers[key] = defaults.AEPNumbers[key];
-		end
-		for key, value in pairs(defaults.HEPNumbers) do
-			Enhancer.db.profile.HEPNumbers[key] = defaults.HEPNumbers[key];
-		end
-		for key, value in pairs(defaults.DEPNumbers) do
-			Enhancer.db.profile.DEPNumbers[key] = defaults.DEPNumbers[key];
-		end
-
-		self:Print("Your AEP values have been reset due to a major change, there was sadly no alternative!");
+function Enhancer:CleanUp()
+	--Cleanup stuff that seemed smart at some point and now just linger in the SV
+	if (Enhancer and Enhancer.db and Enhancer.db.profile and Enhancer.db.profile.AEPNumbers) then
+		Enhancer.db.profile.AEPNumbers.WEAPON_MIN = nil;
+		Enhancer.db.profile.AEPNumbers.WEAPON_MAX = nil;
 	end
 end

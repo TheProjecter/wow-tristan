@@ -72,6 +72,8 @@ L_Main:RegisterTranslations(locale, function() return {
 	["aep_desc"] = "Toggle showing Attackpower Equivalence Points in Tooltips",
 	["aeph_cmd"] = "AEPwoH",
 	["aeph_desc"] = "Toggle showing Attackpower Equivalence Points (w/o hit) in Tooltips",
+	["waep_cmd"] = "WAEP",
+	["waep_desc"] = "Toggle showing Weapon Attackpower Equivalence Points (2.6 base) in Tooltips",
 	["hep_cmd"] = "HEP",
 	["hep_desc"] = "Toggle showing Healing Equivalence Points in Tooltips",
 	["dep_cmd"] = "DEP",
@@ -115,6 +117,8 @@ L_Main:RegisterTranslations(locale, function() return {
 	["STA"] = "Stamina",
 	["WEAPON_MIN"] = "WeaponMin",
 	["WEAPON_MAX"] = "WeaponMax",
+	["MH_DPS"] = "MhDPS",
+	["OH_DPS"] = "OhDPS",
 		
 	["sound_cmd"] = "Sound",
 	["sound_desc"] = "Toggle playing sound when a totem expires",
@@ -309,18 +313,21 @@ L_EP:RegisterTranslations(locale, function() return {
 	["Chance on hit:"] = "Chance on hit:",
 	
 	--[[ Tooltip strings ]]--
-	["eep_info"] = "Enhancer's Equivalence Points%s:",
+	["eep_info"] = "Enhancer's Equivalence Points (inc BoK)%s:",
 	
-	["aep_tooltip"] = string.rep(" ", 3) .. "AttackpowerEP (inc BoK)%s:",
+	["aep_tooltip"] = string.rep(" ", 3) .. "AttackpowerEP%s:",
 	["aep_info"] = "AEP model from Tornhoof/Pater", -- Not used atm
-	["aeph_tooltip"] = string.rep(" ", 3) .. "AttackpowerEP w/o hit (inc BoK):",
+	["aeph_tooltip"] = string.rep(" ", 3) .. "AttackpowerEP w/o hit:",
 	
-	["hep_tooltip"] = string.rep(" ", 3) .. "HealingEP (inc BoK)%s:",
+	["waep_tooltip1"] = string.rep(" ", 3) .. "W-AEP MH%s: ",
+	["waep_tooltip2"] = string.rep(" ", 3) .. "W-AEP OH%s:",
+	
+	["hep_tooltip"] = string.rep(" ", 3) .. "HealingEP%s:",
 	["hep_info"] = "Numbers from Leion (possibly very inaccurate and shouldn't be taken as gospel)", -- Not used atm
 	
-	["dep_tooltip"] = string.rep(" ", 3) .. "DamageEP (inc BoK)%s:",
+	["dep_tooltip"] = string.rep(" ", 3) .. "DamageEP%s:",
 	["dep_info"] = "Numbers from Leion (possibly very inaccurate and shouldn't be taken as gospel)", -- Not used atm
-	["deph_tooltip"] = string.rep(" ", 3) .. "DamageEP w/o hit (inc BoK):",
+	["deph_tooltip"] = string.rep(" ", 3) .. "DamageEP w/o hit:",
 	
 	["ep_procsanduse"] = string.rep(" ", 3) .. "*) Procs/Use basis is average/expected bonus!",
 	["ep_procsandusemissing"] = string.rep(" ", 3) .. "^) Not all Procs/Use/Chance are calculated!",
