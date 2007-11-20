@@ -14,6 +14,9 @@ function Enhancer:News()
 	self.newsFrame:AddLine("Equivalence", "Now using 2 decimal places for all equivalence points");
 	self.newsFrame:AddLine("           ", "and removed WEAPON_MIN aswell as WEAPON_MAX from AEP");
 	self.newsFrame:AddLine("", "");
+	self.newsFrame:AddLine("           ", "Added WeaponAEP based on 2.6 speed. Numbers for 2.6");
+	self.newsFrame:AddLine("           ", "comes from the Enhancement thread on EJ");
+	self.newsFrame:AddLine("", "");
 	self.newsFrame:AddLine("Expertise", "Partialy completed the hack. Items only get bonus from");
 	self.newsFrame:AddLine("         ", "the expertise that gives a Expertise Point, should be");
 	self.newsFrame:AddLine("         ", "safe to enable the hack atleast now!");
