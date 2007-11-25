@@ -79,5 +79,6 @@ Enhancer_HealingWay\HWay.lua
 Enhancer_Invigorated\Invigorated.lua
 Enhancer_TemporaryEnchants\Tench.lua
 Enhancer_Purge\Purge.lua
+Enhancer_WShield\WShield.lua
 
 debug.lua

@@ -10,7 +10,7 @@ function EnhancerWShield:GetConsoleOptions()
 end
 
 function EnhancerWShield:OnInitialize()
-	Enhancer[FrameName] = Enhancer:CreateButton("EnhancerFrame" .. FrameName, "Ability_Shaman_WaterShield", 0, 195);
+	Enhancer[FrameName] = Enhancer:CreateButton("EnhancerFrame" .. FrameName, "Ability_Shaman_WaterShield", 0, 125);
 	Enhancer[FrameName].borderColor = Enhancer.colors.water.dec;
 	Enhancer:AddFrameToList(FrameName, true, false, false); --[[ Enhancer:AddFrameToList(framename, all, totem, death) ]]--
 	Enhancer:AddFrameToOnOffList(FrameName);
