@@ -1,4 +1,4 @@
-## Interface: 20200
+## Interface: 20300
 ## Title: Enhancer |cffd028d5[|r|cff7fffd4Earth Shield|r|cffd028d5]|r
 ## Notes: Earth Shield Module
 ## LoadOnDemand: 1

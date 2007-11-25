@@ -78,5 +78,6 @@ Enhancer_EarthShield\EShield.lua
 Enhancer_HealingWay\HWay.lua
 Enhancer_Invigorated\Invigorated.lua
 Enhancer_TemporaryEnchants\Tench.lua
+Enhancer_Purge\Purge.lua
 
 debug.lua

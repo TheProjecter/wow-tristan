@@ -1,6 +1,6 @@
 local L = AceLibrary("AceLocale-2.2"):new("Enhancer");
 
-Enhancer.news = 3; -- Can only ever increase
+Enhancer.news = 4; -- Can only ever increase
 function Enhancer:News()
 	Enhancer.noannounce = true;
 	
@@ -12,15 +12,21 @@ function Enhancer:News()
 	
 	-- Full max length of line below including ");" at the end ------------------------------------
 	self.newsFrame:AddLine("Equivalence", "Now using 2 decimal places for all equivalence points");
-	self.newsFrame:AddLine("           ", "and removed WEAPON_MIN aswell as WEAPON_MAX from AEP");
+	self.newsFrame:AddLine("", 						"and removed WEAPON_MIN aswell as WEAPON_MAX from AEP");
 	self.newsFrame:AddLine("", "");
-	self.newsFrame:AddLine("           ", "Added WeaponAEP based on 2.6 speed. Numbers for 2.6");
-	self.newsFrame:AddLine("           ", "comes from the Enhancement thread on EJ");
+	self.newsFrame:AddLine("", 						"Added WeaponAEP based on 2.6 speed. Numbers for 2.6");
+	self.newsFrame:AddLine("", 						"comes from the Enhancement thread on EJ");
 	self.newsFrame:AddLine("", "");
-	self.newsFrame:AddLine("Expertise", "Partialy completed the hack. Items only get bonus from");
-	self.newsFrame:AddLine("         ", "the expertise that gives a Expertise Point, should be");
-	self.newsFrame:AddLine("         ", "safe to enable the hack atleast now!");
-	
+	self.newsFrame:AddLine("Expertise", 	"Partialy completed the hack. Items only get bonus from");
+	self.newsFrame:AddLine("         ", 	"the expertise that gives a Expertise Point, should be");
+	self.newsFrame:AddLine("         ", 	"safe to enable the hack atleast now!");
+	self.newsFrame:AddLine("", "");
+	self.newsFrame:AddLine("WShield", 		"New frame to lit up in combat when no shield is active");
+	self.newsFrame:AddLine("", "");
+	self.newsFrame:AddLine("Purge", 			"New module, announces what was purged");
+	self.newsFrame:AddLine("", "");
+	self.newsFrame:AddLine("Purger", 			"New frame to lit up in combat when you can purge");
+		
 	self.newsFrame:AddLine("", "");
 	self.newsFrame:AddLine("", "");
 	self.newsFrame:AddLine(L["news_4"], L["news_7"]);

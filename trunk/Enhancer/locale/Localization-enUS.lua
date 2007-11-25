@@ -296,6 +296,16 @@ L_Main:RegisterTranslations(locale, function() return {
 	["medium_desc"] = "Import settings tuned for gear between Kara/Heroic gear and end game",
 	["high_cmd"] = "HighSettings",
 	["high_desc"] = "Import settings tuned for end game gear",
+	
+	["purge_cmd"] = "Purge",
+	["purge_desc"] = "Toggle showing what is purged",
+	["purge_info"] = "Purge: |cffff0000-|r%s|cffff0000-|r",
+	["purge_info_long"] = "Purged %s from %s",
+	["wshield_cmd"] = "WaterShield",
+	["wshield_desc"] = "Toggle showing Water Shield reminder Frame",
+	["wshield_warn"] = "Disabled Shield Module as Water Shield is active",
+	["purger_cmd"] = "Purger",
+	["purger_desc"] = "Toggle Purge reminder",
 }; end );
 
 local L_EP = AceLibrary("AceLocale-2.2"):new("EnhancerEP")

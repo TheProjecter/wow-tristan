@@ -103,8 +103,6 @@ local defaults = {
 		CR_EXPERTISE = (248 / 100),  -- Multiply hit rating AEP by 1.8 if you assume that the mob will never cast and never parry.
 		CR_RESILIENCE = 0,
 		IGNOREARMOR = (22 / 100),
-		--WEAPON_MIN = 0,
-		--WEAPON_MAX = 0,
 		MH_DPS = (903 / 100),
 		OH_DPS = (37 / 10),
 	},

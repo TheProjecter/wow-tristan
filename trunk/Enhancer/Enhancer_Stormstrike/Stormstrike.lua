@@ -8,7 +8,7 @@ function EnhancerStormstrike:GetConsoleOptions()
 end
 
 function EnhancerStormstrike:OnInitialize()
-	Enhancer[FrameName] = Enhancer:CreateButton("EnhancerFrame" .. FrameName, "Spell_Holy_SealOfMight", 0, 0);
+	Enhancer[FrameName] = Enhancer:CreateButton("EnhancerFrame" .. FrameName, "Spell_Holy_SealOfMight", 0, -60);
 	Enhancer[FrameName].fullicon = true;
 	Enhancer[FrameName].mainframe.bgFileDefault  = [[Interface\AddOns\Enhancer\texture\EnhancerSSWF]];
 	Enhancer[FrameName].borderColor = Enhancer.colors.air.dec;

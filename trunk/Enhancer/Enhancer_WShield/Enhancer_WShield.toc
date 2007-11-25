@@ -1,0 +1,8 @@
+## Interface: 20300
+## Title: Enhancer |cffd028d5[|r|cff7fffd4Water Shield|r|cffd028d5]|r
+## Notes: Water Shield Module (if you are in combat and have no shield this'll remind you to turn it on)
+## LoadOnDemand: 1
+## X-Category: Shaman
+## Dependencies: Enhancer
+
+WShield.lua

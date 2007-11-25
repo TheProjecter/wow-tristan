@@ -92,8 +92,8 @@ function Enhancer:StandardEPSets(name)
 			
 			STA = 0,
 			CR_RESILIENCE = 0,
-			WEAPON_MIN = 0,
-			WEAPON_MAX = 0,
+			MH_DPS = (903 / 100),
+			OH_DPS = (37 / 10),
 		};
 		self:StandardAEPImport(standardizedData);
 		return;
@@ -113,8 +113,8 @@ function Enhancer:StandardEPSets(name)
 			
 			STA = 0,
 			CR_RESILIENCE = 0,
-			WEAPON_MIN = 0,
-			WEAPON_MAX = 0,
+			MH_DPS = (903 / 100),
+			OH_DPS = (37 / 10),
 		};
 		self:StandardAEPImport(standardizedData);
 		return;
