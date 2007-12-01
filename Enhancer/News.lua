@@ -1,6 +1,6 @@
 local L = AceLibrary("AceLocale-2.2"):new("Enhancer");
 
-Enhancer.news = 4; -- Can only ever increase
+Enhancer.news = 5; -- Can only ever increase
 function Enhancer:News()
 	Enhancer.noannounce = true;
 	
@@ -11,25 +11,9 @@ function Enhancer:News()
 	self.newsFrame.disclaimer:SetText(L["news_2"]);
 	
 	-- Full max length of line below including ");" at the end ------------------------------------
-	self.newsFrame:AddLine("Equivalence", "Now using 2 decimal places for all equivalence points");
-	self.newsFrame:AddLine("", 						"and removed WEAPON_MIN aswell as WEAPON_MAX from AEP");
-	self.newsFrame:AddLine("", "");
-	self.newsFrame:AddLine("", 						"Added WeaponAEP based on 2.6 speed. Numbers for 2.6");
-	self.newsFrame:AddLine("", 						"comes from the Enhancement thread on EJ (by Rob)");
-	self.newsFrame:AddLine("", "");
-	self.newsFrame:AddLine("Expertise", 	"Partialy completed the hack. Items only get bonus from");
-	self.newsFrame:AddLine("         ", 	"the expertise that gives a Expertise Point, should be");
-	self.newsFrame:AddLine("         ", 	"safe to enable the hack atleast now!");
-	self.newsFrame:AddLine("", "");
-	self.newsFrame:AddLine("WShield", 		"New frame to lit up in combat when no shield is active");
-	self.newsFrame:AddLine("", 						"most likely discontinued in 2.3.2");
-	self.newsFrame:AddLine("v2.3.2", 			"The caster is surrounded by 3 globes of water, granting");
-	self.newsFrame:AddLine("", 						"50 mana per 5 sec. When a spell, melee or ranged attack");
-	self.newsFrame:AddLine("", 						"hits the caster, 200 mana is restored to the caster. This");
-	self.newsFrame:AddLine("", 						"expends one water globe. Only one globe will activate");
-	self.newsFrame:AddLine("", 						"every few seconds. Lasts 10 min.");
-	self.newsFrame:AddLine("", "");
-	self.newsFrame:AddLine("Purge", 			"New module, announces what you purged");
+	self.newsFrame:AddLine("Purge", 			"Added option to broadcast purges to party/raid if");
+	self.newsFrame:AddLine("", 						"purge module is available.");
+	
 		
 	self.newsFrame:AddLine("", "");
 	self.newsFrame:AddLine("", "");

@@ -304,8 +304,12 @@ L_Main:RegisterTranslations(locale, function() return {
 	["wshield_cmd"] = "WaterShield",
 	["wshield_desc"] = "Toggle showing Water Shield reminder Frame",
 	["wshield_warn"] = "Disabled Shield Module as Water Shield is active",
-	["purger_cmd"] = "Purger",
-	["purger_desc"] = "Toggle Purge reminder",
+	
+	["purge_cmd"] = "Purge",
+	["purge_desc"] = "Announce purge to groups (not battleground)",
+	["purge_group_desc"] = "Purge options (Purge module required for effect)",
+	["purge_raid_cmd"] = "Raid",
+	["purge_raid_desc"] = "Only announce to raids",
 }; end );
 
 local L_EP = AceLibrary("AceLocale-2.2"):new("EnhancerEP")
@@ -318,6 +322,7 @@ L_EP:RegisterTranslations(locale, function() return {
 	["Projectile"] = "Projectile",
 	["Quiver"] = "Quiver",
 	["Recipe"] = "Recipe",
+	["Consumable"] = "Consumable",
 	
 	--[[ This is used for matching so need all of it and exactly as it is on the tooltip ]]--
 	["Chance on hit:"] = "Chance on hit:",
