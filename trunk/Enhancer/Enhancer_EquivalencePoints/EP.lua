@@ -106,15 +106,16 @@ function EnhancerEP:TypeSufix(values, itemid, careProcsOrUse)
 	return "", careProcsOrUse;
 end
 
-EnhancerEP.ProcessTypes = { [L["Armor"]] = true, [L["Gem"]] = true, [L["Weapon"]] = true, [L["Recipe"]] = true, }
+EnhancerEP.ProcessTypes = { [L["Armor"]] = true, [L["Gem"]] = true, [L["Weapon"]] = true, [L["Recipe"]] = true, [L["Consumable"]] = true, }
 EnhancerEP.AffectedByKings = { STR = true, AGI = true, STA = true, INT = true, SPI = true};
 function EnhancerEP.ProcessTooltip(tooltip, name, link)
 	if (link) then
 		local self = EnhancerEP;
 		
-		--[[ Check if we care about this item ]]--
+		--[[ Check if we care about this item
 		local _, _, itemRarity, _, _, ItemType, ItemSubType, _, equipLocation = GetItemInfo(link)
 		if (not self.ProcessTypes[ItemType]) then return; end
+		-- But we now care about all items ]]--
 		
 		local numberFormat = L["ep_numbers2"];
 		
@@ -150,6 +151,24 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 		local hasProcsOrUse = bonuses["Procs Added"];
 		local unknownProcs = knownUnvaluedProcs[(tonumber(itemid))];
 		local sufix, careProcsOrUse = "", false;
+		
+		if (self.Consumables and self.Consumables[tonumber(itemid)]) then
+			for k,v in pairs(self.Consumables[tonumber(itemid)]) do
+				if (not bonuses[k] or bonuses[k] ~= v) then
+					bonuses[k] = v;
+					--Enhancer:Print("Added {1} points of {0}", k, v);
+				end
+			end
+		else
+			-- Make sure the shit is not empty
+			if (bonuses == nil or type(bonuses) ~= "table") then return; end
+			local isEmpty = true;
+			for k,v in pairs(bonuses) do
+				isEmpty = nil;
+				break;
+			end
+			if (isEmpty) then return; end
+		end
 		
 		local lineAdded = nil;
 		local kingsMultiplier = (110 / 100);

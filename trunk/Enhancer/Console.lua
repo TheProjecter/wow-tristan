@@ -59,6 +59,8 @@ local defaults = {
 	warnDeath = true,
 	warnSlain = true,
 	warnTime = 7,
+	purgeAnnounce = false,
+	purgeAnnounceRaidOnly = false,
 	
 	EPZero = true,
 	AEP = true,
@@ -1473,6 +1475,37 @@ function Enhancer:RegisterSlashCommands()
 					},
 				},
 			},
+			
+			[SpacerName()] = SpacerTable(),
+			
+			[L["purge_cmd"]] = {
+				type = "group",
+				name = L["purge_cmd"],
+				desc = L["purge_group_desc"],
+				order = OrderNum(),
+				args = {
+					[L["purge_cmd"]] = {
+						name = L["purge_cmd"], type = "toggle",
+						desc = L["purge_desc"],
+						get = function() return Enhancer.db.profile.purgeAnnounce; end,
+						set = function()
+							Enhancer.db.profile.purgeAnnounce = not Enhancer.db.profile.purgeAnnounce;
+						end,
+						order = OrderNum(),
+					},
+					[L["purge_raid_cmd"]] = {
+						name = L["purge_raid_cmd"], type = "toggle",
+						desc = L["purge_raid_desc"],
+						get = function() return Enhancer.db.profile.purgeAnnounceRaidOnly; end,
+						set = function()
+							Enhancer.db.profile.purgeAnnounceRaidOnly = not Enhancer.db.profile.purgeAnnounceRaidOnly;
+						end,
+						order = OrderNum(),
+					},
+				},
+			},
+			
+			[SpacerName()] = SpacerTable(),
 			
 			["sinkorder"] = OrderNum(),
 			

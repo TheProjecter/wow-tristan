@@ -73,6 +73,7 @@ Enhancer_WindfuryTotem\WindfuryTotem.lua
 Enhancer_Reincarnation\Reincarnation.lua
 Enhancer_EquivalencePoints\EP.lua
 Enhancer_EquivalencePoints\EPGems.lua
+Enhancer_EquivalencePoints\EPConsumables.lua
 Enhancer_Shield\Shield.lua
 Enhancer_EarthShield\EShield.lua
 Enhancer_HealingWay\HWay.lua

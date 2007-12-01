@@ -38,8 +38,19 @@ end
 
 function EnhancerPurge:Purge(info)
 	if (info.isFailed == false and info.sourceAbilityName == Enhancer.BS["Purge"]) then
-		Enhancer:Pour(string.format(L["purge_info"], info.recipientAbilityName));
-		-- Enhancer:Print(info.recipientName);
-		-- ["purge_info_long"] = "Purged %s from %s",
+		local what = info.recipientAbilityName or "Something";
+		local who = info.recipientName or UnitName("target") or "Unknown";
+		Enhancer:Pour(string.format(L["purge_info"], what));
+		
+		if ((GetNumRaidMembers() > 0 or GetNumPartyMembers() > 0) and Enhancer.db.profile.purgeAnnounce) then
+			local where = self:Group();
+			if ((not Enhancer.db.profile.purgeAnnounceRaidOnly and where == "PARTY") or where == "RAID") then
+				SendChatMessage(string.format(L["purge_info_long"], what, who), where);
+			end
+		end
 	end
+end
+
+function EnhancerPurge:Group()
+	return (GetNumRaidMembers() > 0 and "RAID") or (GetNumPartyMembers() > 0 and "PARTY");
 end
