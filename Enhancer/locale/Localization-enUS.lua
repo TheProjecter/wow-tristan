@@ -237,6 +237,8 @@ L_Main:RegisterTranslations(locale, function() return {
 	["fontcenter_desc"] = "Font settings for text in the center of the frame",
 	["fontbelow_cmd"] = "Below",
 	["fontbelow_desc"] = "Font settings for text below the frame",
+	["fontgauge_cmd"] = "Below",
+	["fontgauge_desc"] = "Font settings for text below the frame",
 	["fontname_cmd"] = "Font",
 	["fontname_desc"] = "Font type",
 	["fontsize_cmd"] = "Size",
@@ -310,6 +312,9 @@ L_Main:RegisterTranslations(locale, function() return {
 	["purge_group_desc"] = "Purge options (Purge module required for effect)",
 	["purge_raid_cmd"] = "Raid",
 	["purge_raid_desc"] = "Only announce to raids",
+	
+	["attackpower_cmd"] = "AttackPower",
+	["attackpower_desc"] = "Toggle showing Attack Power Gauge",
 }; end );
 
 local L_EP = AceLibrary("AceLocale-2.2"):new("EnhancerEP")
