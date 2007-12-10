@@ -81,5 +81,6 @@ Enhancer_Invigorated\Invigorated.lua
 Enhancer_TemporaryEnchants\Tench.lua
 Enhancer_Purge\Purge.lua
 Enhancer_WShield\WShield.lua
+Enhancer_AttackPower\AttackPower.lua
 
 debug.lua

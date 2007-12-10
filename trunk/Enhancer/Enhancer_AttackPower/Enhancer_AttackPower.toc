@@ -1,0 +1,8 @@
+## Interface: 20300
+## Title: Enhancer |cffd028d5[|r|cff7fffd4Attack Power|r|cffd028d5]|r
+## Notes: Attack Power Gauge
+## LoadOnDemand: 1
+## X-Category: Shaman
+## Dependencies: Enhancer
+
+AttackPower.lua

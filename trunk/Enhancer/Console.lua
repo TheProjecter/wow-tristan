@@ -94,6 +94,11 @@ local defaults = {
 	belowFontSize = 12,
 	belowFontFlags = "OUTLINE",
 	
+	gaugeFontID = "Friz Quadrata TT",
+	gaugeFontName = [[Fonts\FRIZQT__.ttf]],
+	gaugeFontSize = 10,
+	gaugeFontFlags = "OUTLINE",
+	
 	AEPNumbers = {
 		ATTACKPOWER = 1,
 		STR = 2,
@@ -1465,6 +1470,55 @@ function Enhancer:RegisterSlashCommands()
 								get = function() return Enhancer.db.profile.belowFontFlags; end,
 								set = function(v)
 									Enhancer.db.profile.belowFontFlags = v;
+									Enhancer:UpdateFont();
+								end,
+								validate = { "OUTLINE", "THICKOUTLINE", "NONE" },
+								usage = "<OUTLINE\|THICKOUTLINE\|NONE>",
+								order = OrderNum(),
+							},
+						},
+					},
+					
+					[SpacerName()] = SpacerTable(),
+					
+					[L["fontgauge_cmd"]] = {
+						type = "group",
+						name = L["fontgauge_cmd"],
+						desc = L["fontgauge_desc"],
+						order = OrderNum(),
+						args = {
+							[L["fontname_cmd"]] = {
+								name = L["fontname_cmd"], type = "text",
+								desc = L["fontname_desc"],
+								get = function() return SML:IsValid("font", Enhancer.db.profile.gaugeFontID) and Enhancer.db.profile.gaugeFontID; end,
+								set = function(v)
+									if (v) then
+										Enhancer.db.profile.gaugeFontID = v;
+										Enhancer.db.profile.gaugeFontName = SML:Fetch("font", Enhancer.db.profile.gaugeFontID);
+										Enhancer:UpdateFont();
+									end
+								end,
+								validate = SML_fonts,
+								usage = "<font name>",
+								order = OrderNum(),
+							},
+							[L["fontsize_cmd"]] = {
+								name = L["fontsize_cmd"], type = "range",
+								desc = L["fontsize_desc"],
+								min = 5, max = 16, step = 1, isPercent = false,
+								get = function() return Enhancer.db.profile.gaugeFontSize; end,
+								set = function(v)
+									Enhancer.db.profile.gaugeFontSize = v;
+									Enhancer:UpdateFont();
+								end,
+								order = OrderNum(),
+							},
+							[L["fontflag_cmd"]] = {
+								name = L["fontflag_cmd"], type = "text",
+								desc = L["fontflag_desc"],
+								get = function() return Enhancer.db.profile.gaugeFontFlags; end,
+								set = function(v)
+									Enhancer.db.profile.gaugeFontFlags = v;
 									Enhancer:UpdateFont();
 								end,
 								validate = { "OUTLINE", "THICKOUTLINE", "NONE" },
