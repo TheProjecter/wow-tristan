@@ -76,7 +76,7 @@ function EnhancerAttackPower:OnInitialize()
 	object:SetTextColor(1, 1, 1, alpha);
 	object:SetWidth(width);
 	object:SetHeight(15);
-	object:SetPoint("TOP", FrameName.."Cur", "TOP");
+	object:SetPoint("CENTER", FrameName.."Cur", "TOP", 0, -10);
 	object:SetJustifyH("CENTER");
 	object:SetJustifyV("MIDDLE");
 	object:SetText("Cur");
@@ -159,9 +159,11 @@ function EnhancerAttackPower:APowerChanged(arg1)
 		self.curTexture:SetTexture(cRed, cGreen, 0);
 		
 		if (cHeight < (height / 2)) then
-			self.curTexture:SetPoint("BOTTOM", FrameName.."Cur", "TOP");
+			-- Text above
+			self.curText:SetPoint("CENTER", FrameName.."Cur", "TOP", 0, 10);
 		else
-			self.curTexture:SetPoint("TOP", FrameName.."Cur", "TOP");
+			-- Text below
+			self.curText:SetPoint("CENTER", FrameName.."Cur", "TOP", 0, -10);
 		end
 	end
 end

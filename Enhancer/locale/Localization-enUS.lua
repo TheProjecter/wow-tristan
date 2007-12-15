@@ -156,7 +156,8 @@ L_Main:RegisterTranslations(locale, function() return {
 	["TotemDeath"] = "%s (%s) has expired",
 	
 	--[[ Announcements ]]--
-	["Announcement"] = "Enhancer is currently being developed if you find a bug somewhere or something you think is wrong, feel free to email me at dennis.hafstrom@gmail.com",
+	["Announcement"] = "If you find a bug somewhere or something you think is wrong, feel free to email me at dennis.hafstrom@gmail.com",
+	-- "Enhancer is currently being developed if you find a bug somewhere or something you think is wrong, feel free to email me at dennis.hafstrom@gmail.com",
 	["Announcement_cmd"] = "Announcement",
 	["Announcement_desc"] = "Announcement (the spam at load ;) settings",
 	["a_show_cmd"] = "Show",
