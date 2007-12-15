@@ -1,8 +1,9 @@
 local L = AceLibrary("AceLocale-2.2"):new("Enhancer");
 
-Enhancer.news = 5; -- Can only ever increase
+Enhancer.news = 6; -- Can only ever increase
 function Enhancer:News()
-	Enhancer.noannounce = true;
+	-- Announce disabled
+	-- Enhancer.noannounce = true;
 	
 	self:CreateNewsFrame();
 	
@@ -11,8 +12,11 @@ function Enhancer:News()
 	self.newsFrame.disclaimer:SetText(L["news_2"]);
 	
 	-- Full max length of line below including ");" at the end ------------------------------------
-	self.newsFrame:AddLine("Purge", 			"Added option to broadcast purges to party/raid if");
-	self.newsFrame:AddLine("", 						"purge module is available.");
+	self.newsFrame:AddLine("AP Gauge", 		"Added an attack power gauge that shows your current AP");
+	self.newsFrame:AddLine("", 						"and how much it fluctuates. Any suggestions on how to");
+	self.newsFrame:AddLine("", 						"make it prettier is most appreciated. Inspired by a");
+	self.newsFrame:AddLine("", 						"post on ElitistJerks that I can not find atm!");
+	self.newsFrame:AddLine("Toggle",			"/enh BonusFrames AttackPower");
 	
 		
 	self.newsFrame:AddLine("", "");

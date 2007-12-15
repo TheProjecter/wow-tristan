@@ -110,9 +110,11 @@ function Enhancer:OnInitialize()
 	self:LoadModules();
 	self:RegisterSlashCommands();
 
+	--[[ No more announce
 	if (not self.db.profile.startAnnounceDisabled) then
 		self:ScheduleEvent("DelayAnnounce", self.DelayAnnounce, 7, self)
 	end
+	]]--
 	self:ScheduleEvent("SnapPos", self.SnapPos, 2, self)
 	
 	if ((EnhancerNews or 0) < Enhancer.news) then
@@ -272,7 +274,7 @@ function Enhancer:FindParent(framename)
 end
 
 function Enhancer:DelayAnnounce()
-	if (self.noannounce) then return; end
+	-- if (self.noannounce) then return; end
 	self:Print(L["Announcement"]);
 end
 
