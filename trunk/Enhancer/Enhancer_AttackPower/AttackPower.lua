@@ -106,7 +106,6 @@ function EnhancerAttackPower:OnInitialize()
 			self:SavePos();
 		end );
 	
-	self:Hook(Enhancer, "ToggleLockForHooks", "LockHook");
 	self:LoadPos()
 	self:LockHook()
 end
@@ -121,8 +120,18 @@ function EnhancerAttackPower:OnEnable()
 	-- self:RegisterEvent("UNIT_STATS", "IsRight");
 	-- self:RegisterEvent("UNIT_DAMAGE", "IsRight");
 	
+	self:Hook(Enhancer, "ToggleLockForHooks", "LockHook");
+	
 	self.mainframe:Show();
 	self:LockHook();
+end
+
+function EnhancerAttackPower:OnDisable()
+	self:UnregisterAllEvents();
+	self:CancelAllScheduledEvents();
+	self:UnhookAll();
+	
+	self.mainframe:Hide();
 end
 
 function EnhancerAttackPower:APowerChanged(arg1)
@@ -173,13 +182,6 @@ function EnhancerAttackPower:SPowerChanged(arg1)
 	end
 end
 
-function EnhancerAttackPower:OnDisable()
-	self:UnregisterAllEvents();
-	self:CancelAllScheduledEvents();
-	
-	self.mainframe:Hide();
-end
-
 function EnhancerAttackPower:LockHook()
 	if (Enhancer.db.profile.locked) then
 		self.anchorframe:Hide();
@@ -187,7 +189,9 @@ function EnhancerAttackPower:LockHook()
 		self.anchorframe:Show();
 	end
 	
-	self.hooks[Enhancer]["ToggleLockForHooks"]();
+	if (self.hooks and self.hooks[Enhancer] and self.hooks[Enhancer]["ToggleLockForHooks"]) then
+		self.hooks[Enhancer]["ToggleLockForHooks"]();
+	end
 end
 
 function EnhancerAttackPower:SavePos()

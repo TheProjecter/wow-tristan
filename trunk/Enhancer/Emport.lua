@@ -41,6 +41,7 @@ end
 function Enhancer:CrazyShamanImport(data)
 	-- Assume the data will look like this (to avoid locale errors with fraction separators):
 	-- AP:10;STR:20;AGI:18;STA:0;CR:20;HR:14;HsR:15;RS:0;IA:10;
+	-- AP:100;CR:167;STR:200;AGI:148;HR:175;HsR:169;IA:023;ExP:258;
 	
 	local CrazyShamanLookup = {
 		["AP"] = "ATTACKPOWER",
@@ -52,6 +53,7 @@ function Enhancer:CrazyShamanImport(data)
 		["HsR"] = "CR_HASTE",
 		["RS"] = "CR_RESILIENCE",
 		["IA"] = "IGNOREARMOR",
+		["ExP"] = "CR_EXPERTISE",
 	};
 	
 	local standardizedData = {}
@@ -60,7 +62,7 @@ function Enhancer:CrazyShamanImport(data)
 		if (dataPart and dataPart ~= "") then
 			local identifier, number = strsplit(":", dataPart);
 			
-			local value = number / 10;
+			local value = number / 100;
 			local key = CrazyShamanLookup[identifier];
 			
 			if (key) then
