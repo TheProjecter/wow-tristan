@@ -17,7 +17,10 @@ function Enhancer:News()
 	self.newsFrame:AddLine("", 						"make it prettier is most appreciated. Inspired by a");
 	self.newsFrame:AddLine("", 						"post on ElitistJerks that I can not find atm!");
 	self.newsFrame:AddLine("Toggle",			"/enh BonusFrames AttackPower");
-	
+	self.newsFrame:AddLine("", "");
+	self.newsFrame:AddLine("Import", 	    "http://theorycraft.narod.ru/ now gives an import string");
+	self.newsFrame:AddLine("", 						"with 2 decimal digits, so updated the code to take use");
+	self.newsFrame:AddLine("", 						"of that. Also expertise was added");
 		
 	self.newsFrame:AddLine("", "");
 	self.newsFrame:AddLine("", "");
