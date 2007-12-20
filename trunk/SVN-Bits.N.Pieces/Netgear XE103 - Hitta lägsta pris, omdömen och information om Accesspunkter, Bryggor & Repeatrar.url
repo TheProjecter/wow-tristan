@@ -5,3 +5,11 @@ IconFile=http://prisjakt.nu/favicon.ico
 IconIndex=1
 [{000214A0-0000-0000-C000-000000000046}]
 Prop3=19,2
+[DEFAULT]
+BASEURL=http://prisjakt.nu/produkt.php?p=113126
+[DOC_DhtmlHistoryFrame]
+BASEURL=http://prisjakt.nu/js/blank.html?
+ORIGURL=/js/blank.html?
+[DOC#19]
+BASEURL=about:blank
+ORIGURL=
