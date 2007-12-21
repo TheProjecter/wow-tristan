@@ -282,8 +282,8 @@ L_Main:RegisterTranslations(locale, function() return {
 	["wshield_cmd"] = "Wasserschild",
 	["wshield_desc"] = "Wasserschild erinnerung anzeigen (an\/aus)",
 	["wshield_warn"] = "Schildanzeige abgeschaltet, da die Wasserschildanzeige aktiv ist",
-	["purger_cmd"] = "ReinigenEr",
-	["purger_desc"] = "Erinnerung f\195\188r Reinigen (an\/aus)",
+	--["purger_cmd"] = "ReinigenEr",
+	--["purger_desc"] = "Erinnerung f\195\188r Reinigen (an\/aus)",
 }; end );
 
 local L_EP = AceLibrary("AceLocale-2.2"):new("EnhancerEP")
