@@ -55,7 +55,8 @@ function Enhancer:CrazyShamanImport(data)
 		["HsR"] = "CR_HASTE",
 		["RS"] = "CR_RESILIENCE",
 		["IA"] = "IGNOREARMOR",
-		["ExP"] = "CR_EXPERTISE",
+		["ExP"] = "CR_EXPERTISE", -- Misstype should've been ExR but nvm.
+		["ExR"] = "CR_EXPERTISE",
 	};
 	
 	local standardizedData = {}

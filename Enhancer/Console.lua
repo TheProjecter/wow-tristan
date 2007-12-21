@@ -99,6 +99,14 @@ local defaults = {
 	gaugeFontSize = 10,
 	gaugeFontFlags = "OUTLINE",
 	
+	Gauges = {
+		AttackPower = {
+			Width = 32,
+			Height = 96,
+			TrueMax,
+		},
+	},
+	
 	AEPNumbers = {
 		ATTACKPOWER = 1,
 		STR = 2,
@@ -1478,13 +1486,70 @@ function Enhancer:RegisterSlashCommands()
 							},
 						},
 					},
+				},
+			},
+			
+			[SpacerName()] = SpacerTable(),
+			
+			[L["gauge_cmd"]] = {
+				type = "group",
+				name = L["gauge_cmd"],
+				desc = L["gauge_desc"],
+				order = OrderNum(),
+				args = {
+					[L["attackpower_cmd"]] = {
+						type = "group",
+						name = L["attackpower_cmd"],
+						desc = L["attackpower_cmd"],
+						order = OrderNum(),
+						args = {
+							[L["width_cmd"]] = {
+								name = L["width_cmd"], type = "range",
+								desc = L["width_cmd"],
+								min = 10, max = 100, step = 1, isPercent = false,
+								get = function() return Enhancer.db.profile.Gauges.AttackPower.Width; end,
+								set = function(v)
+									Enhancer.db.profile.Gauges.AttackPower.Width = v;
+									if (self:IsModuleActive("AttackPower")) then
+										EnhancerAttackPower:Resize();
+									end
+								end,
+								order = OrderNum(),
+							},
+							[L["height_cmd"]] = {
+								name = L["height_cmd"], type = "range",
+								desc = L["height_cmd"],
+								min = 25, max = 250, step = 1, isPercent = false,
+								get = function() return Enhancer.db.profile.Gauges.AttackPower.Height; end,
+								set = function(v)
+									Enhancer.db.profile.Gauges.AttackPower.Height = v;
+									if (self:IsModuleActive("AttackPower")) then
+										EnhancerAttackPower:Resize();
+									end
+								end,
+								order = OrderNum(),
+							},
+							[L["attackpower_max_cmd"]] = {
+								name = L["attackpower_max_cmd"], type = "toggle",
+								desc = L["attackpower_max_desc"],
+								get = function() return Enhancer.db.profile.Gauges.AttackPower.TrueMax; end,
+								set = function()
+									Enhancer.db.profile.Gauges.AttackPower.TrueMax = not Enhancer.db.profile.Gauges.AttackPower.TrueMax;
+									if (self:IsModuleActive("AttackPower")) then
+										EnhancerAttackPower:APowerChanged("player");
+									end
+								end,
+								order = OrderNum(),
+							},
+						},
+					},
 					
 					[SpacerName()] = SpacerTable(),
 					
-					[L["fontgauge_cmd"]] = {
+					[L["font_cmd"]] = {
 						type = "group",
-						name = L["fontgauge_cmd"],
-						desc = L["fontgauge_desc"],
+						name = L["font_cmd"],
+						desc = L["font_desc"],
 						order = OrderNum(),
 						args = {
 							[L["fontname_cmd"]] = {
@@ -1495,7 +1560,9 @@ function Enhancer:RegisterSlashCommands()
 									if (v) then
 										Enhancer.db.profile.gaugeFontID = v;
 										Enhancer.db.profile.gaugeFontName = SML:Fetch("font", Enhancer.db.profile.gaugeFontID);
-										Enhancer:UpdateFont();
+										if (self:IsModuleActive("AttackPower")) then
+											EnhancerAttackPower:Resize()
+										end
 									end
 								end,
 								validate = SML_fonts,
@@ -1509,7 +1576,9 @@ function Enhancer:RegisterSlashCommands()
 								get = function() return Enhancer.db.profile.gaugeFontSize; end,
 								set = function(v)
 									Enhancer.db.profile.gaugeFontSize = v;
-									Enhancer:UpdateFont();
+									if (self:IsModuleActive("AttackPower")) then
+										EnhancerAttackPower:Resize()
+									end
 								end,
 								order = OrderNum(),
 							},
@@ -1519,7 +1588,9 @@ function Enhancer:RegisterSlashCommands()
 								get = function() return Enhancer.db.profile.gaugeFontFlags; end,
 								set = function(v)
 									Enhancer.db.profile.gaugeFontFlags = v;
-									Enhancer:UpdateFont();
+									if (self:IsModuleActive("AttackPower")) then
+										EnhancerAttackPower:Resize()
+									end
 								end,
 								validate = { "OUTLINE", "THICKOUTLINE", "NONE" },
 								usage = "<OUTLINE\|THICKOUTLINE\|NONE>",
@@ -1529,8 +1600,6 @@ function Enhancer:RegisterSlashCommands()
 					},
 				},
 			},
-			
-			[SpacerName()] = SpacerTable(),
 			
 			[L["purge_cmd"]] = {
 				type = "group",

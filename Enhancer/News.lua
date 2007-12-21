@@ -1,4 +1,5 @@
 local L = AceLibrary("AceLocale-2.2"):new("Enhancer");
+local U = Enhancer_URLs;
 
 Enhancer.news = 6; -- Can only ever increase
 function Enhancer:News()
@@ -11,19 +12,24 @@ function Enhancer:News()
 	self.newsFrame.title:SetText(L["news_1"]);
 	self.newsFrame.disclaimer:SetText(L["news_2"]);
 	
-	-- Full max length of line below including ");" at the end ------------------------------------
-	self.newsFrame:AddLine("AP Gauge", 		"Added an attack power gauge that shows your current AP");
-	self.newsFrame:AddLine("", 						"and how much it fluctuates. Any suggestions on how to");
-	self.newsFrame:AddLine("", 						"make it prettier is most appreciated. Inspired by a");
-	self.newsFrame:AddLine("", 						"post on ElitistJerks that I can not find atm!");
-	self.newsFrame:AddLine("Toggle",			"/enh BonusFrames AttackPower");
+	-- Full max length of line below including ");" at the end --------------------------------------
+	-- News not increased yet but text added --------------------------------------------------------
+	self.newsFrame:AddLine("Gauges", 			"Made them quite a bit customizable, font, outline, size");
+	self.newsFrame:AddLine("Toggle",			"/enh " .. L["gauge_cmd"]);
 	self.newsFrame:AddLine("", "");
-	self.newsFrame:AddLine("Import", 	    "http://theorycraft.narod.ru/ now gives an import string");
-	self.newsFrame:AddLine("", 						"with 2 decimal digits, so updated the code to take use");
-	self.newsFrame:AddLine("", 						"of that. Also expertise was added");
-		
+	
+	self.newsFrame:AddLine(L["AEP Calc"], U["CrazyShamanCalc"]);
+	self.newsFrame:AddLine("", 						"This site let's you find and import your own Personal");
+	self.newsFrame:AddLine("", 						"AEP values. Use it!");
 	self.newsFrame:AddLine("", "");
+	
+	self.newsFrame:AddLine("Disable",			"If you get AddonLoader, Enhancer will disable itself for");
+	self.newsFrame:AddLine("", 						"non shamans, otherwise you'll have to disable it on");
+	self.newsFrame:AddLine("", 						"char selection screen. I will not code anything beyond");
+	self.newsFrame:AddLine("", 						"this functionallity for disabling, soz.");
 	self.newsFrame:AddLine("", "");
+	
+	self.newsFrame:AddLine("", ""); -- Add an extra here
 	self.newsFrame:AddLine(L["news_4"], L["news_7"]);
 	self.newsFrame:AddLine(L["news_5"], L["news_7"]);
 	self.newsFrame:AddLine(L["news_6"], L["news_7"]);

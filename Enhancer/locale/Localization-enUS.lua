@@ -238,8 +238,6 @@ L_Main:RegisterTranslations(locale, function() return {
 	["fontcenter_desc"] = "Font settings for text in the center of the frame",
 	["fontbelow_cmd"] = "Below",
 	["fontbelow_desc"] = "Font settings for text below the frame",
-	["fontgauge_cmd"] = "Below",
-	["fontgauge_desc"] = "Font settings for text below the frame",
 	["fontname_cmd"] = "Font",
 	["fontname_desc"] = "Font type",
 	["fontsize_cmd"] = "Size",
@@ -316,6 +314,17 @@ L_Main:RegisterTranslations(locale, function() return {
 	
 	["attackpower_cmd"] = "AttackPower",
 	["attackpower_desc"] = "Toggle showing Attack Power Gauge",
+	["attackpower_max_cmd"] = "TrueMax",
+	["attackpower_max_desc"] = "Toggle showing true max value or plus from current min value",
+	
+	["gauge_cmd"] = "Gauges",
+	["gauge_desc"] = "Settings for Gauges (Width/Height etc)",
+	
+	["width_cmd"] = "Width",
+	["height_cmd"] = "Height",
+	
+	["AEP Calc"] = "Calc AEP",
+	
 }; end );
 
 local L_EP = AceLibrary("AceLocale-2.2"):new("EnhancerEP")
