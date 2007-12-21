@@ -1,9 +1,11 @@
 EnhancerAttackPower = Enhancer:NewModule("AttackPower", "AceEvent-2.0", "AceHook-2.1");
 Enhancer:SetModuleDefaultState("AttackPower", false);
 local FrameName = "EnhancerFrameAPGauge";
-local width = 32;
-local height = 96;
+
 local alpha = (7 / 10);
+local txtWidth = 100;
+local txtHeight = 25;
+local txtOffset = 17;
 
 local L = AceLibrary("AceLocale-2.2"):new("Enhancer")
 function EnhancerAttackPower:GetConsoleOptions()
@@ -15,8 +17,8 @@ function EnhancerAttackPower:OnInitialize()
 	local object;
 	
 	object = CreateFrame("Button", FrameName.."Anchor", UIParent);
-	object:SetWidth(width);
-	object:SetHeight(height);
+	object:SetWidth(Enhancer.db.profile.Gauges.AttackPower.Width);
+	object:SetHeight(Enhancer.db.profile.Gauges.AttackPower.Height);
 	object:SetPoint("CENTER", UIParent, "CENTER", 0, 0);
 	object:SetMovable(true);
 	object:RegisterForDrag("LeftButton");
@@ -33,8 +35,8 @@ function EnhancerAttackPower:OnInitialize()
 	self.anchorframe = object;
 	
 	object = CreateFrame("Frame", FrameName, UIParent);
-	object:SetWidth(width);
-	object:SetHeight(height);
+	object:SetWidth(Enhancer.db.profile.Gauges.AttackPower.Width);
+	object:SetHeight(Enhancer.db.profile.Gauges.AttackPower.Height);
 	object:SetFrameStrata("BACKGROUND");
 	object:SetPoint("CENTER", FrameName.."Anchor", "CENTER", 0, 0);
 	object:SetMovable(true);
@@ -49,8 +51,8 @@ function EnhancerAttackPower:OnInitialize()
 	self.mainframe = object;
 	
 	object = self.mainframe:CreateTexture(FrameName.."Cur", "OVERLAY")
-	object:SetWidth(width);
-	object:SetHeight((height / 2));
+	object:SetWidth(Enhancer.db.profile.Gauges.AttackPower.Width);
+	object:SetHeight((Enhancer.db.profile.Gauges.AttackPower.Height / 2));
 	object:SetPoint("BOTTOM", FrameName, "BOTTOM", 0, 0);
 	object:SetTexture(1, 1, 0, alpha);
 	object:SetBlendMode("MOD");
@@ -61,8 +63,8 @@ function EnhancerAttackPower:OnInitialize()
 	object:SetFont(Enhancer.db.profile.gaugeFontName, Enhancer.db.profile.gaugeFontSize, Enhancer.db.profile.gaugeFontFlags);
 	object:ClearAllPoints();
 	object:SetTextColor(1, 1, 1, alpha);
-	object:SetWidth(width);
-	object:SetHeight(15);
+	object:SetWidth(txtWidth);
+	object:SetHeight(Enhancer.db.profile.gaugeFontSize + 4);
 	object:SetPoint("BOTTOM", FrameName, "TOP");
 	object:SetJustifyH("CENTER");
 	object:SetJustifyV("MIDDLE");
@@ -74,9 +76,9 @@ function EnhancerAttackPower:OnInitialize()
 	object:SetFont(Enhancer.db.profile.gaugeFontName, Enhancer.db.profile.gaugeFontSize, Enhancer.db.profile.gaugeFontFlags);
 	object:ClearAllPoints();
 	object:SetTextColor(1, 1, 1, alpha);
-	object:SetWidth(width);
-	object:SetHeight(15);
-	object:SetPoint("CENTER", FrameName.."Cur", "TOP", 0, -10);
+	object:SetWidth(txtWidth);
+	object:SetHeight(Enhancer.db.profile.gaugeFontSize + 4);
+	object:SetPoint("CENTER", FrameName.."Cur", "TOP", 0, ((Enhancer.db.profile.gaugeFontSize + 4) / 4));
 	object:SetJustifyH("CENTER");
 	object:SetJustifyV("MIDDLE");
 	object:SetText("Cur");
@@ -87,8 +89,8 @@ function EnhancerAttackPower:OnInitialize()
 	object:SetFont(Enhancer.db.profile.gaugeFontName, Enhancer.db.profile.gaugeFontSize, Enhancer.db.profile.gaugeFontFlags);
 	object:ClearAllPoints();
 	object:SetTextColor(1, 1, 1, alpha);
-	object:SetWidth(width);
-	object:SetHeight(15);
+	object:SetWidth(txtWidth);
+	object:SetHeight(Enhancer.db.profile.gaugeFontSize + 4);
 	object:SetPoint("TOP", FrameName, "BOTTOM");
 	object:SetJustifyH("CENTER");
 	object:SetJustifyV("MIDDLE");
@@ -111,14 +113,8 @@ function EnhancerAttackPower:OnInitialize()
 end
 
 function EnhancerAttackPower:OnEnable()
-	-- self:RegisterEvent("PLAYER_REGEN_ENABLED", "OutOfCombat");
-	-- self:RegisterEvent("PLAYER_REGEN_DISABLED", "EnterCombat");
-	
 	self:RegisterEvent("UNIT_ATTACK_POWER", "APowerChanged");
 	self:RegisterEvent("COMBAT_RATING_UPDATE", "SPowerChanged");
-	-- self:RegisterEvent("UNIT_ATTACK_SPEED", "IsRight");
-	-- self:RegisterEvent("UNIT_STATS", "IsRight");
-	-- self:RegisterEvent("UNIT_DAMAGE", "IsRight");
 	
 	self:Hook(Enhancer, "ToggleLockForHooks", "LockHook");
 	
@@ -132,6 +128,20 @@ function EnhancerAttackPower:OnDisable()
 	self:UnhookAll();
 	
 	self.mainframe:Hide();
+end
+
+function EnhancerAttackPower:Resize()
+	self.anchorframe:SetWidth(Enhancer.db.profile.Gauges.AttackPower.Width);
+	self.anchorframe:SetHeight(Enhancer.db.profile.Gauges.AttackPower.Height);
+	self.mainframe:SetWidth(Enhancer.db.profile.Gauges.AttackPower.Width);
+	self.mainframe:SetHeight(Enhancer.db.profile.Gauges.AttackPower.Height);
+	self.curTexture:SetWidth(Enhancer.db.profile.Gauges.AttackPower.Width);
+	
+	EnhancerAttackPower.maxText:SetFont(Enhancer.db.profile.gaugeFontName, Enhancer.db.profile.gaugeFontSize, Enhancer.db.profile.gaugeFontFlags);
+	EnhancerAttackPower.curText:SetFont(Enhancer.db.profile.gaugeFontName, Enhancer.db.profile.gaugeFontSize, Enhancer.db.profile.gaugeFontFlags);
+	EnhancerAttackPower.minText:SetFont(Enhancer.db.profile.gaugeFontName, Enhancer.db.profile.gaugeFontSize, Enhancer.db.profile.gaugeFontFlags);
+	
+	self:APowerChanged("player")
 end
 
 function EnhancerAttackPower:APowerChanged(arg1)
@@ -150,12 +160,13 @@ function EnhancerAttackPower:APowerChanged(arg1)
 		
 		local cCur = cur - self.MIN;
 		local cMax = self.MAX - self.MIN;
-		local cHeight = (cCur / cMax) * height;
+		local cHeight = (cCur / cMax) * Enhancer.db.profile.Gauges.AttackPower.Height;
 		
 		-- Redo this to make it go from full red to full green/red to full green
 		local cHalf = cMax / 2;
 		local cGreen = 1; --(cCur / cMax);
 		local cRed = 1; --(1 - cGreen);
+		local cBlue = 0;
 		
 		if (cCur > cHalf) then
 			-- Remove some red from the bar
@@ -167,24 +178,28 @@ function EnhancerAttackPower:APowerChanged(arg1)
 		
 		
 		self.curText:SetText("+"..cCur);
-		self.maxText:SetText("+"..self.MAX - self.MIN);
+		if (Enhancer.db.profile.Gauges.AttackPower.TrueMax) then
+			self.maxText:SetText(self.MAX);
+		else
+			self.maxText:SetText("+"..self.MAX - self.MIN);
+		end
 		
 		if (self.MIN == self.MAX) then
-			cHeight = height / 2;
+			cHeight = Enhancer.db.profile.Gauges.AttackPower.Height / 2;
 			cRed = 1;
 			cGreen = 1;
 		end
 		
 		-- calc heights
 		self.curTexture:SetHeight(cHeight);
-		self.curTexture:SetTexture(cRed, cGreen, 0);
+		self.curTexture:SetTexture(cRed, cGreen, cBlue);
 		
-		if (cHeight < (height / 2)) then
+		if (cHeight < (Enhancer.db.profile.Gauges.AttackPower.Height / 2)) then
 			-- Text above
-			self.curText:SetPoint("CENTER", FrameName.."Cur", "TOP", 0, 10);
+			self.curText:SetPoint("CENTER", FrameName.."Cur", "TOP", 0, ((Enhancer.db.profile.gaugeFontSize + 4) / 4));
 		else
 			-- Text below
-			self.curText:SetPoint("CENTER", FrameName.."Cur", "TOP", 0, -10);
+			self.curText:SetPoint("CENTER", FrameName.."Cur", "TOP", 0, (0 - ((Enhancer.db.profile.gaugeFontSize + 4) / 4)));
 		end
 	end
 end
