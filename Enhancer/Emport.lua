@@ -22,7 +22,9 @@ function Enhancer:StandardAEPImport(standardizedData)
 		if (not changed[key]) then
 			-- self.db.profile.AEPNumbers[key] = 0;
 			
-			if (userShouldCheck) then
+			if (key == "MH_DPS" or key == "OH_DPS") then
+				-- Ignore!
+			elseif (userShouldCheck) then
 				userShouldCheck = strjoin(", ", userShouldCheck, L[key]);
 			else
 				userShouldCheck = L[key];

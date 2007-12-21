@@ -151,8 +151,20 @@ function EnhancerAttackPower:APowerChanged(arg1)
 		local cCur = cur - self.MIN;
 		local cMax = self.MAX - self.MIN;
 		local cHeight = (cCur / cMax) * height;
-		local cGreen = (cCur / cMax);
-		local cRed = (1 - cGreen);
+		
+		-- Redo this to make it go from full red to full green/red to full green
+		local cHalf = cMax / 2;
+		local cGreen = 1; --(cCur / cMax);
+		local cRed = 1; --(1 - cGreen);
+		
+		if (cCur > cHalf) then
+			-- Remove some red from the bar
+			cRed = 1 - ((cCur - cHalf) / (cMax - cHalf));
+		elseif (cCur < cHalf) then
+			-- Remove some green from the bar
+			cGreen = cCur / (cMax - cHalf);
+		end
+		
 		
 		self.curText:SetText("+"..cCur);
 		self.maxText:SetText("+"..self.MAX - self.MIN);
