@@ -177,11 +177,13 @@ function EnhancerAttackPower:APowerChanged(arg1)
 		end
 		
 		
-		self.curText:SetText("+"..cCur);
+		
 		if (Enhancer.db.profile.Gauges.AttackPower.TrueMax) then
 			self.maxText:SetText(self.MAX);
+			self.curText:SetText(cur);
 		else
 			self.maxText:SetText("+"..self.MAX - self.MIN);
+			self.curText:SetText("+"..cCur);
 		end
 		
 		if (self.MIN == self.MAX) then
