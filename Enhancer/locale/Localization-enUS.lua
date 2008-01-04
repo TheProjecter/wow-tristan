@@ -314,8 +314,8 @@ L_Main:RegisterTranslations(locale, function() return {
 	
 	["attackpower_cmd"] = "AttackPower",
 	["attackpower_desc"] = "Toggle showing Attack Power Gauge",
-	["attackpower_max_cmd"] = "TrueMax",
-	["attackpower_max_desc"] = "Toggle showing true max value or plus from current min value",
+	["attackpower_max_cmd"] = "TrueValues",
+	["attackpower_max_desc"] = "Toggle showing true values or plus from current min value",
 	
 	["gauge_cmd"] = "Gauges",
 	["gauge_desc"] = "Settings for Gauges (Width/Height etc)",
@@ -343,7 +343,7 @@ L_EP:RegisterTranslations(locale, function() return {
 	["Chance on hit:"] = "Chance on hit:",
 	
 	--[[ Tooltip strings ]]--
-	["eep_info"] = "Enhancer's Equivalence Points (inc BoK)%s:",
+	["eep_info"] = "Enhancer's Equivalence Points (BoKed)%s:",
 	
 	["aep_tooltip"] = string.rep(" ", 3) .. "AttackpowerEP%s:",
 	["aep_info"] = "AEP model from Tornhoof/Pater", -- Not used atm
