@@ -68,3 +68,18 @@
 	self.newsFrame:AddLine("Import", 	    "http://theorycraft.narod.ru/ now gives an import string");
 	self.newsFrame:AddLine("", 						"with 2 decimal digits, so updated the code to take use");
 	self.newsFrame:AddLine("", 						"of that. Also expertise was added");
+7)
+	self.newsFrame:AddLine("Gauges", 			"Made them quite a bit customizable, font, outline, size");
+	self.newsFrame:AddLine("Toggle",			"/enh " .. L["gauge_cmd"]);
+	self.newsFrame:AddLine("", "");
+	
+	self.newsFrame:AddLine(L["AEP Calc"], U["CrazyShamanCalc"]);
+	self.newsFrame:AddLine("", 						"This site let's you find and import your own Personal");
+	self.newsFrame:AddLine("", 						"AEP values. Use it!");
+	self.newsFrame:AddLine("", "");
+	
+	self.newsFrame:AddLine("Disable",			"If you get AddonLoader, Enhancer will disable itself for");
+	self.newsFrame:AddLine("", 						"non shamans, otherwise you'll have to disable it on");
+	self.newsFrame:AddLine("", 						"char selection screen. I will not code anything beyond");
+	self.newsFrame:AddLine("", 						"this functionallity for disabling, soz.");
+	self.newsFrame:AddLine("", "");
