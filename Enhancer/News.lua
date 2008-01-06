@@ -1,7 +1,7 @@
 local L = AceLibrary("AceLocale-2.2"):new("Enhancer");
 local U = Enhancer_URLs;
 
-Enhancer.news = 6; -- Can only ever increase
+Enhancer.news = 7; -- Can only ever increase
 function Enhancer:News()
 	-- Announce disabled
 	-- Enhancer.noannounce = true;
@@ -15,6 +15,7 @@ function Enhancer:News()
 	-- Full max length of line below including ");" at the end --------------------------------------
 	-- News not increased yet but text added --------------------------------------------------------
 	self.newsFrame:AddLine("Gauges", 			"Made them quite a bit customizable, font, outline, size");
+	self.newsFrame:AddLine("", 						"more settings and a reset is planned in a near future!");
 	self.newsFrame:AddLine("Toggle",			"/enh " .. L["gauge_cmd"]);
 	self.newsFrame:AddLine("", "");
 	
