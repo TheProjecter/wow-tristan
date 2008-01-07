@@ -1,7 +1,7 @@
 local L = AceLibrary("AceLocale-2.2"):new("Enhancer");
 local U = Enhancer_URLs;
 
-Enhancer.news = 7; -- Can only ever increase
+Enhancer.news = 8; -- Can only ever increase
 function Enhancer:News()
 	-- Announce disabled
 	-- Enhancer.noannounce = true;
@@ -14,21 +14,12 @@ function Enhancer:News()
 	
 	-- Full max length of line below including ");" at the end --------------------------------------
 	-- News not increased yet but text added --------------------------------------------------------
-	self.newsFrame:AddLine("Gauges", 			"Made them quite a bit customizable, font, outline, size");
-	self.newsFrame:AddLine("", 						"more settings and a reset is planned in a near future!");
-	self.newsFrame:AddLine("Toggle",			"/enh " .. L["gauge_cmd"]);
-	self.newsFrame:AddLine("", "");
-	
-	self.newsFrame:AddLine(L["AEP Calc"], U["CrazyShamanCalc"]);
-	self.newsFrame:AddLine("", 						"This site let's you find and import your own Personal");
-	self.newsFrame:AddLine("", 						"AEP values. Use it!");
-	self.newsFrame:AddLine("", "");
-	
-	self.newsFrame:AddLine("Disable",			"If you get AddonLoader, Enhancer will disable itself for");
-	self.newsFrame:AddLine("", 						"non shamans, otherwise you'll have to disable it on");
-	self.newsFrame:AddLine("", 						"char selection screen. I will not code anything beyond");
-	self.newsFrame:AddLine("", 						"this functionallity for disabling, soz.");
-	self.newsFrame:AddLine("", "");
+	self.newsFrame:AddLine("Gauges", 			"Got annoyed by playing AV (or any BG) and having a very");
+	self.newsFrame:AddLine("", 						"low minimum due to debuffs that are not available in");
+	self.newsFrame:AddLine("", 						"PVE. So added a slashcommand to reset them that can be");
+	self.newsFrame:AddLine("", 						"used by macros.");
+	self.newsFrame:AddLine("Toggle",			"/" .. L["Gauge_Reset"]);
+	self.newsFrame:AddLine("", 						"");
 	
 	self.newsFrame:AddLine("", ""); -- Add an extra here
 	self.newsFrame:AddLine(L["news_4"], L["news_7"]);

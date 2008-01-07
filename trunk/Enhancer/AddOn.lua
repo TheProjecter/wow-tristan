@@ -120,6 +120,8 @@ function Enhancer:OnInitialize()
 	if ((EnhancerNews or 0) < Enhancer.news) then
 		self:News();
 	end
+	
+	Enhancer:RegisterSlashCommand("/EnhDev", function(param) self:InDevelopment(param) end)
 end
 
 function Enhancer:OnEnable()

@@ -1541,6 +1541,19 @@ function Enhancer:RegisterSlashCommands()
 								end,
 								order = OrderNum(),
 							},
+							
+							[SpacerName()] = SpacerTable(),
+							
+							[L["gauge_reset_cmd"]] = {
+								name = L["gauge_reset_cmd"], type = "execute",
+								desc = L["gauge_reset_desc"],
+								func = function(v)
+									if (self:IsModuleActive("AttackPower")) then
+										EnhancerAttackPower:ResetValues();
+									end
+								end,
+								order = OrderNum(),
+							},
 						},
 					},
 					

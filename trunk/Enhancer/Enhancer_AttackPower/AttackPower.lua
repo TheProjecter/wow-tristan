@@ -68,7 +68,7 @@ function EnhancerAttackPower:OnInitialize()
 	object:SetPoint("BOTTOM", FrameName, "TOP");
 	object:SetJustifyH("CENTER");
 	object:SetJustifyV("MIDDLE");
-	object:SetText("Max");
+	object:SetText("");
 	self.maxText = object;
 	
 	object = self.mainframe:CreateFontString(FrameName.."TextCur", "OVERLAY");
@@ -81,7 +81,7 @@ function EnhancerAttackPower:OnInitialize()
 	object:SetPoint("CENTER", FrameName.."Cur", "TOP", 0, ((Enhancer.db.profile.gaugeFontSize + 4) / 4));
 	object:SetJustifyH("CENTER");
 	object:SetJustifyV("MIDDLE");
-	object:SetText("Cur");
+	object:SetText("");
 	self.curText = object;
 	
 	object = self.mainframe:CreateFontString(FrameName.."TextMin", "OVERLAY");
@@ -94,7 +94,7 @@ function EnhancerAttackPower:OnInitialize()
 	object:SetPoint("TOP", FrameName, "BOTTOM");
 	object:SetJustifyH("CENTER");
 	object:SetJustifyV("MIDDLE");
-	object:SetText("Min");
+	object:SetText("");
 	self.minText = object;
 	
 	self.anchorframe:SetScript("OnDragStart",
@@ -108,6 +108,8 @@ function EnhancerAttackPower:OnInitialize()
 			self:SavePos();
 		end );
 	
+	Enhancer:RegisterSlashCommand(L["Gauge_Reset"], function(param) self:ResetValues(param) end)
+	
 	self:LoadPos()
 	self:LockHook()
 end
@@ -120,6 +122,8 @@ function EnhancerAttackPower:OnEnable()
 	
 	self.mainframe:Show();
 	self:LockHook();
+	
+	self:ResetValues();
 end
 
 function EnhancerAttackPower:OnDisable()
@@ -128,6 +132,13 @@ function EnhancerAttackPower:OnDisable()
 	self:UnhookAll();
 	
 	self.mainframe:Hide();
+end
+
+function EnhancerAttackPower:ResetValues(param)
+	self.MIN = nil;
+	self.MAX = nil;
+	
+	self:APowerChanged("player")
 end
 
 function EnhancerAttackPower:Resize()
@@ -141,7 +152,7 @@ function EnhancerAttackPower:Resize()
 	EnhancerAttackPower.curText:SetFont(Enhancer.db.profile.gaugeFontName, Enhancer.db.profile.gaugeFontSize, Enhancer.db.profile.gaugeFontFlags);
 	EnhancerAttackPower.minText:SetFont(Enhancer.db.profile.gaugeFontName, Enhancer.db.profile.gaugeFontSize, Enhancer.db.profile.gaugeFontFlags);
 	
-	self:APowerChanged("player")
+	self:ResetValues();
 end
 
 function EnhancerAttackPower:APowerChanged(arg1)

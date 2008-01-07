@@ -1,0 +1,48 @@
+local optionsBg = {
+  bgFile = "Interface\\AddOns\\Enhancer\\texture\\mover",--"Interface\\Tooltips\\UI-Tooltip-Background",
+  edgeFile = nil,--"Interface\\Tooltips\\UI-Tooltip-Border",
+  edgeSize = 0,--16,
+  insets = {left = 0, right = 0, top = 0, bottom = 0},--{left = 5, right = 5, top = 5, bottom = 5},
+  tile = false, tileSize = 0,
+};
+Enhancer.LegoBlocks = {};
+function Enhancer:InDevelopment(param)
+	local LibStub = getglobal("LibStub");
+	local lego = LibStub:GetLibrary("LegoBlock-Beta1");
+	
+	local color = string.gsub(param, " ", "");
+	
+	if (not color or color == "") then
+		--Recreate all legoblocks:
+		for k,_ in pairs(self.db.profile.legoblocks) do
+			color = k;
+			if (not Enhancer.LegoBlocks[color]) then
+				self.db.profile.legoblocks[color]["bg"] = optionsBg;
+				self.db.profile.legoblocks[color]["width"] = 30;
+				Enhancer.LegoBlocks[color] = lego:New(color .. "Block", "", nil, self.db.profile.legoblocks[color]);
+			end
+		end
+		return;
+	end
+	
+	if (not self.db.profile.legoblocks) then self.db.profile.legoblocks = {}; end
+	
+	if (not self.db.profile.legoblocks[color]) then
+		self.db.profile.legoblocks[color] = {
+		  width = 30,
+		  height = 30,
+		  text = "color",
+		  icon = nil,
+		  x = nil,
+		  y = nil,
+		  anchor = nil,
+		  showIcon = nil,
+		  showText = true,
+		  hidden = nil,
+		  savedFields = nil,
+		  bg = optionsBg,
+		  noResize = true,
+		};
+		Enhancer.LegoBlocks[color] = lego:New(color .. "Block", "", nil, self.db.profile.legoblocks[color]);
+	end
+end

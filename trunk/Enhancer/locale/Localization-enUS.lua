@@ -325,6 +325,9 @@ L_Main:RegisterTranslations(locale, function() return {
 	
 	["AEP Calc"] = "Calc AEP",
 	
+	["Gauge_Reset"] = "APGReset", -- Slashcommand (do not include the / (slash)
+	["gauge_reset_cmd"] = "Reset",
+	["gauge_reset_desc"] = "Reset all values to current values",
 }; end );
 
 local L_EP = AceLibrary("AceLocale-2.2"):new("EnhancerEP")

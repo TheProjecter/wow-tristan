@@ -192,6 +192,23 @@ function Enhancer:UpdateFont()
 	end
 end
 
+function Enhancer:InDevelopment(param)
+	-- Just a function for testing stuff that I want to test :)
+end
+
+function Enhancer:RegisterSlashCommand(slashcommand, func)
+	local scmd = strtrim(slashcommand, " /");
+	
+	if (scmd and scmd ~= "") then
+		local stype = "ENHANCER_SHORTHAND_"..strupper(scmd);
+		
+		if (not getglobal("SLASH_" .. stype .. "1")) then
+			SlashCmdList[stype] = func;
+			setglobal("SLASH_" .. stype .. "1", "/"..strlower(scmd));
+		end
+	end
+end
+
 function Enhancer:FormatTime(seconds)
 	if (seconds < 0) then seconds = 0; end
 	
