@@ -1,13 +1,21 @@
 #summary Enhancer a Shaman AddOn for World of Warcraft.
 
 = Features: =
- * Totem Timers
+ * Totem Timers [Enhancer_TotemFrames info]
   # Ability to turn each element's (earth, fire, water, air) timer on and off
- * Reincarnation Timer
- * Windfury _"hidden"_ cooldown
- * Invigorated (still untested as I don't have the gear ;)
- * Temporary Enchants
- * Equivalence Points
+  # Extra WF frame for twisters [Enhancer_WindfuryTotemFrame info]
+ * Reincarnation Timer [Enhancer_ReincarnationFrame info]
+ * Windfury _"hidden"_ cooldown [Enhancer_WindfuryFrame info]
+ * Invigorated [Enhancer_InvigoratedFrame info]
+ * Temporary Enchants [Enhancer_TemporaryEnchantsFrames info]
+ * Shield (Lightning/Water) [Enhancer_ShieldFrame info]
+ * Shield (Water) [Enhancer_WShieldFrame info]
+ * Shield (Earth)  [Enhancer_EarthShieldFrame info]
+ * Stormstrike [Enhancer_StormstrikeFrame info]
+ * Healing Way [Enhancer_HealingWayFrame info]
+ * Purge info [Enhancer_Purge info]
+ * Attack Power Gauge [Enhancer_APGaugeFrame info]
+ * Equivalence Points [Enhancer_EquivalencePoints info]
   # Attackpower
   # Healing
   # spellDamage
@@ -17,10 +25,8 @@
 Each frame/button can be turned on and off including individual elements.
 
 = To do: =
- # Shield (Lightning/Water)
- # Shield Earth
+ # Some stuff
 
 = Download: =
  * Embedded externals [http://files.wowace.com/Enhancer/Enhancer.zip Enhancer]
  * Without externals [http://files.wowace.com/Enhancer/no-ext/Enhancer.zip Enhancer]
- * You can also download a copy from the repository BUT that's without externals and includes things not yet complete aswell as some debug stuff etc [http://wow-tristan.googlecode.com/svn/trunk/Enhancer/ SVN]
