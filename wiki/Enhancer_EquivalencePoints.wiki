@@ -1,0 +1,24 @@
+#summary Equivalence Points Information.
+
+=Equivalence Points=
+
+Enhancer supports multiple sorts of equivalence points, I'll do my best at explaining them below.
+
+
+==Personalized AEP values==
+[http://theorycraft.narod.ru/ Crazy Shaman's DPS & AEP calculator (c) Yo]
+
+
+===Attackpower Equivalence Points (AEP)===
+This tries to convert all stats on an item, consumable or gem into Attack Power and present that as a number. There is an alternative without hit as well since you could be hit capped or w/e
+
+
+===Healing Equivalence Points (HEP)===
+Same as above but converts to +1 Healing Spells. No without hit as healing spells can't miss anyway.
+
+
+===Damage Equivalence Points (DEP)===
+Same as above but converts to +1 Spell Damage. Alternatively without hit if you are hit capped or w/e.
+
+===Enhancer Itemization Points===
+This uses the AEP values to figure out what stats you _"care"_ about. It then calculates the Itemization Points spent onto stats that you _"care"_ about and presents it in the tooltip. This only shows wich item was more expensive to make for you. An Item Level of sorts that ignores stats we don't want. More info here: [http://www.wowwiki.com/Formulas:Item_values Item Values on WoWWiki]
