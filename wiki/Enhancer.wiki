@@ -25,7 +25,7 @@
 Each frame/button can be turned on and off including individual elements.
 
 = To do: =
- # Some stuff
+ # Finish the rest of the pages on this wiki
 
 = Download: =
  * Embedded externals [http://files.wowace.com/Enhancer/Enhancer.zip Enhancer]
