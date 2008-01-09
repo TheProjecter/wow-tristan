@@ -10,6 +10,9 @@ Spec: *Enhancement*, *Restoration*, *Elemental*
 This tries to convert all stats on an item, consumable or gem into Attack Power and present that as a number. There is an alternative without hit as well since you could be hit capped or w/e
 
 
+===Weapon Attackpower Equivalence Points (AEP)===
+Tries to calculate WAEP from weapon speed and top/low damage work to this was again done in a thread on Elitist Jerks that I can not find atm.
+
 ===Healing Equivalence Points (HEP)===
 Same as above but converts to +1 Healing Spells. No without hit as healing spells can't miss anyway.
 
