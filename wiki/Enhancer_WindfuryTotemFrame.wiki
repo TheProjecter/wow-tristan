@@ -1,0 +1,12 @@
+=Purge=
+Spec: *Enhancement*_, *Restoration*, *Elemental*_
+
+
+===Usefull info===
+This module will show an extra frame whenever you cast Windfury Totem with a 9 sec countdown. This is usefull for twisters so that they know when they need to refresh Windfury Totem.
+
+
+===Usefull Commands===
+|| Toggle: || ´/enh !BonusFrames !WindfuryTotem´ ||
+
+Back to [Enhancer Main Page]
