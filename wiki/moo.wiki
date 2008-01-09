@@ -1,2 +1,0 @@
-=Purge=
-Spec: *Enhancement*, *Restoration*, *Elemental*
