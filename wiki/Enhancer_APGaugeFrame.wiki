@@ -20,3 +20,5 @@ When the bar is greenish or above 50% is a good time to recast Healing Stream To
 || Width: || ´/enh Gauges !AttackPower Width <Value>´ ||
 || Height: || ´/enh Gauges !AttackPower Height <Value>´ ||
 || Reset: || ´/enh Gauges !AttackPower Reset´ usefull after playing battlegrounds and having to wide range on the gauge ||
+
+[[Enhancer]]
