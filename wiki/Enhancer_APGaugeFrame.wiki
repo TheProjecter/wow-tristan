@@ -1,16 +1,22 @@
-= Attack Power Gauge =
+=Attack Power Gauge=
+Spec: *Enhancement*
 
-This is just a simple square frame with a colored fill. The fill changes size and color based on your AP.
+===Details===
+http://wow-tristan.googlecode.com/svn/trunk/WikiImages/APGauge.jpg
+
+This is just a simple square frame with a changing colorized filling.
 
 Green = Relatively much attack power.
-Red = Relatively low attack power.
 
 Orange = Relatively mid attack power.
 
+Red = Relatively low attack power.
 
-= Details =
+When the bar is greenish or above 50% is a good time to recast Healing Stream Totem and such considering we get Spell Damage and Healing from AP.
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+===Usefull Commands===
+|| On/Off: || ´/enh !BonusFrames !AttackPower´ ||
+|| _"True"_ Values/+: || ´/enh Gauges !AttackPower !TrueValues´ ||
+|| Width: || ´/enh Gauges !AttackPower Width <Value>´ ||
+|| Height: || ´/enh Gauges !AttackPower Height <Value>´ ||
+|| Reset: || ´/enh Gauges !AttackPower Reset´ usefull after playing battlegrounds and having to wide range on the gauge ||
