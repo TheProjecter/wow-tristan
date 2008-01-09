@@ -38,7 +38,7 @@ Things marked as _Not complete_ still have trinkets/gems that needs to be calcul
 ===Usefull Commands===
 || AEP On/Off: || ´/enh EPTypes AEP´ ||
 || AEP without Hit On/Off: || ´/enh EPTypes AEPwoH´ ||
-|| !WeaponAEP On/Off: || ´/enh EPTypes WAEP´ ||
+|| WeaponAEP On/Off: || ´/enh EPTypes WAEP´ ||
 || HEP On/Off: || ´/enh EPTypes HEP´ ||
 || DEP On/Off: || ´/enh EPTypes DEP´ ||
 || DEP without Hit On/Off: || ´/enh EPTypes DEPwoH´ ||
