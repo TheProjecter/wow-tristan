@@ -1,5 +1,5 @@
 =Purge=
-Spec: Any that is twisting Windfury for a melee group.
+Spec: *Any that is twisting Windfury for a melee group.*
 
 
 ===Usefull info===
