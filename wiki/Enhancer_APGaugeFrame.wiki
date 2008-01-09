@@ -1,0 +1,16 @@
+= Attack Power Gauge =
+
+This is just a simple square frame with a colored fill. The fill changes size and color based on your AP.
+
+Green = Relatively much attack power.
+Red = Relatively low attack power.
+
+Orange = Relatively mid attack power.
+
+
+= Details =
+
+Add your content here.  Format your content with:
+  * Text in *bold* or _italic_
+  * Headings, paragraphs, and lists
+  * Automatic links to other wiki pages
