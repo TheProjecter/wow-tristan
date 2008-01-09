@@ -1,4 +1,4 @@
-=Purge=
+=Windfury Totem=
 Spec: *Any that is twisting Windfury for a melee group.*
 
 
