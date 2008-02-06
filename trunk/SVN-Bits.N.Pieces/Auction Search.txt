@@ -1,0 +1,62 @@
+--[[ Auction Test ]]
+local self = Rightclick;
+
+local buyID = 23077;
+local buyName = "Blood Garnet";
+local buyMax = 1;
+local buyPrice = 10;
+
+QueryAuctionItems(buyName, "", "", nil, nil, nil, 0, nil, nil);
+local numBatchAuctions, totalAuctions = GetNumAuctionItems("list");
+
+for index = 1, totalAuctions do
+	local itemLink = GetAuctionItemLink("list", index);
+	local itemName, itemTexture, itemCount, itemQuality, itemCanUse, itemLevel, itemMinBid, itemMinIncrement, itemBuyoutPrice, itemBidAmount, itemHighBidder, itemOwner = GetAuctionItemInfo("list", index);
+	local found, _, itemString = string.find(itemLink, "^\124%x+\124H(.+)\124h%[.+%]");
+	local suffixFactor = 0;
+	local linkType, itemID, enchantID, jewelID1, jewelID2, jewelID3, jewelID4, suffixID, uniqueID = strsplit(":", itemString);
+	suffixID = tonumber(suffixID) or 0;
+	uniqueID = tonumber(uniqueID) or 0;
+	if (linkType == "item") then if (suffixID < 0) then suffixFactor = bit.band(uniqueID, 65535); end end
+	
+	if ( buyID == itemID ) then
+		self:Print( "Correct ID:", itemID );
+		if ( string.lower(buyName) == string.lower(itemName) ) then
+			self:Print( "Correct Name:", itemName );
+			if (highBidder) then
+				self:Print( "You are high bidder so skipping" );
+			else
+				local buyoutUsed = false;
+				
+				if ( itemBuyoutPrice ~= 0 ) then
+					local itemBuyoutPricePer = itemBuyoutPrice / itemCount;
+					
+					if ( itemBuyoutPricePer < buyPrice ) then
+						self:Print( "Buyout lower then your max:", itemBuyoutPricePer, "<", buyPrice );
+						buyoutUsed = true;
+					end
+				end
+				
+				if ( not buyoutUsed ) then
+					self:Print( itemMinBid, itemMinIncrement, itemBidAmount );
+				end
+			end
+		end
+	end
+end
+
+--[[
+	self:Print( itemLink, itemID, GetAuctionItemInfo("list", index) )
+	
+	AuctionFrameAuctions.page = AuctionFrameAuctions.page + 1;
+	AuctionsScrollFrameScrollBar:SetValue(0);
+	GetOwnerAuctionItems(AuctionFrameAuctions.page);
+	this:Disable();
+
+CanSendAuctionQuery() 
+
+
+In fact it does get fired (AUCTION_ITEM_LIST_UPDATE) if the query is allowed. Blizzard only allows a query once every 5 seconds. Once you submit a query, you must wait 5 seconds to submit the next query.
+
+QueryAuctionItems("name", minLevel, maxLevel, invTypeIndex, classIndex, subclassIndex, page, isUsable, qualityIndex)"
+]]
