@@ -241,9 +241,9 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 		--[[ Do Weapon Equivalence Points ]]--
 		if (Enhancer.db.profile.WAEP and bonuses["WEAPON_SPEED"] and bonuses["WEAPON_MAX"] and bonuses["WEAPON_MIN"]) then
 			local values = {};
-			for stat,value in pairs(Enhancer.db.profile.HEPNumbers) do
+			for stat,value in pairs(Enhancer.db.profile.AEPNumbers) do
 				values[stat] = {};
-				values[stat]["value"] = Enhancer.db.profile.HEPNumbers[stat];
+				values[stat]["value"] = Enhancer.db.profile.AEPNumbers[stat];
 				values[stat]["kings"] = EnhancerEP.AffectedByKings[stat];
 			end
 			local dps = Enhancer:Round(((bonuses["WEAPON_MAX"] + bonuses["WEAPON_MIN"] ) / 2) / bonuses["WEAPON_SPEED"]);
@@ -251,7 +251,7 @@ function EnhancerEP.ProcessTooltip(tooltip, name, link)
 			local mhaep = dps * Enhancer.db.profile.AEPNumbers["MH_DPS"] * multiplier;
 			local ohaep = dps * Enhancer.db.profile.AEPNumbers["OH_DPS"] * multiplier;
 			
-			local EP, EPK, gem1, gem2, gem3, gem4 = EnhancerEP:Calculate(values, bonuses, nonMetaSockets, metaSockets, "HEP", itemRarity);
+			local EP, EPK, gem1, gem2, gem3, gem4 = EnhancerEP:Calculate(values, bonuses, nonMetaSockets, metaSockets, "AEP", itemRarity);
 			sufix, careProcsOrUse = self:TypeSufix(values, itemid, careProcsOrUse);
 			
 			if ( (EP + mhaep + ohaep) > 0 or Enhancer.db.profile.EPZero) then
