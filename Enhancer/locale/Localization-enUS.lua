@@ -306,9 +306,10 @@ L_Main:RegisterTranslations(locale, function() return {
 	["wshield_desc"] = "Toggle showing Water Shield reminder Frame",
 	["wshield_warn"] = "Disabled Shield Module as Water Shield is active",
 	
-	["purge_cmd"] = "Purge",
-	["purge_desc"] = "Announce purge to groups (not battleground)",
-	["purge_group_desc"] = "Purge options (Purge module required for effect)",
+	["purge_opt_cmd"] = "Purge",
+	["purge_opt_desc"] = "Purge options (Purge module required for effect)",
+	["purge_announce_cmd"] = "Announce",
+	["purge_announce_desc"] = "Announce purge to groups (not battleground)",
 	["purge_raid_cmd"] = "Raid",
 	["purge_raid_desc"] = "Only announce to raids",
 	
@@ -325,7 +326,7 @@ L_Main:RegisterTranslations(locale, function() return {
 	
 	["AEP Calc"] = "Calc AEP",
 	
-	["Gauge_Reset"] = "APGReset", -- Slashcommand (do not include the / (slash)
+	["Gauge_Reset"] = "APGReset", -- Slashcommand (do not include the / (slash))
 	["gauge_reset_cmd"] = "Reset",
 	["gauge_reset_desc"] = "Reset all values to current values",
 }; end );

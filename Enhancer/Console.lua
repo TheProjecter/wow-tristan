@@ -1614,15 +1614,15 @@ function Enhancer:RegisterSlashCommands()
 				},
 			},
 			
-			[L["purge_cmd"]] = {
+			[L["purge_opt_cmd"]] = {
 				type = "group",
-				name = L["purge_cmd"],
-				desc = L["purge_group_desc"],
+				name = L["purge_opt_cmd"],
+				desc = L["purge_opt_desc"],
 				order = OrderNum(),
 				args = {
-					[L["purge_cmd"]] = {
-						name = L["purge_cmd"], type = "toggle",
-						desc = L["purge_desc"],
+					[L["purge_announce_cmd"]] = {
+						name = L["purge_announce_cmd"], type = "toggle",
+						desc = L["purge_announce_desc"],
 						get = function() return Enhancer.db.profile.purgeAnnounce; end,
 						set = function()
 							Enhancer.db.profile.purgeAnnounce = not Enhancer.db.profile.purgeAnnounce;

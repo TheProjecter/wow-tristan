@@ -12,13 +12,14 @@ function Enhancer:News()
 	self.newsFrame.title:SetText(L["news_1"]);
 	self.newsFrame.disclaimer:SetText(L["news_2"]);
 	
-	-- Full max length of line below including ");" at the end --------------------------------------
-	-- News not increased yet but text added --------------------------------------------------------
-	self.newsFrame:AddLine("Gauges", 			"Got annoyed by playing AV (or any BG) and having a very");
-	self.newsFrame:AddLine("", 						"low minimum due to debuffs that are not available in");
-	self.newsFrame:AddLine("", 						"PVE. So added a slashcommand to reset them that can be");
-	self.newsFrame:AddLine("", 						"used by macros.");
-	self.newsFrame:AddLine("Toggle",			"/" .. L["Gauge_Reset"]);
+	-- max lengt for "subject"-----------,"body"-----------------------------------------------------
+	self.newsFrame:AddLine("Gem EP", 			"Some gems was added to the game so made a fresh wowhead");
+	self.newsFrame:AddLine("", 						"rip to include them all. Hopefully the new tooltips");
+	self.newsFrame:AddLine("", 						"didn't break my regexes to badly. As always if you find");
+	self.newsFrame:AddLine("", 						"any errors please report them.");
+	self.newsFrame:AddLine("", 						"");
+	
+	self.newsFrame:AddLine("Wiki Info", 	"http://code.google.com/p/wow-tristan/wiki/Enhancer");
 	self.newsFrame:AddLine("", 						"");
 	
 	self.newsFrame:AddLine("", ""); -- Add an extra here

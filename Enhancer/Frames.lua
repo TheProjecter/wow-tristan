@@ -261,7 +261,7 @@ function Enhancer:SavePos(framename, frame)
 	Enhancer.db.profile.framePositions[framename]["relativePoint"] = relativePoint;
 	Enhancer.db.profile.framePositions[framename]["xOfs"] = xOfs;
 	Enhancer.db.profile.framePositions[framename]["yOfs"] = yOfs;
-	Enhancer.db.profile.framePositions[framename]["Parent"] = Enhancer[framename].DockN;
+	Enhancer.db.profile.framePositions[framename]["Parent"] = (Enhancer[framename] and Enhancer[framename].DockN) or nil;
 end
 
 function Enhancer:LoadPos(framelist)

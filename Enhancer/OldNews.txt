@@ -83,3 +83,10 @@
 	self.newsFrame:AddLine("", 						"char selection screen. I will not code anything beyond");
 	self.newsFrame:AddLine("", 						"this functionallity for disabling, soz.");
 	self.newsFrame:AddLine("", "");
+8)
+	self.newsFrame:AddLine("Gauges", 			"Got annoyed by playing AV (or any BG) and having a very");
+	self.newsFrame:AddLine("", 						"low minimum due to debuffs that are not available in");
+	self.newsFrame:AddLine("", 						"PVE. So added a slashcommand to reset them that can be");
+	self.newsFrame:AddLine("", 						"used by macros.");
+	self.newsFrame:AddLine("Toggle",			"/" .. L["Gauge_Reset"]);
+	self.newsFrame:AddLine("", 						"");
