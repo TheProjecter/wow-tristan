@@ -537,7 +537,7 @@ function AddOn:Options()
 						type = "input",
 						width = "full",
 						desc = "Copy paste email address into mailing client (Brush it up first ;).",
-						get = function() return "dennis [dot] hafstrom [at] gmail [dot] com"; end,
+						get = function() return string.gsub(L["__EMAIL__"], " [dot] ", "."); end,
 						set = function(info, value) return; end,
 					},
 					
@@ -547,7 +547,7 @@ function AddOn:Options()
 						type = "input",
 						width = "full",
 						desc = "Copy paste URL into browser.",
-						get = function() return "http://www.wowace.com/"; end,
+						get = function() return L["__URL__"]; end,
 						set = function(info, value) return; end,
 					},
 				},

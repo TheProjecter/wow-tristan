@@ -1,5 +1,9 @@
 local L = LibStub("AceLocale-3.0"):NewLocale("EquivalencePoints", "enUS", true)
 
+--> Misc <--
+L["__URL__"] = "http://code.google.com/p/wow-tristan/";
+L["__EMAIL__"] = "dennis [dot] hasftrom [at] gmail [dot] com";
+
 --> _ <--
 L["_print"] = "|cff" .. "ffdc5f" .. "EquivalencePoints" .. "|r" .. ":";
 L["_debug"] = "|cff" .. "ff7777" .. "EquivalencePoints Debug" .. "|r" .. ":";
