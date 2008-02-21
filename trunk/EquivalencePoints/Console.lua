@@ -3,7 +3,7 @@ if (not AddOn) then return; end
 local _G = getfenv(0);
 local L = LibStub("AceLocale-3.0"):GetLocale("EquivalencePoints", true)
 local print = function(...) AddOn:Print(...); end
-local debug = function(...) AddOn:Debug(...); end end
+local debug = function(...) AddOn:Debug(...); end
 
 --[[ I LOVE THESE ]]--
 local orderNum = 0;
@@ -78,10 +78,10 @@ function AddOn:Options()
 		childGroups = "tree",
 		args = {
 			Config = {
-				name = L["_cmd _name config"],
+				name = L["_cmd _name Config"],
 				type = "execute",
 				order = OrderNum(),
-				desc = "desc",
+				desc = L["_cmd _desc Config"],
 				func = function() LibStub("AceConfigDialog-3.0"):Open("EquivalencePoints") end,
 				guiHidden = true,
 				dialogHidden = true,
@@ -91,7 +91,7 @@ function AddOn:Options()
 				order = OrderNum(),
 				name = L["_cmd _name Hack Expertise"],
 				type = "toggle",
-				desc = "Only account for usable Expertise Rating on items.",
+				desc = L["_cmd _desc Hack Expertise"],
 				get = getBaseOption,
 				set = tglBaseOption,
 				width = nil,
@@ -101,7 +101,7 @@ function AddOn:Options()
 				order = OrderNum(),
 				name = L["_cmd _name Consumables"],
 				type = "toggle",
-				desc = "DataMined bonuses for Consumables.",
+				desc = L["_cmd _desc Consumables"],
 				get = getBaseOption,
 				set = tglBaseOption,
 				width = nil,
@@ -110,7 +110,7 @@ function AddOn:Options()
 				order = OrderNum(),
 				name = L["_cmd _name Procs and Use"],
 				type = "toggle",
-				desc = "Calculated bonuses for procs and/or use effects.",
+				desc = L["_cmd _desc Procs and Use"],
 				get = getBaseOption,
 				set = tglBaseOption,
 				width = nil,
@@ -120,7 +120,7 @@ function AddOn:Options()
 				order = OrderNum(),
 				name = L["_cmd _name List Gems"],
 				type = "toggle",
-				desc = "List gems used in calculations.",
+				desc = L["_cmd _desc List Gems"],
 				get = getBaseOption,
 				set = tglBaseOption,
 				width = nil,
@@ -129,7 +129,7 @@ function AddOn:Options()
 				order = OrderNum(),
 				name = L["_cmd _name List Set Gems"],
 				type = "toggle",
-				desc = "List gems used in calculations even for sets.",
+				desc = L["_cmd _desc List Set Gems"],
 				get = getBaseOption,
 				set = tglBaseOption,
 				width = nil,
@@ -138,7 +138,7 @@ function AddOn:Options()
 				order = OrderNum(),
 				name = L["_cmd _name Class Specifics"],
 				type = "toggle",
-				desc = "Some classes have a bit more info that EP can display, check this if you want to see it.",
+				desc = L["_cmd _desc Class Specifics"],
 				get = getBaseOption,
 				set = tglBaseOption,
 				width = nil,
@@ -147,7 +147,7 @@ function AddOn:Options()
 				order = OrderNum(),
 				name = L["_cmd _name Race Specifics"],
 				type = "toggle",
-				desc = "Adds expertise to swords if you're Human, expertise to axes if you're an Orc etc etc.",
+				desc = L["_cmd _desc Race Specifics"],
 				get = getBaseOption,
 				set = tglBaseOption,
 				width = nil,
@@ -159,12 +159,12 @@ function AddOn:Options()
 				type = "group",
 				cmdHidden = true,
 				args = {
-					[HeaderName()] = Header("Zero values options"),
+					[HeaderName()] = Header(L["_cmd _name Zero values options"]),
 					ShowZero = {
 						order = OrderNum(),
 						name = L["_cmd _name Show Zero"],
 						type = "toggle",
-						desc = "Show Equivalence Points even if the values is zero.",
+						desc = L["_cmd _desc Show Zero"],
 						get = getBaseOption,
 						set = tglBaseOption,
 						width = nil,
@@ -173,7 +173,7 @@ function AddOn:Options()
 						order = OrderNum(),
 						name = L["_cmd _name Show no Bonus items"],
 						type = "toggle",
-						desc = "Show the zero even if the item has no bonuses at all (only when ShowZero is active).",
+						desc = L["_cmd _desc Show no Bonus items"],
 						get = getBaseOption,
 						set = tglBaseOption,
 						width = nil,
@@ -184,7 +184,7 @@ function AddOn:Options()
 						order = OrderNum(),
 						name = L["_cmd _name Empty Line Above"],
 						type = "toggle",
-						desc = "Adds an empty line above the data in the tooltip.",
+						desc = L["_cmd _desc Empty Line Above"],
 						get = getBaseOption,
 						set = tglBaseOption,
 						width = nil,
@@ -193,7 +193,7 @@ function AddOn:Options()
 						order = OrderNum(),
 						name = L["_cmd _name Empty Line Below"],
 						type = "toggle",
-						desc = "Adds an empty line below the data in the tooltip.",
+						desc = L["_cmd _desc Empty Line Below"],
 						get = getBaseOption,
 						set = tglBaseOption,
 						width = nil,
@@ -205,7 +205,7 @@ function AddOn:Options()
 						order = OrderNum(),
 						name = L["_cmd _name Color"],
 						type = "color",
-						desc = "Change the color of the text in tooltips.",
+						desc = L["_cmd _desc Color"],
 						hasAlpha = false,
 						--arg = "PartyFrameColors",
 						get = getColor,
@@ -216,7 +216,7 @@ function AddOn:Options()
 						order = OrderNum(),
 						name = L["_cmd _name Class color"],
 						type = "toggle",
-						desc = "Colors the class specific data with class colors.",
+						desc = L["_cmd _desc Class color"],
 						get = getBaseOption,
 						set = tglBaseOption,
 						width = nil,
@@ -248,14 +248,14 @@ function AddOn:Options()
 						name = L["_cmd _name Save as Set"],
 						type = "input",
 						width = "full",
-						desc = "Save current values as an alternative Set",
+						desc = L["_cmd _desc Save as Set"],
 						get = function() return ""; end,
 						set = function(info, value)
 							self.db.profile.ValueSet[value] = nil;
 							self.db.profile.ValueSet[value] = table.copy(self:TrimTable(self.db.profile.Values));
 						end,
 						validate = function(info, value)
-							if (self.db.profile.ValueSet[value]) then return string.format("Set [%s] allready exists!", value); end
+							if (self.db.profile.ValueSet[value]) then return string.format(L["Set [%s] allready exists!"], value); end
 							return true;
 						end
 					},
@@ -263,7 +263,7 @@ function AddOn:Options()
 						name = L["_cmd _name Delete set"],
 						order = OrderNum(),
 						type = "select",
-						desc = "Delete a saved set.",
+						desc = L["_cmd _desc Delete set"],
 						width = "full",
 						values = function()
 							local presets = {};
@@ -277,7 +277,7 @@ function AddOn:Options()
 							self:SetCleanup();
 						end,
 						validate = function(info, value)
-							if (not self.db.profile.ValueSet[value]) then return string.format("Set [%s] doesn't exist!", value); end
+							if (not self.db.profile.ValueSet[value]) then return string.format(L["Set [%s] doesn't exist!"], value); end
 							return true;
 						end
 					},
@@ -285,7 +285,7 @@ function AddOn:Options()
 						name = L["_cmd _name Load set"],
 						order = OrderNum(),
 						type = "select",
-						desc = "Load a saved set.",
+						desc = L["_cmd _desc Load set"],
 						width = "full",
 						values = function()
 							local presets = {};
@@ -296,7 +296,7 @@ function AddOn:Options()
 						end,
 						set = function(info, value) self:Import(self.db.profile.ValueSet[value]); end,
 						validate = function(info, value)
-							if (not self.db.profile.ValueSet[value]) then return string.format("Set [%s] doesn't exist!", value); end
+							if (not self.db.profile.ValueSet[value]) then return string.format(L["Set [%s] doesn't exist!"], value); end
 							return true;
 						end
 					},
@@ -306,7 +306,7 @@ function AddOn:Options()
 						name = L["_cmd _name Hide set"],
 						order = OrderNum(),
 						type = "select",
-						desc = "Prevents a saved set from showing up in tooltips.",
+						desc = L["_cmd _desc Hide set"],
 						width = "full",
 						values = function()
 							local presets = {};
@@ -319,8 +319,8 @@ function AddOn:Options()
 						end,
 						set = function(info, value) self.db.profile.HiddenSet[value] = true; end,
 						validate = function(info, value)
-							if (not self.db.profile.ValueSet[value]) then return string.format("Set [%s] doesn't exist!", value); end
-							if (self.db.profile.HiddenSet[value]) then return string.format("Set [%s] is allready hidden!", value); end
+							if (not self.db.profile.ValueSet[value]) then return string.format(L["Set [%s] doesn't exist!"], value); end
+							if (self.db.profile.HiddenSet[value]) then return string.format(L["Set [%s] is allready hidden!"], value); end
 							return true;
 						end
 					},
@@ -328,7 +328,7 @@ function AddOn:Options()
 						name = L["_cmd _name UnHide set"],
 						order = OrderNum(),
 						type = "select",
-						desc = "Make a hidden set show up in tooltips again.",
+						desc = L["_cmd _desc UnHide set"],
 						width = "full",
 						values = function()
 							local presets = {};
@@ -341,7 +341,7 @@ function AddOn:Options()
 						end,
 						set = function(info, value) self.db.profile.HiddenSet[value] = nil; end,
 						validate = function(info, value)
-							if (not self.db.profile.HiddenSet[value]) then return string.format("Set [%s] isn't hidden!", value); end
+							if (not self.db.profile.HiddenSet[value]) then return string.format(L["Set [%s] isn't hidden!"], value); end
 							return true;
 						end
 					},
@@ -360,7 +360,7 @@ function AddOn:Options()
 						name = L["_cmd _name Lootrank http://www.lootrank.com/"],
 						type = "input",
 						width = "full",
-						desc = "Import data from lootrank by entering a lootrank url.",
+						desc = L["_cmd _desc Lootrank http://www.lootrank.com/"],
 						get = function() return ""; end,
 						set = function(info, value) self:LootrankImport(value); end,
 						multiline = true,
@@ -371,8 +371,8 @@ function AddOn:Options()
 						name = L["_cmd _name CrazyShaman http://theorycraft.narod.ru/"],
 						type = "input",
 						width = "full",
-						desc = "Import data from CrazyShaman simulator.",
-						get = function() return ""; end,
+						desc = L["_cmd _desc CrazyShaman http://theorycraft.narod.ru/"],
+						get = function() return L["__CRAZYSHAMAN_URL__"]; end,
 						set = function(info, value) self:CrazyShamanImport(value); end,
 					},
 					
@@ -380,11 +380,10 @@ function AddOn:Options()
 						name = L["_cmd _name Preset values"],
 						order = OrderNum(),
 						type = "select",
-						desc = "Import preset values.",
+						desc = L["_cmd _desc Preset values"],
 						width = "full",
 						values = function()
 							local presets = {};
-							--for _, set in ipairs({"Shaman Enhance (low)", "Shaman Enhance (medium)", "Shaman Enhance (high)", "Rogue Dagger Twink (29)"}) do
 							for set in pairs(self.db.profile.Presets) do
 								presets[set] = set;
 							end
@@ -399,7 +398,7 @@ function AddOn:Options()
 						order = OrderNum(),
 						name = L["_cmd _name Receive values"],
 						type = "toggle",
-						desc = "Allow other users of this AddOn to send you their values.",
+						desc = L["_cmd _desc Receive values"],
 						get = getBaseOption,
 						set = tglBaseOption,
 						width = nil,
@@ -411,16 +410,16 @@ function AddOn:Options()
 						name = L["_cmd _name Import"],
 						type = "input",
 						width = "full",
-						desc = "Import data from another session.",
+						desc = L["_cmd _desc Import"],
 						get = function() return ""; end,
 						set = function(info, value) self:Deserialize(value, "Session"); end,
 						multiline = true,
 					},
 					
 					EnhancerImportHeader = Header(L["_cmd _name Enhancer Import Options"]),
-					EAEP = CreateExecute(L["_cmd _name EAEP"], "Enhancer AEP", function() AddOn:ImportEnhancerAEP(); end),
-					EHEP = CreateExecute(L["_cmd _name EHEP"], "Enhancer HEP", function() AddOn:ImportEnhancerHEP(); end),
-					EDEP = CreateExecute(L["_cmd _name EDEP"], "Enhancer DEP", function() AddOn:ImportEnhancerDEP(); end),
+					EAEP = CreateExecute(L["_cmd _name EAEP"], L["_cmd _desc EAEP"], function() AddOn:ImportEnhancerAEP(); end),
+					EHEP = CreateExecute(L["_cmd _name EHEP"], L["_cmd _desc EHEP"], function() AddOn:ImportEnhancerHEP(); end),
+					EDEP = CreateExecute(L["_cmd _name EDEP"], L["_cmd _desc EDEP"], function() AddOn:ImportEnhancerDEP(); end),
 				},
 			},
 			
@@ -435,7 +434,7 @@ function AddOn:Options()
 						name = L["_cmd _name Send values"],
 						type = "input",
 						width = "full",
-						desc = "Send your main values to a friend.",
+						desc = L["_cmd _desc Send values"],
 						get = function() return ""; end,
 						set = function(info, value) self:SendValues(value); end,
 					},
@@ -446,7 +445,7 @@ function AddOn:Options()
 						name = L["_cmd _name Export"],
 						type = "input",
 						width = "full",
-						desc = "Copy paste what's in the textbox and you can import it to another char via import tab.",
+						desc = L["_cmd _desc Export"],
 						get = function() return self:Serialize(); end,
 						set = function(info, value) return; end,
 						multiline = true,
@@ -465,19 +464,19 @@ function AddOn:Options()
 						order = OrderNum(),
 						name = L["_cmd _name Match Rarity"],
 						type = "toggle",
-						desc = "MatchRarity will use rare gems for rare gear, epic gems for epic gear and so forth.",
+						desc = L["_cmd _desc Match Rarity"],
 						get = getBaseOption,
 						set = tglBaseOption,
 						width = nil,
 					},
 					
-					[HeaderName()] = Header("Rarity Settings"),
+					[HeaderName()] = Header(L["_cmd _name Rarity Settings"]),
 					
 					MaxRarity = {
 						order = OrderNum(),
 						name = L["_cmd _name Max Rarity"],
 						type = "range",
-						desc = "Sets the maximum rarity for gems (unless overriden by MatchRarity or MaxAvailRarity)",
+						desc = L["_cmd _desc Max Rarity"],
 						min = 1,
 						max = 4,
 						step = 1,
@@ -489,7 +488,7 @@ function AddOn:Options()
 						order = OrderNum(),
 						name = L["_cmd _name Max Avail Rarity"],
 						type = "range",
-						desc = "Sets the maximum rarity for gems you have access to (overrides MaxRarity)",
+						desc = L["_cmd _desc Max Avail Rarity"],
 						min = 1,
 						max = 4,
 						step = 1,
@@ -500,17 +499,17 @@ function AddOn:Options()
 					
 					[HeaderName()] = Header(L["_cmd _name Best colored Gem"]),
 					
-					Blue 					 = CreateExecute(L["_cmd _name Blue"], "Display best Blue gem", function() AddOn:PrintBestGem("Blue"); end),
-					Red 					 = CreateExecute(L["_cmd _name Red"], "Display best Red gem", function() AddOn:PrintBestGem("Red"); end),
-					Yellow 				 = CreateExecute(L["_cmd _name Yellow"], "Display best Yellow gem", function() AddOn:PrintBestGem("Yellow"); end),
+					Blue 					 = CreateExecute(L["_cmd _name Blue"], L["_cmd _desc Blue"], function() AddOn:PrintBestGem("Blue"); end),
+					Red 					 = CreateExecute(L["_cmd _name Red"], L["_cmd _desc Red"], function() AddOn:PrintBestGem("Red"); end),
+					Yellow 				 = CreateExecute(L["_cmd _name Yellow"], L["_cmd _desc Yellow"], function() AddOn:PrintBestGem("Yellow"); end),
 					
 					[HeaderName()] = Header(L["_cmd _name Best meta Gem"]),
 					
-					Meta 					 = CreateExecute(L["_cmd _name Meta"], "Display best Meta gem", function() AddOn:PrintBestGem("Meta"); end),
+					Meta 					 = CreateExecute(L["_cmd _name Meta"], L["_cmd _desc Meta"], function() AddOn:PrintBestGem("Meta"); end),
 					
 					[HeaderName()] = Header(L["_cmd _name Best non-meta Gem"]),
 					
-					Any 					 = CreateExecute(L["_cmd _name Any"], "Display best non-Meta gem", function() AddOn:PrintBestGem("AnyColor"); end),
+					Any 					 = CreateExecute(L["_cmd _name Any"], L["_cmd _desc Any"], function() AddOn:PrintBestGem("AnyColor"); end),
 				},
 			},
 			
@@ -524,7 +523,7 @@ function AddOn:Options()
 						order = OrderNum(),
 						name = L["_cmd _name Debug"],
 						type = "toggle",
-						desc = "Toggle Debugging",
+						desc = L["_cmd _desc Debug"],
 						get = function() return AddOn.debug; end,
 						set = function(info, value) AddOn.debug = not AddOn.debug; end,
 					},
@@ -536,8 +535,8 @@ function AddOn:Options()
 						name = L["_cmd _name E-mail"],
 						type = "input",
 						width = "full",
-						desc = "Copy paste email address into mailing client (Brush it up first ;).",
-						get = function() return string.gsub(L["__EMAIL__"], " [dot] ", "."); end,
+						desc = L["_cmd _desc E-mail"],
+						get = function() return self:SpamSafe(L["__EMAIL__"]); end,
 						set = function(info, value) return; end,
 					},
 					
@@ -546,8 +545,8 @@ function AddOn:Options()
 						name = L["_cmd _name Website"],
 						type = "input",
 						width = "full",
-						desc = "Copy paste URL into browser.",
-						get = function() return L["__URL__"]; end,
+						desc = L["_cmd _desc Website"],
+						get = function() return self:SpamSafe(L["__URL__"]); end,
 						set = function(info, value) return; end,
 					},
 				},
@@ -562,7 +561,7 @@ function AddOn:Options()
 		options.args.Import.args.EDEP = nil;
 	end
 	
-	options.args.Values.args["Reset"] = CreateExecute(L["_cmd _name Reset"], "Reset all values to zero", function() for key in pairs(self.db.profile.Values) do self.db.profile.Values[key] = 0; end end, "full")
+	options.args.Values.args["Reset"] = CreateExecute(L["_cmd _name Reset"], L["_cmd _desc Reset"], function() for key in pairs(self.db.profile.Values) do self.db.profile.Values[key] = 0; end end, "full")
 	for key,value in self:DefaultValues():opairs() do
 		if (key == "EMPTY_SOCKET_META") then -- not limited to value 10 etc
 			if (self.db.profile.Values[key] and tonumber(self.db.profile.Values[key])) then
@@ -570,7 +569,7 @@ function AddOn:Options()
 					order = OrderNum(),
 					name = self:TranslateValueKey(key),
 					type = "range",
-					desc = "Set value for " .. self:TranslateValueKey(key),
+					desc = string.format(L["_cmd _desc _Values"], self:TranslateValueKey(key)),
 					min = 0,
 					max = 250,
 					step = epStep,
@@ -587,7 +586,7 @@ function AddOn:Options()
 					order = OrderNum(),
 					name = self:TranslateValueKey(key),
 					type = "range",
-					desc = "Set value for " .. self:TranslateValueKey(key),
+					desc = string.format(L["_cmd _desc _Values"], self:TranslateValueKey(key)),
 					min = epMin,
 					max = epMax,
 					step = epStep,

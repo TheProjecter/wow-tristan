@@ -217,7 +217,7 @@ function AddOn.ProcessTooltip(tooltip, name, link)
 		local red, green, blue = AddOn.db.profile.Color.r, AddOn.db.profile.Color.g, AddOn.db.profile.Color.b;
 		
 		if (IgnoreSocketColors) then
-			tooltip:AddLine(ttS .. string.format(L["%s ignore socket colors"], "|cffff0000*|r"), AddOn.colors.info.R, AddOn.colors.info.G, AddOn.colors.info.B);
+			tooltip:AddLine(ttS .. string.format(L["%s ignore socket colors"], L["_tooltip Ignore Color"]), AddOn.colors.info.R, AddOn.colors.info.G, AddOn.colors.info.B);
 		end
 		
 		if (RaceBonus) then
@@ -313,7 +313,7 @@ function AddOn:AddSetLines(tooltip, bonuses, socketBonuses, ItemRarity, EmptyLin
 	
 	local SetTitle = (SetName and string.format(L["|cff77ff77Saved [|r%s (BoK)|cff77ff77]|r"], SetName)) or L["Equivalence (BoK)"];
 	
-	tooltip:AddDoubleLine(SetTitle, string.format("%.2f%s (%.2f%s)", total, ((obeyColor and "") or "|cffff0000*|r"), kingsTotal, ((kingsObeyColor and "") or "|cffff0000*|r")), red, green, blue, red, green, blue);
+	tooltip:AddDoubleLine(SetTitle, string.format(L["%.2f%s (%.2f%s)"], total, ((obeyColor and "") or "|cffff0000*|r"), kingsTotal, ((kingsObeyColor and "") or "|cffff0000*|r")), red, green, blue, red, green, blue);
 	if ((((#gemsUsed > 0 or #kingsGemsUsed > 0) and self.db.profile.ListGems and not SetName) or ((#gemsUsed > 0 or #kingsGemsUsed > 0) and self.db.profile.ListGems and self.db.profile.ListSetGems and SetName)) and (total > 0 or kingsTotal > 0)) then
 		-- Wich one has most gems *sigh*
 		loopEnd = #gemsUsed;
@@ -330,7 +330,7 @@ function AddOn:AddSetLines(tooltip, bonuses, socketBonuses, ItemRarity, EmptyLin
 				kingsGem = (kingsGem and "(".. tostring(kingsGem) .. ")") or "";
 			end
 			
-			tooltip:AddDoubleLine(" ", strtrim(string.format("%s %s",  gem, kingsGem)), red, green, blue, red, green, blue);
+			tooltip:AddDoubleLine(" ", strtrim(string.format(L["_tooltip _rightside Gem List"],  gem, kingsGem)), red, green, blue, red, green, blue);
 		end
 	end
 	
@@ -626,4 +626,8 @@ function AddOn:ImportPreSets(set)
 	end
 	
 	print(L["set [%s] not found, import aborted!"], set);
+end
+
+function AddOn:SpamSafe(text)
+	return string.gsub(string.gsub(text, " %[at%] ", "@"), " %[dot%] ", ".");
 end
