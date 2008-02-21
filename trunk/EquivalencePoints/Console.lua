@@ -1,11 +1,9 @@
 local AddOn = LibStub("AceAddon-3.0"):GetAddon("EquivalencePoints", true);
 if (not AddOn) then return; end
-
 local _G = getfenv(0);
--- Create our print :)
-local print = function(...) _G["print"]("|cffffdc5f" .. "EquivalencePoints" .. "|r:", ...); end
--- Create our debug :)
-local debug = function(...) if (AddOn.debug) then _G["print"]("|cffff7777" .. "EquivalencePoints Debug" .. "|r:", date("[%Y-%m-%d %H:%M:%S]"), ...); end end
+local L = LibStub("AceLocale-3.0"):GetLocale("EquivalencePoints", true)
+local print = function(...) AddOn:Print(...); end
+local debug = function(...) AddOn:Debug(...); end end
 
 --[[ I LOVE THESE ]]--
 local orderNum = 0;
@@ -76,11 +74,11 @@ function AddOn:Options()
 	local options = {
 		type = "group",
 		icon = [[Interface/Icons/INV_Jewelcrafting_LivingRuby_02]],
-		name = "EquivalencePoints",
+		name = L["_cmd _name EquivalencePoints"],
 		childGroups = "tree",
 		args = {
 			Config = {
-				name = "config",
+				name = L["_cmd _name config"],
 				type = "execute",
 				order = OrderNum(),
 				desc = "desc",
@@ -91,7 +89,7 @@ function AddOn:Options()
 			},
 			HackExpertise = {
 				order = OrderNum(),
-				name = "Hack Expertise",
+				name = L["_cmd _name Hack Expertise"],
 				type = "toggle",
 				desc = "Only account for usable Expertise Rating on items.",
 				get = getBaseOption,
@@ -101,7 +99,7 @@ function AddOn:Options()
 			
 			Consumables = {
 				order = OrderNum(),
-				name = "Consumables",
+				name = L["_cmd _name Consumables"],
 				type = "toggle",
 				desc = "DataMined bonuses for Consumables.",
 				get = getBaseOption,
@@ -110,7 +108,7 @@ function AddOn:Options()
 			},
 			ProcsAndUse = {
 				order = OrderNum(),
-				name = "Procs and Use",
+				name = L["_cmd _name Procs and Use"],
 				type = "toggle",
 				desc = "Calculated bonuses for procs and/or use effects.",
 				get = getBaseOption,
@@ -120,7 +118,7 @@ function AddOn:Options()
 			
 			ListGems = {
 				order = OrderNum(),
-				name = "List Gems",
+				name = L["_cmd _name List Gems"],
 				type = "toggle",
 				desc = "List gems used in calculations.",
 				get = getBaseOption,
@@ -129,7 +127,7 @@ function AddOn:Options()
 			},
 			ListSetGems = {
 				order = OrderNum(),
-				name = "List Set Gems",
+				name = L["_cmd _name List Set Gems"],
 				type = "toggle",
 				desc = "List gems used in calculations even for sets.",
 				get = getBaseOption,
@@ -581,5 +579,5 @@ function AddOn:Options()
 		end
 	end
 	
-	LibStub("AceConfig-3.0"):RegisterOptionsTable("EquivalencePoints", options, {"EqP", "EquivalencePoints"});
+	LibStub("AceConfig-3.0"):RegisterOptionsTable("EquivalencePoints", options, {L["/EqP"], L["/Equiv"], L["/EquivalencePoints"]});
 end
