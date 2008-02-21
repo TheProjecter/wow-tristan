@@ -5,6 +5,7 @@ assert(LibStub("AceEvent-3.0"), string.format("EquivalencePoints requires AceEve
 assert(LibStub("AceTimer-3.0"), string.format("EquivalencePoints requires AceTimer-3.0"));
 assert(LibStub("AceDB-3.0"), string.format("EquivalencePoints requires AceDB-3.0"));
 assert(LibStub("AceSerializer-3.0"), string.format("EquivalencePoints requires AceSerializer-3.0"));
+assert(LibStub("AceLocale-3.0"), string.format("EquivalencePoints requires AceLocale-3.0"));
 assert(AceLibrary, string.format("EquivalencePoints requires Ace2"));
 assert(AceLibrary("ItemBonusLib-1.0"), string.format("EquivalencePoints requires ItemBonusLib-1.0"));
 assert(AceLibrary("TipHooker-1.0"), string.format("EquivalencePoints requires TipHooker-1.0"));
@@ -12,14 +13,23 @@ assert(AceLibrary("TipHooker-1.0"), string.format("EquivalencePoints requires Ti
 local AceLibrary = AceLibrary;
 local AddOn = LibStub("AceAddon-3.0"):NewAddon("EquivalencePoints", "AceConsole-3.0", "AceEvent-3.0", "AceTimer-3.0", "AceComm-3.0");
 local AceSerializer = LibStub("AceSerializer-3.0");
+local L = LibStub("AceLocale-3.0"):GetLocale("EquivalencePoints", true)
 local ItemBonusLib = AceLibrary("ItemBonusLib-1.0"); -- Ace2 atm
 local TipHooker = AceLibrary("TipHooker-1.0"); -- Ace2 atm
 local _G = getfenv(0);
 
 -- Create our print :)
-local print = function(...) _G["print"]("|cffffdc5f" .. "EquivalencePoints" .. "|r:", ...); end
+local print = function(...) _G["print"](L["_print"], ...); end
 -- Create our debug :)
-local debug = function(...) if (AddOn.debug) then _G["print"]("|cffff7777" .. "EquivalencePoints Debug" .. "|r:", date("[%Y-%m-%d %H:%M:%S]"), ...); end end
+--local debug = function(...) if (AddOn.debug) then _G["print"](L["_debug"], date("[%Y-%m-%d %H:%M:%S]"), ...); end end
+local debug = function(...) if (AddOn.debug) then _G["print"](L["_debug"], ...); end end --Above version looses string.format automagic
+
+function AddOn:Print(...)
+	print(...);
+end
+function AddOn:Debug(...)
+	debug(...);
+end
 
 AddOn.InfoStorage = {};
 AddOn.BonusEP = {};
@@ -66,7 +76,7 @@ function AddOn:OnInitialize()
 		if (import) then
 			self.db.profile.AutoImportedEnhancer = true;
 			self:ImportEnhancerAEP();
-			print("Auto imported your |cffff0000AEP|r values from Enhancer!");
+			print(L["Auto imported your |cffff0000AEP|r values from Enhancer!"]);
 		end
 	end
 end
@@ -104,7 +114,7 @@ function AddOn:TipHookerHack()
 	pcall( FunctionThatNeverExecutes );
 end
 
-local ttS = "   "; --tooltipSpacer was so fecking long to type each time ;)
+local ttS = string.rep(" ", 3); --tooltipSpacer was so fecking long to type each time ;) also it's nice if I want to change the number of spaces
 function AddOn.ProcessTooltip(tooltip, name, link)
 	debug("ProcessTooltip Start -----------------");
 	if (link) then
@@ -158,27 +168,27 @@ function AddOn.ProcessTooltip(tooltip, name, link)
 		local CritPercent = (1 / ItemBonusLib:GetRatingBonus("CR_CRIT", 1));
 		local RangedCritPercent = (1 / ItemBonusLib:GetRatingBonus("CR_RANGEDCRIT", 1));
 		local ExpertisePercent = (1 / ItemBonusLib:GetRatingBonus("CR_EXPERTISE", 1));
-		debug(string.format("1%% Crit needs %.2f in Rating for your level", CritPercent));
-		debug(string.format("1%% Ranged Crit needs %.2f in Rating for your level", RangedCritPercent));
-		debug(string.format("1 Expertise needs %.2f in Rating for your level", ExpertisePercent));
+		debug("1%% Crit needs %.2f in Rating for your level", CritPercent);
+		debug("1%% Ranged Crit needs %.2f in Rating for your level", RangedCritPercent);
+		debug("1 Expertise needs %.2f in Rating for your level", ExpertisePercent);
 		
 		-- Danger here is ItemSubType are localized on the client!
 		local RaceBonus = false; -- Level 70 only as this changes while leveling there's really no point caring much about it at low levels except for possibly twinks
-		if (self.db.profile.RaceSpecifics and self.RaceEN == "Dwarf" and ItemSubType == "Guns") then
+		if (self.db.profile.RaceSpecifics and self.RaceEN == "Dwarf" and ItemSubType == L["Guns"]) then
 			-- Dwarf: 1% Crit with guns
-			RaceBonus = string.format("Racial bonus added %.2f ranged crit rating", RangedCritPercent);
+			RaceBonus = string.format(L["Racial bonus added %.2f ranged crit rating"], RangedCritPercent);
 			bonuses["RANGEDCRIT"] = (bonuses["RANGEDCRIT"] or 0) + RangedCritPercent;
-		elseif (self.db.profile.RaceSpecifics and self.RaceEN == "Human" and (ItemSubType == "One-Handed Maces" or ItemSubType == "One-Handed Swords" or ItemSubType == "Two-Handed Maces" or ItemSubType == "Two-Handed Swords")) then
+		elseif (self.db.profile.RaceSpecifics and self.RaceEN == "Human" and (ItemSubType == L["One-Handed Maces"] or ItemSubType == L["One-Handed Swords"] or ItemSubType == L["Two-Handed Maces"] or ItemSubType == L["Two-Handed Swords"])) then
 			-- Human: 5 Expertise with Sword and Mace
-			RaceBonus = string.format("Racial bonus added %.2f expertise rating", (5 * ExpertisePercent));
+			RaceBonus = string.format(L["Racial bonus added %.2f expertise rating"], (5 * ExpertisePercent));
 			bonuses["CR_EXPERTISE"] = (bonuses["CR_EXPERTISE"] or 0) + (5 * ExpertisePercent);
-		elseif (self.db.profile.RaceSpecifics and self.RaceEN == "Orc" and (ItemSubType == "One-Handed Axes" or ItemSubType == "Two-Handed Axes")) then
+		elseif (self.db.profile.RaceSpecifics and self.RaceEN == "Orc" and (ItemSubType == L["One-Handed Axes"] or ItemSubType == L["Two-Handed Axes"])) then
 			-- Orc: 5 Expertise with Axe
-			RaceBonus = string.format("Racial bonus added %.2f expertise rating", (5 * ExpertisePercent));
+			RaceBonus = string.format(L["Racial bonus added %.2f expertise rating"], (5 * ExpertisePercent));
 			bonuses["CR_EXPERTISE"] = (bonuses["CR_EXPERTISE"] or 0) + (5 * ExpertisePercent);
-		elseif (self.db.profile.RaceSpecifics and self.RaceEN == "Troll" and (ItemSubType == "Bows" or ItemSubType == "Thrown")) then
+		elseif (self.db.profile.RaceSpecifics and self.RaceEN == "Troll" and (ItemSubType == L["Bows"] or ItemSubType == L["Thrown"])) then
 			-- Troll: 1% Crit with Throwing Weapon and Bow
-			RaceBonus = string.format("Racial bonus added %.2f crit shots rating", RangedCritPercent);
+			RaceBonus = string.format(L["Racial bonus added %.2f ranged crit rating"], RangedCritPercent);
 			bonuses["RANGEDCRIT"] = (bonuses["RANGEDCRIT"] or 0) + RangedCritPercent;
 		end
 		
@@ -186,7 +196,7 @@ function AddOn.ProcessTooltip(tooltip, name, link)
 		-- Expertise Hack Quick: floor(15/ExpertisePercent)*ExpertisePercent
 		local ExpertiseHacked = false;
 		if (self.db.profile.HackExpertise and bonuses["CR_EXPERTISE"]) then
-			debug(string.format("Recalculating Expertise, Old value = [%.2f], New value = [%.2f]", bonuses["CR_EXPERTISE"], floor(bonuses["CR_EXPERTISE"] / ExpertisePercent) * ExpertisePercent));
+			debug("Recalculating Expertise, Old value = [%.2f], New value = [%.2f]", bonuses["CR_EXPERTISE"], floor(bonuses["CR_EXPERTISE"] / ExpertisePercent) * ExpertisePercent);
 			bonuses["CR_EXPERTISE"] = floor(bonuses["CR_EXPERTISE"] / ExpertisePercent) * ExpertisePercent;
 			ExpertiseHacked = true;
 		end
@@ -207,7 +217,7 @@ function AddOn.ProcessTooltip(tooltip, name, link)
 		local red, green, blue = AddOn.db.profile.Color.r, AddOn.db.profile.Color.g, AddOn.db.profile.Color.b;
 		
 		if (IgnoreSocketColors) then
-			tooltip:AddLine(ttS .. string.format("%s ignore socket colors", "|cffff0000*|r"), AddOn.colors.info.R, AddOn.colors.info.G, AddOn.colors.info.B);
+			tooltip:AddLine(ttS .. string.format(L["%s ignore socket colors"], "|cffff0000*|r"), AddOn.colors.info.R, AddOn.colors.info.G, AddOn.colors.info.B);
 		end
 		
 		if (RaceBonus) then
@@ -215,19 +225,19 @@ function AddOn.ProcessTooltip(tooltip, name, link)
 		end
 		
 		if (ExpertiseHacked) then
-			tooltip:AddLine(ttS .. string.format("Expertise is modified (floor([val]/%.2f)*%.2f)", ExpertisePercent, ExpertisePercent), AddOn.colors.info.R, AddOn.colors.info.G, AddOn.colors.info.B);
+			tooltip:AddLine(ttS .. string.format(L["Expertise is modified (floor([val]/%.2f)*%.2f)"], ExpertisePercent, ExpertisePercent), AddOn.colors.info.R, AddOn.colors.info.G, AddOn.colors.info.B);
 		end
 		
 		if (ProcsAndUse) then
 			ProcsAndUse = ((VersionCompare(ProcsAndUse, AddOn.ClientVersion) == 1) and "|cff" .. convert.rgb2hex(AddOn.colors.critical.R, AddOn.colors.critical.G, AddOn.colors.critical.B) .. ProcsAndUse .. "|r") or ProcsAndUse;
 			
-			tooltip:AddLine(ttS .. string.format("Proc/use are guestimated (v%s)", ProcsAndUse), AddOn.colors.info.R, AddOn.colors.info.G, AddOn.colors.info.B);
+			tooltip:AddLine(ttS .. string.format(L["Proc/use are guestimated (v%s)"], ProcsAndUse), AddOn.colors.info.R, AddOn.colors.info.G, AddOn.colors.info.B);
 		end
 		
 		if (DataMined) then
 			DataMined = ((VersionCompare(DataMined, AddOn.ClientVersion) == 1) and "|cff" .. convert.rgb2hex(AddOn.colors.critical.R, AddOn.colors.critical.G, AddOn.colors.critical.B) .. DataMined .. "|r") or DataMined;
 			
-			tooltip:AddLine(ttS .. string.format("Values are datamined (v%s)", DataMined), AddOn.colors.info.R, AddOn.colors.info.G, AddOn.colors.info.B);
+			tooltip:AddLine(ttS .. string.format(L["Values are datamined (v%s)"], DataMined), AddOn.colors.info.R, AddOn.colors.info.G, AddOn.colors.info.B);
 		end
 		
 		-- Class specifif things?
@@ -253,7 +263,7 @@ function AddOn.ProcessTooltip(tooltip, name, link)
 					end
 				end
 			else
-				print("Error,", classTitle);
+				print(L["Error adding class specifics for %s"], self.ClassEN);
 			end
 		end
 		
@@ -301,7 +311,7 @@ function AddOn:AddSetLines(tooltip, bonuses, socketBonuses, ItemRarity, EmptyLin
 		IgnoreSocketColors = true;
 	end
 	
-	local SetTitle = (SetName and "|cff77ff77Saved [|r" .. SetName .. " (BoK)|cff77ff77]|r") or "Equivalence (BoK)";
+	local SetTitle = (SetName and string.format(L["|cff77ff77Saved [|r%s (BoK)|cff77ff77]|r"], SetName)) or L["Equivalence (BoK)"];
 	
 	tooltip:AddDoubleLine(SetTitle, string.format("%.2f%s (%.2f%s)", total, ((obeyColor and "") or "|cffff0000*|r"), kingsTotal, ((kingsObeyColor and "") or "|cffff0000*|r")), red, green, blue, red, green, blue);
 	if ((((#gemsUsed > 0 or #kingsGemsUsed > 0) and self.db.profile.ListGems and not SetName) or ((#gemsUsed > 0 or #kingsGemsUsed > 0) and self.db.profile.ListGems and self.db.profile.ListSetGems and SetName)) and (total > 0 or kingsTotal > 0)) then
@@ -309,7 +319,7 @@ function AddOn:AddSetLines(tooltip, bonuses, socketBonuses, ItemRarity, EmptyLin
 		loopEnd = #gemsUsed;
 		if (#kingsGemsUsed > loopEnd) then loopEnd = #kingsGemsUsed; end
 		
-		tooltip:AddDoubleLine(" ", "Gem List:", red, green, blue, red, green, blue);
+		tooltip:AddDoubleLine(" ", L["Gem List:"], red, green, blue, red, green, blue);
 		for loopNum=1, loopEnd do
 			local gem, kingsGem = gemsUsed[loopNum], kingsGemsUsed[loopNum];
 			if (gem == kingsGem) then
@@ -427,8 +437,8 @@ function AddOn:PrintBestGem(color)
 	local _, gemLink = GetItemInfo(gemID);
 	local _, kingsGemLink = GetItemInfo(kingsGemID);
 	
-	print("Best %s gem is %s at %.2f", color, (gemLink or gemName), gemValue)
-	print("Best %s gem BoK is %s at %.2f", color, (kingsGemLink or kingsGemName), kingsGemValue)
+	print(L["Best %s gem is %s at %.2f"], color, (gemLink or gemName), gemValue)
+	print(L["Best %s gem BoK is %s at %.2f"], color, (kingsGemLink or kingsGemName), kingsGemValue)
 end
 
 -- Has to specify META for meta gems, BLUE for blue, RED for red and YELLOW for yellow. Any other value is interpreted as any color except Meta
@@ -439,8 +449,8 @@ function AddOn:BestGem(color, calcValues, itemRarity, GemCacheKeyBase)
 	color = (color and string.upper(color)) or "ANYCOLOR";
 	if (color ~= "META" and color ~= "RED" and color ~= "BLUE" and color ~= "YELLOW" and color ~= "ANYCOLOR") then color = "ANYCOLOR"; end
 	
-	assert(tonumber(itemRarity), string.format("for function [BestGem] itemRarity has to be a number!"));
-	assert(GemCacheKeyBase, string.format("for function [BestGem] GemCacheKeyBase must be included!"));
+	assert(tonumber(itemRarity), string.format(L["for function [BestGem] itemRarity has to be a number!"]));
+	assert(GemCacheKeyBase, string.format(L["for function [BestGem] GemCacheKeyBase must be included!"]));
 	
 	itemRarity = tonumber(itemRarity);
 	
@@ -512,12 +522,12 @@ end
 
 StaticPopupDialogs["PROWLERPAGECONFIRM"] = { };
 function AddOn:RecieveValues(event, text, distribution, sender, ...)
-	print("Receiving data from %s", sender);
+	print(L["Receiving data from %s"], sender);
 	
 	if (self.db.profile.ReceiveValues) then
 		self:Deserialize(text, sender);
 	else
-		print("Import ignored due to settings, you can find the toggle under the import tab in /eqp config");
+		print(L["Import ignored due to settings, you can find the toggle under the import tab in /eqp config"]);
 	end
 end
 
@@ -538,9 +548,9 @@ function AddOn:Deserialize(serialized, SetPrefix)
 		AddOn:ImportSet(SetPrefix, tbl);
 	else
 		if (not CouldDeserialize) then
-			print("Import failed, could not deserialize the data!");
+			print(L["Import failed, could not deserialize the data!"]);
 		elseif (type(tbl) ~= "table") then
-			print("Import failed, the data wasn't a table with values!");
+			print(L["Import failed, the data wasn't a table with values!"]);
 		end
 	end
 end
@@ -562,7 +572,7 @@ function AddOn:ImportSet(SetPrefix, SetTable)
 				end
 			end
 			
-			print("Set imported as [%s]", SetName);
+			print(L["Set imported as [%s]"], SetName);
 			break;
 		end
 	end
@@ -583,11 +593,11 @@ function AddOn:Import(standardizedData)
 		end
 	end
 	
-	print("Import complete stats affected:", unpack(affected));
+	print(L["Import complete stats affected:"], unpack(affected));
 end
 
 function AddOn:TranslateValueKey(key)
-	if (key == "EMPTY_SOCKET_META") then return "Bonus Value to Meta Gems"; end -- We don't care what it's called in IBL we use it for meta gem bonus ;)
+	if (key == "EMPTY_SOCKET_META") then return L["Bonus Value to Meta Gems"]; end -- We don't care what it's called in IBL we use it for meta gem bonus ;)
 	
 	local ibl = ItemBonusLib:GetBonusFriendlyName(key);
 	return (ibl and (ibl == "CR_EXPERTISE") and "Expertise Rating") or ibl or key;
@@ -603,7 +613,7 @@ end
 
 function AddOn:ImportPreSets(set)
 	if (not set) then
-		print("Set not specified, import aborted!");
+		print(L["Set not specified, import aborted!"]);
 		return;
 	end
 	
@@ -615,5 +625,5 @@ function AddOn:ImportPreSets(set)
 		end
 	end
 	
-	print("set [%s] not found, import aborted!", set);
+	print(L["set [%s] not found, import aborted!"], set);
 end
