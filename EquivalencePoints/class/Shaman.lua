@@ -1,5 +1,9 @@
 local AddOn = LibStub("AceAddon-3.0"):GetAddon("EquivalencePoints", true);
 if (not AddOn) then return; end
+local _G = getfenv(0);
+local L = LibStub("AceLocale-3.0"):GetLocale("EquivalencePoints", true)
+local print = function(...) AddOn:Print(...); end
+local debug = function(...) AddOn:Debug(...); end
 
 local itemEquipLoc2Slot = {
 	INVTYPE_WEAPON = { [16] = 16, [17] = 17 },
@@ -37,12 +41,12 @@ function AddOn:SHAMAN(sItemLink, ItemID, ItemRarity, bonuses, socketBonuses)
 		    --total, kingsTotal, obeyColor, kingsObeyColor, gemsUsed, kingsGemsUsed = self:Calculate(bonuses, socketBonuses, self.db.profile.Values, ItemRarity);
 		
 		if ((mhaep > 0 or self.db.profile.ShowZero) and itemEquipLoc2Slot[itemEquipLoc] and itemEquipLoc2Slot[itemEquipLoc][16]) then
-			tbl["Main Hand"] = string.format("%.2f%s (%.2f%s)", (total + mhaep), ((obeyColor and "") or "|cffff0000*|r"), (kingsTotal + mhaep), ((kingsObeyColor and "") or "|cffff0000*|r"));
+			tbl["Main Hand"] = string.format(L["%.2f%s (%.2f%s)"], (total + mhaep), ((obeyColor and "") or "|cffff0000*|r"), (kingsTotal + mhaep), ((kingsObeyColor and "") or "|cffff0000*|r"));
 			title = "Weapon EP";
 		end
 		
 		if ((ohaep > 0 or self.db.profile.ShowZero) and itemEquipLoc2Slot[itemEquipLoc] and itemEquipLoc2Slot[itemEquipLoc][17]) then
-			tbl["Off Hand"] = string.format("%.2f%s (%.2f%s)", (total + ohaep), ((obeyColor and "") or "|cffff0000*|r"), (kingsTotal + ohaep), ((kingsObeyColor and "") or "|cffff0000*|r"));
+			tbl["Off Hand"] = string.format(L["%.2f%s (%.2f%s)"], (total + ohaep), ((obeyColor and "") or L["_tooltip Ignore Color"]), (kingsTotal + ohaep), ((kingsObeyColor and "") or L["_tooltip Ignore Color"]));
 			title = "Weapon EP";
 		end
 	end
@@ -51,7 +55,7 @@ function AddOn:SHAMAN(sItemLink, ItemID, ItemRarity, bonuses, socketBonuses)
 end
 
 function AddOn:ImportEnhancerAEP()
-	if (not Enhancer) then print("Enhancer not found, import aborted"); end
+	if (not Enhancer) then print(L["Enhancer not found, import aborted"]); end
 	local standardizedData = {};
     
 	-- Set new values but don't insert new keys:
@@ -63,7 +67,7 @@ function AddOn:ImportEnhancerAEP()
 end
 
 function AddOn:ImportEnhancerHEP()
-	if (not Enhancer) then print("Enhancer not found, import aborted"); end
+	if (not Enhancer) then print(L["Enhancer not found, import aborted"]); end
 	local standardizedData = {};
     
 	-- Set new values but don't insert new keys:
@@ -75,7 +79,7 @@ function AddOn:ImportEnhancerHEP()
 end
 
 function AddOn:ImportEnhancerDEP()
-	if (not Enhancer) then print("Enhancer not found, import aborted"); end
+	if (not Enhancer) then print(L["Enhancer not found, import aborted"]); end
 	local standardizedData = {};
     
 	-- Set new values but don't insert new keys:

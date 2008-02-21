@@ -1,11 +1,9 @@
 local AddOn = LibStub("AceAddon-3.0"):GetAddon("EquivalencePoints", true);
 if (not AddOn) then return; end
-
 local _G = getfenv(0);
--- Create our print :)
-local print = function(...) _G["print"]("|cffffdc5f" .. "EquivalencePoints" .. "|r:", ...); end
--- Create our debug :)
-local debug = function(...) if (AddOn.debug) then _G["print"]("|cffff7777" .. "EquivalencePoints Debug" .. "|r:", date("[%Y-%m-%d %H:%M:%S]"), ...); end end
+local L = LibStub("AceLocale-3.0"):GetLocale("EquivalencePoints", true)
+local print = function(...) AddOn:Print(...); end
+local debug = function(...) AddOn:Debug(...); end
 
 AddOn.LookUps = {};
 AddOn.LookUps.CrazyShaman = {
@@ -82,7 +80,7 @@ function AddOn:CrazyShamanImport(data)
 			end
 			
 			if (value > 10) then
-				print("Values in this AddOn can't go above 10 please check your input");
+				print(L["Values in this AddOn can't go above 10 please check your input"]);
 				return;
 			end
 		end
@@ -117,13 +115,13 @@ function AddOn:LootrankImport(URL)
 		end
 		
 		if (Val > 10) then
-			print("Values in this AddOn can't go above 10 please check your input");
+			print(L["Values in this AddOn can't go above 10 please check your input"]);
 			return;
 		end
 	end
 	
 	if (table.safecount(SetTable) > 0) then
 		self:ImportSet("Lootrank"..SetTitle, SetTable)
-		print("Lootrank doesn't differ between ranged/melee crit & hit, so if you wanted ranged you should import the set and change it's values! By default the import is to Melee!");
+		print(L["Lootrank doesn't differ between ranged/melee crit & hit, so if you wanted ranged you should import the set and change it's values! By default the import is to Melee!"]);
 	end
 end

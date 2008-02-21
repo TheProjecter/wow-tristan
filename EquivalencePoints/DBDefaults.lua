@@ -128,6 +128,7 @@ local defaults = {
 		EmptyLineAbove = true,
 		EmptyLineBelow = false,
 		ReceiveValues = false,
+		-- I'm forgetting a setting I've been thinking of countless times so this is a reminder
 		Color = {
 			r = (127 / 255),
 			g = (255 / 255),
@@ -135,7 +136,7 @@ local defaults = {
 			a = 1,
 		},
 		Presets = {
-			["Shaman (Enhance Low-Level)"] = {
+			[L["_preset Shaman (Enhance Low-Level)"]] = {
 				ATTACKPOWER = 1,
 				STR = 2,
 				AGI = 1.74,
@@ -150,7 +151,7 @@ local defaults = {
 				--OH_DPS = 3.7,
 			},
 			
-			["Shaman (Enhance Medium-Level)"] = {
+			[L["_preset Shaman (Enhance Medium-Level)"]] = {
 				ATTACKPOWER = 1,
 				STR = 2,
 				AGI = 1.8,
@@ -165,7 +166,7 @@ local defaults = {
 				--OH_DPS = 3.7,
 			},
 			
-			["Shaman (Enhance High-Level)"] = {
+			[L["_preset Shaman (Enhance High-Level)"]] = {
 				ATTACKPOWER = 1,
 				STR = 2,
 				AGI = 2,
@@ -180,7 +181,7 @@ local defaults = {
 				--OH_DPS = 3.7,
 			},
 			
-			["Shaman (Restoration Medium-Level)"] = {
+			[L["_preset Shaman (Restoration Medium-Level)"]] = {
 				--Mid-Level Shaman (Tier 5) 
 				STA = 0.30,
 				INT = 0.75,
@@ -192,7 +193,7 @@ local defaults = {
 				--Meta = 74.625 (based on [Insightful Earthstorm Diamond] proc equalling 17.5 mp5)
 			},
 			
-			["Shaman (Restoration High-Level)"] = {
+			[L["_preset Shaman (Restoration High-Level)"]] = {
 				--High-Level Shaman (Tier 6)
 				STA = 0.30,
 				INT = 0.55,
@@ -204,56 +205,52 @@ local defaults = {
 				--Meta = 59.1 (based on [Insightful Earthstorm Diamond] proc equalling 17.5 mp5)
 			},
 			
-			["Rogue Dagger Twink (29)"] = {
-				ATTACKPOWER = 1, STR = 1.1, AGI = 2.2, CR_CRIT = 1.8, CR_HIT = 2.3,
-			},
-			
-			["Mage (Frost)"] = {
+			[L["_preset Mage (Frost)"]] = {
 				DMG = 1, FROSTDMG = 0.9, -- Considering respeccs etc I don't value this as high as I prefer normal spell damage
 				INT = 0.3, SPI = 00.1, MANAREG = 1,
 				CR_SPELLHIT = 0.8, CR_SPELLCRIT = 0.7, CR_SPELLHASTE = 1.2, SPELLPEN = 0.8,
 			},
 			
-			["Mage (Fire)"] = {
+			[L["_preset Mage (Fire)"]] = {
 				DMG = 1, FIREDMG = 0.9, -- Considering respeccs etc I don't value this as high as I prefer normal spell damage
 				INT = 0.3, SPI = 00.1, MANAREG = 1,
 				CR_SPELLHIT = 0.8, CR_SPELLCRIT = 0.7, CR_SPELLHASTE = 1.2, SPELLPEN = 0.8,
 			},
 			
 			-- Lootrank templates:
-			["Rogue"] = {
-					ATTACKPOWER = 0.5, IGNOREARMOR = 0.15, STA = 0.01, CR_HIT = 1.15, CR_HASTE = 1, STR = 0.55, CR_EXPERTISE = 1.25, AGI = 1.1, CR_CRIT = 0.9,
+			[L["_preset Rogue"]] = {
+					ATTACKPOWER = 0.5, IGNOREARMOR = 0.15, CR_HIT = 1.15, CR_HASTE = 1, STR = 0.55, CR_EXPERTISE = 1.25, AGI = 1.1, CR_CRIT = 0.9,
 			},
 			
-			["Priest (Holy)"] = {
+			[L["_preset Priest (Holy)"]] = {
 				MANAREG = 2.4, CR_SPELLHASTE = 0.5, INT = 0.6, HEAL = 1, STA = 0.2, SPI = 0.8,
 			},
 			
-			["Warlock (Affliction)"] = {
+			[L["_preset Warlock (Affliction)"]] = {
 				CR_SPELLHIT = 1.5, SHADOWDMG = 2.2, CR_SPELLHASTE = 0.5, INT = 0.2, STA = 1, CR_SPELLCRIT = 1, DMG = 2.5,
 			},
 			
-			["Paladin (Protection)"] = {
+			[L["_preset Paladin (Protection)"]] = {
 				CR_SPELLHIT = 1, CR_DODGE = 7.5, INT = 2, CR_BLOCK = 5, CR_DEFENSE = 8, STA = 7.8, CR_EXPERTISE = 4, ARMOR = 0.6, BLOCKVALUE = 2, AGI = 6.5, DMG = 2, CR_PARRY = 7,
 			},
 			
-			["Druid (Restoration)"] = {
+			[L["_preset Druid (Restoration)"]] = {
 				MANAREG = 2.4, INT = 0.6, HEAL = 1, STA = 0.4, SPI = 0.8,
 			},
 			
-			["Warlock (Destruction)"] = {
+			[L["_preset Warlock (Destruction)"]] = {
 				CR_SPELLHIT = 1.5, SHADOWDMG = 2.2, CR_SPELLHASTE = 1.5, INT = 0.2, STA = 1, CR_SPELLCRIT = 2, DMG = 2.5,
 			},
 			
-			["Warrior (Protection)"] = {
+			[L["_preset Warrior (Protection)"]] = {
 				CR_HIT = 3, STA = 7.8, CR_BLOCK = 0.6, CR_DODGE = 7.5, CR_EXPERTISE = 6, ARMOR = 0.6, BLOCKVALUE = 4.5, AGI = 6.5, CR_DEFENSE = 8, CR_PARRY = 7, STR = 2,
 			},
 			
-			["Warrior (DPS)"] = {
+			[L["_preset Warrior (DPS)"]] = {
 				STR = 1.6, STA = 0.3, AGI = 1.5, CR_EXPERTISE = 1.5, CR_CRIT = 2, CR_HIT = 1.5, ATTACKPOWER = 0.7, IGNOREARMOR = 0.2, CR_HASTE = 2.8,
 			},
 			
-			["Hunter (Beast Mastery)"] = {
+			[L["_preset Hunter (Beast Mastery)"]] = {
 				MANAREG = 1.6, CR_HASTE = 0.2, INT = 0.7, RANGEDCRIT = 0.8, AGI = 1, RANGEDATTACKPOWER = 0.5, CR_HIT = 1.1, IGNOREARMOR = 0.05,
 			},
 		},
