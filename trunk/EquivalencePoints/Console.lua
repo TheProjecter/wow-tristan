@@ -136,7 +136,7 @@ function AddOn:Options()
 			},
 			ClassSpecifics = {
 				order = OrderNum(),
-				name = "Class Specifics",
+				name = L["_cmd _name Class Specifics"],
 				type = "toggle",
 				desc = "Some classes have a bit more info that EP can display, check this if you want to see it.",
 				get = getBaseOption,
@@ -145,7 +145,7 @@ function AddOn:Options()
 			},
 			RaceSpecifics = {
 				order = OrderNum(),
-				name = "Race Specifics",
+				name = L["_cmd _name Race Specifics"],
 				type = "toggle",
 				desc = "Adds expertise to swords if you're Human, expertise to axes if you're an Orc etc etc.",
 				get = getBaseOption,
@@ -155,14 +155,14 @@ function AddOn:Options()
 			
 			Layout = {
 				order = OrderNum(),
-				name = "Layout",
+				name = L["_cmd _name Layout"],
 				type = "group",
 				cmdHidden = true,
 				args = {
 					[HeaderName()] = Header("Zero values options"),
 					ShowZero = {
 						order = OrderNum(),
-						name = "Show Zero",
+						name = L["_cmd _name Show Zero"],
 						type = "toggle",
 						desc = "Show Equivalence Points even if the values is zero.",
 						get = getBaseOption,
@@ -171,7 +171,7 @@ function AddOn:Options()
 					},
 					ShowNoBonuses = {
 						order = OrderNum(),
-						name = "Show no Bonus items",
+						name = L["_cmd _name Show no Bonus items"],
 						type = "toggle",
 						desc = "Show the zero even if the item has no bonuses at all (only when ShowZero is active).",
 						get = getBaseOption,
@@ -182,7 +182,7 @@ function AddOn:Options()
 					[HeaderName()] = Header("Empty lines"),
 					EmptyLineAbove = {
 						order = OrderNum(),
-						name = "Empty Line Above",
+						name = L["_cmd _name Empty Line Above"],
 						type = "toggle",
 						desc = "Adds an empty line above the data in the tooltip.",
 						get = getBaseOption,
@@ -191,7 +191,7 @@ function AddOn:Options()
 					},
 					EmptyLineBelow = {
 						order = OrderNum(),
-						name = "Empty Line Below",
+						name = L["_cmd _name Empty Line Below"],
 						type = "toggle",
 						desc = "Adds an empty line below the data in the tooltip.",
 						get = getBaseOption,
@@ -199,11 +199,11 @@ function AddOn:Options()
 						width = nil,
 					},
 					
-					[HeaderName()] = Header("Colors"),
+					[HeaderName()] = Header(L["_cmd _name Colors"]),
 					
 					Color = {
 						order = OrderNum(),
-						name = "Color",
+						name = L["_cmd _name Color"],
 						type = "color",
 						desc = "Change the color of the text in tooltips.",
 						hasAlpha = false,
@@ -214,7 +214,7 @@ function AddOn:Options()
 					
 					ClassSpecificsColor = {
 						order = OrderNum(),
-						name = "Class color",
+						name = L["_cmd _name Class color"],
 						type = "toggle",
 						desc = "Colors the class specific data with class colors.",
 						get = getBaseOption,
@@ -226,7 +226,7 @@ function AddOn:Options()
 			
 			Values = {
 				order = OrderNum(),
-				name = "Values",
+				name = L["_cmd _name Values"],
 				type = "group",
 				cmdHidden = true,
 				args = {
@@ -238,14 +238,14 @@ function AddOn:Options()
 			-- Sets (save and load from sets)
 			Sets = {
 				order = OrderNum(),
-				name = "Sets",
+				name = L["_cmd _name Sets"],
 				type = "group",
 				cmdHidden = true,
 				args = {
-					[HeaderName()] = Header("Set operations"),
+					[HeaderName()] = Header(L["_cmd _name Set operations"]),
 					Save = {
 						order = OrderNum(),
-						name = "Save as Set",
+						name = L["_cmd _name Save as Set"],
 						type = "input",
 						width = "full",
 						desc = "Save current values as an alternative Set",
@@ -260,7 +260,7 @@ function AddOn:Options()
 						end
 					},
 					Delete = {
-						name = "Delete set",
+						name = L["_cmd _name Delete set"],
 						order = OrderNum(),
 						type = "select",
 						desc = "Delete a saved set.",
@@ -282,7 +282,7 @@ function AddOn:Options()
 						end
 					},
 					Load = {
-						name = "Load set",
+						name = L["_cmd _name Load set"],
 						order = OrderNum(),
 						type = "select",
 						desc = "Load a saved set.",
@@ -301,9 +301,9 @@ function AddOn:Options()
 						end
 					},
 					
-					[HeaderName()] = Header("Set Visibility"),
+					[HeaderName()] = Header(L["_cmd _name Set Visibility"]),
 					Hide = {
-						name = "Hide set",
+						name = L["_cmd _name Hide set"],
 						order = OrderNum(),
 						type = "select",
 						desc = "Prevents a saved set from showing up in tooltips.",
@@ -325,7 +325,7 @@ function AddOn:Options()
 						end
 					},
 					UnHide = {
-						name = "UnHide set",
+						name = L["_cmd _name UnHide set"],
 						order = OrderNum(),
 						type = "select",
 						desc = "Make a hidden set show up in tooltips again.",
@@ -350,14 +350,14 @@ function AddOn:Options()
 			
 			Import = {
 				order = OrderNum(),
-				name = "Import",
+				name = L["_cmd _name Import"],
 				type = "group",
 				cmdHidden = true,
 				args = {
 					--[HeaderName()] = Header("http://theorycraft.narod.ru/"),
 					LootrankImport = {
 						order = OrderNum(),
-						name = "Lootrank http://www.lootrank.com/",
+						name = L["_cmd _name Lootrank http://www.lootrank.com/"],
 						type = "input",
 						width = "full",
 						desc = "Import data from lootrank by entering a lootrank url.",
@@ -368,7 +368,7 @@ function AddOn:Options()
 					
 					CrazyShamanImport = {
 						order = OrderNum(),
-						name = "CrazyShaman http://theorycraft.narod.ru/",
+						name = L["_cmd _name CrazyShaman http://theorycraft.narod.ru/"],
 						type = "input",
 						width = "full",
 						desc = "Import data from CrazyShaman simulator.",
@@ -377,7 +377,7 @@ function AddOn:Options()
 					},
 					
 					ImportPresets = {
-						name = "Preset values you can import",
+						name = L["_cmd _name Preset values"],
 						order = OrderNum(),
 						type = "select",
 						desc = "Import preset values.",
@@ -393,11 +393,11 @@ function AddOn:Options()
 						set = function(info, value) self:ImportPreSets(value); end,
 					},
 					
-					[HeaderName()] = Header("Settings"),
+					[HeaderName()] = Header(L["_cmd _name Settings"]),
 					
 					ReceiveValues = {
 						order = OrderNum(),
-						name = "Receive values",
+						name = L["_cmd _name Receive values"],
 						type = "toggle",
 						desc = "Allow other users of this AddOn to send you their values.",
 						get = getBaseOption,
@@ -405,10 +405,10 @@ function AddOn:Options()
 						width = nil,
 					},
 					
-					[HeaderName()] = Header("Session"),
+					[HeaderName()] = Header(L["_cmd _name Session"]),
 					SessionImport = {
 						order = OrderNum(),
-						name = "Import",
+						name = L["_cmd _name Import"],
 						type = "input",
 						width = "full",
 						desc = "Import data from another session.",
@@ -417,22 +417,22 @@ function AddOn:Options()
 						multiline = true,
 					},
 					
-					EnhancerImportHeader = Header("Enhancer Import Options"),
-					EAEP = CreateExecute("EAEP", "Enhancer AEP", function() AddOn:ImportEnhancerAEP(); end),
-					EHEP = CreateExecute("EHEP", "Enhancer HEP", function() AddOn:ImportEnhancerHEP(); end),
-					EDEP = CreateExecute("EDEP", "Enhancer DEP", function() AddOn:ImportEnhancerDEP(); end),
+					EnhancerImportHeader = Header(L["_cmd _name Enhancer Import Options"]),
+					EAEP = CreateExecute(L["_cmd _name EAEP"], "Enhancer AEP", function() AddOn:ImportEnhancerAEP(); end),
+					EHEP = CreateExecute(L["_cmd _name EHEP"], "Enhancer HEP", function() AddOn:ImportEnhancerHEP(); end),
+					EDEP = CreateExecute(L["_cmd _name EDEP"], "Enhancer DEP", function() AddOn:ImportEnhancerDEP(); end),
 				},
 			},
 			
 			Export = {
 				order = OrderNum(),
-				name = "Export",
+				name = L["_cmd _name Export"],
 				type = "group",
 				cmdHidden = true,
 				args = {
 					SendValues = {
 						order = OrderNum(),
-						name = "Send values",
+						name = L["_cmd _name Send values"],
 						type = "input",
 						width = "full",
 						desc = "Send your main values to a friend.",
@@ -440,10 +440,10 @@ function AddOn:Options()
 						set = function(info, value) self:SendValues(value); end,
 					},
 					
-					[HeaderName()] = Header("Session"),
+					[HeaderName()] = Header(L["_cmd _name Session"]),
 					SessionExport = {
 						order = OrderNum(),
-						name = "Export",
+						name = L["_cmd _name Export"],
 						type = "input",
 						width = "full",
 						desc = "Copy paste what's in the textbox and you can import it to another char via import tab.",
@@ -456,14 +456,14 @@ function AddOn:Options()
 			
 			Gems = {
 				order = OrderNum(),
-				name = "Gems",
+				name = L["_cmd _name Gems"],
 				type = "group",
 				cmdHidden = true,
 				args = {
 					
 					MatchRarity = {
 						order = OrderNum(),
-						name = "Match Rarity",
+						name = L["_cmd _name Match Rarity"],
 						type = "toggle",
 						desc = "MatchRarity will use rare gems for rare gear, epic gems for epic gear and so forth.",
 						get = getBaseOption,
@@ -475,7 +475,7 @@ function AddOn:Options()
 					
 					MaxRarity = {
 						order = OrderNum(),
-						name = "Max Rarity",
+						name = L["_cmd _name Max Rarity"],
 						type = "range",
 						desc = "Sets the maximum rarity for gems (unless overriden by MatchRarity or MaxAvailRarity)",
 						min = 1,
@@ -487,7 +487,7 @@ function AddOn:Options()
 					},
 					MaxAvailRarity = {
 						order = OrderNum(),
-						name = "Max Avail Rarity",
+						name = L["_cmd _name Max Avail Rarity"],
 						type = "range",
 						desc = "Sets the maximum rarity for gems you have access to (overrides MaxRarity)",
 						min = 1,
@@ -498,35 +498,57 @@ function AddOn:Options()
 						width = nil,
 					},
 					
-					[HeaderName()] = Header("Best colored Gem"),
+					[HeaderName()] = Header(L["_cmd _name Best colored Gem"]),
 					
-					Blue 					 = CreateExecute("Blue", "Display best Blue gem", function() AddOn:PrintBestGem("Blue"); end),
-					Red 					 = CreateExecute("Red", "Display best Red gem", function() AddOn:PrintBestGem("Red"); end),
-					Yellow 				 = CreateExecute("Yellow", "Display best Yellow gem", function() AddOn:PrintBestGem("Yellow"); end),
+					Blue 					 = CreateExecute(L["_cmd _name Blue"], "Display best Blue gem", function() AddOn:PrintBestGem("Blue"); end),
+					Red 					 = CreateExecute(L["_cmd _name Red"], "Display best Red gem", function() AddOn:PrintBestGem("Red"); end),
+					Yellow 				 = CreateExecute(L["_cmd _name Yellow"], "Display best Yellow gem", function() AddOn:PrintBestGem("Yellow"); end),
 					
-					[HeaderName()] = Header("Best meta Gem"),
+					[HeaderName()] = Header(L["_cmd _name Best meta Gem"]),
 					
-					Meta 					 = CreateExecute("Meta", "Display best Meta gem", function() AddOn:PrintBestGem("Meta"); end),
+					Meta 					 = CreateExecute(L["_cmd _name Meta"], "Display best Meta gem", function() AddOn:PrintBestGem("Meta"); end),
 					
-					[HeaderName()] = Header("Best non-meta Gem"),
+					[HeaderName()] = Header(L["_cmd _name Best non-meta Gem"]),
 					
-					Any 					 = CreateExecute("Any", "Display best non-Meta gem", function() AddOn:PrintBestGem("AnyColor"); end),
+					Any 					 = CreateExecute(L["_cmd _name Any"], "Display best non-Meta gem", function() AddOn:PrintBestGem("AnyColor"); end),
 				},
 			},
 			
 			Dev = {
 				order = OrderNum(),
-				name = "Dev Tools",
+				name = L["_cmd _name Dev Tools"],
 				type = "group",
 				cmdHidden = true,
 				args = {
 					Debug = {
 						order = OrderNum(),
-						name = "Debug",
+						name = L["_cmd _name Debug"],
 						type = "toggle",
 						desc = "Toggle Debugging",
 						get = function() return AddOn.debug; end,
 						set = function(info, value) AddOn.debug = not AddOn.debug; end,
+					},
+					
+					[HeaderName()] = Header(L["_cmd _name Contact"]),
+					
+					EMAIL = {
+						order = OrderNum(),
+						name = L["_cmd _name E-mail"],
+						type = "input",
+						width = "full",
+						desc = "Copy paste email address into mailing client (Brush it up first ;).",
+						get = function() return "dennis [dot] hafstrom [at] gmail [dot] com"; end,
+						set = function(info, value) return; end,
+					},
+					
+					CrazyShamanImport = {
+						order = OrderNum(),
+						name = L["_cmd _name Website"],
+						type = "input",
+						width = "full",
+						desc = "Copy paste URL into browser.",
+						get = function() return "http://www.wowace.com/"; end,
+						set = function(info, value) return; end,
 					},
 				},
 			}
@@ -540,7 +562,7 @@ function AddOn:Options()
 		options.args.Import.args.EDEP = nil;
 	end
 	
-	options.args.Values.args["Reset"] = CreateExecute("Reset", "Reset all values to zero", function() for key in pairs(self.db.profile.Values) do self.db.profile.Values[key] = 0; end end, "full")
+	options.args.Values.args["Reset"] = CreateExecute(L["_cmd _name Reset"], "Reset all values to zero", function() for key in pairs(self.db.profile.Values) do self.db.profile.Values[key] = 0; end end, "full")
 	for key,value in self:DefaultValues():opairs() do
 		if (key == "EMPTY_SOCKET_META") then -- not limited to value 10 etc
 			if (self.db.profile.Values[key] and tonumber(self.db.profile.Values[key])) then
