@@ -252,7 +252,7 @@ function AddOn:Options()
 						get = function() return ""; end,
 						set = function(info, value)
 							self.db.profile.ValueSet[value] = nil;
-							self.db.profile.ValueSet[value] = table.copy(self:TrimTable(self.db.profile.Values));
+							AddOn:ImportSet(value, self.db.profile.Values, true);
 						end,
 						validate = function(info, value)
 							if (self.db.profile.ValueSet[value]) then return string.format(L["Set [%s] allready exists!"], value); end
@@ -354,7 +354,6 @@ function AddOn:Options()
 				type = "group",
 				cmdHidden = true,
 				args = {
-					--[HeaderName()] = Header("http://theorycraft.narod.ru/"),
 					LootrankImport = {
 						order = OrderNum(),
 						name = L["_cmd _name Lootrank http://www.lootrank.com/"],

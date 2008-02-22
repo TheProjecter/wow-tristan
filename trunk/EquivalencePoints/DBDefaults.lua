@@ -1,5 +1,6 @@
 local AddOn = LibStub("AceAddon-3.0"):GetAddon("EquivalencePoints", true);
 if (not AddOn) then return; end
+local L = LibStub("AceLocale-3.0"):GetLocale("EquivalencePoints", true)
 
 -- Create special table so it looks pretty in Ace3 Config :)
 -- http://lua-users.org/wiki/OrderedTableSimple
@@ -205,6 +206,7 @@ local defaults = {
 				--Meta = 59.1 (based on [Insightful Earthstorm Diamond] proc equalling 17.5 mp5)
 			},
 			
+			-- spell hit rating (to cap) > spell haste rating > spell damage > spell crit rating > spell penetration
 			[L["_preset Mage (Frost)"]] = {
 				DMG = 1, FROSTDMG = 0.9, -- Considering respeccs etc I don't value this as high as I prefer normal spell damage
 				INT = 0.3, SPI = 00.1, MANAREG = 1,

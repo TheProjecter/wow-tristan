@@ -555,27 +555,26 @@ function AddOn:Deserialize(serialized, SetPrefix)
 	end
 end
 
-function AddOn:ImportSet(SetPrefix, SetTable)
-	local FreeSpot = 0;
-	while (true) do
-		FreeSpot = FreeSpot + 1;
-		SetName = string.format("%s_%.3i", SetPrefix, FreeSpot);
-		if (not self.db.profile.ValueSet[SetName]) then
-			self.db.profile.ValueSet[SetName] = table.copy(SetTable);
-			
-			for key in pairs(self.db.profile.ValueSet[SetName]) do
-				-- Make sure we don't import crap keys
-				if (not self.db.profile.Values[key]) then
-					self.db.profile.ValueSet[SetName][key] = nil;
-				elseif (not tonumber(self.db.profile.ValueSet[SetName][key]) or tonumber(self.db.profile.ValueSet[SetName][key]) == 0) then
-					self.db.profile.ValueSet[SetName][key] = nil;
-				end
+function AddOn:ImportSet(SetPrefix, SetTable, TryWithoutSuffix)
+	local SetName = "";
+	
+	if (TryWithoutSuffix and not self.db.profile.ValueSet[SetPrefix]) then
+		SetName = SetPrefix;
+	else
+		local FreeSpot = 0;
+		while (true) do
+			FreeSpot = FreeSpot + 1;
+			SetName = string.format(L["Set Import Import_001 text"], SetPrefix, FreeSpot);
+			if (not self.db.profile.ValueSet[SetName]) then
+				break;
 			end
-			
-			print(L["Set imported as [%s]"], SetName);
-			break;
 		end
 	end
+	
+	-- Clear out unknown keys?
+	self.db.profile.ValueSet[SetName] = self:TrimTable(SetTable);
+	self.db.profile.HiddenSet[SetName] = true; -- Always hide new sets by default
+	print(L["Set imported as [%s], state set to Hidden"], SetName);
 end
 
 function AddOn:Import(standardizedData)
@@ -596,21 +595,6 @@ function AddOn:Import(standardizedData)
 	print(L["Import complete stats affected:"], unpack(affected));
 end
 
-function AddOn:TranslateValueKey(key)
-	if (key == "EMPTY_SOCKET_META") then return L["Bonus Value to Meta Gems"]; end -- We don't care what it's called in IBL we use it for meta gem bonus ;)
-	
-	local ibl = ItemBonusLib:GetBonusFriendlyName(key);
-	return (ibl and (ibl == "CR_EXPERTISE") and "Expertise Rating") or ibl or key;
-end
-
-function AddOn:TrimTable(tbl)
-	retTbl = table.copy(tbl);
-	for k in pairs(retTbl) do
-		if (retTbl[k] == 0) then retTbl[k] = nil; end
-	end
-	return retTbl;
-end
-
 function AddOn:ImportPreSets(set)
 	if (not set) then
 		print(L["Set not specified, import aborted!"]);
@@ -626,6 +610,22 @@ function AddOn:ImportPreSets(set)
 	end
 	
 	print(L["set [%s] not found, import aborted!"], set);
+end
+
+function AddOn:TranslateValueKey(key)
+	if (key == "EMPTY_SOCKET_META") then return L["Bonus Value to Meta Gems"]; end -- We don't care what it's called in IBL we use it for meta gem bonus ;)
+	
+	local ibl = ItemBonusLib:GetBonusFriendlyName(key);
+	return (ibl and (ibl == "CR_EXPERTISE") and "Expertise Rating") or ibl or key;
+end
+
+function AddOn:TrimTable(tbl)
+	-- really copy the table? shouldn't it just trim an existing table?
+	retTbl = table.copy(tbl);
+	for k in pairs(retTbl) do
+		if (retTbl[k] == 0) then retTbl[k] = nil; end
+	end
+	return retTbl;
 end
 
 function AddOn:SpamSafe(text)

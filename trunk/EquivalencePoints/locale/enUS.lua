@@ -139,6 +139,11 @@ L["_preset Warrior (Protection)"] = "Warrior (Protection)";
 L["_preset Warrior (DPS)"] = "Warrior (DPS)";
 L["_preset Hunter (Beast Mastery)"] = "Hunter (Beast Mastery)";
 
+--> Import <-- don't make em too long!
+L["_import Crazy Shaman Simulator"] = "CrazyShaman";
+L["_import Lootrank"] = "Lootrank%s";
+L["_import Lootrank Title"] = " (%s)"; -- get's appended to the %s in the above if it's available otherwise it's "" that takes the %s place
+
 --> ItemSubType <--
 L["Guns"] = true;
 L["One-Handed Maces"] = true;
@@ -161,12 +166,13 @@ L["Values are datamined (v%s)"] = true;
 L["Equivalence (BoK)"] = true;
 L["%.2f%s (%.2f%s)"] = "%.2f%s (%.2f%s)"; -- Used in tooltips on right side when presenting values
 L["%s %s"] = "%s %s"; -- Used in tooltips for Gem Lists input is "Normal Gem Name", "(BoK Gem Name)"
-L["_tooltip _rightside Gem List"] = "%s (%s)";
+L["_tooltip _rightside Gem List"] = "%s %s";
 L["_tooltip Ignore Color"] = "|cff" .. "ff0000" .. "*" .. "|r";
 
 --> Information <--
 L["Auto imported your |cffff0000AEP|r values from Enhancer!"] = true;
 L["Receiving data from %s"] = true;
+L["Set imported as [%s], state set to Hidden"] = true;
 L["Lootrank doesn't differ between ranged/melee crit & hit, so if you wanted ranged you should import the set and change it's values! By default the import is to Melee!"] = true;
 
 --> Errors <--
@@ -190,7 +196,7 @@ L["Enhancer not found, import aborted"] = true;
 --> Misc <--
 L["Best %s gem is %s at %.2f"] = true;
 L["Best %s gem BoK is %s at %.2f"] = true;
-L["Set imported as [%s]"] = true;
 L["Import complete stats affected:"] = true;
 L["Bonus Value to Meta Gems"] = true;
 L["|cff77ff77Saved [|r%s (BoK)|cff77ff77]|r"] = true;
+L["Set Import Import_001 text"] = "%s_%.3i";

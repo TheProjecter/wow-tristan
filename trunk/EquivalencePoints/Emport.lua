@@ -87,7 +87,7 @@ function AddOn:CrazyShamanImport(data)
 	end
 	
 	if (updateValid) then
-		self:ImportSet("CrazyShaman", standardizedData)
+		self:ImportSet(L["_import Crazy Shaman Simulator"], standardizedData)
 	end
 end
 
@@ -111,7 +111,7 @@ function AddOn:LootrankImport(URL)
 			--title=DPS%20Warrior
 			Val = string.gsub(Val, "%%20", " ");
 			Val = string.gsub(Val, "+", " ");
-			SetTitle = string.format(" (%s)", Val);
+			SetTitle = string.format(L["_import Lootrank Title"], Val);
 		end
 		
 		if (Val > 10) then
@@ -121,7 +121,7 @@ function AddOn:LootrankImport(URL)
 	end
 	
 	if (table.safecount(SetTable) > 0) then
-		self:ImportSet("Lootrank"..SetTitle, SetTable)
+		self:ImportSet(string.format(L["_import Lootrank"], SetTitle), SetTable)
 		print(L["Lootrank doesn't differ between ranged/melee crit & hit, so if you wanted ranged you should import the set and change it's values! By default the import is to Melee!"]);
 	end
 end
