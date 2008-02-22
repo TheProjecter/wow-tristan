@@ -1,7 +1,7 @@
 local L = AceLibrary("AceLocale-2.2"):new("Enhancer");
 local U = Enhancer_URLs;
 
-Enhancer.news = 8; -- Can only ever increase
+Enhancer.news = 9; -- Can only ever increase
 function Enhancer:News()
 	-- Announce disabled
 	-- Enhancer.noannounce = true;
@@ -19,8 +19,20 @@ function Enhancer:News()
 	self.newsFrame:AddLine("", 						"any errors please report them.");
 	self.newsFrame:AddLine("", 						"");
 	
-	self.newsFrame:AddLine("Wiki Info", 	"http://code.google.com/p/wow-tristan/wiki/Enhancer");
+	self.newsFrame:AddLine("Wazzup",			"Rewriting Enhancer to Ace3. Breaking it into a couple of");
+	self.newsFrame:AddLine("", 						"AddOns instead of this one big thing. Was hoping to get");
+	self.newsFrame:AddLine("", 						"the buttons optionally able to act as recast buttons as");
+	self.newsFrame:AddLine("", 						"well as timers. Was also hoping there'd be some neat");
+	self.newsFrame:AddLine("", 						"API's in 2.4 that could help track totems a bit better.");
+	self.newsFrame:AddLine("", 						"All in all it'll probably be untill 2.4 before something");
+	self.newsFrame:AddLine("", 						"major happens with this AddOn as I'm not to keen on the");
+	self.newsFrame:AddLine("", 						"idea of changing it all now and have it break in 2.4");
 	self.newsFrame:AddLine("", 						"");
+	
+	self.newsFrame:AddLine("Offshot", 		"First AddOn in this package to go Ace3 is released in");
+	self.newsFrame:AddLine("", 						"a betaish state. EquivalencePoints, if you try it out");
+	self.newsFrame:AddLine("", 						"please leave comments on the page or to my e-mail");
+	self.newsFrame:AddLine("URL",					"http://code.google.com/p/eqp/");
 	
 	self.newsFrame:AddLine("", ""); -- Add an extra here
 	self.newsFrame:AddLine(L["news_4"], L["news_7"]);
