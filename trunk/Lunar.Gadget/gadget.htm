@@ -1,0 +1,106 @@
+<!--
+			ToDo: 57 px background
+-->
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title></title>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<link href="gadget.css" rel="stylesheet" type="text/css" />
+	</head>
+
+	<script language="VBScript">
+		Sub Window_Onload
+			GetTicker
+			iTimerID = window.SetInterval("GetTicker", 60000)
+		End Sub
+
+		Sub GetTicker
+			Dim xmlHttp, xmlData, xmlParser
+			Dim xmlNodes, xmlNode
+			Dim sText, sLink, sDate, sUser
+			Dim bSuccess, sResult, sSpace
+
+			sSpace = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+
+			Set xmlParser = CreateObject("MSXML2.DOMDocument.6.0")
+			xmlParser.Async = False
+			bSuccess = xmlParser.Load("http://api.lunarstorm.se/api.ashx?type=rss&function=Live")
+
+			If bSuccess Then
+			 Set xmlNodes = xmlParser.SelectNodes("/rss/channel/item")
+			 sResult = sSpace
+
+			 For Each xmlNode In xmlNodes
+			  sText = xmlNode.SelectSingleNode("description").Text
+			  sLink = xmlNode.SelectSingleNode("link").Text
+			  sDate = xmlNode.SelectSingleNode("pubDate").Text
+			  sUser = xmlNode.SelectSingleNode("title").Text
+
+			  sResult = sResult & "<a href=""" & sLink & """ class=""tickerLink"">" & sUser & ": " & sText & "</a>" & sSpace
+			  'target=""_blank""
+			 Next
+			 
+			 Set xmlNode = Nothing
+			 Set xmlNodes = Nothing
+			End If
+
+			Set xmlParser = Nothing
+			Set xmlHttp = Nothing
+
+			theTicker.InnerHTML = sResult
+		End Sub
+	</script>
+
+	<script type="text/javascript" language="javascript">
+		function initGadget()
+		{
+			checkState();
+			System.Gadget.onDock = checkState;
+			System.Gadget.onUndock = checkState;
+		}
+
+		function checkState()
+		{
+			if(!System.Gadget.docked)
+			{
+				undockedState();
+			}
+			else if (System.Gadget.docked)
+			{
+				dockedState();
+			}
+		}
+
+		function undockedState()
+		{
+			document.body.style.width=688;
+			document.body.background = "_gfx/bg_large.png";
+			document.getElementById("iconArea").style.width=686;
+			document.getElementById("tickerArea").style.width=686;
+		}
+
+		function dockedState()
+		{
+			document.body.style.width=130;
+			document.body.background = "_gfx/bg_small.png";
+			document.getElementById("iconArea").style.width=128;
+			document.getElementById("tickerArea").style.width=128;
+		}
+	</script>
+
+	<body onload="initGadget()" background="_gfx/bg.png">
+		<div id="iconArea" class="iconArea" align="center" valign="middle">
+			<!-- marquee scrollamount="3">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</marquee -->
+			<img src="_gfx/icon/icon-guestbook.gif" id="gbIcon" class="topIcon" />
+			<img src="_gfx/icon/icon-lunarmail.gif" id="lmIcon" class="topIcon" />
+			<img src="_gfx/icon/icon-forum.gif" id="fmIcon" class="topIcon" />
+			<img src="_gfx/icon/icon-friends.gif" id="frIcon" class="topIcon" />
+			<img src="_gfx/icon/icon-comment.gif" id="cmIcon" class="topIcon" />
+		</div>
+		<div id="tickerArea" class="tickerArea" align="center" valign="middle">
+			<marquee scrollamount="3" width="100%" id="theTicker" class="ticker">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</marquee>
+		</div>
+		<div id="Debug" class="Debug" style="visibility:hidden;" />
+	</body>
+</html>

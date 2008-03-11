@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<gadget>
+    <name>LunarStorm</name>
+    <author>Dennis</author>
+    <copyright>2006 Dennis</copyright>
+    <description>Shows info from LunarStorm.</description>
+    <icons>
+        <icon>icon.png</icon>
+    </icons>
+    <version value="1.0.0.0" MinPlatformVersion="0.1"></version>
+    <sidebar>
+        <type>html</type>
+        <permissions>full</permissions>
+        <code>gadget.html</code>
+        <website>www.lunarstorm.se</website>
+     </sidebar>
+</gadget>
+

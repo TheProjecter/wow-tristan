@@ -1,0 +1,29 @@
+Sub TickerData(text)
+			'theTicker.InnerHTML = text
+			
+			Dim objRegEx, Match, Matches, strTemp
+			
+			Set objRegEx = New RegExp
+			objRegEx.Global = True
+			objRegEx.IgnoreCase = True
+			objRegEx.Pattern = """liveentries"":\[[^\]]*\]"
+			
+			Set Matches = objRegEx.Execute(text)
+			
+			For Each Match in Matches
+				strTemp = Match.value
+			Next
+			
+			objRegex.Pattern = """MessageText"":""[^"]*"""
+			Set Matches = objRegEx.Execute(text)
+			
+			For Each Match in Matches
+				strTemp = Match.value
+			Next
+			
+			If Len(strTemp) < 1 Then
+				strTemp = text
+			End If
+			
+			Moooooo.InnerHTML = strTemp
+		End Sub

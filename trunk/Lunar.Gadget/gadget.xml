@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<gadget>
+<name>LunarStorm</name>
+<version>1.0</version>
+<author name="Dennis Hafstr&#246;m">
+<info url="dennis.hafstrom@lunarstorm.se" />
+</author>
+<copyright>&#169; 2008</copyright>
+<description>LunarStorm info</description>
+<icons>
+<icon src="icon.png"/>
+</icons>
+<hosts>
+<host name="sidebar">
+<base type="HTML" apiVersion="1.0.0" src="gadget.htm" />
+<permissions>full</permissions>
+<platform minPlatformVersion="0.1" />
+</host>
+</hosts>
+</gadget>
+
