@@ -35,7 +35,6 @@
 			  sUser = xmlNode.SelectSingleNode("title").Text
 
 			  sResult = sResult & "<a href=""" & sLink & """ class=""tickerLink"">" & sUser & ": " & sText & "</a>" & sSpace
-			  'target=""_blank""
 			 Next
 			 
 			 Set xmlNode = Nothing
@@ -46,7 +45,7 @@
 			Set xmlHttp = Nothing
 
 			theTicker.InnerHTML = sResult
-			MsgBox("Update!")
+			'MsgBox("Update!")
 		End Sub
 	</script>
 
@@ -101,7 +100,7 @@
 			<img src="_gfx/icon/icon-comment.gif" id="cmIcon" class="topIcon" />
 		</div>
 		<div id="tickerArea" class="tickerArea" align="center" valign="middle">
-			<marquee scrollamount="3" width="100%" id="theTicker" class="ticker" onMouseOver="theTicker.stop()" onMouseOut="theTicker.start()">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</marquee>
+			<marquee scrollamount="4" width="100%" id="theTicker" class="ticker" onMouseOver="theTicker.stop()" onMouseOut="theTicker.start()">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</marquee>
 		</div>
 		<div id="Debug" class="Debug" style="visibility:hidden;" />
 	</body>
