@@ -10,6 +10,17 @@
 		Sub Window_Onload
 			GetTicker
 			iTimerID = window.SetInterval("GetTicker", 60000)
+			
+			'GetIcons
+		End Sub
+		
+		Sub GetIcons
+			gbIcon.src = "_gfx/icon/icon-guestbook-active.gif"
+			gbIcon.alt = "555 nya gästboks-inlägg!"
+			lmIcon.src = "_gfx/icon/icon-lunarmail-active.gif"
+			fmIcon.src = "_gfx/icon/icon-forum-active.gif"
+			frIcon.src = "_gfx/icon/icon-friends-active.gif"
+			cmIcon.src = "_gfx/icon/icon-comment-active.gif"
 		End Sub
 
 		Sub GetTicker
@@ -93,11 +104,11 @@
     style="position:absolute;top:0;left:0;z-index:-2;no=repeat;" />
     
     <div id="iconArea" class="iconArea" align="center" valign="middle">
-			<img src="_gfx/icon/icon-guestbook.gif" id="gbIcon" class="topIcon" />
-			<img src="_gfx/icon/icon-lunarmail.gif" id="lmIcon" class="topIcon" />
-			<img src="_gfx/icon/icon-forum.gif" id="fmIcon" class="topIcon" />
-			<img src="_gfx/icon/icon-friends.gif" id="frIcon" class="topIcon" />
-			<img src="_gfx/icon/icon-comment.gif" id="cmIcon" class="topIcon" />
+			<img src="_gfx/icon/icon-guestbook.gif" id="gbIcon" class="topIcon" alt="" />
+			<img src="_gfx/icon/icon-lunarmail.gif" id="lmIcon" class="topIcon" alt="" />
+			<img src="_gfx/icon/icon-forum.gif" id="fmIcon" class="topIcon" alt="" />
+			<img src="_gfx/icon/icon-friends.gif" id="frIcon" class="topIcon" alt="" />
+			<img src="_gfx/icon/icon-comment.gif" id="cmIcon" class="topIcon" alt="" />
 		</div>
 		<div id="tickerArea" class="tickerArea" align="center" valign="middle">
 			<marquee scrollamount="4" width="100%" id="theTicker" class="ticker" onMouseOver="theTicker.stop()" onMouseOut="theTicker.start()">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</marquee>
