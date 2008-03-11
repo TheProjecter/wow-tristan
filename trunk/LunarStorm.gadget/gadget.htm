@@ -1,6 +1,3 @@
-<!--
-			ToDo: 57 px background
--->
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
@@ -49,6 +46,7 @@
 			Set xmlHttp = Nothing
 
 			theTicker.InnerHTML = sResult
+			MsgBox("Update!")
 		End Sub
 	</script>
 
@@ -76,7 +74,7 @@
 		{
 			document.body.style.width=688;
 			document.body.background = "_gfx/bg_large.png";
-			document.getElementById("iconArea").style.width=686;
+			document.getElementById("iconArea").style.width=128;
 			document.getElementById("tickerArea").style.width=686;
 		}
 
@@ -89,9 +87,13 @@
 		}
 	</script>
 
-	<body onload="initGadget()" background="_gfx/bg.png">
-		<div id="iconArea" class="iconArea" align="center" valign="middle">
-			<!-- marquee scrollamount="3">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</marquee -->
+	<body onload="initGadget()">
+		<g:background 
+    id="background" 
+    src="_gfx/spacer.png"
+    style="position:absolute;top:0;left:0;z-index:-2;no=repeat;" />
+    
+    <div id="iconArea" class="iconArea" align="center" valign="middle">
 			<img src="_gfx/icon/icon-guestbook.gif" id="gbIcon" class="topIcon" />
 			<img src="_gfx/icon/icon-lunarmail.gif" id="lmIcon" class="topIcon" />
 			<img src="_gfx/icon/icon-forum.gif" id="fmIcon" class="topIcon" />
@@ -99,7 +101,7 @@
 			<img src="_gfx/icon/icon-comment.gif" id="cmIcon" class="topIcon" />
 		</div>
 		<div id="tickerArea" class="tickerArea" align="center" valign="middle">
-			<marquee scrollamount="3" width="100%" id="theTicker" class="ticker">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</marquee>
+			<marquee scrollamount="3" width="100%" id="theTicker" class="ticker" onMouseOver="theTicker.stop()" onMouseOut="theTicker.start()">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</marquee>
 		</div>
 		<div id="Debug" class="Debug" style="visibility:hidden;" />
 	</body>

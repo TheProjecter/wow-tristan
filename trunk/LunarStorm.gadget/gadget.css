@@ -6,8 +6,13 @@
 	padding: 0;
 	width: 130px;
 	height: 70px;
+}
+
+.bodyOld {
+	background: url(_gfx/bg_small.png) no-repeat;
 	background: url(_gfx/background.png) no-repeat;
 	background-repeat: repeat-x;
+	background-repeat: no-repeat;
 }
 
 .iconArea {
