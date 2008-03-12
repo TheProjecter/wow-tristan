@@ -82,37 +82,60 @@
 
 		function undockedState()
 		{
-			document.body.style.width=688;
-			document.body.background = "_gfx/bg_large.png";
-			document.getElementById("iconArea").style.width=128;
-			document.getElementById("tickerArea").style.width=686;
+			'document.body.background = "_gfx/bg_large.png";
+			
+			'-- Resize body
+			document.body.style.width = 730;
+			
+			'-- Resize elements
+			document.getElementById("tickerArea").style.width = 730;
+			document.getElementById("tickerCenter").style.width = 710;
+			document.getElementById("tickerRight").style.left = 720;
+			document.getElementById("iconCenter").style.width = 710;
+			document.getElementById("iconRight").style.left = 720;
+			
+			'-- Show extra stuff
 		}
 
 		function dockedState()
 		{
+			'document.body.background = "_gfx/bg_small.png";
+			
+			'-- Resize body
 			document.body.style.width=130;
-			document.body.background = "_gfx/bg_small.png";
-			document.getElementById("iconArea").style.width=128;
-			document.getElementById("tickerArea").style.width=128;
+			
+			'-- Resize elements
+			document.getElementById("tickerArea").style.width = 130;
+			document.getElementById("tickerCenter").style.width = 110;
+			document.getElementById("tickerRight").style.left = 120;
+			document.getElementById("iconCenter").style.width = 110;
+			document.getElementById("iconRight").style.left = 120;
+			
+			'-- Show extra stuff
 		}
 	</script>
 
-	<body onload="initGadget()">
-		<g:background 
-    id="background" 
-    src="_gfx/spacer.png"
-    style="position:absolute;top:0;left:0;z-index:-2;no=repeat;" />
-    
-    <div id="iconArea" class="iconArea" align="center" valign="middle">
+	<body onload="initGadget()" bgcolor="#000000">
+		<div id="iconLeft" class="iconLeft" />
+		<div id="iconCenter" class="iconCenter" />
+		<div id="iconRight" class="iconRight" />
+		
+		<div id="iconArea" class="iconArea">
 			<img src="_gfx/icon/icon-guestbook.gif" id="gbIcon" class="topIcon" alt="" />
 			<img src="_gfx/icon/icon-lunarmail.gif" id="lmIcon" class="topIcon" alt="" />
 			<img src="_gfx/icon/icon-forum.gif" id="fmIcon" class="topIcon" alt="" />
 			<img src="_gfx/icon/icon-friends.gif" id="frIcon" class="topIcon" alt="" />
 			<img src="_gfx/icon/icon-comment.gif" id="cmIcon" class="topIcon" alt="" />
 		</div>
-		<div id="tickerArea" class="tickerArea" align="center" valign="middle">
+		
+		<div id="tickerLeft" class="tickerLeft" />
+		<div id="tickerCenter" class="tickerCenter" />
+		<div id="tickerRight" class="tickerRight" />
+		
+		<div id="tickerArea" class="tickerArea">
 			<marquee scrollamount="4" width="100%" id="theTicker" class="ticker" onMouseOver="theTicker.stop()" onMouseOut="theTicker.start()">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</marquee>
 		</div>
+    
 		<div id="Debug" class="Debug" style="visibility:hidden;" />
 	</body>
 </html>

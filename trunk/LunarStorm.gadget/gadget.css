@@ -6,35 +6,102 @@
 	padding: 0;
 	width: 130px;
 	height: 70px;
+	background: url(_gfx/trans1.png);
+	background-repeat: repeat;
 }
 
-.bodyOld {
-	background: url(_gfx/bg_small.png) no-repeat;
-	background: url(_gfx/background.png) no-repeat;
-	background-repeat: repeat-x;
-	background-repeat: no-repeat;
+.iconLeft {
+	position: fixed;
+	left: 0px;
+	top: 0px;
+	width: 10px;
+	height: 34px;
+	background: url(_gfx/icon_bg_left.png) no-repeat;
+	z-index: 1;
+}
+
+.iconCenter {
+	position: fixed;
+	left: 10px;
+	top: 0px;
+	width: 110px;
+	height: 34px;
+	background: url(_gfx/icon_bg.png) repeat-x;
+	z-index: 1;
+}
+
+.iconRight {
+	position: fixed;
+	left: 120px;
+	top: 0px;
+	width: 10px;
+	height: 34px;
+	background: url(_gfx/icon_bg_right.png) no-repeat;
+	z-index: 1;
 }
 
 .iconArea {
-	position: absolute;
-	left: 1px;
-	top: 1px;
-	width: 128px;
-	height: 31px;
+	position: fixed;
+	left: 0px;
+	top: 8px;
+	width: 130px;
+	height: 22px;
 	overflow: hidden;
 	white-space: nowrap;
-	line-height: 21px;
+	text-align: center;
+	z-index: 2;
+}
+
+.topIcon {
+	width: 22px;
+}
+
+.tickerLeft {
+	position: fixed;
+	left: 0px;
+	top: 34px;
+	width: 10px;
+	height: 20px;
+	background: url(_gfx/ticker_bg_left.png) no-repeat;
+	z-index: 1;
+}
+
+.tickerCenter {
+	position: fixed;
+	left: 10px;
+	top: 34px;
+	width: 110px;
+	height: 20px;
+	background: url(_gfx/ticker_bg.png) repeat-x;
+	z-index: 1;
+}
+
+.tickerRight {
+	position: fixed;
+	left: 120px;
+	top: 34px;
+	width: 10px;
+	height: 20px;
+	background: url(_gfx/ticker_bg_right.png) no-repeat;
+	z-index: 1;
 }
 
 .tickerArea {
-	position: absolute;
+	position: fixed;
 	left: 1px;
-	top: 33px;
-	width: 128px;
+	top: 34px;
+	width: 130px;
 	height: 20px;
 	overflow: hidden;
 	white-space: nowrap;
 	line-height: 21px;
+	border: 0px none;
+	margin: 0px;
+	padding: 0px;
+}
+
+.ticker {
+	color: #ffffff;
 }
 
 .tickerLink {
@@ -49,12 +116,4 @@
 	position: absolute;
 	left: 50px;
 	top: 50px;
-}
-
-.topIcon {
-	width: 22px;
-}
-
-.ticker {
-	color: #ffffff;
 }
