@@ -93,8 +93,16 @@
 			document.getElementById("tickerRight").style.left = 720;
 			document.getElementById("iconCenter").style.width = 710;
 			document.getElementById("iconRight").style.left = 720;
+			document.getElementById("iconArea").style.width = 166;
+			document.getElementById("iconArea").style.top = 3;
+			document.getElementById("gbIcon").style.width = 28;
+			document.getElementById("lmIcon").style.width = 28;
+			document.getElementById("fmIcon").style.width = 28;
+			document.getElementById("frIcon").style.width = 28;
+			document.getElementById("cmIcon").style.width = 28;
 			
 			'-- Show extra stuff
+			document.getElementById("extrasArea").style.visibility = "visible";
 		}
 
 		function dockedState()
@@ -110,8 +118,16 @@
 			document.getElementById("tickerRight").style.left = 120;
 			document.getElementById("iconCenter").style.width = 110;
 			document.getElementById("iconRight").style.left = 120;
+			document.getElementById("iconArea").style.width = 130;
+			document.getElementById("iconArea").style.top = 8;
+			document.getElementById("gbIcon").style.width = 22;
+			document.getElementById("lmIcon").style.width = 22;
+			document.getElementById("fmIcon").style.width = 22;
+			document.getElementById("frIcon").style.width = 22;
+			document.getElementById("cmIcon").style.width = 22;
 			
-			'-- Show extra stuff
+			'-- Hide extra stuff
+			document.getElementById("extrasArea").style.visibility = "hidden";
 		}
 	</script>
 
@@ -126,6 +142,10 @@
 			<img src="_gfx/icon/icon-forum.gif" id="fmIcon" class="topIcon" alt="" />
 			<img src="_gfx/icon/icon-friends.gif" id="frIcon" class="topIcon" alt="" />
 			<img src="_gfx/icon/icon-comment.gif" id="cmIcon" class="topIcon" alt="" />
+		</div>
+		
+		<div id="extrasArea" class="extrasArea"  style="visibility:hidden;">
+		<FONT COLOR="#000000">XXXXXXXXXXXXXXXXXXXXXXXXXXX</FONT>
 		</div>
 		
 		<div id="tickerLeft" class="tickerLeft" />
