@@ -5,3 +5,8 @@ IconFile=http://www.blocket.se/img/favicon.ico
 IconIndex=1
 [{000214A0-0000-0000-C000-000000000046}]
 Prop3=19,2
+[DEFAULT]
+BASEURL=http://www.blocket.se/li?q=kymco+vitality&ca=20_s&th=1&c=0&w=2&aws=&awe=
+[DOC#742]
+BASEURL=http://eas.blocket.se/eas?cu=72;cre=mu;target=_blank;sw=kymco+vitality;sw2=p
+ORIGURL=http://eas.blocket.se/eas?cu=72;cre=mu;target=_blank;sw=kymco+vitality;sw2=p
