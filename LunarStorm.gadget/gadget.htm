@@ -82,12 +82,12 @@
 
 		function undockedState()
 		{
-			'document.body.background = "_gfx/bg_large.png";
+			//document.body.background = "_gfx/bg_large.png";
 			
-			'-- Resize body
+			//-- Resize body
 			document.body.style.width = 730;
 			
-			'-- Resize elements
+			//-- Resize elements
 			document.getElementById("tickerArea").style.width = 730;
 			document.getElementById("tickerCenter").style.width = 710;
 			document.getElementById("tickerRight").style.left = 720;
@@ -101,18 +101,18 @@
 			document.getElementById("frIcon").style.width = 28;
 			document.getElementById("cmIcon").style.width = 28;
 			
-			'-- Show extra stuff
+			//-- Show extra stuff
 			document.getElementById("extrasArea").style.visibility = "visible";
 		}
 
 		function dockedState()
 		{
-			'document.body.background = "_gfx/bg_small.png";
+			//document.body.background = "_gfx/bg_small.png";
 			
-			'-- Resize body
+			//-- Resize body
 			document.body.style.width=130;
 			
-			'-- Resize elements
+			//-- Resize elements
 			document.getElementById("tickerArea").style.width = 130;
 			document.getElementById("tickerCenter").style.width = 110;
 			document.getElementById("tickerRight").style.left = 120;
@@ -126,8 +126,17 @@
 			document.getElementById("frIcon").style.width = 22;
 			document.getElementById("cmIcon").style.width = 22;
 			
-			'-- Hide extra stuff
+			//-- Hide extra stuff
 			document.getElementById("extrasArea").style.visibility = "hidden";
+		}
+		
+		function resetSearch()
+		{
+			document.getElementById("searchBox").value = 'Sök...';
+		}
+		function clearSearch()
+		{
+			document.getElementById("searchBox").value = '';
 		}
 	</script>
 
@@ -145,7 +154,13 @@
 		</div>
 		
 		<div id="extrasArea" class="extrasArea"  style="visibility:hidden;">
-		<FONT COLOR="#000000">XXXXXXXXXXXXXXXXXXXXXXXXXXX</FONT>
+			<div id="onlineArea" class="onlineArea">1337 online</div>
+			<div id="searchArea" class="searchArea">
+				<form method="get" action="http://www.lunarstorm.se/src/src_quicksearch.aspx">
+					<div id="searchBoxBorder"></div><div id="searchBoxHolder"></div><input type="text" id="searchBox" name="all" value="Sök..." onfocus="clearSearch()" onblur="resetSearch()"/>
+				</form>
+			</div>
+			<div id="logoArea" class="logoArea"><img src="_gfx/logo.png" style="vertical-align: middle;"></div>
 		</div>
 		
 		<div id="tickerLeft" class="tickerLeft" />
