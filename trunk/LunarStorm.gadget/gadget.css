@@ -1,7 +1,8 @@
 ﻿body
 {
-	font-size: 11px;
-	font-family: Arial;
+	font-family: 'trebuchet ms', verdana, arial, helvetica, sans-serif;
+	font-size: 12px;
+	font-weight: bold;
 	margin: 0;
 	padding: 0;
 	width: 130px;
@@ -64,8 +65,89 @@
 	height: 34px;
 	overflow: hidden;
 	white-space: nowrap;
-	text-align: center;
-	vertical-align: middle;
+	z-index: 2;
+}
+
+.onlineArea {
+	position: fixed;
+	left: 186px;
+	top: 7px;
+	font-family: 'trebuchet ms', verdana, arial, helvetica, sans-serif;
+	font-size: 14px;
+	font-weight: bold;
+	color: #0183a8;
+	white-space: nowrap;
+	z-index: 2;
+}
+
+.searchArea {
+	position: fixed;
+	left: 320px;
+	top: 7px;
+	width: 116px;
+	height: 17px;
+	font-family: 'trebuchet ms', verdana, arial, helvetica, sans-serif;
+	font-size: 14px;
+	font-weight: bold;
+	color: #0183a8;
+	white-space: nowrap;
+	z-index: 2;
+}
+
+#searchBox {
+	position: absolute;
+	left: 1px;
+	top: 0px;
+	width: 114px;
+	height: 15px;
+	background-color: transparent;
+	font-family: 'trebuchet ms',verdana,arial,helvetica,sans-serif;
+	font-size: 11px;
+	border: none;
+	color: #0183ab;
+	font-weight: normal;
+	z-index: 5;
+}
+
+#searchBoxHolder
+{
+	position: absolute;
+	left: 1px;
+	top: 1px;
+	width: 114px;
+	background-color: white;
+	height: 15px;
+	font-size: 0px;
+	z-index: 4;
+}
+
+#searchBoxBorder
+{
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	width: 116px;
+	height: 17px;
+	background-color: #0183ab;
+	font-size:0px;
+	z-index: 3;
+}
+
+.orangeText {
+	color: #dc3f25;
+}
+.blueText {
+	color: #0183a8;
+}
+
+.logoArea {
+	position: fixed;
+	left: 519px;
+	top: 4px;
+	width: 191px;
+	height: 25px;
+	overflow: hidden;
+	white-space: nowrap;
 	z-index: 2;
 }
 
