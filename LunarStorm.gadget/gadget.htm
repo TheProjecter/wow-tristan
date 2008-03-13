@@ -24,13 +24,12 @@
 			onlineArea.InnerHTML = "1337 online"
 		End Sub
 		
-		'System.Gadget.Settings.read("listview")
-		'System.Gadget.Settings.write
-		
 		Sub GetIcons
 			Dim sUsername
-			sUsername = System.Gadget.Settings.readString("Username")
-			If sUsername = vbNullString Then sUsername = "Webmaster" End If
+			sUsername = "Webmaster"
+			If System.Gadget.Settings.readString("Username") <> vbNullString Then
+				sUsername = System.Gadget.Settings.readString("Username")
+			End If
 			
 			gbIcon.alt = sUsername & " har 0 nya gästboks-inlägg."
 			gbIcon.href = "http://www.lunarstorm.se/" & sUsername
@@ -93,8 +92,6 @@
 			System.Gadget.onDock = checkState;
 			System.Gadget.onUndock = checkState;
 			System.Gadget.settingsUI = "settings.htm";
-			
-			document.getElementById("iconLeft").addImageObject("_gfx/icon_bg_left.png", 0, 0);
 		}
 
 		function checkState()
@@ -168,7 +165,7 @@
 	<body onload="initGadget()">
 		<g:background src="_gfx/trans1.png" style="width:100%; height:100%;" />
 		
-		<div id="iconLeft" class="iconLeft" />
+		<div id="iconLeft" class="iconLeft"><img src="_gfx/icon_bg_left.png"></div>
 		<div id="iconCenter" class="iconCenter" />
 		<div id="iconRight" class="iconRight" />
 		
