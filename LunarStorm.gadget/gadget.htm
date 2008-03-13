@@ -37,6 +37,9 @@
 			
 			If System.Gadget.Settings.readString("UpdateInfo") = "!" Then
 				'Update userinfo for correct casing of Username etc
+				
+				'Once updated clear the update flag
+				System.Gadget.Settings.writeString("UpdateInfo", vbNullString)
 			End If
 			
 			'gbIcon.src = "_gfx/icon/icon-guestbook-active.gif"
