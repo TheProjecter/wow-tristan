@@ -25,6 +25,7 @@
 		End Sub
 		
 		Sub GetIcons
+			
 			Dim sUsername
 			sUsername = "Webmaster"
 			If System.Gadget.Settings.readString("Username") <> vbNullString Then
@@ -32,7 +33,7 @@
 			End If
 			
 			gbIcon.alt = sUsername & " har 0 nya gästboks-inlägg."
-			gbIcon.href = "http://www.lunarstorm.se/" & sUsername
+			gbLink.href = "http://www.lunarstorm.se/" & sUsername
 			
 			'If System.Gadget.Settings.readString("UpdateInfo") = "!" Then
 				'Update userinfo for correct casing of Username etc
@@ -51,7 +52,7 @@
 
 		Sub GetTicker
 			Dim xmlHttp, xmlData, xmlParser
-			Dim xmlNodes, xmlNode
+			Dim xmlNodes, xmlNode, xmlError
 			Dim sText, sLink, sDate, sUser
 			Dim bSuccess, sResult, sSpace
 
@@ -62,18 +63,25 @@
 			bSuccess = xmlParser.Load("http://api.lunarstorm.se/api.ashx?type=rss&function=Live")
 
 			If bSuccess Then
-				Set xmlNodes = xmlParser.SelectNodes("/rss/channel/item")
-				sResult = sSpace
+				Set xmlError = xmlParser.SelectSingleNode("error/item/description")
 				
-				For Each xmlNode In xmlNodes
-					sText = xmlNode.SelectSingleNode("description").Text
-					sLink = xmlNode.SelectSingleNode("link").Text
-					sDate = xmlNode.SelectSingleNode("pubDate").Text
-					sUser = xmlNode.SelectSingleNode("title").Text
+				If Not xmlError Is Nothing then
+					sResult = "Error: " & xmlError.Text & " (will keep trying)"
+				Else
+					Set xmlNodes = xmlParser.SelectNodes("/rss/channel/item")
+					sResult = sSpace
 					
-			 		sResult = sResult & "<a href=""" & sLink & """ class=""tickerLink"">" & sUser & ": " & sText & "</a>" & sSpace
-				Next
+					For Each xmlNode In xmlNodes
+						sText = xmlNode.SelectSingleNode("description").Text
+						sLink = xmlNode.SelectSingleNode("link").Text
+						sDate = xmlNode.SelectSingleNode("pubDate").Text
+						sUser = xmlNode.SelectSingleNode("title").Text
+						
+				 		sResult = sResult & "<a href=""" & sLink & """ class=""tickerLink"">" & sUser & ": " & sText & "</a>" & sSpace
+					Next
+				End If
 				
+				Set xmlError = Nothing
 				Set xmlNode = Nothing
 				Set xmlNodes = Nothing
 			End If
@@ -117,8 +125,9 @@
 			document.getElementById("tickerRight").style.left = 720;
 			document.getElementById("iconCenter").style.width = 710;
 			document.getElementById("iconRight").style.left = 720;
-			document.getElementById("iconArea").style.width = 166;
 			document.getElementById("iconArea").style.top = 3;
+			document.getElementById("iconArea").style.width = 166;
+			document.getElementById("iconArea").style.height = 28;
 			document.getElementById("gbIcon").style.width = 28;
 			document.getElementById("lmIcon").style.width = 28;
 			document.getElementById("fmIcon").style.width = 28;
@@ -140,8 +149,9 @@
 			document.getElementById("tickerRight").style.left = 120;
 			document.getElementById("iconCenter").style.width = 110;
 			document.getElementById("iconRight").style.left = 120;
-			document.getElementById("iconArea").style.width = 130;
 			document.getElementById("iconArea").style.top = 8;
+			document.getElementById("iconArea").style.width = 130;
+			document.getElementById("iconArea").style.height = 22;
 			document.getElementById("gbIcon").style.width = 22;
 			document.getElementById("lmIcon").style.width = 22;
 			document.getElementById("fmIcon").style.width = 22;
@@ -165,7 +175,7 @@
 	<body onload="initGadget()">
 		<g:background src="_gfx/trans1.png" style="width:100%; height:100%;" />
 		
-		<div id="iconLeft" class="iconLeft"><v:image src="_gfx/icon_bg_left.png" id="iconLeftImage" style="top:0px; left:0px;"/></div>
+		<div id="iconLeft" class="iconLeft"><img src="_gfx/icon_bg_left.png" id="iconLeftImage" style="top:0px; left:0px;"/></div>
 		<div id="iconCenter" class="iconCenter" />
 		<div id="iconRight" class="iconRight" />
 		
