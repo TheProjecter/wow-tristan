@@ -1,5 +1,4 @@
-﻿body
-{
+﻿body {
 	font-family: 'trebuchet ms', verdana, arial, helvetica, sans-serif;
 	font-size: 12px;
 	font-weight: bold;
@@ -9,12 +8,11 @@
 	height: 70px;
 }
 
-v\:*{
+v\:* {
 	behavior:url(#default#vml);
 }
 
-.bodyOld
-{
+.bodyOld {
 	background: url(_gfx/trans1.png);
 	background-repeat: repeat;
 }
@@ -119,8 +117,7 @@ v\:*{
 	z-index: 5;
 }
 
-#searchBoxHolder
-{
+#searchBoxHolder {
 	position: absolute;
 	left: 1px;
 	top: 1px;
@@ -131,8 +128,7 @@ v\:*{
 	z-index: 4;
 }
 
-#searchBoxBorder
-{
+#searchBoxBorder {
 	position: absolute;
 	left: 0px;
 	top: 0px;
