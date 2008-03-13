@@ -9,11 +9,13 @@
 	<script language="VBScript">
 		Sub Window_Onload
 			GetTicker
-			iTimerID = window.SetInterval("GetTicker", 60000)
+			window.SetInterval "GetTicker", 60000
 			
 			GetIcons
+			window.SetInterval "GetIcons", 60000
 			
-			'GetOnline
+			GetOnline
+			window.SetInterval "GetOnline", 60000
 		End Sub
 		
 		Sub GetOnline
@@ -24,10 +26,14 @@
 		'System.Gadget.Settings.write
 		
 		Sub GetIcons
-			gbIcon.alt = System.Gadget.Settings.readString("Username") & " " & CStr(System.Gadget.Settings.readString("Username") = vbNullString)
+			Dim sUsername
+			sUsername = System.Gadget.Settings.readString("Username")
+			If sUsername = vbNullString Then sUsername = "Webmaster" End If
+			
+			gbIcon.alt = sUsername & " har 0 nya gästboks-inlägg."
 			
 			'gbIcon.src = "_gfx/icon/icon-guestbook-active.gif"
-			'gbIcon.alt = "555 nya gästboks-inlägg!"
+			'gbIcon.alt = sUsername & " har 555 nya gästboks-inlägg!"
 			'lmIcon.src = "_gfx/icon/icon-lunarmail-active.gif"
 			'fmIcon.src = "_gfx/icon/icon-forum-active.gif"
 			'frIcon.src = "_gfx/icon/icon-friends-active.gif"
