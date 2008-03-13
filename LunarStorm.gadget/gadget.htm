@@ -8,14 +8,15 @@
 
 	<script language="VBScript">
 		Sub Window_Onload
+			Dim tickerTimer, iconTimer, onlineTimer
 			GetTicker
-			window.SetInterval "GetTicker", 60000
+			tickerTimer = window.SetInterval("GetTicker", 60000)
 			
 			GetIcons
-			window.SetInterval "GetIcons", 60000
+			iconTimer = window.SetInterval("GetIcons", 60000)
 			
 			GetOnline
-			window.SetInterval "GetOnline", 60000
+			onlineTimer = window.SetInterval("GetOnline", 60000)
 		End Sub
 		
 		Sub GetOnline
@@ -58,20 +59,20 @@
 			bSuccess = xmlParser.Load("http://api.lunarstorm.se/api.ashx?type=rss&function=Live")
 
 			If bSuccess Then
-			 Set xmlNodes = xmlParser.SelectNodes("/rss/channel/item")
-			 sResult = sSpace
-
-			 For Each xmlNode In xmlNodes
-			  sText = xmlNode.SelectSingleNode("description").Text
-			  sLink = xmlNode.SelectSingleNode("link").Text
-			  sDate = xmlNode.SelectSingleNode("pubDate").Text
-			  sUser = xmlNode.SelectSingleNode("title").Text
-
-			  sResult = sResult & "<a href=""" & sLink & """ class=""tickerLink"">" & sUser & ": " & sText & "</a>" & sSpace
-			 Next
-			 
-			 Set xmlNode = Nothing
-			 Set xmlNodes = Nothing
+				Set xmlNodes = xmlParser.SelectNodes("/rss/channel/item")
+				sResult = sSpace
+				
+				For Each xmlNode In xmlNodes
+					sText = xmlNode.SelectSingleNode("description").Text
+					sLink = xmlNode.SelectSingleNode("link").Text
+					sDate = xmlNode.SelectSingleNode("pubDate").Text
+					sUser = xmlNode.SelectSingleNode("title").Text
+					
+			 		sResult = sResult & "<a href=""" & sLink & """ class=""tickerLink"">" & sUser & ": " & sText & "</a>" & sSpace
+				Next
+				
+				Set xmlNode = Nothing
+				Set xmlNodes = Nothing
 			End If
 
 			Set xmlParser = Nothing
