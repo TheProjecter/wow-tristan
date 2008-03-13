@@ -44,7 +44,7 @@
 					if (nickName != System.Gadget.Settings.readString("Username"))
 					{
 						System.Gadget.Settings.writeString("Username", nickName);
-						System.Gadget.Settings.write("UpdateInfo", true);
+						System.Gadget.Settings.writeString("UpdateInfo", "!");
 					}
 				}
 				event.cancel = false;
