@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml">
+<html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<title></title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -96,10 +96,12 @@
 	<script type="text/javascript" language="javascript">
 		function initGadget()
 		{
+			System.Gadget.settingsUI = "settings.htm";
+			System.Gadget.background = "url(_gfx/trans1.png)";
+			
 			checkState();
 			System.Gadget.onDock = checkState;
 			System.Gadget.onUndock = checkState;
-			System.Gadget.settingsUI = "settings.htm";
 		}
 
 		function checkState()
@@ -173,9 +175,9 @@
 	</script>
 
 	<body onload="initGadget()">
-		<g:background src="_gfx/trans1.png" style="width:100%; height:100%;" />
+		<!-- g:background src="_gfx/trans1.png" style="width:100%; height:100%;" /-->
 		
-		<div id="iconLeft" class="iconLeft"><img src="_gfx/icon_bg_left.png" id="iconLeftImage" style="top:0px; left:0px;"/></div>
+		<div id="iconLeft" class="iconLeft" />
 		<div id="iconCenter" class="iconCenter" />
 		<div id="iconRight" class="iconRight" />
 		
