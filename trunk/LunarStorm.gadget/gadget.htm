@@ -41,6 +41,10 @@
 				onlinePart = Replace(Match.value, "<img src=""/_gfx/top/numbers/", vbNullString)
 				onlineTotal = onlineTotal & Left(onlinePart, 1)
 			Next
+			
+			Set Match = Nothing
+			Set Matches = Nothing
+			Set objRegEx = Nothing
 
 			onlineArea.InnerHTML = onlineTotal & " online"
 		End Sub
@@ -74,6 +78,7 @@
 		Sub GetTicker
 			Dim xmlHttp, xmlData, xmlParser
 			Dim xmlNodes, xmlNode, xmlError
+			Dim descNode, linkNode, publNode, titlNode
 			Dim sText, sLink, sDate, sUser
 			Dim bSuccess, sResult, sSpace
 
@@ -93,12 +98,24 @@
 					sResult = sSpace
 
 					For Each xmlNode In xmlNodes
-						sText = xmlNode.SelectSingleNode("description").Text
-						sLink = xmlNode.SelectSingleNode("link").Text
-						sDate = xmlNode.SelectSingleNode("pubDate").Text
-						sUser = xmlNode.SelectSingleNode("title").Text
-
-				 		sResult = sResult & "<a href=""" & sLink & """ class=""tickerLink"">" & sUser & ": " & sText & "</a>" & sSpace
+						Set descNode = xmlNode.SelectSingleNode("description")
+						Set linkNode = xmlNode.SelectSingleNode("link")
+						Set publNode = xmlNode.SelectSingleNode("pubDate")
+						Set titlNode = xmlNode.SelectSingleNode("title")
+					
+						If Not descNode Is Nothing And Not linkNode Is Nothing And Not publNode Is Nothing And Not titlNode Is Nothing Then
+							sText = descNode.Text
+							sLink = linkNode.Text
+							sDate = publNode.Text
+							sUser = titlNode.Text
+	
+					 		sResult = sResult & "<a href=""" & sLink & """ class=""tickerLink"">" & sUser & ": " & sText & "</a>" & sSpace
+				 		End If
+				 		
+				 		Set descNode = Nothing
+						Set linkNode = Nothing
+						Set publNode = Nothing
+						Set titlNode = Nothing
 					Next
 				End If
 
