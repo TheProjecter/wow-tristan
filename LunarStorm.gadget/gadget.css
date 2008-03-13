@@ -9,6 +9,10 @@
 	height: 70px;
 }
 
+v\:*{
+	behavior:url(#default#vml);
+}
+
 .bodyOld
 {
 	background: url(_gfx/trans1.png);
