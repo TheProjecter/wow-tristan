@@ -9,39 +9,60 @@
 	<script language="VBScript">
 		Sub Window_Onload
 			Dim tickerTimer, iconTimer, onlineTimer
-			
+
 			GetTicker
 			tickerTimer = window.SetInterval("GetTicker", 60000)
-			
+
 			GetIcons
 			iconTimer = window.SetInterval("GetIcons", 60000)
-			
+
 			GetOnline
 			onlineTimer = window.SetInterval("GetOnline", 60000)
 		End Sub
-		
+
 		Sub GetOnline
-			onlineArea.InnerHTML = "1337 online"
-		End Sub
-		
-		Sub GetIcons
+			Dim xmlHttp, responseText
+			Dim objRegEx, Match, Matches, onlineTotal, onlinePart
+
+			Set xmlHttp = CreateObject("MSXML2.ServerXMLHTTP")
+    	xmlHttp.open "GET", "http://www.lunarstorm.se/online_counter.aspx", false
+    	xmlHttp.send ""
+    	responseText = xmlHttp.responseText
+    	set xmlHttp = Nothing
+
+    	Set objRegEx = New RegExp
+			objRegEx.Global = True
+			objRegEx.IgnoreCase = True
+			objRegEx.Pattern = "<img src=""/_gfx/top/numbers/\d.gif"" id=""ophi\d"" />"
+			Set Matches = objRegEx.Execute(responseText)
+			onlineTotal = vbNullString
 			
+			For Each Match in Matches
+				onlinePart = Replace(Match.value, "<img src=""/_gfx/top/numbers/", vbNullString)
+				onlineTotal = onlineTotal & Left(onlinePart, 1)
+			Next
+
+			onlineArea.InnerHTML = onlineTotal & " online"
+		End Sub
+
+		Sub GetIcons
+
 			Dim sUsername
 			sUsername = "Webmaster"
 			If System.Gadget.Settings.readString("Username") <> vbNullString Then
 				sUsername = System.Gadget.Settings.readString("Username")
 			End If
-			
+
 			gbIcon.alt = sUsername & " har 0 nya gästboks-inlägg."
 			gbLink.href = "http://www.lunarstorm.se/" & sUsername
-			
+
 			'If System.Gadget.Settings.readString("UpdateInfo") = "!" Then
 				'Update userinfo for correct casing of Username etc
-				
+
 				'Once updated clear the update flag
 				'System.Gadget.Settings.writeString("UpdateInfo", vbNullString)
 			'End If
-			
+
 			'gbIcon.src = "_gfx/icon/icon-guestbook-active.gif"
 			'gbIcon.alt = sUsername & " har 555 nya gästboks-inlägg!"
 			'lmIcon.src = "_gfx/icon/icon-lunarmail-active.gif"
@@ -64,23 +85,23 @@
 
 			If bSuccess Then
 				Set xmlError = xmlParser.SelectSingleNode("error/item/description")
-				
+
 				If Not xmlError Is Nothing then
 					sResult = "Error: " & xmlError.Text & " (will keep trying)"
 				Else
 					Set xmlNodes = xmlParser.SelectNodes("/rss/channel/item")
 					sResult = sSpace
-					
+
 					For Each xmlNode In xmlNodes
 						sText = xmlNode.SelectSingleNode("description").Text
 						sLink = xmlNode.SelectSingleNode("link").Text
 						sDate = xmlNode.SelectSingleNode("pubDate").Text
 						sUser = xmlNode.SelectSingleNode("title").Text
-						
+
 				 		sResult = sResult & "<a href=""" & sLink & """ class=""tickerLink"">" & sUser & ": " & sText & "</a>" & sSpace
 					Next
 				End If
-				
+
 				Set xmlError = Nothing
 				Set xmlNode = Nothing
 				Set xmlNodes = Nothing
@@ -97,7 +118,7 @@
 		function initGadget()
 		{
 			System.Gadget.settingsUI = "settings.htm";
-			
+
 			checkState();
 			System.Gadget.onDock = checkState;
 			System.Gadget.onUndock = checkState;
@@ -120,7 +141,7 @@
 			//-- Resize body
 			document.body.style.width = 730;
 			System.Gadget.background = "_gfx/bg_large.png";
-			
+
 			//-- Resize elements
 			document.getElementById("tickerArea").style.width = 730;
 			document.getElementById("iconArea").style.top = 3;
@@ -131,7 +152,7 @@
 			document.getElementById("fmIcon").style.width = 28;
 			document.getElementById("frIcon").style.width = 28;
 			document.getElementById("cmIcon").style.width = 28;
-			
+
 			//-- Show extra stuff
 			document.getElementById("extrasArea").style.visibility = "visible";
 		}
@@ -141,7 +162,7 @@
 			//-- Resize body
 			document.body.style.width=130;
 			System.Gadget.background = "_gfx/bg_small.png";
-			
+
 			//-- Resize elements
 			document.getElementById("tickerArea").style.width = 130;
 			document.getElementById("iconArea").style.top = 8;
@@ -152,11 +173,11 @@
 			document.getElementById("fmIcon").style.width = 22;
 			document.getElementById("frIcon").style.width = 22;
 			document.getElementById("cmIcon").style.width = 22;
-			
+
 			//-- Hide extra stuff
 			document.getElementById("extrasArea").style.visibility = "hidden";
 		}
-		
+
 		function resetSearch()
 		{
 			document.getElementById("searchBox").value = 'Sök...';
@@ -175,7 +196,7 @@
 			<a id="frLink" href="javascript:void(0);"><img src="_gfx/icon/icon-friends.gif" id="frIcon" class="topIcon" alt="" /></a>
 			<a id="cmLink" href="javascript:void(0);"><img src="_gfx/icon/icon-comment.gif" id="cmIcon" class="topIcon" alt="" /></a>
 		</div>
-		
+
 		<div id="extrasArea" class="extrasArea"  style="visibility:hidden;">
 			<div id="onlineArea" class="onlineArea">Updating...</div>
 			<div id="searchArea" class="searchArea">
@@ -185,11 +206,11 @@
 			</div>
 			<div id="logoArea" class="logoArea"><a href="http://www.lunarstorm.se/"><img src="_gfx/logo.png" style="vertical-align: middle;" border=0></a></div>
 		</div>
-		
+
 		<div id="tickerArea" class="tickerArea">
 			<marquee scrollamount="4" width="100%" id="theTicker" class="ticker" onMouseOver="theTicker.stop()" onMouseOut="theTicker.start()">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</marquee>
 		</div>
-    
+
 		<div id="Debug" class="Debug" style="visibility:hidden;" />
 	</body>
 </html>
