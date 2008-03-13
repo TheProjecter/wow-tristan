@@ -11,16 +11,27 @@
 			GetTicker
 			iTimerID = window.SetInterval("GetTicker", 60000)
 			
-			'GetIcons
+			GetIcons
+			
+			'GetOnline
 		End Sub
 		
+		Sub GetOnline
+			onlineArea.InnerHTML = "1337 online"
+		End Sub
+		
+		'System.Gadget.Settings.read("listview")
+		'System.Gadget.Settings.write
+		
 		Sub GetIcons
-			gbIcon.src = "_gfx/icon/icon-guestbook-active.gif"
-			gbIcon.alt = "555 nya gästboks-inlägg!"
-			lmIcon.src = "_gfx/icon/icon-lunarmail-active.gif"
-			fmIcon.src = "_gfx/icon/icon-forum-active.gif"
-			frIcon.src = "_gfx/icon/icon-friends-active.gif"
-			cmIcon.src = "_gfx/icon/icon-comment-active.gif"
+			gbIcon.alt = System.Gadget.Settings.readString("Username") & " " & CStr(System.Gadget.Settings.readString("Username") = vbNullString)
+			
+			'gbIcon.src = "_gfx/icon/icon-guestbook-active.gif"
+			'gbIcon.alt = "555 nya gästboks-inlägg!"
+			'lmIcon.src = "_gfx/icon/icon-lunarmail-active.gif"
+			'fmIcon.src = "_gfx/icon/icon-forum-active.gif"
+			'frIcon.src = "_gfx/icon/icon-friends-active.gif"
+			'cmIcon.src = "_gfx/icon/icon-comment-active.gif"
 		End Sub
 
 		Sub GetTicker
@@ -66,6 +77,7 @@
 			checkState();
 			System.Gadget.onDock = checkState;
 			System.Gadget.onUndock = checkState;
+			System.Gadget.settingsUI = "settings.htm";
 		}
 
 		function checkState()
