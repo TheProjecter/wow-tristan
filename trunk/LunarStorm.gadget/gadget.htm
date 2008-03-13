@@ -31,6 +31,11 @@
 			If sUsername = vbNullString Then sUsername = "Webmaster" End If
 			
 			gbIcon.alt = sUsername & " har 0 nya gästboks-inlägg."
+			gbIcon.href = "http://www.lunarstorm.se/" & sUsername
+			
+			If System.Gadget.Settings.read("UpdateInfo") Then
+				'Update userinfo for correct casing of Username etc
+			End If
 			
 			'gbIcon.src = "_gfx/icon/icon-guestbook-active.gif"
 			'gbIcon.alt = sUsername & " har 555 nya gästboks-inlägg!"
@@ -73,7 +78,6 @@
 			Set xmlHttp = Nothing
 
 			theTicker.InnerHTML = sResult
-			'MsgBox("Update!")
 		End Sub
 	</script>
 
@@ -164,15 +168,15 @@
 		<div id="iconRight" class="iconRight" />
 		
 		<div id="iconArea" class="iconArea">
-			<img src="_gfx/icon/icon-guestbook.gif" id="gbIcon" class="topIcon" alt="" />
-			<img src="_gfx/icon/icon-lunarmail.gif" id="lmIcon" class="topIcon" alt="" />
-			<img src="_gfx/icon/icon-forum.gif" id="fmIcon" class="topIcon" alt="" />
-			<img src="_gfx/icon/icon-friends.gif" id="frIcon" class="topIcon" alt="" />
-			<img src="_gfx/icon/icon-comment.gif" id="cmIcon" class="topIcon" alt="" />
+			<a id="gbLink" href="javascript:void(0);"><img src="_gfx/icon/icon-guestbook.gif" id="gbIcon" class="topIcon" alt="" /></a>
+			<a id="lmLink" href="javascript:void(0);"><img src="_gfx/icon/icon-lunarmail.gif" id="lmIcon" class="topIcon" alt="" /></a>
+			<a id="fmLink" href="javascript:void(0);"><img src="_gfx/icon/icon-forum.gif" id="fmIcon" class="topIcon" alt="" /></a>
+			<a id="frLink" href="javascript:void(0);"><img src="_gfx/icon/icon-friends.gif" id="frIcon" class="topIcon" alt="" /></a>
+			<a id="cmLink" href="javascript:void(0);"><img src="_gfx/icon/icon-comment.gif" id="cmIcon" class="topIcon" alt="" /></a>
 		</div>
 		
 		<div id="extrasArea" class="extrasArea"  style="visibility:hidden;">
-			<div id="onlineArea" class="onlineArea">1337 online</div>
+			<div id="onlineArea" class="onlineArea">Updating...</div>
 			<div id="searchArea" class="searchArea">
 				<form method="get" action="http://www.lunarstorm.se/src/src_quicksearch.aspx">
 					<div id="searchBoxBorder"></div><div id="searchBoxHolder"></div><input type="text" id="searchBox" name="all" value="Sök..." onfocus="clearSearch()" onblur="resetSearch()"/>
