@@ -181,7 +181,7 @@ v\:* {
 .tickerRight {
 	position: fixed;
 	left: 120px;
-	top: 34px;
+	top: 35px;
 	width: 10px;
 	height: 20px;
 	background: url(_gfx/ticker_bg_right.png) no-repeat;
