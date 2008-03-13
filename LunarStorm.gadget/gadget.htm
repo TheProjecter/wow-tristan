@@ -93,6 +93,8 @@
 			System.Gadget.onDock = checkState;
 			System.Gadget.onUndock = checkState;
 			System.Gadget.settingsUI = "settings.htm";
+			
+			document.getElementById("iconLeft").addImageObject("_gfx/icon_bg_left.png", 0, 0);
 		}
 
 		function checkState()
@@ -109,8 +111,6 @@
 
 		function undockedState()
 		{
-			//document.body.background = "_gfx/bg_large.png";
-			
 			//-- Resize body
 			document.body.style.width = 730;
 			
@@ -134,8 +134,6 @@
 
 		function dockedState()
 		{
-			//document.body.background = "_gfx/bg_small.png";
-			
 			//-- Resize body
 			document.body.style.width=130;
 			
