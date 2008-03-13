@@ -7,13 +7,12 @@
 	padding: 0;
 	width: 130px;
 	height: 70px;
-	background: url(_gfx/trans1.png);
-	background-repeat: repeat;
 }
 
-div
+.bodyOld
 {
-	behavior: url(iepngfix.htc)
+	background: url(_gfx/trans1.png);
+	background-repeat: repeat;
 }
 
 .iconLeft {
