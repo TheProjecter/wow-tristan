@@ -9,6 +9,7 @@
 	<script language="VBScript">
 		Sub Window_Onload
 			Dim tickerTimer, iconTimer, onlineTimer
+			
 			GetTicker
 			tickerTimer = window.SetInterval("GetTicker", 60000)
 			
@@ -34,7 +35,7 @@
 			gbIcon.alt = sUsername & " har 0 nya gästboks-inlägg."
 			gbIcon.href = "http://www.lunarstorm.se/" & sUsername
 			
-			If System.Gadget.Settings.read("UpdateInfo") Then
+			If System.Gadget.Settings.readString("UpdateInfo") = "!" Then
 				'Update userinfo for correct casing of Username etc
 			End If
 			
