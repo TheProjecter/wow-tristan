@@ -11,14 +11,9 @@
 	background-repeat: repeat;
 }
 
-img
-{
-	behavior: url(iepngfix.htc);
-}
-
 div
 {
-	behavior: url(iepngfix.htc);
+	behavior: url(iepngfix.htc)
 }
 
 .iconLeft {

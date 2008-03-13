@@ -35,12 +35,12 @@
 			gbIcon.alt = sUsername & " har 0 nya gästboks-inlägg."
 			gbIcon.href = "http://www.lunarstorm.se/" & sUsername
 			
-			If System.Gadget.Settings.readString("UpdateInfo") = "!" Then
+			'If System.Gadget.Settings.readString("UpdateInfo") = "!" Then
 				'Update userinfo for correct casing of Username etc
 				
 				'Once updated clear the update flag
-				System.Gadget.Settings.writeString("UpdateInfo", vbNullString)
-			End If
+				'System.Gadget.Settings.writeString("UpdateInfo", vbNullString)
+			'End If
 			
 			'gbIcon.src = "_gfx/icon/icon-guestbook-active.gif"
 			'gbIcon.alt = sUsername & " har 555 nya gästboks-inlägg!"
