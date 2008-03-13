@@ -40,7 +40,12 @@
 				if (event.closeAction == event.Action.commit)
 				{
 					var nickName = nickTextbox.value;
-					System.Gadget.Settings.writeString("Username", nickName);
+					
+					if (nickName != System.Gadget.Settings.readString("Username"))
+					{
+						System.Gadget.Settings.writeString("Username", nickName);
+						System.Gadget.Settings.write("UpdateInfo", true);
+					}
 				}
 				event.cancel = false;
 			}
