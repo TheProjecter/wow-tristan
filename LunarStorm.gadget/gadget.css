@@ -11,6 +11,19 @@
 	background-repeat: repeat;
 }
 
+img, div
+{
+	behavior: url(_htc/iepngfix.htc);
+}
+
+/*	Alternatively, you can specify that this will apply to all tags like so:
+*
+{
+	behavior: url(_htc/iepngfix.htc);
+}
+*/
+
+
 .iconLeft {
 	position: fixed;
 	left: 0px;
