@@ -21,32 +21,21 @@
 		End Sub
 
 		Sub GetOnline
-			Dim xmlHttp, responseText
-			Dim objRegEx, Match, Matches, onlineTotal, onlinePart
-
-			Set xmlHttp = CreateObject("MSXML2.ServerXMLHTTP")
-    	xmlHttp.open "GET", "http://www.lunarstorm.se/online_counter.aspx", false
-    	xmlHttp.send ""
-    	responseText = xmlHttp.responseText
-    	set xmlHttp = Nothing
-
-    	Set objRegEx = New RegExp
-			objRegEx.Global = True
-			objRegEx.IgnoreCase = True
-			objRegEx.Pattern = "<img src=""/_gfx/top/numbers/\d.gif"" id=""ophi\d"" />"
-			Set Matches = objRegEx.Execute(responseText)
-			onlineTotal = vbNullString
+			Dim xmlParser, xmlNode, bSuccess, sOnline
 			
-			For Each Match in Matches
-				onlinePart = Replace(Match.value, "<img src=""/_gfx/top/numbers/", vbNullString)
-				onlineTotal = onlineTotal & Left(onlinePart, 1)
-			Next
+			Set xmlParser = CreateObject("MSXML2.DOMDocument.6.0")
+			xmlParser.Async = False
+			bSuccess = xmlParser.Load("http://api.lunarstorm.se/api.ashx?type=xml&function=online")
 			
-			Set Match = Nothing
-			Set Matches = Nothing
-			Set objRegEx = Nothing
-
-			onlineArea.InnerHTML = onlineTotal & " online"
+			Set xmlNode = xmlParser.SelectSingleNode("online/item/onlinecount")
+			If Not xmlError Is Nothing then
+				sOnline = xmlNode.Text
+			Else
+				sOnline = "..."
+			End If
+			Set xmlNode = Nothing
+			
+			onlineArea.InnerHTML = sOnline & " online"
 		End Sub
 
 		Sub GetIcons
