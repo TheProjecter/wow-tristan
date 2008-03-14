@@ -2,11 +2,11 @@
 <gadget>
 	<name>LunarStorm</name>
 	<version>1.0</version>
-	<author name="Dennis Hafstr&#246;m &#038; Jonny Johansson">
+	<author name="Dennis Hafstr&#246;m">
 		<info url="dennis.hafstrom@lunarstorm.se" />
 	</author>
 	<copyright>&#169; 2008</copyright>
-	<description>LunarStorm info</description>
+	<description>Displays Lajv messages from Lunarstorm aswell as account information. Co-author Jonny Johansson</description>
 	<icons>
 		<icon src="icon.png"/>
 	</icons>
