@@ -40,29 +40,65 @@
 
 		Sub GetIcons
 			Dim sUsername
-			Dim xmlParser, xmlNode, bSuccess, sOnline
+			Dim xmlParser, bSuccess, sOnline
+			Dim gbNode, mlNode, fmNode, frNode, bcNode, gcNode
 			
 			sUsername = "Webmaster"
 			If System.Gadget.Settings.readString("Username") <> vbNullString Then
 				sUsername = System.Gadget.Settings.readString("Username")
 			End If
-
-			gbIcon.alt = sUsername & " har 0 nya gästboks-inlägg."
-			gbLink.href = "http://www.lunarstorm.se/" & sUsername
-
-			'If System.Gadget.Settings.readString("UpdateInfo") = "!" Then
-				'Update userinfo for correct casing of Username etc
-
-				'Once updated clear the update flag
-				'System.Gadget.Settings.writeString("UpdateInfo", vbNullString)
-			'End If
-
-			'gbIcon.src = "_gfx/icon/icon-guestbook-active.gif"
-			'gbIcon.alt = sUsername & " har 555 nya gästboks-inlägg!"
-			'lmIcon.src = "_gfx/icon/icon-lunarmail-active.gif"
-			'fmIcon.src = "_gfx/icon/icon-forum-active.gif"
-			'frIcon.src = "_gfx/icon/icon-friends-active.gif"
-			'cmIcon.src = "_gfx/icon/icon-comment-active.gif"
+			
+			Set xmlParser = CreateObject("MSXML2.DOMDocument.6.0")
+			xmlParser.Async = False
+			bSuccess = xmlParser.Load("http://api.lunarstorm.se/api.ashx?type=xml&function=notifications&user=" & sUsername)
+			
+			If bSuccess Then
+				'If System.Gadget.Settings.readString("UpdateInfo") = "!" Then
+					'Update userinfo for correct casing of Username etc
+	
+					'Once updated clear the update flag
+					'System.Gadget.Settings.writeString("UpdateInfo", vbNullString)
+				'End If
+				
+				Set gbNode = xmlParser.SelectSingleNode("notifications/item/guestbook")
+				Set mlNode = xmlParser.SelectSingleNode("notifications/item/mail")
+				Set fmNode = xmlParser.SelectSingleNode("notifications/item/diskus")
+				Set frNode = xmlParser.SelectSingleNode("notifications/item/friends")
+				Set bcNode = xmlParser.SelectSingleNode("notifications/item/blogcomments")
+				Set gcNode = xmlParser.SelectSingleNode("notifications/item/gallerycomments")
+				
+				If Not gbNode Is Nothing Then
+					gbIcon.alt = sUsername & " har " & gbNode.Text & " nya gästboks-inlägg."
+					'gbLink.href = "http://www.lunarstorm.se/" & sUsername
+				End If
+				
+				If Not mlNode Is Nothing Then
+					lmIcon.alt = sUsername & " har " & mlNode.Text & " nya mail."
+					'lmLink.href = "http://www.lunarstorm.se/" & sUsername
+				End If
+				
+				If Not fmNode Is Nothing Then
+					fmIcon.alt = sUsername & " har " & fmNode.Text & " nya forum notifieringar."
+					'fmLink.href = "http://www.lunarstorm.se/" & sUsername
+				End If
+				
+				If Not frNode Is Nothing Then
+					frIcon.alt = sUsername & " har " & frNode.Text & " nya vänner förfrågningar."
+					'frLink.href = "http://www.lunarstorm.se/" & sUsername
+				End If
+				
+				If Not bcNode Is Nothing And Not gcNode Is Nothing Then
+					cmIcon.alt = sUsername & " har " & (CInt(bcNode.Text) + CInt(gcNode.Text)) & " nya kommentarer."
+					'cmLink.href = "http://www.lunarstorm.se/" & sUsername
+				End If
+				
+				Set gbNode = Nothing
+				Set mlNode = Nothing
+				Set fmNode = Nothing
+				Set frNode = Nothing
+				Set bcNode = Nothing
+				Set gcNode = Nothing
+			End If
 		End Sub
 
 		Sub GetTicker
