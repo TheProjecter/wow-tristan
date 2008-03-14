@@ -21,19 +21,19 @@
 		End Sub
 
 		Sub GetOnline
-			Dim xmlParser, xmlNode, bSuccess, sOnline
+			Dim xmlParser, xlmNode, bSuccess, sOnline
 			
 			Set xmlParser = CreateObject("MSXML2.DOMDocument.6.0")
 			xmlParser.Async = False
 			bSuccess = xmlParser.Load("http://api.lunarstorm.se/api.ashx?type=xml&function=online")
 			
-			Set xmlNode = xmlParser.SelectSingleNode("online/item/onlinecount")
-			If Not xmlNode Is Nothing then
-				sOnline = xmlNode.Text
+			Set xlmNode = xmlParser.SelectSingleNode("online/item/onlinecount")
+			If Not xlmNode Is Nothing then
+				sOnline = xlmNode.Text
 			Else
 				sOnline = "..."
 			End If
-			Set xmlNode = Nothing
+			Set xlmNode = Nothing
 			
 			onlineArea.InnerHTML = sOnline & " online"
 		End Sub
@@ -41,7 +41,7 @@
 		Sub GetIcons
 			Dim sUsername
 			Dim xmlParser, bSuccess, sOnline
-			Dim gbNode, mlNode, fmNode, frNode, bcNode, gcNode
+			Dim gbNode, lmNode, fmNode, frNode, bcNode, gcNode, iCnt
 			
 			sUsername = "Webmaster"
 			If System.Gadget.Settings.readString("Username") <> vbNullString Then
@@ -61,39 +61,74 @@
 				'End If
 				
 				Set gbNode = xmlParser.SelectSingleNode("notifications/item/guestbook")
-				Set mlNode = xmlParser.SelectSingleNode("notifications/item/mail")
+				Set lmNode = xmlParser.SelectSingleNode("notifications/item/mail")
 				Set fmNode = xmlParser.SelectSingleNode("notifications/item/diskus")
 				Set frNode = xmlParser.SelectSingleNode("notifications/item/friends")
 				Set bcNode = xmlParser.SelectSingleNode("notifications/item/blogcomments")
 				Set gcNode = xmlParser.SelectSingleNode("notifications/item/gallerycomments")
 				
 				If Not gbNode Is Nothing Then
-					gbIcon.alt = sUsername & " har " & gbNode.Text & " nya gästboks-inlägg."
+					iCnt = CInt(gbNode.Text)
+					
+					gbIcon.alt = sUsername & " har " & iCnt & " nya gästboks-inlägg."
+					If iCnt > 0 Then
+						gbIcon.src = "_gfx/icon/icon-guestbook-active.gif"
+					Else
+						gbIcon.src = "_gfx/icon/icon-guestbook.gif"
+					End If
 					'gbLink.href = "http://www.lunarstorm.se/" & sUsername
 				End If
 				
-				If Not mlNode Is Nothing Then
-					lmIcon.alt = sUsername & " har " & mlNode.Text & " nya mail."
+				If Not lmNode Is Nothing Then
+					iCnt = CInt(lmNode.Text)
+					
+					lmIcon.alt = sUsername & " har " & iCnt & " nya mail."
+					If iCnt > 0 Then
+						lmIcon.src = "_gfx/icon/icon-lunarmail-active.gif"
+					Else
+						lmIcon.src = "_gfx/icon/icon-lunarmail.gif"
+					End If
 					'lmLink.href = "http://www.lunarstorm.se/" & sUsername
 				End If
 				
 				If Not fmNode Is Nothing Then
-					fmIcon.alt = sUsername & " har " & fmNode.Text & " nya forum notifieringar."
+					iCnt = CInt(fmNode.Text)
+					
+					fmIcon.alt = sUsername & " har " & iCnt & " nya forum notifieringar."
+					If iCnt > 0 Then
+						fmIcon.src = "_gfx/icon/icon-forum-active.gif"
+					Else
+						fmIcon.src = "_gfx/icon/icon-forum.gif"
+					End If
 					'fmLink.href = "http://www.lunarstorm.se/" & sUsername
 				End If
 				
 				If Not frNode Is Nothing Then
-					frIcon.alt = sUsername & " har " & frNode.Text & " nya vänner förfrågningar."
+					iCnt = CInt(fmNode.Text)
+					
+					frIcon.alt = sUsername & " har " & iCnt & " nya vänner förfrågningar."
+					If iCnt > 0 Then
+						frIcon.src = "_gfx/icon/icon-friends-active.gif"
+					Else
+						frIcon.src = "_gfx/icon/icon-friends.gif"
+					End If
 					'frLink.href = "http://www.lunarstorm.se/" & sUsername
 				End If
 				
 				If Not bcNode Is Nothing And Not gcNode Is Nothing Then
-					cmIcon.alt = sUsername & " har " & (CInt(bcNode.Text) + CInt(gcNode.Text)) & " nya kommentarer."
+					iCnt = (CInt(bcNode.Text) + CInt(gcNode.Text))
+					
+					cmIcon.alt = sUsername & " har " & iCnt & " nya kommentarer."
+					If iCnt > 0 Then
+						cmIcon.src = "_gfx/icon/icon-comment-active.gif"
+					Else
+						cmIcon.src = "_gfx/icon/icon-comment.gif"
+					End If
 					'cmLink.href = "http://www.lunarstorm.se/" & sUsername
 				End If
 				
 				Set gbNode = Nothing
-				Set mlNode = Nothing
+				Set lmNode = Nothing
 				Set fmNode = Nothing
 				Set frNode = Nothing
 				Set bcNode = Nothing
@@ -103,7 +138,7 @@
 
 		Sub GetTicker
 			Dim xmlHttp, xmlData, xmlParser
-			Dim xmlNodes, xmlNode, xmlError
+			Dim xlmNodes, xlmNode, xmlError
 			Dim descNode, linkNode, publNode, titlNode
 			Dim sText, sLink, sDate, sUser
 			Dim bSuccess, sResult, sSpace
@@ -120,14 +155,14 @@
 				If Not xmlError Is Nothing then
 					sResult = "Error: " & xmlError.Text & " (will keep trying)"
 				Else
-					Set xmlNodes = xmlParser.SelectNodes("/rss/channel/item")
+					Set xlmNodes = xmlParser.SelectNodes("/rss/channel/item")
 					sResult = sSpace
 
-					For Each xmlNode In xmlNodes
-						Set descNode = xmlNode.SelectSingleNode("description")
-						Set linkNode = xmlNode.SelectSingleNode("link")
-						Set publNode = xmlNode.SelectSingleNode("pubDate")
-						Set titlNode = xmlNode.SelectSingleNode("title")
+					For Each xlmNode In xlmNodes
+						Set descNode = xlmNode.SelectSingleNode("description")
+						Set linkNode = xlmNode.SelectSingleNode("link")
+						Set publNode = xlmNode.SelectSingleNode("pubDate")
+						Set titlNode = xlmNode.SelectSingleNode("title")
 					
 						If Not descNode Is Nothing And Not linkNode Is Nothing And Not publNode Is Nothing And Not titlNode Is Nothing Then
 							sText = descNode.Text
@@ -146,8 +181,8 @@
 				End If
 
 				Set xmlError = Nothing
-				Set xmlNode = Nothing
-				Set xmlNodes = Nothing
+				Set xlmNode = Nothing
+				Set xlmNodes = Nothing
 			End If
 
 			Set xmlParser = Nothing
