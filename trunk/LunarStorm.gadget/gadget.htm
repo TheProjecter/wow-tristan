@@ -193,9 +193,15 @@
 	</script>
 
 	<script type="text/javascript" language="javascript">
+		function settingsClosed() {
+		  //code to update your gadget
+		  Window_Onload();
+		}
+		
 		function initGadget()
 		{
 			System.Gadget.settingsUI = "settings.htm";
+			System.Gadget.onSettingsClosed = settingsClosed;
 
 			checkState();
 			System.Gadget.onDock = checkState;

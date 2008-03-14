@@ -208,7 +208,7 @@ v\:* {
 
 .tickerLink {
 	color: #ffffff;
-	underline: none;
+	text-decoration: none;
 }
 
 .tickerLink:visited {
