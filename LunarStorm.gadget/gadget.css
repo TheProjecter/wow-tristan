@@ -219,9 +219,9 @@ v\:* {
 #infoArea {
 	position: fixed;
 	left: 7px;
-	top: 55px;
+	top: 57px;
 	width: 116px;
-	height: 9px;
+	height: 11px;
 	overflow: hidden;
 	white-space: nowrap;
 	font-family: 'trebuchet ms', verdana, arial, helvetica, sans-serif;
