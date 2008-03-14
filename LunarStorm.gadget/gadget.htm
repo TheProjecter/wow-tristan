@@ -61,6 +61,8 @@
 					'System.Gadget.Settings.writeString("UpdateInfo", vbNullString)
 				'End If
 				
+				infoArea.InnerHTML = sUsername
+				
 				Set gbNode = xmlParser.SelectSingleNode("notifications/item/guestbook")
 				Set lmNode = xmlParser.SelectSingleNode("notifications/item/mail")
 				Set fmNode = xmlParser.SelectSingleNode("notifications/item/diskus")
