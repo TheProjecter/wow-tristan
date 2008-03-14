@@ -28,7 +28,7 @@
 			bSuccess = xmlParser.Load("http://api.lunarstorm.se/api.ashx?type=xml&function=online")
 			
 			Set xmlNode = xmlParser.SelectSingleNode("online/item/onlinecount")
-			If Not xmlError Is Nothing then
+			If Not xmlNode Is Nothing then
 				sOnline = xmlNode.Text
 			Else
 				sOnline = "..."
@@ -39,8 +39,9 @@
 		End Sub
 
 		Sub GetIcons
-
 			Dim sUsername
+			Dim xmlParser, xmlNode, bSuccess, sOnline
+			
 			sUsername = "Webmaster"
 			If System.Gadget.Settings.readString("Username") <> vbNullString Then
 				sUsername = System.Gadget.Settings.readString("Username")
