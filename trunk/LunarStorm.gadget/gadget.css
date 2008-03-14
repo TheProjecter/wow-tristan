@@ -2,6 +2,7 @@
 	font-family: 'trebuchet ms', verdana, arial, helvetica, sans-serif;
 	font-size: 12px;
 	font-weight: bold;
+	overflow: visible;
 	margin: 0;
 	padding: 0;
 	width: 130px;
@@ -215,6 +216,24 @@ v\:* {
 	color: #cccccc;
 }
 
+#infoArea {
+	position: fixed;
+	left: 1px;
+	top: 55px;
+	width: 130px;
+	height: 20px;
+	overflow: hidden;
+	white-space: nowrap;
+	line-height: 21px;
+	font-family: 'trebuchet ms', verdana, arial, helvetica, sans-serif;
+	filter:glow(color=ffffff,strength=1);
+	font-size: 12px;
+	font-weight: bold;
+	border: 0px none;
+	margin: 0px;
+	padding: 0px;
+}
+
 #tooltip {
 	padding: 0px 3px 0px 3px;
 	background: #f9f9f9;
@@ -222,6 +241,8 @@ v\:* {
 	border: 1px solid;
 	text-align: center;
 	font-weight: normal;
+	white-space: nowrap;
+	width: auto;
 	z-index: 99;
 }
 

@@ -271,31 +271,51 @@
 		{
 			document.getElementById("searchBox").value = '';
 		}
+		
+		function showTooltip(obj)
+		{
+			if (System.Gadget.docked)
+			{
+				if (obj.value.length > 0)
+				{
+					var re = new RegExp("\\d+");
+				  var m = re.exec(obj.value);
+				  if (m != null)
+				  {
+				    tooltip(m[0]);
+				  }
+				}
+			}
+			else
+			{
+				if (obj.value.length > 0) { tooltip(obj.value); }
+			}
+		}
 	</script>
 
 	<body onload="initGadget()">
 		<div id="iconArea" class="iconArea">
-			<span class="Tooltip" id="gbTooltip" value="" onmouseover="if (this.value.length > 0) { tooltip(this.value); }" onmouseout="exit()">
+			<span class="Tooltip" id="gbTooltip" value="" onmouseover="showTooltip(this)" onmouseout="exit()">
 				<a id="gbLink" href="http://www.lunarstorm.se/main.aspx?requestedUrl=http%3A%2F%2Fwww.lunarstorm.se%2Fgst%2Fgst_guestbook.aspx">
 					<img src="_gfx/icon/icon-guestbook.gif" id="gbIcon" class="topIcon" alt="" />
 				</a>
 			</span>
-			<span class="Tooltip" id="lmTooltip" value="" onmouseover="if (this.value.length > 0) { tooltip(this.value); }" onmouseout="exit()">
+			<span class="Tooltip" id="lmTooltip" value="" onmouseover="showTooltip(this)" onmouseout="exit()">
 				<a id="lmLink" href="http://www.lunarstorm.se/main.aspx?requestedUrl=http%3A%2F%2Fwww.lunarstorm.se%2Fmai%2Fmai_mailbox.aspx">
 					<img src="_gfx/icon/icon-lunarmail.gif" id="lmIcon" class="topIcon" alt="" />
 				</a>
 			</span>
-			<span class="Tooltip" id="fmTooltip" value="" onmouseover="if (this.value.length > 0) { tooltip(this.value); }" onmouseout="exit()">
+			<span class="Tooltip" id="fmTooltip" value="" onmouseover="showTooltip(this)" onmouseout="exit()">
 				<a id="fmLink" href="http://www.lunarstorm.se/main.aspx?requestedUrl=http%3A%2F%2Fwww.lunarstorm.se%2Fdis%2Fdis_forums.aspx">
 					<img src="_gfx/icon/icon-forum.gif" id="fmIcon" class="topIcon" alt="" />
 				</a>
 			</span>
-			<span class="Tooltip" id="frTooltip" value="" onmouseover="if (this.value.length > 0) { tooltip(this.value); }" onmouseout="exit()">
+			<span class="Tooltip" id="frTooltip" value="" onmouseover="showTooltip(this)" onmouseout="exit()">
 				<a id="frLink" href="http://www.lunarstorm.se/main.aspx?requestedUrl=http%3A%2F%2Fwww.lunarstorm.se%2Ffri%2Ffri_friends.aspx">
 					<img src="_gfx/icon/icon-friends.gif" id="frIcon" class="topIcon" alt="" />
 				</a>
 			</span>
-			<span class="Tooltip" id="cmTooltip" value="" onmouseover="if (this.value.length > 0) { tooltip(this.value); }" onmouseout="exit()">
+			<span class="Tooltip" id="cmTooltip" value="" onmouseover="showTooltip(this)" onmouseout="exit()">
 				<a id="cmLink" href="javascript:void(0);">
 					<img src="_gfx/icon/icon-comment.gif" id="cmIcon" class="topIcon" alt="" />
 				</a>
@@ -315,7 +335,9 @@
 		<div id="tickerArea" class="tickerArea">
 			<marquee scrollamount="4" width="100%" id="theTicker" class="ticker" onMouseOver="theTicker.stop()" onMouseOut="theTicker.start()">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</marquee>
 		</div>
-
+		
+		<div id="infoArea" />
+		
 		<div id="Debug" class="Debug" style="visibility:hidden;" />
 	</body>
 </html>
