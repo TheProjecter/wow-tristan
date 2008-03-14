@@ -215,6 +215,16 @@ v\:* {
 	color: #cccccc;
 }
 
+#tooltip {
+	padding: 0px 3px 0px 3px;
+	background: #f9f9f9;
+	filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr='#f9f9f9', EndColorStr='#ccffff');
+	border: 1px solid;
+	text-align: center;
+	font-weight: normal;
+	z-index: 99;
+}
+
 .Debug {
 	position: fixed;
 	left: 50px;
