@@ -224,10 +224,10 @@ v\:* {
 	height: 20px;
 	overflow: hidden;
 	white-space: nowrap;
-	line-height: 21px;
+	line-height: 9px;
 	font-family: 'trebuchet ms', verdana, arial, helvetica, sans-serif;
 	filter:glow(color=ffffff,strength=1);
-	font-size: 12px;
+	font-size: 9px;
 	font-weight: bold;
 	border: 0px none;
 	margin: 0px;
