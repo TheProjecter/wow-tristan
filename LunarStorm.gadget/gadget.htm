@@ -25,7 +25,7 @@
 			
 			Set xmlParser = CreateObject("MSXML2.DOMDocument.6.0")
 			xmlParser.Async = False
-			bSuccess = xmlParser.Load("http://api.lunarstorm.se/api.ashx?type=xml&function=online")
+			bSuccess = xmlParser.Load("http://api.lunarstorm.se/api.ashx?gadget=true&type=xml&function=online")
 			
 			Set xlmNode = xmlParser.SelectSingleNode("online/item/onlinecount")
 			If Not xlmNode Is Nothing then
@@ -50,7 +50,7 @@
 			
 			Set xmlParser = CreateObject("MSXML2.DOMDocument.6.0")
 			xmlParser.Async = False
-			bSuccess = xmlParser.Load("http://api.lunarstorm.se/api.ashx?type=xml&function=notifications&user=" & sUsername)
+			bSuccess = xmlParser.Load("http://api.lunarstorm.se/api.ashx?gadget=true&type=xml&function=notifications&user=" & sUsername)
 			
 			If bSuccess Then
 				'If System.Gadget.Settings.readString("UpdateInfo") = "!" Then
@@ -147,7 +147,7 @@
 
 			Set xmlParser = CreateObject("MSXML2.DOMDocument.6.0")
 			xmlParser.Async = False
-			bSuccess = xmlParser.Load("http://api.lunarstorm.se/api.ashx?type=rss&function=Live")
+			bSuccess = xmlParser.Load("http://api.lunarstorm.se/api.ashx?gadget=true&type=rss&function=Live")
 
 			If bSuccess Then
 				Set xmlError = xmlParser.SelectSingleNode("error/item/description")
